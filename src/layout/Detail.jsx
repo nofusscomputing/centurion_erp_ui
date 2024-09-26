@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import NavTabs from "../components/Navtabs";
-import Section from "./detail/Section";
 import { useLoaderData, useParams } from "react-router-dom";
 import { ResponseException } from "../classes/Exceptions";
+
+import NavTabs from "../components/page/detail/Navtabs";
+import Section from "../components/page/detail/Section";
 
 
 

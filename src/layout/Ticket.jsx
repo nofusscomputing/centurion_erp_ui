@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import FieldData from "../functions/FieldData";
-import TicketComment from "./ticket/Comment";
+
 import TicketStatusIcon from "../components/icons/ticket/TicketStatusIcon";
 import Badge from "../components/Badge";
 import { ResponseException } from "../classes/Exceptions";
+import TicketComment from "../components/page/ticket/Comment";
 
 
 
