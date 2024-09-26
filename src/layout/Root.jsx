@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
-import Header from "./Header";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import Header from "../components/page/Header";
+import Navbar from "../components/page/Navbar";
+import Footer from "../components/page/Footer";
 
 
 
