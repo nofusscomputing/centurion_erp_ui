@@ -29,6 +29,8 @@ nav:
 
       - projects/centurion_erp/user_interface/index.md
 
+      - projects/centurion_erp/user_interface/url.md
+
 - Operations: 
 
   - operations/index.md
