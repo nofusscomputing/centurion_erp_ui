@@ -31,6 +31,7 @@
   --text-colour-header: #fff;
   --text-colour-help: #707070;
   --text-colour-navbar: #fff;
+  --text-colour-navtab: #6a6e73;
 }
 
 
@@ -67,6 +68,7 @@
   --text-colour-header: #E0E0E0;
   --text-colour-help: #707070;
   --text-colour-navbar: #E0E0E0;
+  --text-colour-navtab: #6a6e73;
 } */
 
 
@@ -910,36 +912,54 @@ section .nav-tabs {
 
 }
 
-section .nav-tabs .tab {
+section .nav-tabs .nav-tabs-tab {
   border-bottom: 1px solid var(--border-colour);
-  color: #6a6e73;
+  color: var(--text-colour-navtab);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   height: 50px;
-  margin: 0px;
+  margin: auto 0px;
 }
 
-section .nav-tabs .tab:hover {
+section .nav-tabs .nav-tabs-tab:hover {
   border-bottom: 3px solid var(--border-colour-navbar-hover);
 }
 
 
-section .nav-tabs .tab.active {
+section .nav-tabs .nav-tabs-tab.active {
   border-bottom: 3px solid var(--contrasting-colour);
 }
 
 
-section .nav-tabs .tab div {
-  margin: auto 10px;
+section .nav-tabs .nav-tabs-tab div {
+  display: flex;
+  width: fit-content;
+  margin: auto 0px;
+  padding: 0% 10px;
 }
 
-section .nav-tabs .tab .icon {
-  background-color: royalblue;
+section .nav-tabs .nav-tabs-tab span {
+  display: inline-block;
+  height: fit-content;
+  margin: auto 0px;
+  padding: 0%;
+}
+
+
+section .nav-tabs .nav-tabs-tab .nav-tabs-icon {
   color: var(--background-colour-active);
-  margin-right: 5px;
+  height: 25px;
+  width: 25px;
+  margin: auto 0px;
 }
 
-section .nav-tabs .tab .text {
+section .nav-tabs .nav-tabs-tab .nav-tabs-icon svg {
+  fill: var(--text-colour-navtab);
+  height: 25px;
+  width: 25px;
+}
+
+section .nav-tabs .nav-tabs-tab .nav-tabs-text {
   font-size: 13pt;
 }
 

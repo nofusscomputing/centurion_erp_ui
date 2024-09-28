@@ -1,5 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 
+import IconLoader from "../../IconLoader";
+
+
+
 const NavTabs = ({
     tabs = [],
     active_tab = null,
@@ -10,10 +14,12 @@ const NavTabs = ({
 
     return (
         <div className="nav-tabs">
-            <div className="tab back">
+            <div className="nav-tabs-tab back">
                 <div>
-                    <span className="icon">X</span>
-                    <span className="text">
+                    <span className="nav-tabs-icon">
+                        <IconLoader name='navdoubleleft' />
+                    </span>
+                    <span className="nav-tabs-text">
                         <Link to={'/' + params.module + '/' + params.model}>Back to index</Link>
                     </span>
                 </div>
@@ -27,12 +33,12 @@ const NavTabs = ({
                                 active_tab == null
                                 && index == 0
                             )
-                        ) ? 'tab active' : 'tab'}
+                        ) ? 'nav-tabs-tab active' : 'nav-tabs-tab'}
                         onClick={()=> setActiveTab(tab.name.toLowerCase())}
                     >
                         <div>
                             <span
-                                className="text"
+                                className="nav-tabs-text"
                                 id={tab.name.toLowerCase()}
                             >{tab.name}</span>
                         </div>
