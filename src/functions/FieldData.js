@@ -1,4 +1,14 @@
+import { Link, NavLink } from "react-router-dom";
 import RenderMarkdown from "./RenderMarkdown";
+
+
+
+/**
+ * Value used to split URL.
+ * 
+ * i.e. `http://127.0.0.1:8002/api/v2/itam/device/24` using ulr[1] would return `/itam/device/24`
+ */
+const API_SPLIT = String('api/v2')
 
 /**
  * Fetch the field data from Django API Data
@@ -72,6 +82,7 @@ export default function FieldData({
 
                 break;
 
+            case 'Relationship':
             case 'Serializer':
 
                 if( data[field_name] === null ) {
@@ -80,7 +91,17 @@ export default function FieldData({
 
                 } else {
 
-                    field_data = data[field_name].name
+                    if( 'url' in data[field_name] ) {
+
+                        field_data = (
+                            <Link to={String(data[field_name].url).split(API_SPLIT)[1]}>{data[field_name].display_name}</Link>
+                        )
+
+                    } else {
+
+                        field_data = data[field_name].display_name
+
+                    }
 
                 }
 
