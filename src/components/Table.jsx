@@ -6,7 +6,14 @@ import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
 
 
-
+/**
+ * Create a Table with pagination
+ * 
+ * @param {{String, Function}} param0 Object for table
+ * @param data_url_path url where the data will be fetched
+ * @param callback function that will be passed value `data.name`
+ * @returns 
+ */
 const Table = ({
     data_url_path,
     callback = null
