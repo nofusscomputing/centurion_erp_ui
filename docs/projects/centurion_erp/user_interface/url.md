@@ -11,6 +11,25 @@ This specification is to detail the URL path requirements for Centurion ERP deve
 
 ## Details
 
+The following URL patterns are required for navigation:
+
+- `/<module>/<model>`
+
+- `/<module>/<model>/<primary key>`
+
+- ~~`/<module>/<model>/<common pk>/<child_model>`~~
+
+- ~~`/<module>/<model>/<common pk>/<child_model>/<primary key>`~~
+
+- `/<module>/<common model name>/<model>`
+
+- `/<module>/<common model name>/<model><primary key>`
+
+
+- ~~`/<module>/<common model name>/<model>/<common pk>/<child_model>`~~
+
+- ~~`/<module>/<common model name>/<model>/<common pk>/<child_model>/<primary key>`~~
+
 The url path pattern will be used by both the end user facing URL and the API URL for accessing the backend.
 
 URL path patterens will be in format:
