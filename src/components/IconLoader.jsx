@@ -10,6 +10,7 @@ import SoftwareIcon from "./icons/SoftwareIcon";
 import ReplyIcon from "./icons/ReplyIcon";
 import NotificationIcon from "./icons/ticket/NotificationIcon";
 import TaskIcon from "./icons/TaskIcon";
+import NavDoubleLeftIcon from "./icons/NavDoubleLeftIcon";
 
 
 const icon_components = {
@@ -20,6 +21,7 @@ const icon_components = {
     itam: ItamIcon,
     menu: MenuIcon,
     navdown: NavDownIcon,
+    navdoubleleft: NavDoubleLeftIcon,
     navright: NavRightIcon,
     notification: NotificationIcon,
     organization: OrganizationIcon,
