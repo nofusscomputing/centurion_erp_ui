@@ -109,7 +109,24 @@ export default function FieldData({
  
             default:
 
-                field_data = data[field_name]
+                if (
+                    (
+                        field_name === 'name'
+                        || field_name === 'title'
+                    )
+                    && '_urls' in data
+                ) {
+
+                    field_data = (
+                        <Link to={String(data['_urls']._self).split(API_SPLIT)[1]}>{data[field_name]}</Link>
+                    )
+
+                } else {
+
+
+                    field_data = data[field_name]
+
+                }
 
                 break;
 
