@@ -1,15 +1,21 @@
+import { Link, useParams } from "react-router-dom";
+
 const NavTabs = ({
     tabs = [],
     active_tab = null,
     setActiveTab = null
 }) => {
 
+    const params = useParams()
+
     return (
         <div className="nav-tabs">
             <div className="tab back">
                 <div>
                     <span className="icon">X</span>
-                    <span className="text">Back to index</span>
+                    <span className="text">
+                        <Link to={'/' + params.module + '/' + params.model}>Back to index</Link>
+                    </span>
                 </div>
             </div>
             { tabs.map((tab, index) => {
