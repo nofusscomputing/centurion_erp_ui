@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
-import { ResponseException } from "../classes/Exceptions";
 
+import { apiFetch } from "../hooks/apiFetch";
 import NavTabs from "../components/page/detail/Navtabs";
 import Section from "../components/page/detail/Section";
 
@@ -19,48 +19,31 @@ const Detail = ({
 
     const [metadata, setMetaData] = useState(null);
 
-    if( 'name' in page_data ) {
-
-        setContentHeading(page_data['name']);
-
-    }else if( 'title' in page_data ) {
-
-        setContentHeading(page_data['title']);
-
-    }else{
-        setContentHeading(metadata['name']);
-    }
-
 
     useEffect(() => {
 
-        fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/' + params.model_id + '/option')
-
-            .then(response => {
-
-                if( ! response.ok ) {
-
-                    throw new ResponseException(response)
-                }
-
-                return response.json()
-
-            })
-            .then(data => {
+        apiFetch(
+            params.module + '/' + params.model + '/' + params.pk,
+            (data) =>{
 
                 setMetaData(data)
 
-            })
-            .catch(err => {
+                if( 'name' in page_data ) {
 
-                throw Error(err)
+                    setContentHeading(page_data['name']);
 
-            }
+                }else if( 'title' in page_data ) {
 
-            );
-    },[
-        params
-    ])
+                    setContentHeading(page_data['title']);
+
+                }else{
+                    setContentHeading(metadata['name']);
+                }
+
+            },
+            'OPTIONS'
+        )
+    },[])
 
 
     return ( 
@@ -69,9 +52,9 @@ const Detail = ({
             { metadata && <NavTabs
                 active_tab={active_tab}
                 setActiveTab={setActiveTab}
-                tabs={metadata.page_tabs}
+                tabs={metadata.layout}
             />}
-            { metadata !== null && metadata.page_tabs.map(( tab, index ) => {
+            { metadata && metadata.layout.map(( tab, index ) => {
 
                 if( active_tab === tab.name.toLowerCase()
                     || (

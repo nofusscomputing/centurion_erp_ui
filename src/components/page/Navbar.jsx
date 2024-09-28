@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
 import { ResponseException } from "../../classes/Exceptions";
+import { apiFetch } from "../../hooks/apiFetch";
 
 
 
@@ -9,7 +10,9 @@ const Navbar = ({
     nav_visible,
 }) => {
 
-    const [ menu_entries, SetMenuEntries ] = useState(null)
+    const params = useParams();
+
+    const [ navigation, SetNavigationEntries ] = useState(null)
 
     const [ nav_menu, setNavMenu ] = useState(null);
 
@@ -19,31 +22,27 @@ const Navbar = ({
 
     useEffect(() => {
 
-        fetch('http://localhost:8003/api/options/navigation')
+        apiFetch(
+            '',
+            (data) => {
 
-            .then(response => {
+                SetNavigationEntries(data.navigation)
 
-                if( ! response.ok ) {
+                if( params.module ){
 
-                    throw new ResponseException(response)
+                    setNavMenu(params.module);
 
                 }
 
-                return response.json()
-            
-            })
-            
-            .then(data => {
-            
-                SetMenuEntries(data)
-            
-            })
+                if( params.model ) {
 
-            .catch(err => {
+                    setNavPage(String(params.module + '-' + params.model))
 
-                throw Error(err)
+                }
+            },
+            'OPTIONS'
+        )
 
-            })
     },[])
 
 
@@ -52,25 +51,16 @@ const Navbar = ({
         return (
             <div id="navigation" key={'navigation'} className="nav">
             <nav>
-                {menu_entries!= null && menu_entries.map((module, index) =>{
+                {navigation != null && navigation.map((module, index) =>{
 
                     const paths = String(location.pathname).split('/')
-
-                    if(
-                        module.name.toLowerCase() === paths[1] &&
-                        nav_menu === null
-
-                    ) {
-
-                        setNavMenu(module.name.toLowerCase())
-
-                    }
 
                     return(
                         <div className="group">
                             <div id={module.name+'-'+index} className="menu" onClick={()=> setNavMenu(
                                 (module.name.toLowerCase() === nav_menu ? null : module.name.toLowerCase())
                             )}>
+
                                 <span className="icon">
                                     { 'icon' in module ? 
                                         <IconLoader
@@ -78,13 +68,13 @@ const Navbar = ({
                                         />
                                         : 
                                         <IconLoader
-                                            name = {String(module.name)}
+                                            name = {String(module.display_name)}
                                         />
                                     }
                                 </span>
-                                <span className="text">{module.name}</span>
+                                <span className="text">{module.display_name}</span>
                                 <span className="menu-icon">{
-                                    nav_menu === module.name.toLowerCase() ?
+                                    nav_menu === module.name ?
                                     <IconLoader
                                         name='navdown'
                                         height = '25px'
@@ -98,42 +88,31 @@ const Navbar = ({
                                     />
                                 }</span>
                             </div>
-                            {nav_menu === module.name.toLowerCase() &&
+                            {nav_menu === module.name &&
                             
-                                <div id={module.name.toLowerCase()+'-'+index} className="sub-menu">
+                                <div id={module.module+'-'+index} className="sub-menu">
                                 {module.pages.map((page) => {
 
-                                    if(
-                                        location.pathname === page.link &&
-                                        nav_page === null
-
-                                    ) {
-
-                                        setNavPage(module.name.toLowerCase()+'-'+page.name.toLowerCase())
-
-                                    }
-
-                                        return(
-                                            <Link to={ page.link }><div
-                                                className={nav_page === module.name.toLowerCase()+'-'+page.name.toLowerCase() ? 'page active' : 'page'}
-                                                onClick={()=> setNavPage(module.name.toLowerCase()+'-'+page.name.toLowerCase())}
-                                            >
-                                                <span className="icon">
-                                                { 'icon' in page ? 
-                                                    <IconLoader
-                                                        name = {String(page.icon)}
-                                                    />
-                                                    : 
-                                                    <IconLoader
-                                                        name = {String(page.name)}
-                                                    />
-                                                }
-                                                </span>
-                                                <span className="text">
-                                                    { page.name }
-                                                </span>
-                                            </div></Link>
-                                        )
+                                    return(
+                                        <Link to={ page.link }><div
+                                            className={nav_page === module.name.toLowerCase()+'-'+page.name.toLowerCase() ? 'page active' : 'page'}
+                                        >
+                                            <span className="icon">
+                                            { 'icon' in page ? 
+                                                <IconLoader
+                                                    name = {String(page.icon)}
+                                                />
+                                                : 
+                                                <IconLoader
+                                                    name = {String(page.display_name)}
+                                                />
+                                            }
+                                            </span>
+                                            <span className="text">
+                                                { page.display_name }
+                                            </span>
+                                        </div></Link>
+                                    )
                                 })}
                                 </div>
                             }

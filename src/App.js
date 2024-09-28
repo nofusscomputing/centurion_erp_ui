@@ -6,15 +6,15 @@ import {
     createRoutesFromElements,
 } from 'react-router-dom'
 
+
 import './index.css'
-
-import { ResponseException } from "./classes/Exceptions";
-
-import RootLayout from "./layout/Root";
 import Detail from "./layout/Detail";
-import List from "./layout/List";
-import Ticket from "./layout/Ticket";
 import ErrorPage from "./layout/Error";
+import { getCookie } from "./hooks/getCookie";
+import List from "./layout/List";
+import { ResponseException } from "./classes/Exceptions";
+import RootLayout from "./layout/Root";
+import Ticket from "./layout/Ticket";
 
 
 
@@ -86,17 +86,20 @@ export default App;
 
 const detailsLoader = async ({request, params}) => {
 
-    let url = 'http://localhost:8003/api/' + params.module + '/' + params.model
-
-    if( params.pk ) {
-
-        url = url + '/' + params.pk
-
-    }
-
     let loader = null
 
-    const response = await fetch(url)
+    let url = 'http://127.0.0.1:8002/api/v2/' + params.module + '/' + params.model
+
+        if( params.pk ) {
+
+            url = url + '/' + params.pk
+
+        }
+
+    const response = await fetch(url, {
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        credentials: 'include'
+    })
 
         .then( response => {
 

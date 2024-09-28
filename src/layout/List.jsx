@@ -1,63 +1,53 @@
 import { useEffect, useState } from "react"
 import { Link, useLoaderData, useLocation, useParams } from "react-router-dom"
+
+import { apiFetch } from "../hooks/apiFetch"
 import FieldData from "../functions/FieldData"
 
 
 
-const List = ({ setContentHeading }) => {
+const List = ({
+    setContentHeading
+}) => {
 
     const [metadata, setMetaData] = useState(null)
 
     let devices = useLoaderData();
 
+    const params = useParams();
+
     useEffect(() => {
 
-        fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/option')
-
-            .then(response => {
-
-                if (!response.ok) {
-
-                    throw new Response(response.statusText, { 'status': response.status });
-
-                }
-                return response.json()
-            })
-
-            .then(data => {
+        apiFetch(
+            params.module + '/' + params.model,
+            (data) =>{
 
                 setMetaData(data)
+                setContentHeading(data.name)
 
-            })
+            },
+            'OPTIONS' )
 
-            .catch(err => {
-
-                throw Error(err)
-
-            });
+        
 
     }, [devices])
 
-
-    let params = useParams();
 
     let location = useLocation();
 
     return (
         <section>
             {(devices != null && metadata != null) && <div className="content">
-
                 <table>
                     <thead>
                         <tr>
+                            {metadata.table_fields.map(key => {
 
-                            {metadata.fields.map(key => {
-
-                                setContentHeading(metadata.name)
+                                
 
                                 if (key in metadata.actions.POST) {
 
-                                    if (metadata.fields[key] === 'nbsp') {
+                                    if (metadata.table_fields[key] === 'nbsp') {
 
                                         return (
                                             <th>&nbsp</th>
@@ -79,11 +69,11 @@ const List = ({ setContentHeading }) => {
                             return (
                                 <tr id={device.id} key={device.id}>
                                     {
-                                        metadata.fields.map(key => {
+                                        metadata.table_fields.map(key => {
 
                                             if (key in metadata.actions.POST) {
 
-                                                if (metadata.fields[key] === 'nbsp') {
+                                                if (metadata.table_fields[key] === 'nbsp') {
 
                                                     return (
                                                         <td>&nbsp;</td>
