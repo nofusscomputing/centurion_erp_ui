@@ -1038,6 +1038,35 @@ section .content td {
   border-bottom: 1px solid var(--border-colour);
 }
 
+p.table-pagination {
+  /* background-color: chartreuse; */
+  display: inline-block;
+  padding: 0px
+}
+
+p.table-pagination span {
+  /* background-color: chocolate; */
+  display: inline-block;
+  margin: 0px 10px;
+}
+
+p.table-pagination span.table-pagination-text {
+  /* background-color: chocolate; */
+}
+
+p.table-pagination span.table-pagination-text input {
+  /* background-color: chocolate; */
+  width: 40px;
+  text-align: center;
+  margin: 0px 5px;
+}
+
+
+p.table-pagination span.table-pagination-button {
+  /* background-color: chocolate; */
+  cursor: pointer;
+}
+
 .content form {
   display: flexbox;
 }
@@ -1069,18 +1098,24 @@ section .content td {
   padding: 5px 0px;
 }
 
-.content form fieldset .common-field {
+.common-field {
   background-color: var(--background-colour-form-field);
   color: var(--text-colour);
   font-size: inherit;
   line-height: 30px;
-  min-width: 400px;
 }
 
-.content form fieldset input {
+
+input.common-field {
   border: none;
   border-bottom: 1px solid var(--border-colour-form-field);
 }
+
+
+.content form fieldset .common-field {
+  min-width: 400px;
+}
+
 
 .content form fieldset textarea {
   border-color: var(--border-colour-form-field);

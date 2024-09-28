@@ -1,19 +1,44 @@
+import React from "react";
 
 const TextField = ({
-    label,
-    helptext=null,
-    required=false,
-    error_text=null,
-    value=null
+    error_text = null,
+    fieldset = true,
+    helptext = null,
+    id = null,
+    label = null,
+    onchange = null,
+    required = false,
+    value = null
 }) => {
 
-    return (
-        <fieldset>
-            <label className="name">{label}</label>
-            <input className="common-field" required={required} type="text" placeholder={helptext} value={value == null ? '' : value} />
-            <span className="error-text">{error_text}</span>
-        </fieldset>
-     );
+    let field = (
+        <input
+            className="common-field"
+            id={id}
+            onChange={e => {
+                onchange(e.target.value)
+            } }
+            placeholder={helptext}
+            required={required}
+            type="text"
+            value={value == null ? '' : value}
+        />
+    )
+
+    if( fieldset == true ) {
+        return (
+            <fieldset>
+                <label className="name">{label}</label>
+                {field}
+                <span className="error-text">{error_text}</span>
+            </fieldset>
+
+        );
+
+    } else {
+
+        return ( field )
+    }
 
 }
 
