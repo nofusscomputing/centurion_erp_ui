@@ -15,7 +15,9 @@ const Table = ({
 
     const [is_loaded, setLoaded] = useState(false)
 
-    let data = useLoaderData();
+    const [page, setPage] = useState(0)
+
+    const [table_data, setTableData] = useState(null)
 
     useEffect(() => {
 
@@ -30,13 +32,39 @@ const Table = ({
                     callback(data.name)
 
                 }
-                
-                setLoaded(true)
 
             },
             'OPTIONS' )
 
-    }, [data, data_url_path])
+    }, [])
+
+
+    useEffect(() =>{
+
+        setLoaded(false)
+
+        let url = null
+
+        if( page != 0 ) {
+
+            url = data_url_path + '?page%5Bnumber%5D=' + String( page );
+
+        }else{
+
+            url = data_url_path;
+
+        }
+
+        apiFetch(url, (data) => {
+
+            setTableData(data)
+            
+            setLoaded(true)
+        })
+
+    }, [
+        page,
+    ])
 
     return (
         (is_loaded &&
@@ -65,10 +93,10 @@ const Table = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {data.results.map((data) => {
+                    {table_data.results.map((data) => {
 
                     return (
-                        <tr id={data.id} key={data.id}>
+                        <tr id={table_data.id} key={table_data.id}>
                             {
                                 metadata.table_fields.map(key => {
 
@@ -110,16 +138,61 @@ const Table = ({
                 'textAlign': 'center',
                 'verticalAlign': 'middle'
             }}>
-                <p style={{
-                    'display': 'inline-block',
-                    'padding': '0px',
-                }}>
-                    <a href={data.links.prev}>&lt;&lt;</a>&nbsp;&nbsp;&nbsp;
-                    <a href={data.links.first}>First </a>
-                    Page {data.meta.pagination.page} of {data.meta.pagination.pages}
-                    <a href={data.links.last}> Last</a>&nbsp;&nbsp;&nbsp;
-                    <a href={data.links.next}>&gt;&gt;</a> 
-                    </p>
+                <p className="table-pagination">
+
+                    <span className="table-pagination-button" onClick={() => {
+
+                        const url = table_data.links.prev
+
+                        if( url ) {
+
+                            setPage(getPageNumber(url))
+
+                        }
+
+                    }}>&lt;&lt;</span>
+
+                    <span className="table-pagination-button" onClick={() => {
+
+                        const url = table_data.links.first
+
+                        if( url ) {
+
+                            setPage(getPageNumber(url))
+
+                        }
+
+                    }}>First</span>
+
+                    <span className="table-pagination-text">
+                        Page {table_data.meta.pagination.page} of {table_data.meta.pagination.pages}
+                    </span>
+
+                    <span className="table-pagination-button"onClick={() => {
+
+                        const url = table_data.links.last
+
+                        if( url ) {
+
+                            setPage(getPageNumber(url))
+
+                        }
+
+                    }}>Last</span>
+
+                    <span className="table-pagination-button" onClick={() => {
+
+                    const url = table_data.links.next
+
+                        if( url ) {
+
+                            setPage(getPageNumber(url))
+
+                        }
+
+                    }}>&gt;&gt;</span>
+
+                </p>
             </div>
         </div>
         )
@@ -127,3 +200,25 @@ const Table = ({
 }
  
 export default Table;
+
+function getPageNumber(link) {
+
+    if( ! link ) {
+        return 0
+    }
+
+    const qs = String(link).split('?')
+
+    for(let i=0; i<qs.length; i++ ) {
+
+        let param = String(qs[i]).split('=')
+
+        if( String(param[0]) === 'page%5Bnumber%5D' ) {
+
+            return Number(param[1])
+
+        }
+    }
+
+    return 0
+}
