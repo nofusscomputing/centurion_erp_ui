@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Link, useLoaderData, useParams } from "react-router-dom";
 
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
+import TextField from "./form/Textfield";
 
 
 
@@ -11,13 +12,15 @@ const Table = ({
     callback = null
 }) => {
 
-    const [metadata, setMetaData] = useState(null)
+    const [metadata, setMetaData] = useState(null);
 
-    const [is_loaded, setLoaded] = useState(false)
+    const [is_loaded, setLoaded] = useState(false);
 
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(0);
 
-    const [table_data, setTableData] = useState(null)
+    const [table_data, setTableData] = useState(null);
+
+    const pagefieldId = useId();
 
     useEffect(() => {
 
@@ -36,7 +39,7 @@ const Table = ({
             },
             'OPTIONS' )
 
-    }, [])
+    }, []);
 
 
     useEffect(() =>{
@@ -64,7 +67,27 @@ const Table = ({
 
     }, [
         page,
-    ])
+    ]);
+
+
+    const updatePageField = ( value ) => {
+
+        if( value <= 0 ) {
+
+            setPage(1)
+
+        } else if( value <= table_data.meta.pagination.pages ) {
+
+            setPage(value)
+
+        } else if( value > table_data.meta.pagination.pages ) {
+
+            setPage(table_data.meta.pagination.pages)
+
+        }
+
+    };
+
 
     return (
         (is_loaded &&
@@ -165,7 +188,15 @@ const Table = ({
                     }}>First</span>
 
                     <span className="table-pagination-text">
-                        Page {table_data.meta.pagination.page} of {table_data.meta.pagination.pages}
+                        Page
+                        <TextField
+                            fieldset = {false}
+                            id={pagefieldId}
+                            onchange={updatePageField}
+                            required = {true}
+                            value={table_data.meta.pagination.page}
+                        />
+                        of {table_data.meta.pagination.pages}
                     </span>
 
                     <span className="table-pagination-button"onClick={() => {
@@ -201,21 +232,22 @@ const Table = ({
  
 export default Table;
 
+
 function getPageNumber(link) {
 
     if( ! link ) {
         return 0
     }
 
-    const qs = String(link).split('?')
+    const qs = String(link).split('?');
 
     for(let i=0; i<qs.length; i++ ) {
 
-        let param = String(qs[i]).split('=')
+        let param = String(qs[i]).split('=');
 
         if( String(param[0]) === 'page%5Bnumber%5D' ) {
 
-            return Number(param[1])
+            return Number(param[1]);
 
         }
     }
