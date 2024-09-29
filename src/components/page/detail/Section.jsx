@@ -1,6 +1,6 @@
 import DoubleColumn from "./DoubleColumn";
 import SingleColumn from "./SingleColumn";
-
+import Table from "../../Table"
 
 
 const Section = ({
@@ -32,6 +32,14 @@ const Section = ({
                 data={data}
                 metadata={metadata}
                 fields={layout.fields}
+            />
+        )
+
+    } else if( layout.layout === 'table' ) {
+
+        column = (
+            <Table
+                data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
             />
         )
 
