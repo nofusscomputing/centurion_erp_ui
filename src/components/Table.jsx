@@ -1,5 +1,4 @@
 import { useEffect, useId, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router-dom";
 
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
@@ -37,6 +36,12 @@ const Table = ({
 
                 setMetaData(data)
 
+                if( table_data ) {
+
+                    setLoaded(true)
+    
+                }
+    
                 if( callback ) {
 
                     callback(data.name)
@@ -46,7 +51,10 @@ const Table = ({
             },
             'OPTIONS' )
 
-    }, []);
+    }, [
+        data_url_path,
+        table_data
+    ]);
 
 
     useEffect(() =>{
@@ -55,7 +63,7 @@ const Table = ({
 
         let url = null
 
-        if( page != 0 ) {
+        if( page !== 0 ) {
 
             url = data_url_path + '?page%5Bnumber%5D=' + String( page );
 
@@ -68,11 +76,16 @@ const Table = ({
         apiFetch(url, (data) => {
 
             setTableData(data)
-            
-            setLoaded(true)
+
+            if( metadata ) {
+
+                setLoaded(true)
+
+            }
         })
 
     }, [
+        data_url_path,
         page,
     ]);
 
