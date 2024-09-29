@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, json } from "react-router-dom";
 import RenderMarkdown from "./RenderMarkdown";
 
 
@@ -20,6 +20,7 @@ const API_SPLIT = String('api/v2')
  * @returns {String} The value of the field
  */
 export default function FieldData({
+    full_width = false,
     metadata,
     field_name,
     data = null
@@ -106,8 +107,25 @@ export default function FieldData({
                 }
 
                 break;
- 
-            default:
+
+                case 'JSON':
+
+                let markdown = "``` json"
+                + "\r\n\r\n"
+                + JSON.stringify( data[field_name], null, 4 )
+                + "\r\n\r\n"
+                + "```"
+                + "\r\n"
+
+                    field_data = (
+                        <RenderMarkdown full_width={full_width}>
+                            { markdown}
+                        </RenderMarkdown>
+                    )
+
+                    break;
+
+                default:
 
                 if (
                     (
