@@ -72,11 +72,10 @@ const Detail = ({
                                     <hr />
                                     <Section
                                         index = { section_index }
+                                        layout = {section}
                                         data = { page_data }
                                         metadata = { metadata }
-                                        left = {section.left }
-                                        name = { 'name' in section ? section.name : tab.name }
-                                        right = { section.right }
+                                        tab = {tab}
                                     />
                                 </div>
                             )
@@ -86,11 +85,10 @@ const Detail = ({
                         return(
                             <Section
                                 index = { section_index }
+                                layout = {section}
                                 data = { page_data }
                                 metadata = { metadata }
-                                left = {section.left }
-                                name = { 'name' in section ? section.name : tab.name }
-                                right = { section.right }
+                                tab = {tab}
                             />
                         )
                     }))
