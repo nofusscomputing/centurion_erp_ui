@@ -38,9 +38,13 @@ const md = markdownIt({
 
 
 
-export default function RenderMarkdown(markdown) {
+export default function RenderMarkdown(markdown, full_width=false) {
 
     let rendered_markdown = md.render( String(markdown.children) )
+
+    if( full_width ) {
+        return <div className='full-width' dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
+    }
 
     return <div dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
 }

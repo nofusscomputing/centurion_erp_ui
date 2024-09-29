@@ -1014,13 +1014,22 @@ section .content .section fieldset.inline .text {
   min-width: 350px;
 }
 
-section .content .section fieldset.textarea .markdown {
+section .content .section fieldset.textarea div.markdown {
   border: 1px solid var(--border-colour-form-field);
   display: block;
+  margin: 0px auto;
   min-height: 100px;
-  margin: 0px;
   padding: 10px;
+}
+
+section .content .section fieldset.textarea div:not(.full-width) {
   width: 500px;
+}
+
+.section fieldset.textarea div.full-width div.markdown {
+  display: flex;
+  margin: 0px auto;
+  width: 90%;
 }
 
 section .content table {
