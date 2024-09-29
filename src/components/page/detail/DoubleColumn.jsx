@@ -9,7 +9,6 @@ const DoubleColumn = ({
     right = []
 }) => {
 
-    console.log('doubleColumn: ' + JSON.stringify(metadata.actions.PUT))
 
     return (
         <div className="double">
