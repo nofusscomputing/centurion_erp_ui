@@ -90,8 +90,8 @@ export default function FieldData({
 
                     field_data = '-'
 
-                } else {
-
+                } else if( typeof(data[field_name]) === 'object' ){
+                    
                     if( 'url' in data[field_name] ) {
 
                         field_data = (
@@ -103,6 +103,10 @@ export default function FieldData({
                         field_data = data[field_name].display_name
 
                     }
+
+                } else {
+
+                    field_data = data[field_name]
 
                 }
 
