@@ -6,26 +6,30 @@ const TextField = ({
     helptext = null,
     id = null,
     label = null,
-    onchange = null,
     required = false,
-    value = null
+    value = '',
+    onChange = null
 }) => {
+
+    if( value === null ) {
+        value = ''
+    }
 
     let field = (
         <input
             className="common-field"
             id={id}
-            onChange={e => {
-                onchange(e.target.value)
-            } }
+            key={id}
+            onChange={onChange}
             placeholder={helptext}
             required={required}
             type="text"
-            value={value == null ? '' : value}
+            value={value}
         />
     )
 
     if( fieldset == true ) {
+
         return (
             <fieldset>
                 <label className="name">{label}</label>
