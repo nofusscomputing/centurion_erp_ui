@@ -52,7 +52,12 @@ const Section = ({
                 <div className="section">
                     <h3>{'name' in layout ? layout.name : index === 0 ? tab.name : ''}</h3>
                     {column}
-                    {(index === 0 && String(tab.name).toLowerCase() == 'details') && <Link to="edit"><button className="common-field form">Edit</button></Link>}
+                    {(
+                        index === 0
+                        && String(tab.name).toLowerCase() == 'details'
+                        && metadata.allowed_methods.includes('PUT')
+                    ) 
+                    && <Link to="edit"><button className="common-field form">Edit</button></Link>}
                 </div>
             </div>
         </div>
