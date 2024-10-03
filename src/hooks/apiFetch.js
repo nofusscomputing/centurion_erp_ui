@@ -12,7 +12,8 @@ import { getCookie } from "./getCookie";
 export async function apiFetch(
     url_path,
     callback = null,
-    http_method = 'GET'
+    http_method = 'GET',
+    data_body = null
 ) {
 
     let api_data = null
@@ -26,31 +27,30 @@ export async function apiFetch(
 
     }
 
-    await fetch('http://127.0.0.1:8002/api/v2' + url_path, {
+    let request_data = {
         credentials: 'include',
-        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
         method: http_method,
-    })
+    }
 
-        .then(response => {
+    if( ['patch', 'post', 'put'].includes(http_method.toLowerCase()) ) {
 
-            if( ! response.ok ) {
+        request_data['headers']['Content-Type'] = 'application/json'
 
-                throw new ResponseException(response)
-            }
+        data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
 
-            return response.json()
+        request_data['body'] = JSON.stringify(data_body)
 
+    }
 
-        })
+    let response = await fetch('http://127.0.0.1:8002/api/v2' + url_path, request_data)
 
         .then(data => {
 
-            if( callback ) {
+            return data
 
-                callback(data)
-
-            }
         })
 
         .catch(err => {
@@ -59,5 +59,15 @@ export async function apiFetch(
 
         });
 
-    return api_data;
+
+    api_data = await response.json()
+
+    if( callback ) {
+
+        callback(api_data)
+
+    }
+
+    return response;
+
 }
