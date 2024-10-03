@@ -22,7 +22,7 @@ The user interface will be built using the React Framework. This also enables qu
 ## Goal / Intent
 
 > Seperate the UI from the backend
-
+>
 > Create a UI that as much as possible, obtains what is required from the backend for it to automagically create the UI. This information should then be used to create the user interface without requiring additional development work within the UI for to display any new backend features.
 
 
