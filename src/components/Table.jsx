@@ -3,6 +3,7 @@ import { useEffect, useId, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
+import { Link } from "react-router-dom";
 
 
 /**
@@ -27,6 +28,10 @@ const Table = ({
     const [table_data, setTableData] = useState(null);
 
     const pagefieldId = useId();
+
+    if( ! String(data_url_path).startsWith('/') ) {
+        data_url_path = '/' + data_url_path
+    }
 
     useEffect(() => {
 
@@ -112,6 +117,7 @@ const Table = ({
     return (
         (is_loaded &&
         <div>
+            <Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>
             <table>
                 <thead>
                     <tr>
