@@ -59,8 +59,9 @@ export async function apiFetch(
 
         });
 
-
-    api_data = await response.json()
+    if( response.status != 204 ) {
+        api_data = await response.json()
+    }
 
     if( callback ) {
 
