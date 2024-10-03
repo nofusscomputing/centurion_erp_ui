@@ -43,6 +43,13 @@ function App() {
                         loader = {detailsLoader}
                     />
 
+                    <Route path="/:module/:model/add"    // add
+                        element={<ModelForm
+                            setContentHeading={setContentHeading}
+                        />}
+                        errorElement={<ErrorPage /> }
+                    />
+
                     <Route path="/:module/:model/:pk"
                         element={<Detail
                             setContentHeading={setContentHeading}
@@ -51,7 +58,7 @@ function App() {
                         loader = {detailsLoader}
                     />
 
-                    <Route path="/:module/:model/:pk/:action"    // add | edit | delete
+                    <Route path="/:module/:model/:pk/:action"    // edit | delete
                         element={<ModelForm
                             setContentHeading={setContentHeading}
                         />}

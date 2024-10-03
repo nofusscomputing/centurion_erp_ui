@@ -1,4 +1,4 @@
-import { json, redirect, useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { Link, json, redirect, useLoaderData, useNavigate, useParams } from "react-router-dom";
 import Select from "../components/form/Select";
 import Slider from "../components/form/Slider";
 import TextArea from "../components/form/Textarea";
@@ -19,9 +19,9 @@ const ModelForm = ({
         }
     ]
 
-    const page_data = useLoaderData();
-
     const params = useParams();
+
+    const page_data = useLoaderData();
 
     const [metadata, setMetaData] = useState(null);
 
@@ -29,33 +29,66 @@ const ModelForm = ({
 
     const [form_error, setFormError] = useState(null)
 
+    const edit = Boolean(params.pk ? true : false )
+
     const navigate = useNavigate();
+
+    let meta_action = null
+
+    let url = '/' + params.module + '/' + params.model + '/' + params.pk    // default edit
+
+    if( ! params.pk ) {
+        url = '/' + params.module + '/' + params.model
+    }
+
 
     useEffect(() => {
 
         apiFetch(
-            params.module + '/' + params.model + '/' + params.pk,
+            url,
             (data) =>{
 
                 setMetaData(data)
-
 
                 setFormData(() => {
 
                     let initial_form_data = {}
 
-                    Object.keys(data.actions.PUT).map((field_key) => {
 
-                        if( data.actions.PUT[field_key].required ) {
-                            form_data[field_key] = page_data[field_key]
+                    if( 'PUT' in data.actions ) {
+
+                        meta_action = 'PUT'
+    
+                    } else {
+    
+                        meta_action = 'POST'
+    
+                    }
+    
+                    Object.keys(data.actions[meta_action]).map((field_key) => {
+
+                        if( data.actions[meta_action][field_key].required ) {
+                            if( page_data ) {
+                                initial_form_data[field_key] = page_data[field_key]
+
+                            } else {
+                                initial_form_data[field_key] = ''
+                            }
                         }
 
                     })
 
-                    return form_data;
+                    return initial_form_data;
 
                 },[])
 
+            },
+            'OPTIONS'
+        )
+
+        .then(((data) => {
+
+            if( page_data ) {
                 if( 'name' in page_data ) {
 
                     setContentHeading(page_data['name']);
@@ -64,16 +97,19 @@ const ModelForm = ({
 
                     setContentHeading(page_data['title']);
 
-                }else{
-                    setContentHeading(metadata['name']);
                 }
+            
+            }else {
+                try {
+                    setContentHeading(metadata['name']);
+                } catch {
+                    
+                }
+            }
+        }))
 
-            },
-            'OPTIONS'
-        )
     },[])
 
-    let action = 'post'
 
     const handleChange = (e) => {
 
@@ -88,18 +124,16 @@ const ModelForm = ({
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
     }
 
-    return(page_data &&
+    return((page_data || ! edit ) &&
         <section>
             <div className="content">
                 <form onSubmit={async e => {
                     e.preventDefault();
 
-                    const url = '/' + params.module + '/' + params.model + '/' + params.pk
-
                     const response = await apiFetch(
                         url,
                         setFormError,
-                        'PUT',
+                        meta_action,
                         form_data
                     )
 
@@ -109,174 +143,101 @@ const ModelForm = ({
 
                     }
                 }}>
-                    {/* {metadata?.actions.PUT.items.map((field) => { */}
                     { metadata &&
-                    Object.keys(metadata.actions.PUT).map((field_key) => {
+                    Object.keys(metadata.actions['PUT' in metadata.actions ? 'PUT' : 'POST']).map((field_key) => {
 
-                        if( ! metadata.actions.PUT[field_key].read_only ) {
+                        if( 'PUT' in metadata.actions ) {
 
+                            meta_action = 'PUT'
+            
+                        } else {
+            
+                            meta_action = 'POST'
+            
+                        }
 
-                            // let form_data_field = { ...form_data }
-
-                            // form_data_field[field_key] = page_data[field_key]
-
-
-                            // setFormData(form_data_field)
+                        if( ! metadata.actions[meta_action][field_key].read_only ) {
 
                             console.log(`field data: ${JSON.stringify(form_data)}`)
 
-
-                            switch(metadata.actions.PUT[field_key].type) {
+                            switch(metadata.actions[meta_action][field_key].type) {
 
                                 case 'Boolean':
 
                                     return (<Slider
                                         id = {field_key}
-                                        label = {metadata.actions.PUT[field_key].label}
-                                        helptext   = {metadata.actions.PUT[field_key].help_text}
-                                        // error_text = {form_error[field_key]}
-                                        required   = {metadata.actions.PUT[field_key].required}
-                                        // value={page_data[field_key]}
-                                        // value={form_data?.[field_key] ? form_data[field_key] : page_data[field_key]}
-                                        // value={form_data[field_key]}
-                                        // value={form_data[field_key] !== null ? form_data[field_key] : page_data[field_key]}
-                                        value={field_key in form_data ? form_data[field_key] : page_data[field_key]}
+                                        label = {metadata.actions[meta_action][field_key].label}
+                                        error_text = {form_error && form_error[field_key]}
+                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
+                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
                                         onChange={handleChange}
                                     />)
-                                    // break;
 
                                 case 'Choice':
                                 case 'Relationship':
 
                                     return (<Select
-                                        choices={metadata.actions.PUT[field_key].choices}
+                                        choices={metadata.actions[meta_action][field_key].choices}
                                         id = {field_key}
-                                        label = {metadata.actions.PUT[field_key].label}
-                                        helptext   = {metadata.actions.PUT[field_key].help_text}
-                                        // error_text = {form_error?[field_key]}
-                                        required   = {metadata.actions.PUT[field_key].required}
-                                        // value={page_data[field_key]}
-                                        // value={form_data?.[field_key] ? form_data[field_key] : page_data[field_key]}
-                                        value={field_key in form_data ? form_data[field_key] : page_data[field_key]}
-                                        // form_data = {form_data}
-                                        // setFormData = {setFormData}
+                                        label = {metadata.actions[meta_action][field_key].label}
+                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
+                                        error_text = {form_error && form_error[field_key]}
+                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
                                         onChange={handleChange}
                                     />)
-                                    // break;
 
                                 case 'JSON':
 
                                     return (<TextArea
                                     field_type="json"
                                         id = {field_key}
-                                        label = {metadata.actions.PUT[field_key].label}
-                                        helptext   = {metadata.actions.PUT[field_key].help_text}
-                                        // error_text = 'An error on this field'
-                                        required   = {metadata.actions.PUT[field_key].required}
-                                        // value={page_data[field_key]}
-                                        // value={form_data?.[field_key] ? form_data[field_key] : page_data[field_key]}
-                                        value={field_key in form_data ? form_data[field_key] : page_data[field_key]}
-                                        // form_data = {form_data}
-                                        // setFormData = {setFormData}
+                                        label = {metadata.actions[meta_action][field_key].label}
+                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
+                                        error_text = {form_error && form_error[field_key]}
+                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
                                         onChange={handleChange}
                                     />)
-                                    // break;
 
                                 default:
 
-                                    
-
-
                                     return (<TextField
                                         id = {field_key}
-                                        label = {metadata.actions.PUT[field_key].label}
-                                        helptext   = {metadata.actions.PUT[field_key].help_text}
+                                        label = {metadata.actions[meta_action][field_key].label}
+                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.actions.PUT[field_key].required}
-                                        // value={page_data[field_key]}
-                                        // value={form_data ? (form_data[field_key] ? form_data[field_key] : '') : ''}
-                                        // value={form_data?.[field_key] ? form_data[field_key] : page_data[field_key]}
-                                        value={field_key in form_data ? form_data[field_key] : page_data[field_key]}
-                                        // onchange={(e) => {
-                                        //     setFormData = {
-                                        //         ...form_data,
-                                        //         field_key: e.target.value
-                                        //     }
-                                        // }}
-                                        // form_data = {form_data}
-                                        // setFormData = {setFormData}
+                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
                                         onChange={handleChange}
                                     />)
-                                    // break;
                             }
 
 
                         }
 
                     })}
-                    <button className="common-field form" type="submit">Save</button>
+
+                    <div style={{
+                        display: 'flexbox',
+                        width: '100%'
+                    }}>
+                        <div style={{
+                                display: 'block',
+                                padding: 'auto',
+                                margin: 'auto',
+                                width: 'fit-content'
+                            }}>
+                            <button className="form common-field" type="submit">Save</button>
+                            <Link to={url}><button className="form common-field inverse">Cancel</button></Link>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </section>
     )
-
-
-    // return (
-    //     <section>
-    //         <div className="content">
-    //             <form>
-    //                 <TextField
-    //                     label      = 'Name'
-    //                     helptext   = 'this is the helptext for a form field.'
-    //                     error_text = 'An error on this field'
-    //                     required   = 'true'
-    //                 />
-    //                 <TextArea
-    //                     label      = 'Description'
-    //                     helptext   = 'this is the helptext for a form field.'
-    //                     // error_text = 'An error on this field'
-    //                     // required   = 'true'
-    //                 />
-    //                 <Select
-    //                     label      = 'Organization'
-    //                     helptext   = 'this is the helptext for a form field.'
-    //                     // error_text = 'An error on this field'
-    //                     values={[
-    //                         {
-    //                             label: 'One',
-    //                             value: '1'
-    //                         },
-    //                         {
-    //                             label: 'Two',
-    //                             value: '2'
-    //                         }
-    //                     ]}
-    //                 />
-    //                 <Slider
-    //                     label    = 'Is a Template'
-    //                     helptext = 'this is the helptext for a form field.'
-    //                     // error_text = 'An error on this field'
-    //                     required   = 'true'
-    //                 />
-    //                 <div style={{
-    //                     display: 'flexbox',
-    //                     width: '100%'
-    //                 }}>
-    //                     <div style={{
-    //                             // backgroundColor: '#00cc00',
-    //                             display: 'block',
-    //                             padding: 'auto',
-    //                             margin: 'auto',
-    //                             width: 'fit-content'
-    //                         }}>
-    //                         <button className="form common-field">Save</button>
-    //                         <button className="form common-field inverse">Cancel</button>
-    //                     </div>
-    //                 </div>
-    //             </form>
-    //         </div>
-    //     </section>
-    //  );
 }
  
 export default ModelForm;
