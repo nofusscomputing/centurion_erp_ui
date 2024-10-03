@@ -12,7 +12,6 @@ export function getCookie(name) {
 
         const cookies = document.cookie.split(';');
 
-        console.log(`found cookies (${cookies})`)
 
         for (let i = 0; i < cookies.length; i++) {
 
@@ -31,7 +30,6 @@ export function getCookie(name) {
 
     }
 
-    console.log(`Cookie Value (${value})`)
 
-    return null
+    return value
 }
