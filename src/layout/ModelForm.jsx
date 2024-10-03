@@ -41,6 +41,10 @@ const ModelForm = ({
         url = '/' + params.module + '/' + params.model
     }
 
+    if( params.common_pk ) {
+        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
+    }
+
 
     useEffect(() => {
 

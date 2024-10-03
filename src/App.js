@@ -66,6 +66,13 @@ function App() {
                         loader = {detailsLoader}
                     />
 
+                    <Route path="/:module/:common_model/:common_pk/:model/add"    // add
+                        element={<ModelForm
+                            setContentHeading={setContentHeading}
+                        />}
+                        errorElement={<ErrorPage /> }
+                    />
+
                     <Route path="/:module/ticket/:model"
                         element={<List
                             setContentHeading={setContentHeading}
