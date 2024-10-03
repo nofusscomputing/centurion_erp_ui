@@ -117,7 +117,7 @@ const Table = ({
     return (
         (is_loaded &&
         <div>
-            <Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>
+            { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
             <table>
                 <thead>
                     <tr>
