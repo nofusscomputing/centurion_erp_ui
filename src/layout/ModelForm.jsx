@@ -75,7 +75,9 @@ const ModelForm = ({
                             if( page_data ) {
                                 initial_form_data[field_key] = page_data[field_key]
 
-                            } else {
+                            } else if( 'initial' in data.actions[meta_action][field_key] ) {
+                                 initial_form_data[field_key] = data.actions[meta_action][field_key].initial
+                            }else {
                                 initial_form_data[field_key] = ''
                             }
                         }
@@ -172,6 +174,28 @@ const ModelForm = ({
 
                         if( ! metadata.actions[meta_action][field_key].read_only ) {
 
+                            let value = null
+
+
+                            if( field_key in form_data ) {
+
+                                value = form_data[field_key]
+
+                            } else if( page_data ) {
+
+                                value = page_data[field_key]
+
+                            } else if ( 'initial' in metadata.actions[meta_action][field_key]) {
+
+                                if( metadata.actions[meta_action][field_key].initial !== null ) {
+
+                                    value = metadata.actions[meta_action][field_key].initial
+
+                                }
+
+                            }
+
+
                             console.log(`field data: ${JSON.stringify(form_data)}`)
 
                             switch(metadata.actions[meta_action][field_key].type) {
@@ -184,7 +208,7 @@ const ModelForm = ({
                                         error_text = {form_error && form_error[field_key]}
                                         helptext   = {metadata.actions[meta_action][field_key].help_text}
                                         required   = {metadata.actions[meta_action][field_key].required}
-                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
+                                        value={value}
                                         onChange={handleChange}
                                     />)
 
@@ -198,7 +222,7 @@ const ModelForm = ({
                                         helptext   = {metadata.actions[meta_action][field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
                                         required   = {metadata.actions[meta_action][field_key].required}
-                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
+                                        value={value}
                                         onChange={handleChange}
                                     />)
 
@@ -211,7 +235,7 @@ const ModelForm = ({
                                         helptext   = {metadata.actions[meta_action][field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
                                         required   = {metadata.actions[meta_action][field_key].required}
-                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
+                                        value={value}
                                         onChange={handleChange}
                                     />)
 
@@ -223,7 +247,7 @@ const ModelForm = ({
                                         helptext   = {metadata.actions[meta_action][field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
                                         required   = {metadata.actions[meta_action][field_key].required}
-                                        value={field_key in form_data ? form_data[field_key] : (page_data ? page_data[field_key] : '')}
+                                        value={value}
                                         onChange={handleChange}
                                     />)
                             }

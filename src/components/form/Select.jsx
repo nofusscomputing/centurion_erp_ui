@@ -15,6 +15,10 @@ const Select = ({
         value = ''
     }
 
+    if( typeof(value) == 'object') {
+        value = value.id
+    }
+
     return (
         <fieldset>
             <label className="name">{label}</label>
@@ -30,9 +34,10 @@ const Select = ({
                     let selected = false
 
                     if( value !== null ) {
-                        if( choice.value == value.id ) {
 
-                            selected = ( choice.value === value.id )
+                        if( choice.value == value ) {
+
+                            selected = ( choice.value === value )
 
                         }
                     }
