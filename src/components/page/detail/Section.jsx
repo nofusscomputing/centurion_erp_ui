@@ -1,6 +1,7 @@
 import DoubleColumn from "./DoubleColumn";
 import SingleColumn from "./SingleColumn";
 import Table from "../../Table"
+import { Link, useParams } from "react-router-dom";
 
 
 const Section = ({
@@ -10,7 +11,6 @@ const Section = ({
     tab,
     index = null,
 }) => {
-    console.log('Section: ' + JSON.stringify(metadata))
     
     let column
 
@@ -52,7 +52,7 @@ const Section = ({
                 <div className="section">
                     <h3>{'name' in layout ? layout.name : index === 0 ? tab.name : ''}</h3>
                     {column}
-                    {index === 0 && <button className="common-field form">Edit</button>}
+                    {(index === 0 && String(tab.name).toLowerCase() == 'details') && <Link to="edit"><button className="common-field form">Edit</button></Link>}
                 </div>
             </div>
         </div>
