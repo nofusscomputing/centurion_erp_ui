@@ -134,12 +134,22 @@ const ModelForm = ({
                 <form onSubmit={async e => {
                     e.preventDefault();
 
+                    if (params.action == 'delete' ) {
+                        meta_action = 'DELETE'
+                    }
+
                     const response = await apiFetch(
                         url,
                         setFormError,
                         meta_action,
                         form_data
                     )
+
+                    if (params.action == 'delete' ) {
+
+                        url = '/' + params.module + '/' + params.model
+
+                    }
 
                     if ( response.ok ) {
 
