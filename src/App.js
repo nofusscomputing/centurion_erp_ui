@@ -15,6 +15,7 @@ import List from "./layout/List";
 import { ResponseException } from "./classes/Exceptions";
 import RootLayout from "./layout/Root";
 import Ticket from "./layout/Ticket";
+import ModelForm from "./layout/ModelForm";
 
 
 
@@ -44,6 +45,14 @@ function App() {
 
                     <Route path="/:module/:model/:pk"
                         element={<Detail
+                            setContentHeading={setContentHeading}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    <Route path="/:module/:model/:pk/:action"    // add | edit | delete
+                        element={<ModelForm
                             setContentHeading={setContentHeading}
                         />}
                         errorElement={<ErrorPage /> }
