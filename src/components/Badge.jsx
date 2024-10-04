@@ -30,15 +30,25 @@ const Badge = (params) => {
         }
     }
 
+    let icon_style = 'badge-icon'
+    if( params.icon_style ) {
+        icon_style = icon_style + ' ' + params.icon_style
+    }
+
+    let text_style = 'badge-text'
+    if( params.text_style ) {
+        text_style = text_style + ' ' + params.text_style
+    }
+
     return (
         <span
             className="badge"
             style={style}
         >
-        <span className="badge-icon">
+        <span className={icon_style}>
             { params.children }
         </span>
-        <span className="badge-text">{message}</span>
+        <span className={text_style}>{message}</span>
      </span>
     );
 }
