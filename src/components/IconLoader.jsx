@@ -14,11 +14,13 @@ import NavDoubleLeftIcon from "./icons/NavDoubleLeftIcon";
 import LinkIcon from "./icons/LinkIcon";
 import ActionInstallIcon from "./icons/ActionInstallIcon";
 import ActionAddIcon from "./icons/ActionAddIcon";
+import ActionRemoveIcon from "./icons/ActionRemoveIcon";
 
 
 const icon_components = {
     action_add:ActionAddIcon,
     action_install: ActionInstallIcon,
+    action_remove: ActionRemoveIcon,
     assistance: AssistanceIcon,
     reply: ReplyIcon,
     device: DeviceIcon,
