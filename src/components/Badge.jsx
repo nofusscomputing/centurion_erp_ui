@@ -6,18 +6,35 @@ const Badge = (params) => {
 
     let message = params.message ? params.message : '-'
 
-    if( params.children.type.name == "TicketStatusIcon" ) {
+    if( 'children' in params ) {
 
-        message = FieldData({
-            metadata: params.children.props.metadata,
-            field_name:'status',
-            data: params.children.props.page_data
-        })
+        if( params.children.type?.name == "TicketStatusIcon" ) {
+
+            message = FieldData({
+                metadata: params.children.props.metadata,
+                field_name:'status',
+                data: params.children.props.page_data
+            })
+
+        }
 
     }
 
+    let style = {
+        backgroundColor: 'var(--background-colour-active)'
+    }
+    if( params.background ) {
+
+        style = {
+            backgroundColor: params.background
+        }
+    }
+
     return (
-        <span className="badge">
+        <span
+            className="badge"
+            style={style}
+        >
         <span className="badge-icon">
             { params.children }
         </span>

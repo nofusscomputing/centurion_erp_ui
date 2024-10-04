@@ -604,30 +604,39 @@ span.badge {
   border: 1px solid var(--border-colour-form-field);
   border-radius: 15px;
   display: inline-flex;
-  height: 25px;
+  font-size: 10pt;
+  height: fit-content;
   padding: 0px;
   text-align: left;
   width: fit-content;
+  margin: 0px 2px;
 }
+
+.external-links a {
+  color: var(--text-colour);
+  text-decoration: none;
+}
+
 
 span.badge span {
   display: inline-block;
   line-height: normal;
-  padding: 0px;
 }
 
 span.badge span.badge-icon {
   height: fit-content;
-  margin: 2px 3px 0px 4px;
+  margin: auto 3px;
   width: fit-content;
 
 }
 
 span.badge span.badge-text {
+  background-color: var(--background-colour-active);
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
   height: fit-content;
-  line-height: 25px;
-  margin: 0px 9px 5px 0px;
-  padding: 0px;
+  margin: 2px 2px;
+  padding: 0px 2px;
 }
 
 span.badge span.badge-icon svg.status-icon {
