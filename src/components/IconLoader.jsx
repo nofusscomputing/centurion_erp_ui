@@ -11,6 +11,7 @@ import ReplyIcon from "./icons/ReplyIcon";
 import NotificationIcon from "./icons/ticket/NotificationIcon";
 import TaskIcon from "./icons/TaskIcon";
 import NavDoubleLeftIcon from "./icons/NavDoubleLeftIcon";
+import LinkIcon from "./icons/LinkIcon";
 
 
 const icon_components = {
@@ -19,6 +20,7 @@ const icon_components = {
     device: DeviceIcon,
     edit: EditIcon,
     itam: ItamIcon,
+    link: LinkIcon,
     menu: MenuIcon,
     navdown: NavDownIcon,
     navdoubleleft: NavDoubleLeftIcon,
