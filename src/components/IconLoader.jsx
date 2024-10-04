@@ -12,9 +12,11 @@ import NotificationIcon from "./icons/ticket/NotificationIcon";
 import TaskIcon from "./icons/TaskIcon";
 import NavDoubleLeftIcon from "./icons/NavDoubleLeftIcon";
 import LinkIcon from "./icons/LinkIcon";
+import ActionAddIcon from "./icons/ActionAddIcon";
 
 
 const icon_components = {
+    action_add:ActionAddIcon,
     assistance: AssistanceIcon,
     reply: ReplyIcon,
     device: DeviceIcon,
