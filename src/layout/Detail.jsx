@@ -43,7 +43,7 @@ const Detail = ({
             },
             'OPTIONS'
         )
-    },[])
+    },[page_data])
 
 
     return ( 
