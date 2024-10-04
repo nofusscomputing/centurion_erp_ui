@@ -73,6 +73,14 @@ function App() {
                         errorElement={<ErrorPage /> }
                     />
 
+                    <Route path="/:module/:common_model/:common_pk/:model/:pk/:action"    // add
+                        element={<ModelForm
+                            setContentHeading={setContentHeading}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
                     <Route path="/:module/ticket/:model"
                         element={<List
                             setContentHeading={setContentHeading}
@@ -111,7 +119,16 @@ const detailsLoader = async ({request, params}) => {
 
     let loader = null
 
-    let url = 'http://127.0.0.1:8002/api/v2/' + params.module + '/' + params.model
+
+    let url = '/' + params.module + '/' + params.model // + '/' + params.pk    // default edit
+
+    if( params.common_pk ) {
+
+        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
+
+    }
+
+    url = 'http://127.0.0.1:8002/api/v2' + url
 
         if( params.pk ) {
 
