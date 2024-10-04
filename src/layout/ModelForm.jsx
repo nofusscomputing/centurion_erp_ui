@@ -151,6 +151,9 @@ const ModelForm = ({
 
                         url = '/' + params.module + '/' + params.model
 
+                    }else if( params.common_model && params.common_pk ) {
+
+                        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk
                     }
 
                     if ( response.ok ) {
