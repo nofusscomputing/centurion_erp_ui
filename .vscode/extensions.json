@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "orta.vscode-jest",
+        "eg2.vscode-npm-script",
+        "burkeholland.simple-react-snippets"
+    ]
+}

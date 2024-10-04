@@ -42,7 +42,15 @@ const ModelForm = ({
     }
 
     if( params.common_pk ) {
+
         url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
+
+    }
+    
+    if( params.common_pk && params.pk && params.action === 'edit') {
+
+        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model + '/' + params.pk
+
     }
 
 

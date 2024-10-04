@@ -1,5 +1,7 @@
 import { Link, NavLink, json } from "react-router-dom";
 import RenderMarkdown from "./RenderMarkdown";
+import IconLoader from "../components/IconLoader";
+import Badge from "../components/Badge";
 
 
 
@@ -52,6 +54,24 @@ export default function FieldData({
         }
 
         switch(field_type) {
+
+            case 'Badge':
+
+                field_data = data[field_name].text
+
+                field_data = (
+                    <Link className="badge-link" to={String(data['_urls'][data[field_name].url]).split('api/v2')[1]+'/edit'}>
+                        <Badge
+                            icon_style = {data[field_name].icon_style}
+                            message = {data[field_name].text}
+                            text_style = {data[field_name].text_style}
+                        >
+                            <IconLoader name={data[field_name].icon} fill={null} height='15px' width='15px'/>
+                        </Badge>
+                    </Link>
+                )
+
+                break;
 
             case 'Boolean':
 

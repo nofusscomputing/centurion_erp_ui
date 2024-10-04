@@ -24,14 +24,18 @@
 
   --text-colour: #000;
   --text-colour-contrasting: #FFF;
-  --text-colour-inverted: #FFF;
   --text-colour-button: #fff;
   --text-colour-error: #BB0000;
   --text-colour-footer: #999;
   --text-colour-header: #fff;
   --text-colour-help: #707070;
+  --text-colour-inverted: #FFF;
   --text-colour-navbar: #fff;
   --text-colour-navtab: #6a6e73;
+  --text-colour-software-action-add: #315f9c;
+  --text-colour-software-action-install: #319c3a;
+  --text-colour-software-action-remove: #9c3131;
+
 }
 
 
@@ -69,6 +73,10 @@
   --text-colour-help: #707070;
   --text-colour-navbar: #E0E0E0;
   --text-colour-navtab: #6a6e73;
+  --text-colour-software-action-add: #315f9c;
+  --text-colour-software-action-install: #319c3a;
+  --text-colour-software-action-remove: #9c3131;
+
 } */
 
 
@@ -625,7 +633,8 @@ span.badge span {
 
 span.badge span.badge-icon {
   height: fit-content;
-  margin: auto 3px;
+  margin: auto 1px auto 3px;
+  padding: 0px;
   width: fit-content;
 
 }
@@ -636,7 +645,36 @@ span.badge span.badge-text {
   border-top-right-radius: 10px;
   height: fit-content;
   margin: 2px 2px;
-  padding: 0px 2px;
+  padding: 0px 5px 0px 2px;
+}
+
+a.badge-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+span.badge span.badge-icon.badge-icon-action-add {
+  fill: var(--text-colour-software-action-add);
+}
+
+span.badge span.badge-text.badge-text-action-add {
+  color: var(--text-colour-software-action-add);
+}
+
+span.badge span.badge-icon.badge-icon-action-install {
+  fill: var(--text-colour-software-action-install);
+}
+
+span.badge span.badge-text.badge-text-action-install {
+  color: var(--text-colour-software-action-install);
+}
+
+span.badge span.badge-icon.badge-icon-action-remove {
+  fill: var(--text-colour-software-action-remove);
+}
+
+span.badge span.badge-text.badge-text-action-remove {
+  color: var(--text-colour-software-action-remove);
 }
 
 span.badge span.badge-icon svg.status-icon {
