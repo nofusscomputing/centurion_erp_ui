@@ -6,6 +6,7 @@ import TicketStatusIcon from "../components/icons/ticket/TicketStatusIcon";
 import Badge from "../components/Badge";
 import { ResponseException } from "../classes/Exceptions";
 import TicketComment from "../components/page/ticket/Comment";
+import { apiFetch } from "../hooks/apiFetch";
 
 
 
@@ -23,94 +24,78 @@ const Ticket = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/' + params.model_id + '/option')
-
-            .then(response => {
-
-                if( ! response.ok ) {
-
-                    throw new ResponseException(response)
-
-                }
-
-                return response.json()
-
-            })
-
-            .then(data => {
+        apiFetch(
+            params.module + '/ticket/' + params.model + '/' + params.pk,
+            (data) =>{
 
                 setMetaData(data)
 
-            })
-
-            .catch( err => {
-
-                throw Error(err)
-
-            })
+            },
+            'OPTIONS'
+        )
 
     }, [params])
 
 
     useEffect(() => {
 
-        fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/2/comments')
+        // fetch('http://localhost:8003/api/' + params.module + '/ticket/' + params.model + '/2/comments')
 
-            .then(response => {
+        //     .then(response => {
 
-                if( ! response.ok ) {
+        //         if( ! response.ok ) {
 
-                    throw new ResponseException(response)
+        //             throw new ResponseException(response)
 
-                }
+        //         }
 
-                return response.json()
+        //         return response.json()
 
-            })
+        //     })
 
-            .then(data => {
+        //     .then(data => {
 
-                setComments(data.results)
+        //         setComments(data.results)
 
-            })
+        //     })
 
-            .catch( err => {
+        //     .catch( err => {
 
-                throw Error(err)
+        //         throw Error(err)
 
-            })
+        //     })
 
     }, [params])
 
 
     useEffect(() => {
 
-        fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/2/comments/option')
+        // fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/2/comments/option')
 
-            .then(response => {
+        //     .then(response => {
 
-                if( ! response.ok ) {
+        //         if( ! response.ok ) {
 
-                    throw new ResponseException(response)
+        //             throw new ResponseException(response)
 
-                }
+        //         }
 
-                return response.json()
+        //         return response.json()
 
-            })
+        //     })
 
-            .then(data => {
+        //     .then(data => {
 
-                setCommentMetaData(data)
+        //         setCommentMetaData(data)
 
-            })
+        //     })
 
 
-            .catch( err => {
+        //     .catch( err => {
 
-                throw Error(err)
+        //         throw Error(err)
 
-            })
+        //     })
 
     }, [params])
 
@@ -171,7 +156,13 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Assigned</label>
-                            <span class="text">.</span>
+                            <span class="text">
+                            <FieldData
+                                metadata={metadata}
+                                field_name='assigned_users'
+                                data={page_data}
+                            />
+                            </span>
                         </fieldset>
                         <fieldset>
                             <label>Status</label>

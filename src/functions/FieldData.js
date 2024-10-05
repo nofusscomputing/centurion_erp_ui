@@ -107,67 +107,99 @@ export default function FieldData({
 
                 field_data = (
                     <>
-                   {data[field_name].map((icon) => {
-                        return (
-                        <span className={icon.style}>
-                            <IconLoader name={icon.name} fill={null} height='20px' width='20px'/>
-                        </span>
-                        )
-                    })}
+                        {data[field_name].map((icon) => {
+                            return (
+                                <span className={icon.style}>
+                                    <IconLoader name={icon.name} fill={null} height='20px' width='20px' />
+                                </span>
+                            )
+                        })}
                     </>
                 )
 
                 break;
 
+            case 'GenericField':
             case 'Relationship':
             case 'Serializer':
 
-                if( data[field_name] === null ) {
+                if( fields[field_name].relationship_type === 'ManyToMany' ) {
 
-                    field_data = '-'
-
-                } else if( typeof(data[field_name]) === 'object' ){
-                    
-                    if( 'url' in data[field_name] ) {
+                    if( typeof (data[field_name]) === 'object' ) {
 
                         field_data = (
-                            <Link to={String(data[field_name].url).split(API_SPLIT)[1]}>{data[field_name].display_name}</Link>
+
+                            data[field_name].map((field) => {
+
+                                if( 'url' in field ) {
+
+                                    return ('');
+
+                                } else {
+
+                                    return (
+                                        <>
+                                        {field.display_name}&nbsp;
+                                        </>
+                                    );
+                                }
+                            })
                         )
-
-                    } else {
-
-                        field_data = data[field_name].display_name
-
                     }
 
                 } else {
 
-                    field_data = data[field_name]
+                    if( data[field_name] === null ) {
 
+                        field_data = '-'
+
+                    } else if( typeof (data[field_name] ) === 'object' ) {
+
+                        if( 'url' in data[field_name] ) {
+
+                            field_data = (
+                                <Link to={String(data[field_name].url).split(API_SPLIT)[1]}>{data[field_name].display_name}</Link>
+                            )
+
+                        } else {
+
+                            field_data = data[field_name].display_name
+
+                        }
+
+                    } else if( typeof (data[field_name]) === 'list' ) {
+
+                        field_data = 'data[field_name]'
+
+                    } else {
+
+                        field_data = data[field_name]
+
+                    }
                 }
 
                 break;
 
-                case 'JSON':
+            case 'JSON':
 
                 let markdown = "``` json"
-                + "\r\n\r\n"
-                + JSON.stringify( data[field_name], null, 4 )
-                + "\r\n\r\n"
-                + "```"
-                + "\r\n"
+                    + "\r\n\r\n"
+                    + JSON.stringify(data[field_name], null, 4)
+                    + "\r\n\r\n"
+                    + "```"
+                    + "\r\n"
 
-                    field_data = (
-                        <RenderMarkdown full_width={full_width}>
-                            { markdown}
-                        </RenderMarkdown>
-                    )
+                field_data = (
+                    <RenderMarkdown full_width={full_width}>
+                        {markdown}
+                    </RenderMarkdown>
+                )
 
-                    break;
+                break;
 
-                default:
+            default:
 
-                if (
+                if(
                     (
                         field_name === 'name'
                         || field_name === 'title'

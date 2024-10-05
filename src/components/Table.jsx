@@ -3,7 +3,7 @@ import { useEffect, useId, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
 /**
@@ -29,9 +29,19 @@ const Table = ({
 
     const pagefieldId = useId();
 
+    const params = useParams();
+
     if( ! String(data_url_path).startsWith('/') ) {
         data_url_path = '/' + data_url_path
     }
+
+
+    if( String(window.location.pathname).includes('/ticket/') ) {
+        
+        data_url_path = '/' + params.module + '/ticket/' + params.model
+
+    }
+
 
     useEffect(() => {
 

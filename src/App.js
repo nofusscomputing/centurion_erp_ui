@@ -35,6 +35,23 @@ function App() {
                     />}
                     errorElement={<ErrorPage /> }
                 >
+
+                    <Route path="/:module/ticket/:model"
+                        element={<List
+                            setContentHeading={setContentHeading}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    <Route path="/:module/ticket/:model/:pk"
+                        element={<Ticket
+                            setContentHeading={setContentHeading}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
                     <Route path="/:module/:model"
                         element={<List
                             setContentHeading={setContentHeading}
@@ -81,21 +98,6 @@ function App() {
                         loader = {detailsLoader}
                     />
 
-                    <Route path="/:module/ticket/:model"
-                        element={<List
-                            setContentHeading={setContentHeading}
-                        />}
-                        errorElement={<ErrorPage /> }
-                        loader = {detailsLoader}
-                    />
-
-                    <Route path="/:module/ticket/:model/:pk"
-                        element={<Ticket
-                            setContentHeading={setContentHeading}
-                        />}
-                        errorElement={<ErrorPage /> }
-                        loader = {detailsLoader}
-                    />
                 </Route>
             ));
 
@@ -119,12 +121,17 @@ const detailsLoader = async ({request, params}) => {
 
     let loader = null
 
-
     let url = '/' + params.module + '/' + params.model // + '/' + params.pk    // default edit
 
     if( params.common_pk ) {
 
         url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
+
+    }
+
+    if( String(window.location.pathname).includes('/ticket/') ) {
+        
+        url = '/' + params.module + '/ticket/' + params.model
 
     }
 
