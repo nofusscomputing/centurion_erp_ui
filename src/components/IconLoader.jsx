@@ -15,6 +15,7 @@ import LinkIcon from "./icons/LinkIcon";
 import ActionInstallIcon from "./icons/ActionInstallIcon";
 import ActionAddIcon from "./icons/ActionAddIcon";
 import ActionRemoveIcon from "./icons/ActionRemoveIcon";
+import InventoryStatusUknIcon from "./icons/InventoryStatusUknIcon";
 import InventoryStatusBadIcon from "./icons/InventoryStatusBadIcon";
 import InventoryStatusOkIcon from "./icons/InventoryStatusOkIcon";
 
@@ -26,6 +27,7 @@ const icon_components = {
     assistance: AssistanceIcon,
     device_status_bad: InventoryStatusBadIcon,
     device_status_ok: InventoryStatusOkIcon,
+    device_status_unk: InventoryStatusUknIcon,
     reply: ReplyIcon,
     device: DeviceIcon,
     edit: EditIcon,
