@@ -17,6 +17,7 @@ import ActionAddIcon from "./icons/ActionAddIcon";
 import ActionRemoveIcon from "./icons/ActionRemoveIcon";
 import InventoryStatusUknIcon from "./icons/InventoryStatusUknIcon";
 import InventoryStatusBadIcon from "./icons/InventoryStatusBadIcon";
+import InventoryStatusWarnIcon from "./icons/InventoryStatusWarnIcon";
 import InventoryStatusOkIcon from "./icons/InventoryStatusOkIcon";
 
 
@@ -28,6 +29,7 @@ const icon_components = {
     device_status_bad: InventoryStatusBadIcon,
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
+    device_status_warn: InventoryStatusWarnIcon,
     reply: ReplyIcon,
     device: DeviceIcon,
     edit: EditIcon,
