@@ -62,11 +62,11 @@ export default function FieldData({
                 field_data = (
                     <Link className="badge-link" to={String(data['_urls'][data[field_name].url]).split('api/v2')[1]+'/edit'}>
                         <Badge
-                            icon_style = {data[field_name].icon_style}
+                            icon_style = {data[field_name].icon.style}
                             message = {data[field_name].text}
                             text_style = {data[field_name].text_style}
                         >
-                            <IconLoader name={data[field_name].icon} fill={null} height='15px' width='15px'/>
+                            <IconLoader name={data[field_name].icon.name} fill={null} height='15px' width='15px'/>
                         </Badge>
                     </Link>
                 )
@@ -100,6 +100,22 @@ export default function FieldData({
                     }
 
                 }
+
+                break;
+
+            case 'Icon':
+
+                field_data = (
+                    <>
+                   {data[field_name].map((icon) => {
+                        return (
+                        <span className={icon.style}>
+                            <IconLoader name={icon.name} fill={null} height='20px' width='20px'/>
+                        </span>
+                        )
+                    })}
+                    </>
+                )
 
                 break;
 

@@ -22,6 +22,11 @@
   --background-colour-ticket-comment-solution: #b7ff96;
   --background-colour-ticket-comment-task: #f8ff96;
 
+  --colour-status-ok: #319c3a;
+  --colour-status-warn: #cf9925;
+  --colour-status-bad: #cf3025;
+  --colour-status-unk: #999;
+
   --text-colour: #000;
   --text-colour-contrasting: #FFF;
   --text-colour-button: #fff;
@@ -62,6 +67,11 @@
   --background-colour-ticket-comment-notification: #96c7ffbe;
   --background-colour-ticket-comment-solution: #b7ff96be;
   --background-colour-ticket-comment-task: #f8ff96d3;
+
+  --colour-status-ok: #319c3a;
+  --colour-status-warn: #cf9925;
+  --colour-status-bad: #cf3025;
+  --colour-status-unk: #999;
 
   --text-colour: #E0E0E0;
   --text-colour-contrasting: #E0E0E0;
@@ -143,6 +153,22 @@ body {
   padding: 2px;
   margin: 0px;
   display: inline;
+}
+
+.icon-device-status-ok {
+  fill: var(--colour-status-ok);
+}
+
+.icon-device-status-warn {
+  fill: var(--colour-status-warn);
+}
+
+.icon-device-status-bad {
+  fill: var(--colour-status-bad);
+}
+
+.icon-device-status-unk {
+  fill: var(--colour-status-unk);
 }
 
 header {
