@@ -59,8 +59,21 @@ export default function FieldData({
 
                 field_data = data[field_name].text
 
-                field_data = (
-                    <Link className="badge-link" to={String(data['_urls'][data[field_name].url]).split('api/v2')[1]+'/edit'}>
+                if( data[field_name].url ) {
+                    field_data = (
+                        <Link className="badge-link" to={String(data['_urls'][data[field_name].url]).split('api/v2')[1]+'/edit'}>
+                            <Badge
+                                icon_style = {data[field_name].icon.style}
+                                message = {data[field_name].text}
+                                text_style = {data[field_name].text_style}
+                            >
+                                <IconLoader name={data[field_name].icon.name} fill={null} height='15px' width='15px'/>
+                            </Badge>
+                        </Link>
+                    )
+                } else {
+
+                    field_data = (
                         <Badge
                             icon_style = {data[field_name].icon.style}
                             message = {data[field_name].text}
@@ -68,8 +81,9 @@ export default function FieldData({
                         >
                             <IconLoader name={data[field_name].icon.name} fill={null} height='15px' width='15px'/>
                         </Badge>
-                    </Link>
-                )
+                    )
+
+                }
 
                 break;
 

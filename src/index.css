@@ -703,69 +703,81 @@ span.badge span.badge-text.badge-text-action-remove {
   color: var(--text-colour-software-action-remove);
 }
 
-span.badge span.badge-icon svg.status-icon {
+
+
+
+
+
+span.badge span.badge-icon.ticket-status-icon svg {
   border-radius: 10px;
 }
 
-span.badge span.badge-icon svg.status-accepted {
+span.badge span.badge-icon.ticket-status-icon-accepted svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
-span.badge span.badge-icon svg.status-approvals {
+span.badge span.badge-icon.ticket-status-icon-approvals svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
-span.badge span.badge-icon svg.status-assigned {
+span.badge span.badge-icon.ticket-status-icon-assigned svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
-span.badge span.badge-icon svg.status-assigned_planning {
+span.badge span.badge-icon.ticket-status-icon-assigned_planning svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
-span.badge span.badge-icon svg.status-closed {
+span.badge span.badge-icon.ticket-status-icon-closed svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
-span.badge span.badge-icon svg.status-draft {
+span.badge span.badge-icon.ticket-status-icon-draft svg {
   background-color: #cacaca;
   fill: #4d4d4d;
 }
 
-span.badge span.badge-icon svg.status-evaluation {
+span.badge span.badge-icon.ticket-status-icon-evaluation svg {
   background-color: #b2d6ff;
   fill: #007592;
 }
 
-span.badge span.badge-icon svg.status-invalid {
+span.badge span.badge-icon.ticket-status-icon-invalid svg {
   background-color: #ffb2b6;
   fill: #920000;
 }
 
-span.badge span.badge-icon svg.status-new {
+span.badge span.badge-icon.ticket-status-icon-new svg {
   background-color: #b2dcff;
   fill: #004492
 }
 
-span.badge span.badge-icon svg.status-pending {
+span.badge span.badge-icon.ticket-status-icon-pending svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
-span.badge span.badge-icon svg.status-solved {
+span.badge span.badge-icon.ticket-status-icon-solved svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
-span.badge span.badge-icon svg.status-testing {
+span.badge span.badge-icon.ticket-status-icon-testing svg {
   background-color: #b2d3ff;
   fill: #8c00ff;
 }
+
+
+
+
+
+
+
 
 
 .markdown p:not(div.admonition p) {
