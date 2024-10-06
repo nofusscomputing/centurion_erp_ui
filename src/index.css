@@ -507,7 +507,40 @@ div.ticket .contents {
   border-style: solid;
 }
 
-.ticket .comment hr {
+
+.ticket .comment-form {
+  background-color: var(--background-colour-active);
+  border-style: solid;
+  border-width: 1px;
+  display: block;
+  padding: 0px;
+}
+
+.ticket .comment-form form fieldset span.help-text {
+  font-size:xx-small;
+}
+
+.ticket .comment-form form fieldset {
+  border: none;
+  display: inline-block;
+  margin: auto;
+  width: auto;
+}
+
+
+.ticket .comment-form form fieldset.fieldset-tester {
+  display: flex;
+  padding: 1px;
+}
+
+
+.ticket .comment-form form textarea {
+  height: 200px;
+  margin: 5px;
+  width: 100%;
+}
+
+.ticket hr {
   border: none;
   border-bottom: 1px solid var(--border-colour-form-field);
   margin: 0px 5px;
@@ -530,6 +563,7 @@ div.ticket .contents {
   margin-right: 5px;
   width: 20px;
 }
+
 
 .ticket .comment-type-default {
   border-color: var(--background-colour-ticket-comment-default);
@@ -606,6 +640,7 @@ div.ticket .contents {
   width: 200px;
 }
 
+.ticket .comment-form fieldset,
 .ticket .comment fieldset {
   border: none;
   color: var(--text-colour);
@@ -615,12 +650,14 @@ div.ticket .contents {
   font-size: 10pt;
 }
 
+.ticket .comment-form fieldset label,
 .ticket .comment fieldset label {
   display: block;
+  font-size: inherit;
   font-weight: bold;
   line-height: inherit;
 }
-
+.ticket .comment-form fieldset span
 .ticket .comment fieldset span {
   display: block;
   line-height: inherit;
@@ -1161,11 +1198,11 @@ p.table-pagination span.table-pagination-button {
   cursor: pointer;
 }
 
-.content form {
+form {
   display: flexbox;
 }
 
-.content form fieldset {
+form fieldset {
   border: none;
   display: flexbox;
   margin: auto;
@@ -1173,19 +1210,19 @@ p.table-pagination span.table-pagination-button {
   width: fit-content;
 }
 
-.content form fieldset label.name {
+form fieldset label.name {
   display: block;
   font-size: 11pt;
   padding-bottom: 5px;
 }
 
-.content form fieldset span.error-text {
+form fieldset span.error-text {
   display: block;
   color: var(--text-colour-error);
   font-size: 10pt;
 }
 
-.content form fieldset span.help-text {
+form fieldset span.help-text {
   display: block;
   color: var(--text-colour-help);
   font-size: 10pt;
@@ -1211,17 +1248,17 @@ input.common-field {
 }
 
 
-.content form fieldset textarea {
+form fieldset textarea {
   border-color: var(--border-colour-form-field);
 }
 
-.content form fieldset input:invalid,
-.content form fieldset select:invalid,
-.content form fieldset textarea:invalid {
+form fieldset input:invalid,
+form fieldset select:invalid,
+form fieldset textarea:invalid {
   border: 1px solid var(--border-colour-error);
 }
 
-.content form fieldset select {
+form fieldset select {
   border-color: var(--border-colour-form-field);
   height: 30px;
 }
@@ -1236,7 +1273,7 @@ button.form {
   padding: 0px 20px;
 }
 
-.content form button.inverse {
+form button.inverse {
   background-color: var(--background-colour-active);
   color: var(--contrasting-colour);
 }

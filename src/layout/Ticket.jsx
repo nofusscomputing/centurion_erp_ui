@@ -7,6 +7,7 @@ import Badge from "../components/Badge";
 import { ResponseException } from "../classes/Exceptions";
 import TicketComments from "../components/page/ticket/Comments";
 import { apiFetch } from "../hooks/apiFetch";
+import TicketCommentForm from "../components/page/ticket/Comment";
 
 
 
@@ -110,6 +111,12 @@ const Ticket = () => {
                                 </li>
                             )
                         })}
+                        <li>
+                            <TicketCommentForm
+                                metadata={comment_metadata}
+                                post_url = {page_data['_urls']['comments']}
+                            />
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import IconLoader from "../../IconLoader"
 import FieldData from "../../../functions/FieldData"
 import { useEffect, useState } from "react"
 import { apiFetch } from "../../../hooks/apiFetch"
-import TicketComment from "./Comment"
+import TicketCommentForm from "./Comment"
 
 
 
@@ -290,17 +290,19 @@ const TicketComments = ({
                         <li className="replies">
                             <TicketComments
                                 comment_data={comment}
+                                discussion = {true}
                                 metadata={metadata}
                             />
                         </li>
                     ))}
                     <li className="replies">
-                        <TicketComment />
+                        <TicketCommentForm
+                            metadata={metadata}
+                            post_url = {comment_data['_urls']['threads']}
+                        />
                     </li>
                 </ul>
             </div>}
-
-            
         </div>
     );
 }

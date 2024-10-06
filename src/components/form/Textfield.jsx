@@ -7,6 +7,7 @@ const TextField = ({
     id = null,
     label = null,
     required = false,
+    type = 'text',
     value = '',
     onChange = null
 }) => {
@@ -23,10 +24,27 @@ const TextField = ({
             onChange={onChange}
             placeholder={helptext}
             required={required}
-            type="text"
+            type={type}
             value={value}
         />
     )
+    if( type === 'datetime-local') {
+
+        field = (
+            <input
+                className="common-field"
+                format="%Y-%m-%dT%H:%M"
+                id={id}
+                key={id}
+                onChange={onChange}
+                // placeholder={helptext}
+                required={required}
+                type={type}
+                // value={value}
+            />
+        )
+
+    }
 
     if( fieldset == true ) {
 
