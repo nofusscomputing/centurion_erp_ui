@@ -23,6 +23,7 @@ import StatusAssignedIcon from "./icons/ticket/StatusAssignedIcon";
 import StatusClosedIcon from "./icons/ticket/StatusClosedIcon";
 import StatusAssignedPlanningIcon from "./icons/ticket/StatusAssignedPlanningIcon";
 import StatusAcceptedIcon from "./icons/ticket/StatusAcceptedIcon";
+import StatusEvaluationIcon from "./icons/ticket/StatusEvaluationIcon";
 import StatusApprovalsIcon from "./icons/ticket/StatusApprovalsIcon";
 
 
@@ -53,6 +54,7 @@ const icon_components = {
     ticket_status_assigned: StatusAssignedIcon,
     ticket_status_assigned_planning: StatusAssignedPlanningIcon,
     ticket_status_closed: StatusClosedIcon,
+    ticket_status_evaluation: StatusEvaluationIcon,
 };
 
 const IconLoader = ({
