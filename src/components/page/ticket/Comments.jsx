@@ -1,9 +1,12 @@
 import IconLoader from "../../IconLoader"
 import FieldData from "../../../functions/FieldData"
+import { useEffect, useState } from "react"
+import { apiFetch } from "../../../hooks/apiFetch"
+import TicketComment from "./Comment"
 
 
 
-const TicketComment = ({
+const TicketComments = ({
     discussion = false,
     comment_data = {},
     metadata = null
@@ -74,6 +77,22 @@ const TicketComment = ({
             </span>}
         </div>
     )
+
+
+    const [ threads, setThreads ] = useState(null)
+
+    useEffect(() => {
+
+        if( comment_data._urls.threads ) {
+            apiFetch(
+                String(comment_data._urls.threads).split('api/v2')[1] + '?page[size]=500',
+                (data) => {
+                    setThreads(data)
+                }
+            )
+        }
+    },[])
+
 
     if( comment_type === 'action' ) {
 
@@ -256,7 +275,7 @@ const TicketComment = ({
                     </fieldset>
                 </div>
             </div>
-            { discussion &&
+            { threads &&
             <div className="replies">
                 <h3 className="replies">
                     Replies
@@ -267,6 +286,14 @@ const TicketComment = ({
                     />
                 </h3>
                 <ul className="replies">
+                    {threads.results.map((comment) => (
+                        <li className="replies">
+                            <TicketComments
+                                comment_data={comment}
+                                metadata={metadata}
+                            />
+                        </li>
+                    ))}
                     <li className="replies">
                         <TicketComment />
                     </li>
@@ -278,4 +305,4 @@ const TicketComment = ({
     );
 }
 
-export default TicketComment;
+export default TicketComments;

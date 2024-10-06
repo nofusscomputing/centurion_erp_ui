@@ -5,14 +5,14 @@ import FieldData from "../functions/FieldData";
 import TicketStatusIcon from "../components/icons/ticket/TicketStatusIcon";
 import Badge from "../components/Badge";
 import { ResponseException } from "../classes/Exceptions";
-import TicketComment from "../components/page/ticket/Comment";
+import TicketComments from "../components/page/ticket/Comments";
 import { apiFetch } from "../hooks/apiFetch";
 
 
 
 const Ticket = () => {
 
-    const [comments, setComments] = useState([])
+    const [comments, setComments] = useState(null)
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
@@ -40,7 +40,7 @@ const Ticket = () => {
     useEffect(() => {
 
         apiFetch(
-            params.module + '/ticket/' + params.model + '/' + params.pk + '/comments',
+            params.module + '/ticket/' + params.model + '/' + params.pk + '/comments?page[size]=500',
             (data) =>{
 
                 setComments(data)
@@ -103,7 +103,7 @@ const Ticket = () => {
 
                             return (
                                 <li>
-                                    <TicketComment
+                                    <TicketComments
                                         comment_data={comment}
                                         metadata={comment_metadata}
                                     />
@@ -123,7 +123,7 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Assigned</label>
-                            <span class="text">
+                            <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='assigned_users'
@@ -133,7 +133,7 @@ const Ticket = () => {
                         </fieldset>
                         <fieldset>
                             <label>Status</label>
-                            <span class="text">
+                            <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='status_badge'
@@ -143,12 +143,12 @@ const Ticket = () => {
                         </fieldset>
                         <fieldset>
                             <label>Labels</label>
-                            <span class="text">val</span>
+                            <span className="text">val</span>
                         </fieldset>
 
                         <fieldset>
                             <label>Category</label>
-                            <span class="text">
+                            <span className="text">
                                 <FieldData
                                     metadata={metadata}
                                     field_name='category'
@@ -159,7 +159,7 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Project</label>
-                            <span class="text">
+                            <span className="text">
                                 <FieldData
                                     metadata={metadata}
                                     field_name='project'
@@ -170,7 +170,7 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Milestone</label>
-                            <span class="text">
+                            <span className="text">
                                 <FieldData
                                     metadata={metadata}
                                     field_name='milestone'
@@ -181,17 +181,17 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Priority</label>
-                            <span class="text">U. / I. / P.</span>
+                            <span className="text">U. / I. / P.</span>
                         </fieldset>
 
                         <fieldset>
                             <label>Duration</label>
-                            <span class="text">.</span>
+                            <span className="text">.</span>
                         </fieldset>
 
                         <fieldset>
                             <label>Roadmap(s)</label>
-                            <span class="text">val</span>
+                            <span className="text">val</span>
                         </fieldset>
 
                     </div>
