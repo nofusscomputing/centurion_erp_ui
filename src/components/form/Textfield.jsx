@@ -32,7 +32,7 @@ const TextField = ({
 
         return (
             <fieldset>
-                <label className="name">{label}</label>
+                <label className="name" for={id}>{label}</label>
                 {field}
                 <span className="error-text">{error_text}</span>
             </fieldset>
