@@ -21,7 +21,7 @@ const Select = ({
 
     return (
         <fieldset>
-            <label className="name">{label}</label>
+            <label className="name" for={id}>{label}</label>
             <select
                 id={id}
                 required={required}

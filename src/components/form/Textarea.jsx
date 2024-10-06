@@ -5,7 +5,8 @@ const TextArea = ({
     required=false,
     error_text=null,
     value= '',
-    onChange = null
+    onChange = null,
+    class_name = null
 }) => {
 
     if( value === null ) {
@@ -13,8 +14,8 @@ const TextArea = ({
     }
 
     return (
-        <fieldset>
-            <label className="name">{label}</label>
+        <fieldset className={class_name}>
+            <label className="name" for={id}>{label}</label>
             <span className="help-text">{helptext}</span>
             <textarea
                 id={id}
