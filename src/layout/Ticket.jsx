@@ -134,9 +134,11 @@ const Ticket = () => {
                         <fieldset>
                             <label>Status</label>
                             <span class="text">
-                                <Badge>
-                                    <TicketStatusIcon metadata={metadata} page_data={page_data}/>
-                                </Badge>
+                            <FieldData
+                                metadata={metadata}
+                                field_name='status_badge'
+                                data={page_data}
+                            />
                             </span>
                         </fieldset>
                         <fieldset>
