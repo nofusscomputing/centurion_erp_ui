@@ -39,63 +39,30 @@ const Ticket = () => {
 
     useEffect(() => {
 
-        // fetch('http://localhost:8003/api/' + params.module + '/ticket/' + params.model + '/2/comments')
+        apiFetch(
+            params.module + '/ticket/' + params.model + '/' + params.pk + '/comments',
+            (data) =>{
 
-        //     .then(response => {
+                setComments(data)
 
-        //         if( ! response.ok ) {
-
-        //             throw new ResponseException(response)
-
-        //         }
-
-        //         return response.json()
-
-        //     })
-
-        //     .then(data => {
-
-        //         setComments(data.results)
-
-        //     })
-
-        //     .catch( err => {
-
-        //         throw Error(err)
-
-        //     })
+            },
+        )
 
     }, [params])
 
 
     useEffect(() => {
 
-        // fetch('http://localhost:8003/api/' + params.module + '/' + params.model + '/2/comments/option')
 
-        //     .then(response => {
+        apiFetch(
+            params.module + '/ticket/' + params.model + '/' + params.pk + '/comments',
+            (data) =>{
 
-        //         if( ! response.ok ) {
+                setCommentMetaData(data)
 
-        //             throw new ResponseException(response)
-
-        //         }
-
-        //         return response.json()
-
-        //     })
-
-        //     .then(data => {
-
-        //         setCommentMetaData(data)
-
-        //     })
-
-
-        //     .catch( err => {
-
-        //         throw Error(err)
-
-        //     })
+            },
+            'OPTIONS'
+        )
 
     }, [params])
 
@@ -132,7 +99,7 @@ const Ticket = () => {
 
                 <div className="comments">
                     <ul className="comments">
-                        {(comments != null && comment_metadata != null) && comments.map((comment) => {
+                        {(comments != null && comment_metadata != null) && comments.results.map((comment) => {
 
                             return (
                                 <li>
