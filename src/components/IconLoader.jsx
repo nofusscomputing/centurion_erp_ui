@@ -19,6 +19,7 @@ import InventoryStatusUknIcon from "./icons/InventoryStatusUknIcon";
 import InventoryStatusBadIcon from "./icons/InventoryStatusBadIcon";
 import InventoryStatusWarnIcon from "./icons/InventoryStatusWarnIcon";
 import InventoryStatusOkIcon from "./icons/InventoryStatusOkIcon";
+import StatusAcceptedIcon from "./icons/ticket/StatusAcceptedIcon";
 
 
 const icon_components = {
@@ -42,7 +43,8 @@ const icon_components = {
     notification: NotificationIcon,
     organization: OrganizationIcon,
     software: SoftwareIcon,
-    task: TaskIcon
+    task: TaskIcon,
+    ticket_status_accepted: StatusAcceptedIcon,
 };
 
 const IconLoader = ({
