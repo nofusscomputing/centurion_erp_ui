@@ -20,6 +20,7 @@ import InventoryStatusBadIcon from "./icons/InventoryStatusBadIcon";
 import InventoryStatusWarnIcon from "./icons/InventoryStatusWarnIcon";
 import InventoryStatusOkIcon from "./icons/InventoryStatusOkIcon";
 import StatusAcceptedIcon from "./icons/ticket/StatusAcceptedIcon";
+import StatusApprovalsIcon from "./icons/ticket/StatusApprovalsIcon";
 
 
 const icon_components = {
@@ -45,6 +46,7 @@ const icon_components = {
     software: SoftwareIcon,
     task: TaskIcon,
     ticket_status_accepted: StatusAcceptedIcon,
+    ticket_status_approvals: StatusApprovalsIcon,
 };
 
 const IconLoader = ({
