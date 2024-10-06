@@ -21,6 +21,7 @@ import InventoryStatusWarnIcon from "./icons/InventoryStatusWarnIcon";
 import InventoryStatusOkIcon from "./icons/InventoryStatusOkIcon";
 import StatusAssignedIcon from "./icons/ticket/StatusAssignedIcon";
 import StatusClosedIcon from "./icons/ticket/StatusClosedIcon";
+import StatusInvalidIcon from "./icons/ticket/StatusInvalidIcon";
 import StatusAssignedPlanningIcon from "./icons/ticket/StatusAssignedPlanningIcon";
 import StatusAcceptedIcon from "./icons/ticket/StatusAcceptedIcon";
 import StatusEvaluationIcon from "./icons/ticket/StatusEvaluationIcon";
@@ -55,6 +56,7 @@ const icon_components = {
     ticket_status_assigned_planning: StatusAssignedPlanningIcon,
     ticket_status_closed: StatusClosedIcon,
     ticket_status_evaluation: StatusEvaluationIcon,
+    ticket_status_invalid: StatusInvalidIcon,
 };
 
 const IconLoader = ({
