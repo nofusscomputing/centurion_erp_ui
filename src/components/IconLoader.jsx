@@ -19,6 +19,7 @@ import InventoryStatusUknIcon from "./icons/InventoryStatusUknIcon";
 import InventoryStatusBadIcon from "./icons/InventoryStatusBadIcon";
 import InventoryStatusWarnIcon from "./icons/InventoryStatusWarnIcon";
 import InventoryStatusOkIcon from "./icons/InventoryStatusOkIcon";
+import StatusAssignedIcon from "./icons/ticket/StatusAssignedIcon";
 import StatusAcceptedIcon from "./icons/ticket/StatusAcceptedIcon";
 import StatusApprovalsIcon from "./icons/ticket/StatusApprovalsIcon";
 
@@ -47,6 +48,7 @@ const icon_components = {
     task: TaskIcon,
     ticket_status_accepted: StatusAcceptedIcon,
     ticket_status_approvals: StatusApprovalsIcon,
+    ticket_status_assigned: StatusAssignedIcon,
 };
 
 const IconLoader = ({
