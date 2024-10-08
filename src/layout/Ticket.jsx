@@ -5,6 +5,7 @@ import FieldData from "../functions/FieldData";
 import TicketComments from "../components/page/ticket/Comments";
 import { apiFetch } from "../hooks/apiFetch";
 import TicketCommentForm from "../components/page/ticket/Comment";
+import LinkedItems from "../components/page/ticket/LinkedItems";
 
 
 const Ticket = ({
@@ -134,12 +135,9 @@ const Ticket = ({
                     </div>
                 </section>
 
-                <section className="linked-items">
-                    <h3 className="linked-items">Linked Items</h3>
-                    <div>
-                        ticket description
-                    </div>
-                </section>
+                <LinkedItems
+                    data_url={String(page_data['_urls']['linked_items']).split('api/v2')[1]}
+                />
 
                 <div className="comments">
                     <ul className="comments">

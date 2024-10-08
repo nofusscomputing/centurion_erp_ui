@@ -496,6 +496,20 @@ div.ticket .contents {
   text-align: left;
 }
 
+.ticket section.linked-items {
+  display: block;
+  width: 100%;
+}
+
+.ticket section.linked-items div.item {
+  display: inline-block;
+  height: fit-content;
+  margin: 1px;
+  padding: 2px 0px;
+  text-align: center;
+  width: 33%;
+}
+
 .ticket .contents section {
   display: flexbox;
   margin-bottom: 10px;
