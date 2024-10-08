@@ -146,7 +146,18 @@ const Ticket = () => {
                 <div className="metadata">
                     <div>
 
-                        <h3 className={"metadata ticket-type-" + ticket_type}>Ticket</h3>
+                        <h3 className={"metadata ticket-type-" + ticket_type}>
+                            Ticket&nbsp;#
+                            <FieldData
+                            metadata={metadata}
+                            field_name='id'
+                            data={page_data}
+                        />
+                        &nbsp;
+                        {page_data['external_ref'] &&(
+                           ('( #') + page_data['external_ref'] + (')')
+                        )}
+                        </h3>
 
                         <fieldset>
                             <label>Assigned</label>
