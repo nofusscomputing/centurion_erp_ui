@@ -217,7 +217,13 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Duration</label>
-                            <span className="text">.</span>
+                            <span className="text">
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='duration'
+                                    data={page_data}
+                                />
+                            </span>
                         </fieldset>
 
                         <fieldset>
