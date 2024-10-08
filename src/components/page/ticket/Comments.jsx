@@ -3,6 +3,7 @@ import FieldData from "../../../functions/FieldData"
 import { useEffect, useState } from "react"
 import { apiFetch } from "../../../hooks/apiFetch"
 import TicketCommentForm from "./Comment"
+import { secondsToTime } from "../../../layout/Ticket"
 
 
 
@@ -270,11 +271,7 @@ const TicketComments = ({
                     <fieldset className={comment_class}>
                         <label>Duration</label>
                         <span>
-                            <FieldData
-                                metadata={metadata}
-                                field_name='duration'
-                                data={comment_data}
-                            />
+                            {secondsToTime(comment_data['duration'])}
                         </span>
                     </fieldset>
                 </div>

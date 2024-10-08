@@ -73,8 +73,6 @@ const RelatedTickets = ({
 
                 }
 
-                console.log(`ticket_related_${String(related_name).replace(' ', '_')}`)
-
                 return (
                 <div id="linked-tickets" className="related-ticket">
                     <div className={"icon icon-related-ticket ticket-related-" + String(related_name).replace(' ', '_')}>

@@ -9,6 +9,26 @@ import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
 
 
+
+export function secondsToTime(secs) {
+
+    const hour = 3600
+    const minute = 60
+
+    const hours = Math.floor( (secs % hour ) / hour )
+    const minutes = Math.floor( ( secs % hour ) / minute )
+    const seconds = Math.floor( (secs % hour) % minute )
+
+
+    var obj = {
+        "h": hours,
+        "m": minutes,
+        "s": seconds
+    };
+    return String(`${obj['h']}h ${obj['m']}m ${obj['s']}s` );
+}
+
+
 const Ticket = ({
     setContentHeading = null
 }) => {
@@ -25,6 +45,8 @@ const Ticket = ({
     const params = useParams();
 
     const [ ticket_type, SetTicketType ] = useState(null)
+
+    let [ticket_duration, setTicketDuration] = useState(0)
 
     setContentHeading(page_data['title'])
 
@@ -268,11 +290,7 @@ const Ticket = ({
                         <fieldset>
                             <label>Duration</label>
                             <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='duration'
-                                    data={page_data}
-                                />
+                                {secondsToTime(page_data['duration'])}
                             </span>
                         </fieldset>
 
