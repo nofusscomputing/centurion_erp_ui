@@ -30,6 +30,9 @@ import StatusAcceptedIcon from "./icons/ticket/StatusAcceptedIcon";
 import StatusEvaluationIcon from "./icons/ticket/StatusEvaluationIcon";
 import StatusApprovalsIcon from "./icons/ticket/StatusApprovalsIcon";
 import StatusTestingIcon from "./icons/ticket/StatusTestingIcon";
+import RelatedTicketRelated from "./icons/ticket/RelatedTicketRelated";
+import RelatedTicketBlocks from "./icons/ticket/RelatedTicketBlocks";
+import RelatedTicketBlocked from "./icons/ticket/RelatedTicketBlocked";
 
 
 const icon_components = {
@@ -54,6 +57,9 @@ const icon_components = {
     organization: OrganizationIcon,
     software: SoftwareIcon,
     task: TaskIcon,
+    ticket_related_blocks: RelatedTicketBlocks,
+    ticket_related_blocked_by: RelatedTicketBlocked,
+    ticket_related_related: RelatedTicketRelated,
     ticket_status_accepted: StatusAcceptedIcon,
     ticket_status_approvals: StatusApprovalsIcon,
     ticket_status_assigned: StatusAssignedIcon,
@@ -66,6 +72,7 @@ const icon_components = {
     ticket_status_pending: StatusPendingIcon,
     ticket_status_solved: StatusSolvedIcon,
     ticket_status_testing: StatusTestingIcon
+    
 };
 
 const IconLoader = ({

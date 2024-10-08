@@ -6,6 +6,7 @@ import TicketComments from "../components/page/ticket/Comments";
 import { apiFetch } from "../hooks/apiFetch";
 import TicketCommentForm from "../components/page/ticket/Comment";
 import LinkedItems from "../components/page/ticket/LinkedItems";
+import RelatedTickets from "../components/page/ticket/RelatedTickets";
 
 
 const Ticket = ({
@@ -128,12 +129,10 @@ const Ticket = ({
                     </div>
                 </section>
 
-                <section className="related-tickets">
-                    <h3 className="related-tickets">Related Tickets</h3>
-                    <div>
-                        gfh
-                    </div>
-                </section>
+                <RelatedTickets
+                    data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
+                    ticket_id={page_data['id']}
+                />
 
                 <LinkedItems
                     data_url={String(page_data['_urls']['linked_items']).split('api/v2')[1]}

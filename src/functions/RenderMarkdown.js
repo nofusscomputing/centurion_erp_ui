@@ -42,11 +42,18 @@ export default function RenderMarkdown(markdown, full_width=false) {
 
     let rendered_markdown = md.render( String(markdown.children) )
 
-    if( full_width ) {
-        return <div className='full-width' dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
+    let class_name = null
+
+    if( markdown.class ) {
+
+        class_name = markdown.class
     }
 
-    return <div dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
+    if( full_width ) {
+        return <div className={'full-width ' + class_name} dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
+    }
+
+    return <div className={class_name} dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
 }
 
 function createHTML(html_string) {
