@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../../hooks/apiFetch";
+import RenderMarkdown from "../../../functions/RenderMarkdown";
 
 const LinkedItems = ({
     data_url = null
@@ -23,7 +24,16 @@ const LinkedItems = ({
             <h3 className="linked-items">Linked Items</h3>
             {page_data &&
                 page_data.results.map((linked_item) => {
-                    return (<div className="item">{linked_item.display_name}</div>)
+                    return (
+                        <div className="item">
+                            <div className="markdown align-center">
+                                <RenderMarkdown
+                                    class='align-center'
+                                >
+                                    {linked_item.display_name}
+                                </RenderMarkdown>
+                            </div>
+                        </div>)
                 })
             }
         </section>
