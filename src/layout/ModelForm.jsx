@@ -45,8 +45,11 @@ const ModelForm = ({
 
         url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
 
+    }else if ( params.common_model && params.pk ) {
+
+        url = url = '/' + params.module + '/' + params.common_model + '/' + params.model + '/' + params.pk
     }
-    
+
     if( params.common_pk && params.pk && params.action === 'edit') {
 
         url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model + '/' + params.pk

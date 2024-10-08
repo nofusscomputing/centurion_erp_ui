@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 import FieldData from "../functions/FieldData";
 
-import TicketStatusIcon from "../components/icons/ticket/TicketStatusIcon";
-import Badge from "../components/Badge";
-import { ResponseException } from "../classes/Exceptions";
 import TicketComments from "../components/page/ticket/Comments";
 import { apiFetch } from "../hooks/apiFetch";
 import TicketCommentForm from "../components/page/ticket/Comment";
-
 
 
 const Ticket = ({
@@ -89,12 +85,40 @@ const Ticket = ({
     return (
         metadata !== null && <div className="ticket">
 
-
             <div className="contents">
 
                 <section className="description">
-                    <h3 className={"description ticket-type-" + ticket_type}>ticket data </h3>
+                    <h3 className={"description ticket-type-" + ticket_type}>
+                        <span class="sub-script">opened by&nbsp;</span>
+                        <FieldData
+                            metadata={metadata}
+                            field_name='opened_by'
+                            data={page_data}
+                        />&nbsp;
+                        <span class="sub-script">on&nbsp;</span> 
+                        <FieldData
+                            metadata={metadata}
+                            field_name='created'
+                            data={page_data}
+                        />&nbsp;
+                        <span class="sub-script">Updated&nbsp;</span> 
+                        <FieldData
+                            metadata={metadata}
+                            field_name='modified'
+                            data={page_data}
+                        />
+                    </h3>
                     <div className="markdown">
+                        {/* <Button
+                            button_text = 'Edit'
+                            button_align = 'right'
+                            type='button'
+                            buttonClickCallback = {() => {
+                                console.log('button clicked')
+                            }}
+
+                        /> */}
+                        <Link to="edit"><button className="common-field form">Edit</button></Link>
                         <FieldData
                             metadata={metadata}
                             field_name='description'
