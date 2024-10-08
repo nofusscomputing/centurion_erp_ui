@@ -11,7 +11,9 @@ import TicketCommentForm from "../components/page/ticket/Comment";
 
 
 
-const Ticket = () => {
+const Ticket = ({
+    setContentHeading = null
+}) => {
 
     const [comments, setComments] = useState(null)
     const [ reload, setRelaod ] = useState(false)
@@ -25,6 +27,8 @@ const Ticket = () => {
     const params = useParams();
 
     const [ ticket_type, SetTicketType ] = useState(null)
+
+    setContentHeading(page_data['title'])
 
     useEffect(() => {
 
