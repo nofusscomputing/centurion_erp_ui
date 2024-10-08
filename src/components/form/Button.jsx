@@ -13,18 +13,22 @@ import IconLoader from "../IconLoader"
  * on click of any menu entry callback `MenuClickCallback` will run passing the menu entry value to 
  * the callback.
  * 
- * @param {{String, String, String, Array, Function}} param0 dict of values for the button
- *   @param {String} button_text Text to show on the button
- *   @param {String} type The type of button, choices are "button|submit|reset"
+ * @param {{String, String, Function, String, String, Array, Function}} param0 dict of values for the button
  *   @param {String} button_align Alignment of the div the button is contained within.
+ *   @param {String} button_text Text to show on the button
+ *   @param {Function} buttonClickCallback function to call when button is clicked
+ *   @param {String} id id for the button
+ *   @param {String} type The type of button, choices are "button|submit|reset"
  *   @param {Array} menu_entries Array of dict {display_name, value}
  *   @param {Function} MenuClickCallback function to call on menu entry click
  * @returns Button
  */
 const Button = ({
-    button_text = 'Submit',
-    type = 'submit',
     button_align = 'right',
+    button_text = 'Submit',
+    buttonClickCallback = null,
+    id=null,
+    type = 'submit',
     menu_entries = null,
     MenuClickCallback = null
 }) => {
@@ -45,7 +49,7 @@ const Button = ({
             <div
                 className={div_align}
             >
-                <button className="form common-field" type={type}>{button_text}</button>
+                <button className="form common-field" onClick={buttonClickCallback} type={type}>{button_text}</button>
             </div>);
     } else if( menu_entries ) {
 
@@ -55,7 +59,7 @@ const Button = ({
             >
 
                 <div className="submit-dropdown-button">
-                    <button className="button submit-button" type={type}>{button_text}</button>
+                    <button className="button submit-button" onClick={buttonClickCallback} type={type}>{button_text}</button>
                     <div
                         className="button dropdown-button"
                         onClick={(e) =>
