@@ -1263,6 +1263,79 @@ form fieldset select {
   height: 30px;
 }
 
+div.align-right {
+  display: block;
+  padding: 0px;
+  margin: auto;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  width: fit-content;
+}
+
+div.submit-dropdown-button {
+  display: inline-flex;
+}
+
+div.submit-dropdown-button button.button,
+div.submit-dropdown-button div.button {
+  background-color: var(--contrasting-colour);
+  border: none;
+  color: var(--text-colour-button);
+  display: inline-block;
+  font-size: inherit;
+  height: 30px;
+  line-height: 30px;
+  padding: 0px 20px;
+
+}
+
+div.submit-dropdown-button div.dropdown-button {
+  height: 30px;
+  margin: 0px;
+  margin-left: 1px;
+  padding: 0px;
+}
+
+div.submit-dropdown-button div.button svg {
+  display: inline-flex;
+  height: 30px;
+  margin: 0px;
+  padding: 0px;
+  width: 30px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--background-colour-active);
+  margin-top: 30px;
+  min-width: 140px;
+  width: auto;
+  z-index: 1;
+}
+
+
+.dropdown-menu-entry {
+  background-color: var(--background-colour-active);
+  border: none;
+  color: var(--text-colour);
+  margin: 1px;
+  padding: 5px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 12pt;
+  width: 100%;
+}
+
+.dropdown-content p:hover, .dropdown-menu-entry:hover {
+  background-color: var(--background-colour-navbar-hover);
+  color: var(--text-colour-button);
+}
+
+.show {
+  display:block;
+}
+
 button.form {
   background-color: var(--contrasting-colour);
   color: var(--text-colour-button);
