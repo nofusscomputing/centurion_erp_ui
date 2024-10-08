@@ -14,6 +14,7 @@ import TicketCommentForm from "../components/page/ticket/Comment";
 const Ticket = () => {
 
     const [comments, setComments] = useState(null)
+    const [ reload, setRelaod ] = useState(false)
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
@@ -49,7 +50,7 @@ const Ticket = () => {
             },
         )
 
-    }, [params])
+    }, [params, reload])
 
 
     useEffect(() => {
@@ -107,6 +108,7 @@ const Ticket = () => {
                                     <TicketComments
                                         comment_data={comment}
                                         metadata={comment_metadata}
+                                        ticket_id={page_data['id']}
                                     />
                                 </li>
                             )
@@ -115,6 +117,10 @@ const Ticket = () => {
                             <TicketCommentForm
                                 metadata={comment_metadata}
                                 post_url = {page_data['_urls']['comments']}
+                                ticket_id={page_data['id']}
+                                commentCallback={() => {
+                                    setRelaod(true)
+                                }}
                             />
                         </li>
                     </ul>

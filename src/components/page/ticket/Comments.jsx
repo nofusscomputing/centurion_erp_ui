@@ -9,7 +9,8 @@ import TicketCommentForm from "./Comment"
 const TicketComments = ({
     discussion = false,
     comment_data = {},
-    metadata = null
+    metadata = null,
+    ticket_id = null
 }) => {
 
     let comment_header = ' wrote'
@@ -80,6 +81,7 @@ const TicketComments = ({
 
 
     const [ threads, setThreads ] = useState(null)
+    const [ reload, setRelaod ] = useState(false)
 
     useEffect(() => {
 
@@ -90,8 +92,10 @@ const TicketComments = ({
                     setThreads(data)
                 }
             )
+
+            setRelaod(false)
         }
-    },[])
+    },[ reload ])
 
 
     if( comment_type === 'action' ) {
@@ -286,7 +290,7 @@ const TicketComments = ({
                     />
                 </h3>
                 <ul className="replies">
-                    {threads.results.map((comment) => (
+                    {threads.results.map((comment, index) => (
                         <li className="replies">
                             <TicketComments
                                 comment_data={comment}
@@ -299,6 +303,11 @@ const TicketComments = ({
                         <TicketCommentForm
                             metadata={metadata}
                             post_url = {comment_data['_urls']['threads']}
+                            ticket_id={ticket_id}
+                            parent_id = {threads.results[0].parent}
+                            commentCallback={() => {
+                                setRelaod(true)
+                            }}
                         />
                     </li>
                 </ul>
