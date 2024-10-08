@@ -194,7 +194,25 @@ const Ticket = () => {
 
                         <fieldset>
                             <label>Priority</label>
-                            <span className="text">U. / I. / P.</span>
+                            <span className="text">U 
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='urgency'
+                                    data={page_data}
+                                />
+                             / I
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='impact'
+                                    data={page_data}
+                                />
+                             / P
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='priority'
+                                    data={page_data}
+                                />
+                            </span>
                         </fieldset>
 
                         <fieldset>
