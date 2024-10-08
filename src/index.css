@@ -22,6 +22,13 @@
   --background-colour-ticket-comment-solution: #b7ff96;
   --background-colour-ticket-comment-task: #f8ff96;
 
+  --background-colour-ticket-type-change: #badff7;
+  --background-colour-ticket-type-incident: #f7baba;
+  --background-colour-ticket-type-issue: #baf7db;
+  --background-colour-ticket-type-request: #f7e9ba;
+  --background-colour-ticket-type-problem: #f7d0ba;
+  --background-colour-ticket-type-project-task: #c5baf7;
+
   --colour-status-ok: #319c3a;
   --colour-status-warn: #cf9925;
   --colour-status-bad: #cf3025;
@@ -67,6 +74,13 @@
   --background-colour-ticket-comment-notification: #96c7ffbe;
   --background-colour-ticket-comment-solution: #b7ff96be;
   --background-colour-ticket-comment-task: #f8ff96d3;
+
+  --background-colour-ticket-type-change: #badff7;
+  --background-colour-ticket-type-incident: #f7baba;
+  --background-colour-ticket-type-issue: #baf7db;
+  --background-colour-ticket-type-request: #f7e9ba;
+  --background-colour-ticket-type-problem: #f7d0ba;
+  --background-colour-ticket-type-project-task: #c5baf7;
 
   --colour-status-ok: #319c3a;
   --colour-status-warn: #cf9925;
@@ -371,6 +385,38 @@ article div.ticket {
   margin-bottom: -20px;
 }
 
+
+.ticket .contents h3.description.ticket-type-change,
+.ticket .sidebar h3.metadata.ticket-type-change {
+  background-color: var(--background-colour-ticket-type-change);
+}
+
+.ticket .contents h3.description.ticket-type-incident,
+.ticket .sidebar h3.metadata.ticket-type-incident {
+  background-color: var(--background-colour-ticket-type-incident);
+}
+
+.ticket .contents h3.description.ticket-type-issue,
+.ticket .sidebar h3.metadata.ticket-type-issue {
+  background-color: var(--background-colour-ticket-type-issue);
+}
+
+.ticket .contents h3.description.ticket-type-problem,
+.ticket .sidebar h3.metadata.ticket-type-problem {
+  background-color: var(--background-colour-ticket-type-problem);
+}
+
+.ticket .contents h3.description.ticket-type-project-task,
+.ticket .sidebar h3.metadata.ticket-type-project-task {
+  background-color: var(--background-colour-ticket-type-project-task);
+}
+
+.ticket .contents h3.description.ticket-type-request,
+.ticket .sidebar h3.metadata.ticket-type-request {
+  background-color: var(--background-colour-ticket-type-request);
+}
+
+
 div.ticket .sidebar {
   background-color: var(--background-colour-active);
   display: inline-block;
@@ -457,7 +503,6 @@ div.ticket .contents {
 }
 
 .ticket section.description h3.description {
-  background-color: chocolate;
   font-size: inherit;
   font-weight: normal;
   line-height: 30px;

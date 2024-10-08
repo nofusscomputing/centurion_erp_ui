@@ -24,6 +24,8 @@ const Ticket = () => {
 
     const params = useParams();
 
+    const [ ticket_type, SetTicketType ] = useState(null)
+
     useEffect(() => {
 
         apiFetch(
@@ -32,6 +34,18 @@ const Ticket = () => {
 
                 setMetaData(data)
 
+                for(let ticket_type_entry of data.actions['PUT']['ticket_type'].choices ) {
+
+                    if( Number(ticket_type_entry.value) === Number(page_data['ticket_type']) ) {
+
+                        ticket_type_entry = String(ticket_type_entry.display_name).toLowerCase()
+                        ticket_type_entry = ticket_type_entry.replace(' ', '-')
+
+                        SetTicketType(ticket_type_entry)
+
+                    }
+
+                }
             },
             'OPTIONS'
         )
@@ -75,7 +89,7 @@ const Ticket = () => {
             <div className="contents">
 
                 <section className="description">
-                    <h3 className="description">ticket data </h3>
+                    <h3 className={"description ticket-type-" + ticket_type}>ticket data </h3>
                     <div className="markdown">
                         <FieldData
                             metadata={metadata}
@@ -132,7 +146,7 @@ const Ticket = () => {
                 <div className="metadata">
                     <div>
 
-                        <h3 className="metadata">Ticket</h3>
+                        <h3 className={"metadata ticket-type-" + ticket_type}>Ticket</h3>
 
                         <fieldset>
                             <label>Assigned</label>
