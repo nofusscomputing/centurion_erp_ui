@@ -4,6 +4,9 @@ import { useLoaderData, useParams } from "react-router-dom";
 import { apiFetch } from "../hooks/apiFetch";
 import NavTabs from "../components/page/detail/Navtabs";
 import Section from "../components/page/detail/Section";
+import ModelNote from "../components/page/detail/ModelNote";
+import TextArea from "../components/form/Textarea";
+import Button from "../components/form/Button";
 
 
 
@@ -18,6 +21,9 @@ const Detail = ({
     const params = useParams();
 
     const [metadata, setMetaData] = useState(null);
+
+    const[ notes, setNotes ] = useState(null)
+    const[ note_metadata, setNoteMetadata ] = useState(null)
 
 
     useEffect(() => {
@@ -45,10 +51,31 @@ const Detail = ({
         )
     },[page_data])
 
+    useEffect(() => {
+
+        apiFetch(
+            String(page_data['_urls']['notes']).split('api/v2')[1],
+            (data) => {
+
+                setNotes(data)
+            }
+        )
+
+        apiFetch(
+            String(page_data['_urls']['notes']).split('api/v2')[1],
+            (data) => {
+
+                setNoteMetadata(data)
+            },
+            'OPTIONS'
+        )
+
+    }, [page_data])
+
 
     return ( 
         <section>
-        
+
             { metadata && <NavTabs
                 active_tab={active_tab}
                 setActiveTab={setActiveTab}
@@ -63,35 +90,75 @@ const Detail = ({
                     )
                 ) {
 
-                    return( tab.sections.map(( section, section_index ) => {
-
-                        if( section_index !== 0 ) {
-                            
-                            return(
-                                <div>
-                                    <hr />
-                                    <Section
-                                        index = { section_index }
-                                        layout = {section}
-                                        data = { page_data }
-                                        metadata = { metadata }
-                                        tab = {tab}
-                                    />
-                                </div>
-                            )
-
-                        }
+                    if( tab.name.toLowerCase() === 'notes' ) {
 
                         return(
-                            <Section
-                                index = { section_index }
-                                layout = {section}
-                                data = { page_data }
-                                metadata = { metadata }
-                                tab = {tab}
-                            />
+                            <div className="model-notes">
+                                <div className="model-notes-comment">
+                                    <form onSubmit={(e) => {
+                                        e.preventDefault()
+
+                                        apiFetch(
+                                            String(page_data['_urls']['notes']).split('api/v2')[1],
+                                            (data) => {
+
+                                                setNotes(data)
+                                            }
+                                        )
+                                    }}>
+                                        <TextArea 
+                                            id = 'model-note'
+                                            required = {true}
+                                        />
+                                        <Button
+                                            button_align = 'right'
+                                            button_text = 'Create Note'
+                                        />
+                                    </form>
+                                </div>
+                                <div className="notes">
+                                {(notes && note_metadata) &&
+                                    notes.results.map((note) => {
+                                    return (<ModelNote
+                                            note_data={note}
+                                            metadata = {note_metadata}
+                                        />)
+                                    })}
+                                </div>
+                            </div>
                         )
-                    }))
+
+                    } else {
+
+                        return( tab.sections.map(( section, section_index ) => {
+
+                            if( section_index !== 0 ) {
+                                
+                                return(
+                                    <div>
+                                        <hr />
+                                        <Section
+                                            index = { section_index }
+                                            layout = {section}
+                                            data = { page_data }
+                                            metadata = { metadata }
+                                            tab = {tab}
+                                        />
+                                    </div>
+                                )
+                            }
+
+                            return(
+                                <Section
+                                    index = { section_index }
+                                    layout = {section}
+                                    data = { page_data }
+                                    metadata = { metadata }
+                                    tab = {tab}
+                                />
+                            )
+                        }))
+                    }
                 }
             })}
         </section>

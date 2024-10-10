@@ -1122,6 +1122,7 @@ section.error pre {
 }
 
 section .nav-tabs {
+  background-color: var(--background-colour-active);
   border-bottom: 1px solid var(--border-colour);
   display: flex;
   height: 50px;
@@ -1263,6 +1264,72 @@ section .content th,
 section .content td {
   border-bottom: 1px solid var(--border-colour);
 }
+
+
+
+
+section .model-notes {
+  background-color: var(--background-colour-inactive);
+}
+
+section .model-notes div.notes {
+  background-color: var(--background-colour-inactive);
+  padding: 10px;
+}
+
+section .model-notes .model-notes-comment {
+  background-color: var(--background-colour-active);
+  padding: 10px;
+}
+
+section .model-notes .model-note {
+  margin: 10px 0px;
+}
+
+section .model-notes fieldset {
+  display: flex;
+  width: 90%;
+  
+}
+
+textarea#model-note {
+  width: 40%;
+  height: 100px;
+  margin: 0px auto;
+}
+
+section .model-note div.single-note {
+  background-color: var(--background-colour-active);
+  border: 1px solid var(--border-colour);
+  padding: 0px;
+  display: block;
+}
+
+.model-note div.comment-header {
+  background-color: #aaa;
+  color: var(--text-colour-button);
+  margin: 0px;
+  padding: 2px 10px;
+}
+
+.model-note div.comment-body {
+  margin: 0px;
+  padding: 0px 10px;
+}
+
+.model-note div.comment-footer {
+  color: var(--text-colour);
+  margin: 0px;
+  padding: 2px 10px;
+}
+
+
+
+
+
+
+
+
 
 p.table-pagination {
   /* background-color: chartreuse; */
