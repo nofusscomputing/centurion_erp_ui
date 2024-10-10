@@ -21,6 +21,8 @@ const Table = ({
 
     const [metadata, setMetaData] = useState(null);
 
+    let [metadata_action, SetMetadataAction] = useState(null)
+
     const [is_loaded, setLoaded] = useState(false);
 
     const [page, setPage] = useState(0);
@@ -50,6 +52,8 @@ const Table = ({
             (data) =>{
 
                 setMetaData(data)
+
+                SetMetadataAction(Object.keys(data.actions)[0])
 
                 if( table_data ) {
 

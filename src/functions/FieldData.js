@@ -41,6 +41,10 @@ export default function FieldData({
 
         fields = metadata.actions.PUT
 
+    } else if( 'GET' in metadata.actions ) {
+
+        fields = metadata.actions.GET
+
     }
 
     if( field_name in data ) {
