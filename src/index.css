@@ -1283,7 +1283,7 @@ section .content table tr.collapsible-row td {
   padding: 0px;
 }
 
-section .content table tr td svg {
+section .content table tr td svg.navdown {
   fill: var(--background-colour-navbar-active);
   width: 30px;
   height: 30px;
