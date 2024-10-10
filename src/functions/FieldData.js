@@ -47,7 +47,9 @@ export default function FieldData({
 
     }
 
-    if( field_name in data ) {
+    let data_field = field_lookup(field_name, data)
+
+    if( data_field ) {
 
         let field_type = null
 
@@ -61,17 +63,17 @@ export default function FieldData({
 
             case 'Badge':
 
-                field_data = data[field_name].text
+                field_data = data_field.text
 
-                if( data[field_name].url ) {
+                if( data_field.url ) {
                     field_data = (
-                        <Link className="badge-link" to={String(data['_urls'][data[field_name].url]).split('api/v2')[1]+'/edit'}>
+                        <Link className="badge-link" to={String(data['_urls'][data_field.url]).split('api/v2')[1]+'/edit'}>
                             <Badge
-                                icon_style = {data[field_name].icon.style}
-                                message = {data[field_name].text}
-                                text_style = {data[field_name].text_style}
+                                icon_style = {data_field.icon.style}
+                                message = {data_field.text}
+                                text_style = {data_field.text_style}
                             >
-                                <IconLoader name={data[field_name].icon.name} fill={null} height='15px' width='15px'/>
+                                <IconLoader name={data_field.icon.name} fill={null} height='15px' width='15px'/>
                             </Badge>
                         </Link>
                     )
@@ -79,11 +81,11 @@ export default function FieldData({
 
                     field_data = (
                         <Badge
-                            icon_style = {data[field_name].icon.style}
-                            message = {data[field_name].text}
-                            text_style = {data[field_name].text_style}
+                            icon_style = {data_field.icon.style}
+                            message = {data_field.text}
+                            text_style = {data_field.text_style}
                         >
-                            <IconLoader name={data[field_name].icon.name} fill={null} height='15px' width='15px'/>
+                            <IconLoader name={data_field.icon.name} fill={null} height='15px' width='15px'/>
                         </Badge>
                     )
 
@@ -93,7 +95,7 @@ export default function FieldData({
 
             case 'Boolean':
 
-                if( Boolean(data[field_name]) ) {
+                if( Boolean(data_field) ) {
 
                     field_data = 'Yes'
 
@@ -109,7 +111,7 @@ export default function FieldData({
 
                 for( const [key, choice] of Object.entries(fields[field_name].choices) ) {
 
-                    if( Number(data[field_name]) == Number(choice.value) ) {
+                    if( Number(data_field) == Number(choice.value) ) {
 
                         field_data = String(choice.display_name)
 
@@ -125,7 +127,7 @@ export default function FieldData({
 
                 field_data = (
                     <>
-                        {data[field_name].map((icon) => {
+                        {data_field.map((icon) => {
                             return (
                                 <span className={icon.style}>
                                     <IconLoader name={icon.name} fill={null} height='20px' width='20px' />
@@ -143,11 +145,11 @@ export default function FieldData({
 
                 if( fields[field_name].relationship_type === 'ManyToMany' ) {
 
-                    if( typeof (data[field_name]) === 'object' ) {
+                    if( typeof (data_field) === 'object' ) {
 
                         field_data = (
 
-                            data[field_name].map((field) => {
+                            data_field.map((field) => {
 
                                 if( 'url' in field ) {
 
@@ -167,31 +169,31 @@ export default function FieldData({
 
                 } else {
 
-                    if( data[field_name] === null ) {
+                    if( data_field === null ) {
 
                         field_data = '-'
 
-                    } else if( typeof (data[field_name] ) === 'object' ) {
+                    } else if( typeof (data_field ) === 'object' ) {
 
-                        if( 'url' in data[field_name] ) {
+                        if( 'url' in data_field ) {
 
                             field_data = (
-                                <Link to={String(data[field_name].url).split(API_SPLIT)[1]}>{data[field_name].display_name}</Link>
+                                <Link to={String(data_field.url).split(API_SPLIT)[1]}>{data_field.display_name}</Link>
                             )
 
                         } else {
 
-                            field_data = data[field_name].display_name
+                            field_data = data_field.display_name
 
                         }
 
-                    } else if( typeof (data[field_name]) === 'list' ) {
+                    } else if( typeof (data_field) === 'list' ) {
 
-                        field_data = 'data[field_name]'
+                        field_data = 'data_field'
 
                     } else {
 
-                        field_data = data[field_name]
+                        field_data = data_field
 
                     }
                 }
@@ -202,7 +204,7 @@ export default function FieldData({
 
                 let markdown = "``` json"
                     + "\r\n\r\n"
-                    + JSON.stringify(data[field_name], null, 4)
+                    + JSON.stringify(data_field, null, 4)
                     + "\r\n\r\n"
                     + "```"
                     + "\r\n"
@@ -226,13 +228,13 @@ export default function FieldData({
                 ) {
 
                     field_data = (
-                        <Link to={String(data['_urls']._self).split(API_SPLIT)[1]}>{data[field_name]}</Link>
+                        <Link to={String(data['_urls']._self).split(API_SPLIT)[1]}>{data_field}</Link>
                     )
 
                 } else {
 
 
-                    field_data = data[field_name]
+                    field_data = data_field
 
                 }
 
@@ -257,4 +259,28 @@ export default function FieldData({
     }
 
     return field_data;
+}
+
+export function field_lookup(field_name, data) {
+
+    if( String(field_name).includes('.') ) {
+
+        let field = String( field_name ).split( '.' )
+
+        if( ! field[0] in data) {
+
+            return null
+
+        }
+
+        return field_lookup( field[1], data[field[0]] )
+
+    }
+
+    if( ! field_name in data) {
+
+        return null
+
+    }
+    return data[field_name]
 }
