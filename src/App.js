@@ -22,6 +22,7 @@ import ModelForm from "./layout/ModelForm";
 function App() {
 
     const [content_heading, setContentHeading] = useState(null)
+    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const router = useMemo(() => {
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/"
                     element={<RootLayout
                         content_heading={content_heading}
+                        content_header_icon={content_header_icon}
                     />}
                     errorElement={<ErrorPage /> }
                 >
@@ -39,6 +41,7 @@ function App() {
                     <Route path="/:module/ticket/:model"
                         element={<List
                             setContentHeading={setContentHeading}
+                            content_header_icon={content_header_icon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}
@@ -78,6 +81,7 @@ function App() {
                     <Route path="/:module/:model/:pk"
                         element={<Detail
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}

@@ -11,7 +11,8 @@ import Button from "../components/form/Button";
 
 
 const Detail = ({
-    setContentHeading
+    setContentHeading,
+    SetContentHeaderIcon = null
 }) => {
 
     const [active_tab, setActiveTab] = useState(null)

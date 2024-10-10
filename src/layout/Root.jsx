@@ -9,7 +9,8 @@ import Footer from "../components/page/Footer";
 
 const RootLayout = ({
     content_heading,
-    menu_entries
+    menu_entries,
+    content_header_icon,
 }) => {
 
     const [nav_visible, setNavVisible] = useState(true)
@@ -29,7 +30,9 @@ const RootLayout = ({
                     <div className="content-header">
                         <div className="column left">&nbsp;</div>
                         <h2 className="column center">{content_heading}</h2>
-                        <div className="column right">&nbsp;</div>
+                        <div className="column right">
+                            {content_header_icon}
+                        </div>
                     </div>
                     <article>
                         <Outlet />

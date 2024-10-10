@@ -366,7 +366,18 @@ main h2 {
 
 main .content-header .column.right {
   margin: auto 0px;
-  text-align: center;
+  padding-right: 20px;
+  text-align: right;
+}
+
+main .content-header .column.right svg {
+  height: 30px;
+  margin-right: 10px;
+  width: 30px;
+}
+
+svg.help {
+  fill: var(--contrasting-colour);
 }
 
 article {
