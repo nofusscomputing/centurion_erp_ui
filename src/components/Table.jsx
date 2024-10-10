@@ -160,7 +160,7 @@ const Table = ({
 
                         }
 
-                        if (key in metadata.actions[metadata_action]) {
+                        if( key in metadata.actions[metadata_action] ) {
 
                             if( typeof(key) === 'string' ) {
 
@@ -233,7 +233,7 @@ const Table = ({
 
                                     })
                                 }
-                                { table_columns_count > 0 &&
+                                { collapsable_fields.length > 0 &&
                                     <td
                                         onClick={(e) => {
                                             let a = e
