@@ -4,10 +4,14 @@ import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
 import { Link, useParams } from "react-router-dom";
+import IconLoader from "./IconLoader";
 
 
 /**
  * Create a Table with pagination
+ * 
+ * if a table field is not a string but an array of strings, they will be rendered
+ * as a collapsible row directly underneath each row.
  * 
  * @param {{String, Function}} param0 Object for table
  * @param data_url_path url where the data will be fetched
@@ -28,6 +32,10 @@ const Table = ({
     const [page, setPage] = useState(0);
 
     const [table_data, setTableData] = useState(null);
+
+    let collapsable_fields = []
+
+    let table_columns_count = 0;
 
     const pagefieldId = useId();
 
@@ -135,60 +143,144 @@ const Table = ({
             <table>
                 <thead>
                     <tr>
-                    {metadata.table_fields.map(key => {
+                    {metadata.table_fields.map((key, index) => {
 
-                        if (key in metadata.actions.POST) {
+                        collapsable_fields = []
 
-                            if (metadata.table_fields[key] === 'nbsp') {
+                        if( table_columns_count === 0 ) {
 
-                                return (
-                                    <th>&nbsp</th>
-                                )
-                            } else {
+                            for( let field of metadata.table_fields ) {
 
-                                return (
-                                    <th key={key}>{metadata.actions.POST[key].label}</th>
-                                )
+                                if( typeof(field) === 'string' ) {
+
+                                    table_columns_count += 1
+
+                                }
                             }
+
+                        }
+
+                        if (key in metadata.actions[metadata_action]) {
+
+                            if( typeof(key) === 'string' ) {
+
+
+                                if (metadata.table_fields[key] === 'nbsp') {
+
+                                    return (
+                                        <th>&nbsp;</th>
+                                    )
+
+                                } else {
+
+                                    return (
+                                        <th key={key}>{metadata.actions[metadata_action][key].label}</th>  
+                                    )
+                                }
+                            } 
+                        } else if( typeof(key) === 'object' ) {
+
+                            for( let sub_key of key ) {
+
+                                collapsable_fields.push(sub_key)
+
+                            }
+
+                            console.log(`collapsable fields ${JSON.stringify(key)}`)
+
                         }
 
                     })}
+                    { table_columns_count > 0 &&
+                        <td>&nbsp;</td>
+                    }
                     </tr>
                 </thead>
                 <tbody>
                     {table_data.results.map((data) => {
 
                     return (
-                        <tr id={table_data.id} key={table_data.id}>
-                            {
-                                metadata.table_fields.map(key => {
+                        <>
+                            <tr id={data.id} key={data.id}>
+                                {
+                                    metadata.table_fields.map(key => {
 
-                                    if (key in metadata.actions.POST) {
+                                        if (key in metadata.actions[metadata_action]) {
 
-                                        if (metadata.table_fields[key] === 'nbsp') {
+                                            if( typeof(key) === 'string' ) {
 
+                                                if (metadata.table_fields[key] === 'nbsp') {
+
+                                                    return (
+                                                        <td>&nbsp;</td>
+                                                    )
+
+                                                } else {
+
+                                                    return (
+                                                        <td>
+                                                            <FieldData
+                                                                metadata={metadata}
+                                                                field_name={key}
+                                                                data={data}
+                                                            />
+                                                        </td>
+                                                    )
+
+                                                }
+                                            }
+                                        }
+
+                                    })
+                                }
+                                { table_columns_count > 0 &&
+                                    <td
+                                        onClick={(e) => {
+                                            let a = e
+                                            document.getElementById('expandable-' + e.currentTarget.parentElement.id).classList.toggle("hide-expandable-row")
+                                        }}
+                                    >
+                                        <IconLoader
+                                            name='navdown'
+                                            fill='#ccc'
+                                        />
+                                    </td>
+                                }
+
+                            </tr>
+                            {collapsable_fields.length > 0 &&
+                                <tr
+                                    className='collapsible-row' 
+                                >
+                                    <td colspan={(metadata.table_fields.length)}>
+                                        <div
+                                            className="hide-expandable-row"
+                                            id={'expandable-' + data.id} 
+                                            key={'expandable-' + data.id}
+                                        >
+                                        {collapsable_fields.map((collapsable_field,) => {
                                             return (
-                                                <td>&nbsp;</td>
-                                            )
-
-                                        } else {
-
-                                            return (
-                                                <td>
+                                                <div className="dual-column"
+                                                >
+                                                    <span style={{
+                                                        display: 'block',
+                                                        fontWeight: 'bold',
+                                                        textAlign: 'center',
+                                                        width: '100%'
+                                                    }}>{collapsable_field}</span>
                                                     <FieldData
                                                         metadata={metadata}
-                                                        field_name={key}
+                                                        field_name={collapsable_field}
                                                         data={data}
                                                     />
-                                                </td>
+                                                </div>
                                             )
-
-                                        }
-                                    }
-
-                                })}
-
-                        </tr>
+                                        })}
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </>
                     );
                 })}
                 </tbody>

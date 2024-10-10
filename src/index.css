@@ -1273,6 +1273,35 @@ section .content table {
   width: 100%;
 }
 
+section .content table tr.collapsible-row {
+  height: fit-content;
+  text-align: left;
+}
+
+section .content table tr.collapsible-row td {
+  height: fit-content;
+  padding: 0px;
+}
+
+section .content table tr td svg {
+  fill: var(--background-colour-navbar-active);
+  width: 30px;
+  height: 30px;
+}
+section .content table tr td div {
+  display: flex;
+}
+section .content table tr td .hide-expandable-row {
+  display: none;
+}
+
+section .content table tr div.dual-column {
+  display: inline-block;
+  height: fit-content;
+  margin: auto;
+  width: fit-content;
+}
+
 section .content thead,
 section .content tr {
   text-align: center;

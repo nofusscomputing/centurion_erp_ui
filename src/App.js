@@ -16,6 +16,7 @@ import { ResponseException } from "./classes/Exceptions";
 import RootLayout from "./layout/Root";
 import Ticket from "./layout/Ticket";
 import ModelForm from "./layout/ModelForm";
+import History from "./layout/history";
 
 
 
@@ -37,6 +38,15 @@ function App() {
                     />}
                     errorElement={<ErrorPage /> }
                 >
+
+                    <Route path="/core/:model/:pk/:action"
+                        element={<History
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
 
                     <Route path="/:module/ticket/:model"
                         element={<List
@@ -154,9 +164,15 @@ const detailsLoader = async ({request, params}) => {
 
     }
 
+    if( params.model && params.pk && params.action ) {
+
+        url = '/core/' + params.model + '/' + params.pk + '/' + params.action
+
+    }
+
     url = 'http://127.0.0.1:8002/api/v2' + url
 
-        if( params.pk ) {
+        if( ! (params.model && params.pk && params.action) && params.pk ) {
 
             url = url + '/' + params.pk
 
