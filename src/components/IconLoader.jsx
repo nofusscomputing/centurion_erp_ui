@@ -94,6 +94,7 @@ const IconLoader = ({
                 name = { name }
                 height = { height }
                 width = { width }
+                class_name = { name }
             />
         );
     }
