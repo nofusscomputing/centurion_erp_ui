@@ -33,6 +33,7 @@ import StatusTestingIcon from "./icons/ticket/StatusTestingIcon";
 import RelatedTicketRelated from "./icons/ticket/RelatedTicketRelated";
 import RelatedTicketBlocks from "./icons/ticket/RelatedTicketBlocks";
 import RelatedTicketBlocked from "./icons/ticket/RelatedTicketBlocked";
+import DeleteIcon from "./icons/DeleteIcon";
 
 
 const icon_components = {
@@ -45,6 +46,7 @@ const icon_components = {
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
     reply: ReplyIcon,
+    delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
     itam: ItamIcon,
