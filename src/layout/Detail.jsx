@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 
 import { apiFetch } from "../hooks/apiFetch";
 import NavTabs from "../components/page/detail/Navtabs";
@@ -7,6 +7,7 @@ import Section from "../components/page/detail/Section";
 import ModelNote from "../components/page/detail/ModelNote";
 import TextArea from "../components/form/Textarea";
 import Button from "../components/form/Button";
+import IconLoader from "../components/IconLoader";
 
 
 
@@ -28,6 +29,7 @@ const Detail = ({
     const [ notes_form, setNotesForm ] = useState({})
     const [ note_metadata, setNoteMetadata ] = useState(null)
 
+    SetContentHeaderIcon('')
 
     useEffect(() => {
 
@@ -49,6 +51,30 @@ const Detail = ({
                     setContentHeading(metadata['name']);
                 }
 
+
+                SetContentHeaderIcon(
+                    <>
+                        {data['documentation'] &&
+                            <Link to={data['documentation']} target="_new">
+                                <IconLoader
+                                    name='help'
+                                />
+                            </Link>
+                        }
+                        {page_data['_urls']['history'] &&
+                            <IconLoader
+                                name='history'
+                            />
+                        }
+                        {data['allowed_methods'].includes('DELETE') &&
+                            <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
+                                <IconLoader
+                                    name='delete'
+                                />
+                            </Link>
+                        }
+                    </>
+                )
             },
             'OPTIONS'
         )

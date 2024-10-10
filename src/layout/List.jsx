@@ -5,10 +5,12 @@ import Table from "../components/Table"
 
 
 const List = ({
-    setContentHeading
+    setContentHeading,
+    SetContentHeaderIcon = null
 }) => {
 
     const params = useParams();
+    SetContentHeaderIcon('')
 
     return (
         <section>

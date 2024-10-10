@@ -9,8 +9,11 @@ import { apiFetch } from "../hooks/apiFetch";
 
 
 const ModelForm = ({
-    setContentHeading
+    setContentHeading,
+    SetContentHeaderIcon = null
 }) => {
+    
+    SetContentHeaderIcon('')
 
     const values=[
         {
@@ -173,7 +176,11 @@ const ModelForm = ({
 
                     }
                 }}>
-                    { metadata &&
+                    { metadata && params.action == 'delete' && 
+                    <>
+                    Are you sure you wish to delete this item?
+                    </>}
+                    { ( metadata && params.action != 'delete' ) &&
                     Object.keys(metadata.actions['PUT' in metadata.actions ? 'PUT' : 'POST']).map((field_key) => {
 
                         if( 'PUT' in metadata.actions ) {

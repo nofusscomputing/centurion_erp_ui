@@ -41,7 +41,7 @@ function App() {
                     <Route path="/:module/ticket/:model"
                         element={<List
                             setContentHeading={setContentHeading}
-                            content_header_icon={content_header_icon}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}
@@ -50,6 +50,7 @@ function App() {
                     <Route path="/:module/ticket/:model/:pk"
                         element={<Ticket
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}
@@ -58,6 +59,7 @@ function App() {
                     <Route path="/:module/:common_model/:model/:pk/:action"
                         element={<ModelForm
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}
@@ -66,6 +68,7 @@ function App() {
                     <Route path="/:module/:model"
                         element={<List
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}
@@ -74,6 +77,7 @@ function App() {
                     <Route path="/:module/:model/add"    // add
                         element={<ModelForm
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                     />
@@ -90,6 +94,7 @@ function App() {
                     <Route path="/:module/:model/:pk/:action"    // edit | delete
                         element={<ModelForm
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}
@@ -98,6 +103,7 @@ function App() {
                     <Route path="/:module/:common_model/:common_pk/:model/add"    // add
                         element={<ModelForm
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                     />
@@ -105,6 +111,7 @@ function App() {
                     <Route path="/:module/:common_model/:common_pk/:model/:pk/:action"    // add
                         element={<ModelForm
                             setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
                         loader = {detailsLoader}

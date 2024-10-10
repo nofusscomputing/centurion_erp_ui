@@ -30,8 +30,11 @@ export function secondsToTime(secs) {
 
 
 const Ticket = ({
-    setContentHeading = null
+    setContentHeading = null,
+    SetContentHeaderIcon = null
 }) => {
+
+    SetContentHeaderIcon('')
 
     const [comments, setComments] = useState(null)
     const [ reload, setRelaod ] = useState(false)
