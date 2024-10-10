@@ -62,9 +62,11 @@ const Detail = ({
                             </Link>
                         }
                         {page_data['_urls']['history'] &&
-                            <IconLoader
-                                name='history'
-                            />
+                            <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
+                                <IconLoader
+                                    name='history'
+                                />
+                            </Link>
                         }
                         {data['allowed_methods'].includes('DELETE') &&
                             <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
