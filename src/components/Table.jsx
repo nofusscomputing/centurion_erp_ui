@@ -20,7 +20,8 @@ import IconLoader from "./IconLoader";
  */
 const Table = ({
     data_url_path,
-    callback = null
+    callback = null,
+    SetContentHeaderIcon = null
 }) => {
 
     const [metadata, setMetaData] = useState(null);
@@ -62,6 +63,22 @@ const Table = ({
                 setMetaData(data)
 
                 SetMetadataAction(Object.keys(data.actions)[0])
+
+
+                if( SetContentHeaderIcon ) {
+
+                    SetContentHeaderIcon(
+                        <>
+                            {data['documentation'] &&
+                                <Link to={data['documentation']} target="_new">
+                                    <IconLoader
+                                        name='help'
+                                    />
+                                </Link>
+                            }
+                        </>
+                    )
+                }
 
                 if( table_data ) {
 

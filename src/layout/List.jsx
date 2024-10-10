@@ -18,6 +18,7 @@ const List = ({
                 <Table
                     callback={setContentHeading}
                     data_url_path={params.module + '/' + params.model}
+                    SetContentHeaderIcon = {SetContentHeaderIcon}
                 />
             </div>
         </section>
