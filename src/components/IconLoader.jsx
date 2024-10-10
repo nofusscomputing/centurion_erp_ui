@@ -35,6 +35,7 @@ import RelatedTicketBlocks from "./icons/ticket/RelatedTicketBlocks";
 import RelatedTicketBlocked from "./icons/ticket/RelatedTicketBlocked";
 import HelpIcon from "./icons/HelpIcon";
 import DeleteIcon from "./icons/DeleteIcon";
+import HistoryIcon from "./icons/HistoryIcon";
 
 
 const icon_components = {
@@ -51,6 +52,7 @@ const icon_components = {
     device: DeviceIcon,
     edit: EditIcon,
     help: HelpIcon,
+    history: HistoryIcon,
     itam: ItamIcon,
     link: LinkIcon,
     menu: MenuIcon,

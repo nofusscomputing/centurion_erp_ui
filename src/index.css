@@ -380,6 +380,14 @@ svg.help {
   fill: var(--contrasting-colour);
 }
 
+svg.history {
+  fill: #777;
+}
+
+svg.delete {
+  fill: #ff0000;
+}
+
 article {
   display: flex;
   flex-wrap: wrap;
