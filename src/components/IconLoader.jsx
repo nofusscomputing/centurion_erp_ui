@@ -33,6 +33,7 @@ import StatusTestingIcon from "./icons/ticket/StatusTestingIcon";
 import RelatedTicketRelated from "./icons/ticket/RelatedTicketRelated";
 import RelatedTicketBlocks from "./icons/ticket/RelatedTicketBlocks";
 import RelatedTicketBlocked from "./icons/ticket/RelatedTicketBlocked";
+import HelpIcon from "./icons/HelpIcon";
 import DeleteIcon from "./icons/DeleteIcon";
 
 
@@ -49,6 +50,7 @@ const icon_components = {
     delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
+    help: HelpIcon,
     itam: ItamIcon,
     link: LinkIcon,
     menu: MenuIcon,
