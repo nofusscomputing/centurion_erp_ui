@@ -22,8 +22,10 @@ const Detail = ({
 
     const [metadata, setMetaData] = useState(null);
 
-    const[ notes, setNotes ] = useState(null)
-    const[ note_metadata, setNoteMetadata ] = useState(null)
+    const [ notes, setNotes ] = useState(null)
+    const [ update_notes, setUpdateNotes ] = useState(false)
+    const [ notes_form, setNotesForm ] = useState({})
+    const [ note_metadata, setNoteMetadata ] = useState(null)
 
 
     useEffect(() => {
@@ -58,8 +60,11 @@ const Detail = ({
             (data) => {
 
                 setNotes(data)
+                setUpdateNotes(false)
             }
         )
+
+        
 
         apiFetch(
             String(page_data['_urls']['notes']).split('api/v2')[1],
@@ -70,7 +75,7 @@ const Detail = ({
             'OPTIONS'
         )
 
-    }, [page_data])
+    }, [update_notes])
 
 
     return ( 
@@ -95,20 +100,40 @@ const Detail = ({
                         return(
                             <div className="model-notes">
                                 <div className="model-notes-comment">
-                                    <form onSubmit={(e) => {
+                                    <form onSubmit={async (e) => {
                                         e.preventDefault()
 
-                                        apiFetch(
+                                        const response = await apiFetch(
                                             String(page_data['_urls']['notes']).split('api/v2')[1],
-                                            (data) => {
-
-                                                setNotes(data)
-                                            }
+                                            null,
+                                            'POST',
+                                            notes_form
                                         )
+
+                                        if( response.status === 201 ) {
+
+                                            setNotesForm({})
+
+                                            setUpdateNotes(true)
+
+                                            e.target.reset()
+                                        }
+
                                     }}>
                                         <TextArea 
                                             id = 'model-note'
                                             required = {true}
+                                            onChange = {(e) => {
+                                                setNotesForm((prevState) => ({ 
+                                                    ...prevState,
+                                                    note: e.target.value,
+                                                    organization: page_data['organization'].id,
+                                                    device: page_data.id
+                                                }
+                                                ))
+
+                                                console.log(`model note form ${JSON.stringify(notes_form)}`)
+                                            }}
                                         />
                                         <Button
                                             button_align = 'right'
