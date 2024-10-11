@@ -17,6 +17,7 @@ import RootLayout from "./layout/Root";
 import Ticket from "./layout/Ticket";
 import ModelForm from "./layout/ModelForm";
 import History from "./layout/history";
+import Settings from "./layout/Settings";
 
 
 
@@ -41,6 +42,15 @@ function App() {
 
                     <Route path="/core/:model/:pk/:action"
                         element={<History
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    <Route path="/settings"
+                        element={<Settings
                             setContentHeading={setContentHeading}
                             SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
@@ -170,6 +180,20 @@ const detailsLoader = async ({request, params}) => {
 
     }
 
+
+    if( String(window.location.pathname).startsWith('/settings') ) {
+
+        url = '/settings'
+        
+        if( params.model ) {
+            url = url + '/' + params.model
+        }
+
+        // url = '/' + params.module + '/ticket/' + params.model
+
+    }
+
+
     url = 'http://127.0.0.1:8002/api/v2' + url
 
         if( ! (params.model && params.pk && params.action) && params.pk ) {
@@ -177,6 +201,8 @@ const detailsLoader = async ({request, params}) => {
             url = url + '/' + params.pk
 
         }
+
+
 
     const response = await fetch(url, {
         headers: {'X-CSRFToken': getCookie('csrftoken')},
