@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, redirect, useLocation, useNavigate, useParams } from "react-router-dom";
 import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
 import { ResponseException } from "../../classes/Exceptions";
@@ -20,9 +20,11 @@ const Navbar = ({
 
     const location = useLocation();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
 
-        apiFetch(
+        let response = apiFetch(
             '',
             (data) => {
 
@@ -42,6 +44,15 @@ const Navbar = ({
             },
             'OPTIONS'
         )
+
+            .then(response => {
+
+                console.log(`the data returned`)
+
+                if( response.status === 401 ) {
+                    navigate('/login')
+                }
+            })
 
     },[])
 

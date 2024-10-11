@@ -19,6 +19,15 @@ import ModelForm from "./layout/ModelForm";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
 
+const Login = () => {
+
+    window.location.replace('http://127.0.0.1:8002/api/v2/auth/login');
+
+    return (
+        <section>redirect</section>
+    );
+}
+ 
 
 
 function App() {
@@ -39,6 +48,7 @@ function App() {
                     />}
                     errorElement={<ErrorPage /> }
                 >
+                    <Route path='/login' element={<Login/>}/>
 
                     <Route path="/core/:model/:pk/:action"
                         element={<History
