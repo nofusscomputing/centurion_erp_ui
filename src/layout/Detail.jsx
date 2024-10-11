@@ -84,25 +84,28 @@ const Detail = ({
 
     useEffect(() => {
 
-        apiFetch(
-            String(page_data['_urls']['notes']).split('api/v2')[1],
-            (data) => {
+        if( Object.keys(page_data['_urls']).includes('notes') ) {
 
-                setNotes(data)
-                setUpdateNotes(false)
-            }
-        )
+            apiFetch(
+                String(page_data['_urls']['notes']).split('api/v2')[1],
+                (data) => {
 
-        
+                    setNotes(data)
+                    setUpdateNotes(false)
+                }
+            )
 
-        apiFetch(
-            String(page_data['_urls']['notes']).split('api/v2')[1],
-            (data) => {
+            
 
-                setNoteMetadata(data)
-            },
-            'OPTIONS'
-        )
+            apiFetch(
+                String(page_data['_urls']['notes']).split('api/v2')[1],
+                (data) => {
+
+                    setNoteMetadata(data)
+                },
+                'OPTIONS'
+            )
+        }
 
     }, [update_notes])
 
