@@ -148,6 +148,7 @@ const TicketComments = ({
     }
 
     return (
+        metadata &&
         <div className={discussion_class}>
             <div className={comment_class}>
 

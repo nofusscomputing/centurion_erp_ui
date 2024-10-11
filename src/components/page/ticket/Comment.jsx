@@ -22,13 +22,7 @@ const TicketCommentForm = ({
         console.log(post_url)
     let comment_class = 'comment-type-default comment-form'
 
-    let action_keyword = 'POST'
-
-    if( 'PUT' in metadata.actions ) {
-
-        action_keyword = 'PUT'
-
-    }
+    let action_keyword = Object.keys(metadata.actions)[0]
 
 
     const [task_comment, setTaskComment] = useState(false)

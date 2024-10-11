@@ -177,16 +177,18 @@ const Ticket = ({
                                 </li>
                             )
                         })}
-                        <li>
-                            <TicketCommentForm
-                                metadata={comment_metadata}
-                                post_url = {page_data['_urls']['comments']}
-                                ticket_id={page_data['id']}
-                                commentCallback={() => {
-                                    setRelaod(true)
-                                }}
-                            />
-                        </li>
+                        {comment_metadata != null &&
+                            <li>
+                                <TicketCommentForm
+                                    metadata={comment_metadata}
+                                    post_url = {page_data['_urls']['comments']}
+                                    ticket_id={page_data['id']}
+                                    commentCallback={() => {
+                                        setRelaod(true)
+                                    }}
+                                />
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
