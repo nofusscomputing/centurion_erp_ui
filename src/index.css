@@ -1353,6 +1353,37 @@ section .model-note div.single-note {
   display: block;
 }
 
+
+div.cards {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content:left;
+  padding: 10px;
+  text-align: center;
+  vertical-align: top;
+  width: 100%;
+}
+
+section.card {
+  align-self: top;
+  display: flexbox;
+  margin: 20px;
+  max-width: 40%;
+  min-width: 200px;
+  padding: 0px 20px;
+  text-align: left;
+  width: calc(30% - 40px);
+
+}
+
+section.card h3 {
+  background-color: var(--contrasting-colour);
+  color: var(--text-colour-button);
+  margin: -20px -20px 20px -20px;
+  padding: 2px 10px;
+  text-align: center;
+}
+
 .model-note div.comment-header {
   background-color: #aaa;
   color: var(--text-colour-button);
