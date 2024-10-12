@@ -1,0 +1,39 @@
+INHERIT: website-template/mkdocs.yml
+
+docs_dir: 'docs'
+
+repo_name: Centurion ERP UI
+repo_url: https://github.com/nofusscomputing/centurion_erp_ui
+edit_uri: '/edit/development/docs/'
+theme: 
+  icon:
+    repo: fontawesome/brands/github
+
+
+nav:
+- Home: index.md
+
+- Articles: 
+
+  - articles/index.md
+
+- Projects: 
+
+  - projects/index.md
+
+  - Centurion ERP:
+
+    - projects/centurion_erp/index.md
+
+    - User Interface:
+
+      - projects/centurion_erp/user_interface/index.md
+
+      - projects/centurion_erp/user_interface/url.md
+
+- Operations: 
+
+  - operations/index.md
+
+- Contact Us: contact.md
+
