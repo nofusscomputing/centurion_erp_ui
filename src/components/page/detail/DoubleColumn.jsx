@@ -20,9 +20,9 @@ const DoubleColumn = ({
                                 <label>
                                     {
                                         (
-                                            field in metadata.actions.PUT
+                                            field in metadata.fields
                                         ) ?
-                                            metadata.actions.PUT[field].label
+                                            metadata.fields[field].label
                                             :
                                             ""
                                     }
@@ -40,9 +40,9 @@ const DoubleColumn = ({
                                 <label>
                                     {
                                         (
-                                            field in metadata.actions.PUT
+                                            field in metadata.fields
                                         ) ?
-                                            metadata.actions.PUT[field].label
+                                            metadata.fields[field].label
                                             :
                                             ""
                                     }
@@ -66,9 +66,9 @@ const DoubleColumn = ({
                                 <label>
                                     {
                                         (
-                                            field in metadata.actions.PUT
+                                            field in metadata.fields
                                         ) ?
-                                            metadata.actions.PUT[field].label
+                                            metadata.fields.label
                                             :
                                             ""
                                     }
@@ -85,9 +85,9 @@ const DoubleColumn = ({
                                 <label>
                                     {
                                         (
-                                            field in metadata.actions.PUT
+                                            field in metadata.fields
                                         ) ?
-                                            metadata.actions.PUT[field].label
+                                            metadata.fields[field].label
                                             :
                                             ""
                                     }

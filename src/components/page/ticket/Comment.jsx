@@ -22,9 +22,6 @@ const TicketCommentForm = ({
         console.log(post_url)
     let comment_class = 'comment-type-default comment-form'
 
-    let action_keyword = Object.keys(metadata.actions)[0]
-
-
     const [task_comment, setTaskComment] = useState(false)
 
     const [form_data, setFormData] = useState({})
@@ -43,7 +40,7 @@ const TicketCommentForm = ({
 
         if( ! form_data.comment_type ) {
 
-            for( let comment_type of metadata.actions[action_keyword]['comment_type'].choices) {
+            for( let comment_type of metadata.fields['comment_type'].choices) {
 
                 if( 'comment' === String(comment_type.display_name).toLowerCase() ) {
                     setFormData((prevState) => ({ ...prevState, ['comment_type']: comment_type.value }))
@@ -103,12 +100,12 @@ const TicketCommentForm = ({
                         <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                        choices={metadata.actions[action_keyword]['source'].choices}
+                                        choices={metadata.fields['source'].choices}
                                         id = 'source'
-                                        label = {metadata.actions[action_keyword]['source'].label}
-                                        helptext   = {metadata.actions[action_keyword]['source'].help_text}
+                                        label = {metadata.fields['source'].label}
+                                        helptext   = {metadata.fields['source'].help_text}
                                         // error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.actions[action_keyword]['source'].required}
+                                        required   = {metadata.fields['source'].required}
                                         // value={1}
                                         onChange={handleChange}
                                     />
@@ -117,12 +114,12 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.actions[action_keyword]['status'].choices}
+                                    choices={metadata.fields['status'].choices}
                                     id = 'status'
-                                    label = {metadata.actions[action_keyword]['status'].label}
-                                    helptext   = {metadata.actions[action_keyword]['status'].help_text}
+                                    label = {metadata.fields['status'].label}
+                                    helptext   = {metadata.fields['status'].help_text}
                                     // error_text = {form_error && form_error[field_key]}
-                                    required   = {metadata.actions[action_keyword]['status'].required}
+                                    required   = {metadata.fields['status'].required}
                                     value={1}
                                     onChange={handleChange}
                                 />
@@ -131,12 +128,12 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.actions[action_keyword]['responsible_user'].choices}
+                                    choices={metadata.fields['responsible_user'].choices}
                                     id = 'responsible_user'
-                                    label = {metadata.actions[action_keyword]['responsible_user'].label}
-                                    helptext   = {metadata.actions[action_keyword]['responsible_user'].help_text}
+                                    label = {metadata.fields['responsible_user'].label}
+                                    helptext   = {metadata.fields['responsible_user'].help_text}
                                     // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[action_keyword]['responsible_user'].required}
+                                    // required   = {metadata.fields['responsible_user'].required}
                                     // value={1}
                                     onChange={handleChange}
                                 />
@@ -145,12 +142,12 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.actions[action_keyword]['responsible_team'].choices}
+                                    choices={metadata.fields['responsible_team'].choices}
                                     id = 'responsible_team'
-                                    label = {metadata.actions[action_keyword]['responsible_team'].label}
-                                    helptext   = {metadata.actions[action_keyword]['responsible_team'].help_text}
+                                    label = {metadata.fields['responsible_team'].label}
+                                    helptext   = {metadata.fields['responsible_team'].help_text}
                                     // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[action_keyword]['responsible_user'].required}
+                                    // required   = {metadata.fields['responsible_user'].required}
                                     // value={1}
                                     onChange={handleChange}
                                 />
@@ -159,12 +156,12 @@ const TicketCommentForm = ({
                         { true && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.actions[action_keyword]['category'].choices}
+                                    choices={metadata.fields['category'].choices}
                                     id = 'category'
-                                    label = {metadata.actions[action_keyword]['category'].label}
-                                    helptext   = {metadata.actions[action_keyword]['category'].help_text}
+                                    label = {metadata.fields['category'].label}
+                                    helptext   = {metadata.fields['category'].help_text}
                                     // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[action_keyword]['responsible_user'].required}
+                                    // required   = {metadata.fields['responsible_user'].required}
                                     // value={1}
                                     onChange={handleChange}
                                 />
@@ -194,8 +191,8 @@ const TicketCommentForm = ({
                             <span>
                                 <TextField
                                     id = 'planned_start_date'
-                                    label = {metadata.actions[action_keyword]['planned_start_date'].label}
-                                    helptext   = {metadata.actions[action_keyword]['planned_start_date'].help_text}
+                                    label = {metadata.fields['planned_start_date'].label}
+                                    helptext   = {metadata.fields['planned_start_date'].help_text}
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
@@ -209,8 +206,8 @@ const TicketCommentForm = ({
                             <span>
                                 <TextField
                                     id = 'planned_finish_date'
-                                    label = {metadata.actions[action_keyword]['planned_finish_date'].label}
-                                    helptext   = {metadata.actions[action_keyword]['planned_finish_date'].help_text}
+                                    label = {metadata.fields['planned_finish_date'].label}
+                                    helptext   = {metadata.fields['planned_finish_date'].help_text}
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
@@ -224,8 +221,8 @@ const TicketCommentForm = ({
                             <span>
                                 <TextField
                                     id = 'real_start_date'
-                                    label = {metadata.actions[action_keyword]['real_start_date'].label}
-                                    helptext   = {metadata.actions[action_keyword]['real_start_date'].help_text}
+                                    label = {metadata.fields['real_start_date'].label}
+                                    helptext   = {metadata.fields['real_start_date'].help_text}
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
@@ -239,8 +236,8 @@ const TicketCommentForm = ({
                             <span>
                                 <TextField
                                     id = 'real_start_date'
-                                    label = {metadata.actions[action_keyword]['real_finish_date'].label}
-                                    helptext   = {metadata.actions[action_keyword]['real_finish_date'].help_text}
+                                    label = {metadata.fields['real_finish_date'].label}
+                                    helptext   = {metadata.fields['real_finish_date'].help_text}
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
@@ -254,10 +251,10 @@ const TicketCommentForm = ({
 
                     <Button
                         button_text="Comment"
-                        menu_entries={metadata.actions[action_keyword]['comment_type'].choices}
+                        menu_entries={metadata.fields['comment_type'].choices}
                         MenuClickCallback={(menu_value) => {
 
-                            const comment_types = metadata.actions[action_keyword]['comment_type'].choices
+                            const comment_types = metadata.fields['comment_type'].choices
                             let menu_entry = ''
 
                             console.log(`menu entry click value ${menu_value}`)

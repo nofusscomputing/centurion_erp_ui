@@ -48,7 +48,7 @@ const RelatedTickets = ({
 
                 let related_name = ''
 
-                for( let choice of metadata.actions['POST']['how_related']['choices']) {
+                for( let choice of metadata.fields['how_related']['choices']) {
 
                     if( Number(related_ticket.how_related) === Number(choice.value) ) {
                         related_name = String(choice.display_name).toLowerCase()

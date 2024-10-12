@@ -71,26 +71,15 @@ const ModelForm = ({
                 setFormData(() => {
 
                     let initial_form_data = {}
-
-
-                    if( 'PUT' in data.actions ) {
-
-                        meta_action = 'PUT'
     
-                    } else {
-    
-                        meta_action = 'POST'
-    
-                    }
-    
-                    Object.keys(data.actions[meta_action]).map((field_key) => {
+                    Object.keys(data.fields).map((field_key) => {
 
-                        if( data.actions[meta_action][field_key].required ) {
+                        if( data.fields[field_key].required ) {
                             if( page_data ) {
                                 initial_form_data[field_key] = page_data[field_key]
 
-                            } else if( 'initial' in data.actions[meta_action][field_key] ) {
-                                 initial_form_data[field_key] = data.actions[meta_action][field_key].initial
+                            } else if( 'initial' in data.fields[field_key] ) {
+                                 initial_form_data[field_key] = data.fields[field_key].initial
                             }else {
                                 initial_form_data[field_key] = ''
                             }
@@ -181,19 +170,9 @@ const ModelForm = ({
                     Are you sure you wish to delete this item?
                     </>}
                     { ( metadata && params.action != 'delete' ) &&
-                    Object.keys(metadata.actions['PUT' in metadata.actions ? 'PUT' : 'POST']).map((field_key) => {
+                    Object.keys(metadata.fields).map((field_key) => {
 
-                        if( 'PUT' in metadata.actions ) {
-
-                            meta_action = 'PUT'
-            
-                        } else {
-            
-                            meta_action = 'POST'
-            
-                        }
-
-                        if( ! metadata.actions[meta_action][field_key].read_only ) {
+                        if( ! metadata.fields[field_key].read_only ) {
 
                             let value = null
 
@@ -206,11 +185,11 @@ const ModelForm = ({
 
                                 value = page_data[field_key]
 
-                            } else if ( 'initial' in metadata.actions[meta_action][field_key]) {
+                            } else if ( 'initial' in metadata.fields[field_key]) {
 
-                                if( metadata.actions[meta_action][field_key].initial !== null ) {
+                                if( metadata.fields[field_key].initial !== null ) {
 
-                                    value = metadata.actions[meta_action][field_key].initial
+                                    value = metadata.fields[field_key].initial
 
                                 }
 
@@ -219,16 +198,16 @@ const ModelForm = ({
 
                             console.log(`field data: ${JSON.stringify(form_data)}`)
 
-                            switch(metadata.actions[meta_action][field_key].type) {
+                            switch(metadata.fields[field_key].type) {
 
                                 case 'Boolean':
 
                                     return (<Slider
                                         id = {field_key}
-                                        label = {metadata.actions[meta_action][field_key].label}
+                                        label = {metadata.fields[field_key].label}
                                         error_text = {form_error && form_error[field_key]}
-                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
-                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        helptext   = {metadata.fields[field_key].help_text}
+                                        required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
                                     />)
@@ -237,12 +216,12 @@ const ModelForm = ({
                                 case 'Relationship':
 
                                     return (<Select
-                                        choices={metadata.actions[meta_action][field_key].choices}
+                                        choices={metadata.fields[field_key].choices}
                                         id = {field_key}
-                                        label = {metadata.actions[meta_action][field_key].label}
-                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
+                                        label = {metadata.fields[field_key].label}
+                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
                                     />)
@@ -252,10 +231,10 @@ const ModelForm = ({
                                     return (<TextArea
                                     field_type="json"
                                         id = {field_key}
-                                        label = {metadata.actions[meta_action][field_key].label}
-                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
+                                        label = {metadata.fields[field_key].label}
+                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
                                     />)
@@ -264,10 +243,10 @@ const ModelForm = ({
 
                                     return (<TextField
                                         id = {field_key}
-                                        label = {metadata.actions[meta_action][field_key].label}
-                                        helptext   = {metadata.actions[meta_action][field_key].help_text}
+                                        label = {metadata.fields[field_key].label}
+                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.actions[meta_action][field_key].required}
+                                        required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
                                     />)

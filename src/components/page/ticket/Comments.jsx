@@ -22,7 +22,7 @@ const TicketComments = ({
 
     try {
 
-        comment_type = String(metadata.actions.POST.comment_type.choices[Number(comment_data.comment_type)-1].display_name).toLowerCase()
+        comment_type = String(metadata.fields.comment_type.choices[Number(comment_data.comment_type)-1].display_name).toLowerCase()
 
     }catch( e ) {
 

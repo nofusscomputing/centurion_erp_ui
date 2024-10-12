@@ -17,7 +17,7 @@ const SingleColumn = ({
 
                     if(
                         field == "model_notes"
-                        || String(metadata.actions.PUT[field].type).toLowerCase() == "json"
+                        || String(metadata.fields[field].type).toLowerCase() == "json"
                     ) {
 
                         return(
@@ -26,9 +26,9 @@ const SingleColumn = ({
                                 <label>
                                     {
                                         (
-                                            field in metadata.actions.PUT
+                                            field in metadata.fields
                                         ) ?
-                                            metadata.actions.PUT[field].label
+                                            metadata.fields[field].label
                                             :
                                             ""
                                     }
@@ -49,9 +49,9 @@ const SingleColumn = ({
                                 <label>
                                     {
                                         (
-                                            field in metadata.actions.PUT
+                                            field in metadata.fields
                                         ) ?
-                                            metadata.actions.PUT[field].label
+                                            metadata.fields[field].label
                                             :
                                             ""
                                     }

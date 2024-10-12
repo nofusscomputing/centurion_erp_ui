@@ -30,32 +30,15 @@ export default function FieldData({
 
     let field_data = '';
 
-    let fields = {}
-
-
-    if( 'POST' in metadata.actions ) {
-
-        fields = metadata.actions.POST
-
-    } else if( 'PUT' in metadata.actions ) {
-
-        fields = metadata.actions.PUT
-
-    } else if( 'GET' in metadata.actions ) {
-
-        fields = metadata.actions.GET
-
-    }
-
     let data_field = field_lookup(field_name, data)
 
     if( data_field ) {
 
         let field_type = null
 
-        if( field_name in fields ) {
+        if( field_name in metadata.fields ) {
 
-            field_type = fields[field_name].type
+            field_type = metadata.fields[field_name].type
 
         }
 
@@ -109,7 +92,7 @@ export default function FieldData({
 
             case 'Choice':
 
-                for( const [key, choice] of Object.entries(fields[field_name].choices) ) {
+                for( const [key, choice] of Object.entries(metadata.fields[field_name].choices) ) {
 
                     if( Number(data_field) == Number(choice.value) ) {
 
@@ -143,7 +126,7 @@ export default function FieldData({
             case 'Relationship':
             case 'Serializer':
 
-                if( fields[field_name].relationship_type === 'ManyToMany' ) {
+                if( metadata.fields[field_name].relationship_type === 'ManyToMany' ) {
 
                     if( typeof (data_field) === 'object' ) {
 

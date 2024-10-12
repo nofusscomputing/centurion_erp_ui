@@ -61,7 +61,7 @@ const Ticket = ({
 
                 setMetaData(data)
 
-                for(let ticket_type_entry of data.actions['PUT']['ticket_type'].choices ) {
+                for(let ticket_type_entry of data.fields['ticket_type'].choices ) {
 
                     if( Number(ticket_type_entry.value) === Number(page_data['ticket_type']) ) {
 

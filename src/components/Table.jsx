@@ -26,8 +26,6 @@ const Table = ({
 
     const [metadata, setMetaData] = useState(null);
 
-    let [metadata_action, SetMetadataAction] = useState(null)
-
     const [is_loaded, setLoaded] = useState(false);
 
     const [page, setPage] = useState(0);
@@ -61,8 +59,6 @@ const Table = ({
             (data) =>{
 
                 setMetaData(data)
-
-                SetMetadataAction(Object.keys(data.actions)[0])
 
 
                 if( SetContentHeaderIcon ) {
@@ -177,7 +173,7 @@ const Table = ({
 
                         }
 
-                        if( key in metadata.actions[metadata_action] ) {
+                        if( key in metadata.fields ) {
 
                             if( typeof(key) === 'string' ) {
 
@@ -191,7 +187,7 @@ const Table = ({
                                 } else {
 
                                     return (
-                                        <th key={key}>{metadata.actions[metadata_action][key].label}</th>  
+                                        <th key={key}>{metadata.fields[key].label}</th>  
                                     )
                                 }
                             } 
@@ -222,7 +218,7 @@ const Table = ({
                                 {
                                     metadata.table_fields.map(key => {
 
-                                        if (key in metadata.actions[metadata_action]) {
+                                        if (key in metadata.fields) {
 
                                             if( typeof(key) === 'string' ) {
 
