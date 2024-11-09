@@ -85,22 +85,15 @@ const Detail = ({
             },
             'OPTIONS'
         )
-    },[page_data])
+    },[
+        // page_data
+    ])
 
     useEffect(() => {
 
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
             if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
-
-                apiFetch(
-                    page_data['_urls']['notes'],
-                    (data) => {
-
-                        setNotes(data)
-                        setUpdateNotes(false)
-                    }
-                )
 
                 apiFetch(
                     page_data['_urls']['notes'],
@@ -113,10 +106,32 @@ const Detail = ({
             }
         }
 
-    }, [update_notes])
+    }, [])
+
+    useEffect(() => {
+
+        if( Object.keys(page_data['_urls']).includes('notes') ) {
+
+            if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
+
+                apiFetch(
+                    page_data['_urls']['notes'],
+                    (data) => {
+
+                        setNotes(data)
+                    }
+                )
+
+            }
+        }
+
+    }, [
+        update_notes
+    ])
 
 
-    return ( 
+    return (
+        page_data &&
         <section>
 
             { metadata && <NavTabs
@@ -152,7 +167,7 @@ const Detail = ({
 
                                             setNotesForm({})
 
-                                            setUpdateNotes(true)
+                                            setUpdateNotes( update_notes ? false : true )
 
                                             e.target.reset()
                                         }
