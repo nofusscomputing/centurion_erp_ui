@@ -60,7 +60,7 @@ const Section = ({
         if( 'external_links' in data._urls ) {
 
             apiFetch(
-                String(data._urls.external_links).split('api/v2')[1],
+                data._urls.external_links,
                 (response) =>{
 
                     setExternalLinks(response)

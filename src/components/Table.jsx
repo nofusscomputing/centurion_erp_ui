@@ -214,7 +214,7 @@ const Table = ({
 
                     return (
                         <>
-                            <tr id={data.id} key={data.id}>
+                            <tr key={data.id}>
                                 {
                                     metadata.table_fields.map(key => {
 
@@ -263,6 +263,7 @@ const Table = ({
                             </tr>
                             {collapsable_fields.length > 0 &&
                                 <tr
+                                    key={data.id + 'collapsible'}
                                     className='collapsible-row' 
                                 >
                                     <td colspan={(metadata.table_fields.length)}>

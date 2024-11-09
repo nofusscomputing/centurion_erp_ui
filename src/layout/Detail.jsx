@@ -126,6 +126,7 @@ const Detail = ({
         }
 
     }, [
+        page_data,
         update_notes
     ])
 

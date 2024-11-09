@@ -3,6 +3,7 @@ import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
 import { ResponseException } from "../../classes/Exceptions";
 import { apiFetch } from "../../hooks/apiFetch";
+import urlBuilder from "../../hooks/urlBuilder";
 
 
 
@@ -20,6 +21,10 @@ const Navbar = ({
 
     const location = useLocation();
 
+    const url_builder = urlBuilder(
+        params
+    )
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,17 +35,6 @@ const Navbar = ({
 
                 SetNavigationEntries(data.navigation)
 
-                if( params.module ){
-
-                    setNavMenu(params.module);
-
-                }
-
-                if( params.model ) {
-
-                    setNavPage(String(params.module + '-' + params.model))
-
-                }
             },
             'OPTIONS'
         )
@@ -55,6 +49,19 @@ const Navbar = ({
             })
 
     },[])
+
+    useEffect(() => {
+
+
+        setNavMenu(url_builder.params.module);
+
+        setNavPage(String(url_builder.params.module + '-' + url_builder.params.model))
+
+
+    }, [
+        url_builder.params.module,
+        url_builder.params.model,
+    ])
 
 
     if( nav_visible ) {
