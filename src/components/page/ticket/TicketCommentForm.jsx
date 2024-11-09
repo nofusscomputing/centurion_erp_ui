@@ -79,7 +79,7 @@ const TicketCommentForm = ({
 
 
                             const response = await apiFetch(
-                                String(post_url).split('api/v2')[1],
+                                post_url,
                                 setFormError,
                                 'POST',
                                 form_data

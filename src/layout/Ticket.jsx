@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useLoaderData, useParams } from "react-router-dom";
 import FieldData from "../functions/FieldData";
 
-import TicketComments from "../components/page/ticket/Comments";
 import { apiFetch } from "../hooks/apiFetch";
-import TicketCommentForm from "../components/page/ticket/Comment";
 import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
+import TicketComments from "../components/page/ticket/TicketComments";
+import urlBuilder from "../hooks/urlBuilder";
 
 
 
@@ -37,7 +37,6 @@ const Ticket = ({
     SetContentHeaderIcon('')
 
     const [comments, setComments] = useState(null)
-    const [ reload, setRelaod ] = useState(false)
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
@@ -82,32 +81,21 @@ const Ticket = ({
 
     useEffect(() => {
 
-        apiFetch(
-            params.module + '/ticket/' + params.model + '/' + params.pk + '/comments?page[size]=500',
-            (data) =>{
+        if( page_data['_urls']['comments'] ) {
 
-                setComments(data)
+            apiFetch(
+                page_data['_urls']['comments'],
+                (data) =>{
 
-            },
-        )
+                    setCommentMetaData(data)
 
-    }, [params, reload])
+                },
+                'OPTIONS'
+            )
+        }
 
+    }, [page_data['_urls']['comments']])
 
-    useEffect(() => {
-
-
-        apiFetch(
-            params.module + '/ticket/' + params.model + '/' + params.pk + '/comments',
-            (data) =>{
-
-                setCommentMetaData(data)
-
-            },
-            'OPTIONS'
-        )
-
-    }, [params])
 
     return (
         metadata !== null && <div className="ticket">
@@ -154,43 +142,28 @@ const Ticket = ({
                     </div>
                 </section>
 
+                { page_data['_urls']['related_tickets'] &&
                 <RelatedTickets
                     data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
                     ticket_id={page_data['id']}
-                />
+                />}
 
+                { page_data['_urls']['linked_items'] &&
                 <LinkedItems
                     data_url={String(page_data['_urls']['linked_items']).split('api/v2')[1]}
-                />
+                />}
 
-                <div className="comments">
-                    <ul className="comments">
-                        {(comments != null && comment_metadata != null) && comments.results.map((comment) => {
+                { (
+                    comment_metadata
+                    && page_data['_urls']['comments']
+                    && page_data['id']
 
-                            return (
-                                <li>
-                                    <TicketComments
-                                        comment_data={comment}
-                                        metadata={comment_metadata}
-                                        ticket_id={page_data['id']}
-                                    />
-                                </li>
-                            )
-                        })}
-                        {comment_metadata != null &&
-                            <li>
-                                <TicketCommentForm
-                                    metadata={comment_metadata}
-                                    post_url = {page_data['_urls']['comments']}
-                                    ticket_id={page_data['id']}
-                                    commentCallback={() => {
-                                        setRelaod(true)
-                                    }}
-                                />
-                            </li>
-                        }
-                    </ul>
-                </div>
+                ) && 
+                <TicketComments
+                    comment_metadata = {comment_metadata}
+                    comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + '?page[size]=500'}
+                    ticket_id = {page_data['id']}
+                />}
             </div>
 
             <div className="sidebar">

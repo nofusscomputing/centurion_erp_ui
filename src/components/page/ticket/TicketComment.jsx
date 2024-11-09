@@ -2,12 +2,12 @@ import IconLoader from "../../IconLoader"
 import FieldData from "../../../functions/FieldData"
 import { useEffect, useState } from "react"
 import { apiFetch } from "../../../hooks/apiFetch"
-import TicketCommentForm from "./Comment"
+import TicketCommentForm from "./TicketCommentForm"
 import { secondsToTime } from "../../../layout/Ticket"
 
 
 
-const TicketComments = ({
+const TicketComment = ({
     discussion = false,
     comment_data = {},
     metadata = null,
@@ -58,6 +58,7 @@ const TicketComments = ({
     const comment_header_text_updated = (<span class="sub-script">Updated </span>)
 
     const comment_header_text = (
+        metadata && comment_data &&
         <div id="text">
             <FieldData
                 metadata={metadata}
@@ -288,9 +289,10 @@ const TicketComments = ({
                     />
                 </h3>
                 <ul className="replies">
-                    {threads.results.map((comment, index) => (
+                    { threads.results &&
+                    threads.results.map((comment, index) => (
                         <li className="replies">
-                            <TicketComments
+                            <TicketComment
                                 comment_data={comment}
                                 discussion = {true}
                                 metadata={metadata}
@@ -314,4 +316,4 @@ const TicketComments = ({
     );
 }
 
-export default TicketComments;
+export default TicketComment;
