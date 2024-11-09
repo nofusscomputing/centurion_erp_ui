@@ -8,6 +8,7 @@ import ModelNote from "../components/page/detail/ModelNote";
 import TextArea from "../components/form/Textarea";
 import Button from "../components/form/Button";
 import IconLoader from "../components/IconLoader";
+import urlBuilder from "../hooks/urlBuilder";
 
 
 
@@ -29,12 +30,16 @@ const Detail = ({
     const [ notes_form, setNotesForm ] = useState({})
     const [ note_metadata, setNoteMetadata ] = useState(null)
 
-    SetContentHeaderIcon('')
+    // SetContentHeaderIcon('')
+
+    const url_builder = urlBuilder (
+        params
+    )
 
     useEffect(() => {
 
         apiFetch(
-            params.module + '/' + params.model + '/' + params.pk,
+            url_builder.api.path,
             (data) =>{
 
                 setMetaData(data)
@@ -48,14 +53,14 @@ const Detail = ({
                     setContentHeading(page_data['title']);
 
                 }else{
-                    setContentHeading(metadata['name']);
+                    setContentHeading(data['name']);
                 }
 
 
                 SetContentHeaderIcon(
                     <>
-                        {data['documentation'] &&
-                            <Link to={data['documentation']} target="_new">
+                        { ('documentation' in data) &&
+                            <Link to={data['name']} target="_new">
                                 <IconLoader
                                     name='help'
                                 />
@@ -86,25 +91,26 @@ const Detail = ({
 
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
-            apiFetch(
-                String(page_data['_urls']['notes']).split('api/v2')[1],
-                (data) => {
+            if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
 
-                    setNotes(data)
-                    setUpdateNotes(false)
-                }
-            )
+                apiFetch(
+                    page_data['_urls']['notes'],
+                    (data) => {
 
-            
+                        setNotes(data)
+                        setUpdateNotes(false)
+                    }
+                )
 
-            apiFetch(
-                String(page_data['_urls']['notes']).split('api/v2')[1],
-                (data) => {
+                apiFetch(
+                    page_data['_urls']['notes'],
+                    (data) => {
 
-                    setNoteMetadata(data)
-                },
-                'OPTIONS'
-            )
+                        setNoteMetadata(data)
+                    },
+                    'OPTIONS'
+                )
+            }
         }
 
     }, [update_notes])

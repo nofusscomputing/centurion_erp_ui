@@ -5,6 +5,7 @@ import TextArea from "../components/form/Textarea";
 import TextField from "../components/form/Textfield";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
+import urlBuilder from "../hooks/urlBuilder";
 
 
 
@@ -13,7 +14,7 @@ const ModelForm = ({
     SetContentHeaderIcon = null
 }) => {
     
-    SetContentHeaderIcon('')
+    // SetContentHeaderIcon('')
 
     const values=[
         {
@@ -36,34 +37,15 @@ const ModelForm = ({
 
     const navigate = useNavigate();
 
-    let meta_action = null
-
-    let url = '/' + params.module + '/' + params.model + '/' + params.pk    // default edit
-
-    if( ! params.pk ) {
-        url = '/' + params.module + '/' + params.model
-    }
-
-    if( params.common_pk ) {
-
-        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
-
-    }else if ( params.common_model && params.pk ) {
-
-        url = url = '/' + params.module + '/' + params.common_model + '/' + params.model + '/' + params.pk
-    }
-
-    if( params.common_pk && params.pk && params.action === 'edit') {
-
-        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model + '/' + params.pk
-
-    }
+    let url_builder = urlBuilder(
+        params
+    )
 
 
     useEffect(() => {
 
         apiFetch(
-            url,
+            url_builder.api.path,
             (data) =>{
 
                 setMetaData(data)
@@ -139,29 +121,16 @@ const ModelForm = ({
                 <form onSubmit={async e => {
                     e.preventDefault();
 
-                    if (params.action == 'delete' ) {
-                        meta_action = 'DELETE'
-                    }
-
                     const response = await apiFetch(
-                        url,
+                        url_builder.api.path,
                         setFormError,
-                        meta_action,
+                        url_builder.method,
                         form_data
                     )
 
-                    if (params.action == 'delete' ) {
-
-                        url = '/' + params.module + '/' + params.model
-
-                    }else if( params.common_model && params.common_pk ) {
-
-                        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk
-                    }
-
                     if ( response.ok ) {
 
-                        navigate(url)
+                        navigate(url_builder.return_url)
 
                     }
                 }}>
@@ -268,7 +237,7 @@ const ModelForm = ({
                                 width: 'fit-content'
                             }}>
                             <button className="form common-field" type="submit">Save</button>
-                            <Link to={url}><button className="form common-field inverse">Cancel</button></Link>
+                            <Link to={url_builder.return_url}><button className="form common-field inverse">Cancel</button></Link>
                         </div>
                     </div>
 

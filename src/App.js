@@ -18,6 +18,7 @@ import Ticket from "./layout/Ticket";
 import ModelForm from "./layout/ModelForm";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
+import urlBuilder from "./hooks/urlBuilder";
 
 const Login = () => {
 
@@ -77,6 +78,16 @@ function App() {
                         loader = {detailsLoader}
                     />
 
+                    {/* project_management/project/2/project_task/41 */}
+                    <Route path="/:module/:common_model/:common_pk/project_task/:pk"
+                        element={<Ticket
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
                     <Route path="/:module/ticket/:model/:pk"
                         element={<Ticket
                             setContentHeading={setContentHeading}
@@ -86,7 +97,8 @@ function App() {
                         loader = {detailsLoader}
                     />
 
-                    <Route path="/:module/:common_model/:model/:pk/:action"
+                    {/* <Route path="/:module/:common_model/:model/:pk/:action" */}
+                    <Route path="/:module/:common_model/:model/:pk/edit"
                         element={<ModelForm
                             setContentHeading={setContentHeading}
                             SetContentHeaderIcon={SetContentHeaderIcon}
@@ -170,51 +182,12 @@ const detailsLoader = async ({request, params}) => {
 
     let loader = null
 
-    let url = '/' + params.module + '/' + params.model // + '/' + params.pk    // default edit
-
-    if( params.common_pk ) {
-
-        url = '/' + params.module + '/' + params.common_model + '/' + params.common_pk + '/' + params.model
-
-    }
-
-    if( String(window.location.pathname).includes('/ticket/') ) {
-        
-        url = '/' + params.module + '/ticket/' + params.model
-
-    }
-
-    if( params.model && params.pk && params.action ) {
-
-        url = '/core/' + params.model + '/' + params.pk + '/' + params.action
-
-    }
+    const url_builder = urlBuilder(
+        params = params
+    )
 
 
-    if( String(window.location.pathname).startsWith('/settings') ) {
-
-        url = '/settings'
-        
-        if( params.model ) {
-            url = url + '/' + params.model
-        }
-
-        // url = '/' + params.module + '/ticket/' + params.model
-
-    }
-
-
-    url = 'http://127.0.0.1:8002/api/v2' + url
-
-        if( ! (params.model && params.pk && params.action) && params.pk ) {
-
-            url = url + '/' + params.pk
-
-        }
-
-
-
-    const response = await fetch(url, {
+    const response = await fetch(url_builder.api.url, {
         headers: {'X-CSRFToken': getCookie('csrftoken')},
         credentials: 'include'
     })

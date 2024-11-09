@@ -68,7 +68,7 @@ const DoubleColumn = ({
                                         (
                                             field in metadata.fields
                                         ) ?
-                                            metadata.fields.label
+                                            metadata.fields[field].label
                                             :
                                             ""
                                     }

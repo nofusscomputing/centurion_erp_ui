@@ -52,10 +52,15 @@ const Ticket = ({
 
     setContentHeading(page_data['title'])
 
+
+    let url_builder = urlBuilder(
+        params
+    )
+
     useEffect(() => {
 
         apiFetch(
-            params.module + '/ticket/' + params.model + '/' + params.pk,
+            url_builder.api.path,
             (data) =>{
 
                 setMetaData(data)
@@ -76,7 +81,7 @@ const Ticket = ({
             'OPTIONS'
         )
 
-    }, [params])
+    }, [])
 
 
     useEffect(() => {

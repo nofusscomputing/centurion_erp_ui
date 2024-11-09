@@ -18,14 +18,29 @@ export async function apiFetch(
 
     let api_data = null
 
-    if(
-        ! url_path.startsWith('/')
-        && url_path != ''
-    ) {
+    if( String(url_path).includes('api/v2') ) {
 
-        url_path = '/' + url_path
+        url_path = String(url_path).split('api/v2')[1]
 
     }
+
+    if( url_path ) {
+
+        if(
+            ! url_path.startsWith('/')
+            && url_path != ''
+        ) {
+
+            url_path = '/' + url_path
+
+        }
+
+    } else {
+
+        url_path = '/'
+
+    }
+
 
     let request_data = {
         credentials: 'include',
