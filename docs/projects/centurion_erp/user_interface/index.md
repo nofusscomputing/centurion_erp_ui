@@ -31,3 +31,8 @@ The user interface will be built using the React Framework. This also enables qu
 - [URLs](./url.md)
 
 - Views / Layouts
+
+
+## Configuration
+
+To configure the UI for use with Centurion, provide the API url within the docker containers environmental variables. i.e. `API_URL=https://my-domain-name.tld/api/v2`. Ensure there is no trailing slant `/` on the url. As soon as the container is running, the UI is ready for use.

@@ -318,7 +318,7 @@ export default function urlBuilder(
 
     return {
         'api': {
-            'url': 'http://127.0.0.1:8002/api/v2' + url,
+            'url': window.env.API_URL + url,
             'path': url
         },
         'method': method,

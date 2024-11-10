@@ -22,7 +22,7 @@ import urlBuilder from "./hooks/urlBuilder";
 
 const Login = () => {
 
-    window.location.replace('http://127.0.0.1:8002/api/v2/auth/login');
+    window.location.replace( window.env.API_URL + '/auth/login');
 
     return (
         <section>redirect</section>

@@ -86,7 +86,7 @@ const Detail = ({
             'OPTIONS'
         )
     },[
-        // page_data
+        page_data
     ])
 
     useEffect(() => {
@@ -106,7 +106,9 @@ const Detail = ({
             }
         }
 
-    }, [])
+    }, [
+        page_data
+    ])
 
     useEffect(() => {
 

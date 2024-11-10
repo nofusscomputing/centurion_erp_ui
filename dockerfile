@@ -43,6 +43,8 @@ ENV CI_PROJECT_URL=${CI_PROJECT_URL}
 ENV CI_COMMIT_SHA=${CI_COMMIT_SHA}
 ENV CI_COMMIT_TAG=${CI_COMMIT_TAG}
 
+ENV API_URL=__API_URL__
+
 
 COPY --from=build /workdir/build/ /usr/share/nginx/html/
 
@@ -50,10 +52,12 @@ COPY --from=build /workdir/build/ /usr/share/nginx/html/
 COPY includes/ /
 
 RUN apk update --no-cache; \
-apk upgrade --no-cache; \
+    apk upgrade --no-cache; \
     apk add --no-cache \
         supervisor; \
-    rm -f /etc/supervisord.conf;
+    rm -f /etc/supervisord.conf; \
+    chmod +x /entrypoint.sh
+
 
 WORKDIR /var/log
 
@@ -67,4 +71,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD \
   supervisorctl status || exit 1
 
 
-CMD [ /usr/bin/supervisord ]
+ENTRYPOINT [ "/entrypoint.sh" ]

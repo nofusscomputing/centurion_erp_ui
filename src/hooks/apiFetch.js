@@ -18,9 +18,9 @@ export async function apiFetch(
 
     let api_data = null
 
-    if( String(url_path).includes('api/v2') ) {
+    if( String(url_path).includes(window.env.API_URL) ) {    // normalise passed URLs
 
-        url_path = String(url_path).split('api/v2')[1]
+        url_path = String(url_path).replace(window.env.API_URL, '')
 
     }
 
@@ -60,7 +60,7 @@ export async function apiFetch(
 
     }
 
-    let response = await fetch('http://127.0.0.1:8002/api/v2' + url_path, request_data)
+    let response = await fetch(window.env.API_URL + url_path, request_data)
 
         .then(data => {
 
