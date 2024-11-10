@@ -7,5 +7,5 @@
  * configuration
  */
 window.env = {
-    API_URL: 'http://127.0.0.1:8002/api/v5',
+    API_URL: 'http://127.0.0.1:8002/api/v2',
   };

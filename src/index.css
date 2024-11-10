@@ -52,7 +52,8 @@
 
 
 /* AWX */
-/* :root {
+/* :root { */
+.dark-theme {
 
   --contrasting-colour: #177ee6;
 
@@ -101,7 +102,7 @@
   --text-colour-software-action-install: #319c3a;
   --text-colour-software-action-remove: #9c3131;
 
-} */
+}
 
 
 /* Dark */
