@@ -1,0 +1,21 @@
+{
+
+    "/api/assistance/request": "/ticket_requests",
+    "/api/assistance/request/option": "/ticket_requests_option",
+    "/api/assistance/request/:Id": "/ticket_requests_id/:Id",
+    "/api/assistance/request/2/comments": "/ticket_2_comments",
+    "/api/assistance/request/2/comments/option": "/ticket_comments_option",
+    "/api/assistance/request/:Id/option": "/ticket_request_option",
+
+    "/api/itam/device": "/devices",
+    "/api/itam/device/option": "/devices_option",
+    "/api/itam/device/:Id": "/device_id/:Id",
+    "/api/itam/device/:Id/option": "/device_option",
+
+    "/api/itam/software": "/software",
+    "/api/itam/software/option": "/softwares_option",
+    "/api/itam/software/:Id": "/software_id/:Id",
+    "/api/itam/software/:Id/option": "/software_option",
+
+    "/api/options/navigation": "/navigation"
+}
