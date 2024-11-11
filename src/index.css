@@ -1460,7 +1460,7 @@ form fieldset label.name {
   padding-bottom: 5px;
 }
 
-form fieldset span.error-text {
+span.error-text {
   display: block;
   color: var(--text-colour-error);
   font-size: 10pt;

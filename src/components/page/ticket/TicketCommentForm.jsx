@@ -100,13 +100,8 @@ const TicketCommentForm = ({
                         <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                        choices={metadata.fields['source'].choices}
                                         id = 'source'
-                                        label = {metadata.fields['source'].label}
-                                        helptext   = {metadata.fields['source'].help_text}
-                                        // error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields['source'].required}
-                                        // value={1}
+                                        field_data={metadata.fields['source']}
                                         onChange={handleChange}
                                     />
                             </span>
@@ -114,12 +109,8 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['status'].choices}
                                     id = 'status'
-                                    label = {metadata.fields['status'].label}
-                                    helptext   = {metadata.fields['status'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    required   = {metadata.fields['status'].required}
+                                    field_data={metadata.fields['status']}
                                     value={1}
                                     onChange={handleChange}
                                 />
@@ -128,13 +119,8 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['responsible_user'].choices}
                                     id = 'responsible_user'
-                                    label = {metadata.fields['responsible_user'].label}
-                                    helptext   = {metadata.fields['responsible_user'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.fields['responsible_user'].required}
-                                    // value={1}
+                                    field_data={metadata.fields['responsible_user']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -142,13 +128,8 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['responsible_team'].choices}
                                     id = 'responsible_team'
-                                    label = {metadata.fields['responsible_team'].label}
-                                    helptext   = {metadata.fields['responsible_team'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.fields['responsible_user'].required}
-                                    // value={1}
+                                    field_data={metadata.fields['responsible_team']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -156,13 +137,8 @@ const TicketCommentForm = ({
                         { true && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['category'].choices}
                                     id = 'category'
-                                    label = {metadata.fields['category'].label}
-                                    helptext   = {metadata.fields['category'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.fields['responsible_user'].required}
-                                    // value={1}
+                                    field_data={metadata.fields['responsible_user']}
                                     onChange={handleChange}
                                 />
                                 <FieldData

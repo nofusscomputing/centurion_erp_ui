@@ -221,6 +221,19 @@ const ModelForm = ({
                                         field_data={metadata.fields[field_key]}
                                     />)
 
+                                case 'DateTime':
+
+                                    return (<TextField
+                                        id = {field_key}
+                                        label = {metadata.fields[field_key].label}
+                                        helptext   = {metadata.fields[field_key].help_text}
+                                        error_text = {form_error && form_error[field_key]}
+                                        required   = {metadata.fields[field_key].required}
+                                        type = {'datetime-local'}
+                                        value={value}
+                                        onChange={handleChange}
+                                    />)
+
                                 case 'JSON':
 
                                     return (<TextArea
