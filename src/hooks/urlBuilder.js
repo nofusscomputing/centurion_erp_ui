@@ -254,6 +254,12 @@ export default function urlBuilder(
 
         method = 'POST'
 
+    }else if( action ==  'delete' ) {
+
+        method = 'DELETE'
+
+        return_url = String( return_url ).replace( '/' + pk )
+
     }else if( action ==  'edit' ) {
 
         method = 'PATCH'

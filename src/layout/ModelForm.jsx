@@ -163,7 +163,7 @@ const ModelForm = ({
 
                     }
                 }}>
-                    { metadata && params.action == 'delete' && 
+                    { metadata && url_builder.params.action == 'delete' && 
                     <>
                     Are you sure you wish to delete this item?
                     </>}
