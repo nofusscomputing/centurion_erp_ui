@@ -197,6 +197,7 @@ const ModelForm = ({
                                         required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
+                                        field_data={metadata.fields[field_key]}
                                     />)
 
                                 case 'JSON':

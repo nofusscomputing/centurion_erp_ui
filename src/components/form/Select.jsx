@@ -7,7 +7,8 @@ const Select = ({
     required=false,
     error_text=null,
     value = '',
-    onChange = null
+    onChange = null,
+    field_data = null
 }) => {
 
     
@@ -27,6 +28,7 @@ const Select = ({
                 required={required}
                 className="common-field"
                 onChange={onChange}
+                multiple = {field_data.relationship_type == 'ManyToMany' ? true : false}
             >
                 <option value="">Please select an option</option>
                 {choices.map((choice) => {

@@ -1508,6 +1508,10 @@ form fieldset select {
   height: 30px;
 }
 
+form fieldset select[multiple] {
+  height: 200px;
+}
+
 div.align-center {
   text-align: center;
 }
