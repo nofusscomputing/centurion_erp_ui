@@ -200,6 +200,15 @@ export default function FieldData({
 
                 break;
 
+            case 'Markdown':
+
+                field_data = (
+                    <RenderMarkdown>
+                        {data_field}
+                    </RenderMarkdown>
+                )
+
+                break;
             default:
 
                 if(
@@ -224,20 +233,6 @@ export default function FieldData({
                 break;
 
         }
-
-    }
-
-    if(
-
-        field_name == 'description' || field_name == 'body' || field_name == 'model_notes'
-
-    ) {
-
-        field_data = (
-            <RenderMarkdown>
-                {field_data}
-            </RenderMarkdown>
-        )
 
     }
 
