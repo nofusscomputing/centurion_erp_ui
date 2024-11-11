@@ -1462,6 +1462,7 @@ form fieldset span.error-text {
   display: block;
   color: var(--text-colour-error);
   font-size: 10pt;
+  max-width: 400px;
 }
 
 form fieldset span.help-text {
