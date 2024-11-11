@@ -189,12 +189,8 @@ const ModelForm = ({
                                 case 'Relationship':
 
                                     return (<Select
-                                        choices={metadata.fields[field_key].choices}
                                         id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
                                         field_data={metadata.fields[field_key]}
