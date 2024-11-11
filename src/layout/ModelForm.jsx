@@ -106,7 +106,20 @@ const ModelForm = ({
 
         let field_value = e.target.value
 
-        if( e.target.type === 'checkbox' ) {
+
+        if( e.target.multiple ) {
+
+            field_value = []
+
+            for( let selected_option of e.target.selectedOptions ) {
+
+
+                field_value.push(selected_option.value)
+
+            }
+
+
+        } else if( e.target.type === 'checkbox' ) {
 
             field_value = e.target.checked
 
