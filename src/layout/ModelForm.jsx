@@ -132,6 +132,10 @@ const ModelForm = ({
 
                         navigate(url_builder.return_url)
 
+                    } else {
+
+                        window.scrollTo(0, 0)
+
                     }
                 }}>
                     { metadata && params.action == 'delete' && 
@@ -221,15 +225,32 @@ const ModelForm = ({
 
                                 default:
 
-                                    return (<TextField
-                                        id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
-                                        error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
-                                        value={value}
-                                        onChange={handleChange}
-                                    />)
+                                    if( 'multi_line' in metadata.fields[field_key] ) {
+
+
+                                        return (<TextArea
+                                            id = {field_key}
+                                            label = {metadata.fields[field_key].label}
+                                            helptext   = {metadata.fields[field_key].help_text}
+                                            error_text = {form_error && form_error[field_key]}
+                                            required   = {metadata.fields[field_key].required}
+                                            value={value}
+                                            onChange={handleChange}
+                                        />)
+
+                                    } else {
+
+                                        return (<TextField
+                                            id = {field_key}
+                                            label = {metadata.fields[field_key].label}
+                                            helptext   = {metadata.fields[field_key].help_text}
+                                            error_text = {form_error && form_error[field_key]}
+                                            required   = {metadata.fields[field_key].required}
+                                            value={value}
+                                            onChange={handleChange}
+                                        />)
+    
+                                    }
                             }
 
 
