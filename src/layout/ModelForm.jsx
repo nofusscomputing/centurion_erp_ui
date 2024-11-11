@@ -130,6 +130,18 @@ const ModelForm = ({
 
     return((page_data || ! edit ) &&
         <section>
+            {form_error && form_error['non_field_errors'] &&
+                <div>
+                    <ul>
+                    {form_error['non_field_errors'].map( (err) => {
+                        
+                        return (
+                            <li><span className="error-text">{err}</span></li>
+                        )
+                    })}
+                    </ul>
+                </div>
+            }
             <div className="content">
                 <form onSubmit={async e => {
                     e.preventDefault();
