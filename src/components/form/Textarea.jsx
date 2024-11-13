@@ -22,6 +22,22 @@ const TextArea = ({
                 required={required}
                 className="common-field"
                 onChange={onChange}
+                onKeyUp={(e) =>{
+
+                    const currentScrollY = window.scrollY
+
+                    e.target.style.height = "1px";
+                    e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
+
+                    window.scrollTo(0, currentScrollY);    // Prevent window scrolling to y=0
+
+                }}
+                onClick={(e) =>{
+
+                    e.target.style.height = "1px";
+                    e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
+
+                }}
     
             >{value}</textarea>
             <span className="error-text">{error_text}</span>
