@@ -123,6 +123,14 @@ const ModelForm = ({
 
             field_value = e.target.checked
 
+        } else if( e.target.type === 'datetime-local' ) {
+
+            if( e.target.value != '' ) {    // Convert to UTC
+
+                field_value = new Date(e.target.value).toISOString()
+
+            }
+
         }
         
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
@@ -222,6 +230,15 @@ const ModelForm = ({
                                     />)
 
                                 case 'DateTime':
+
+                                    if( value ) {    // Convert DateTime (UTC) to local Time
+
+                                        let datetime = new Date(value)
+                                        let local_datetime = new Date(datetime - datetime.getTimezoneOffset()*60*1000).toISOString();
+
+                                        value = String(local_datetime).split('.')[0]
+
+                                    }
 
                                     return (<TextField
                                         id = {field_key}
