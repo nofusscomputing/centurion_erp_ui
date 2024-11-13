@@ -1349,6 +1349,11 @@ textarea#model-note {
   margin: 0px auto;
 }
 
+textarea.large {
+  width: 900px;
+}
+
+
 section .model-note div.single-note {
   background-color: var(--background-colour-active);
   border: 1px solid var(--border-colour);
