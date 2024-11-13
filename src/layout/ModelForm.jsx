@@ -33,6 +33,8 @@ const ModelForm = ({
 
     const [form_error, setFormError] = useState(null)
 
+    const [form_post, setFormPost] = useState(false)
+
     const edit = Boolean(params.pk ? true : false )
 
     const navigate = useNavigate();
@@ -58,7 +60,16 @@ const ModelForm = ({
 
                         if( data.fields[field_key].required ) {
                             if( page_data ) {
-                                initial_form_data[field_key] = page_data[field_key]
+
+                                if( typeof(page_data[field_key]) == 'object' ) {
+
+                                    initial_form_data[field_key] = Number(page_data[field_key].id)
+
+                                } else {
+
+                                    initial_form_data[field_key] = page_data[field_key]
+
+                                }
 
                             } else if( 'initial' in data.fields[field_key] ) {
                                  initial_form_data[field_key] = data.fields[field_key].initial
@@ -106,10 +117,50 @@ const ModelForm = ({
 
         let field_value = e.target.value
 
-        if( e.target.type === 'checkbox' ) {
+
+        if( e.target.multiple ) {
+
+            field_value = []
+
+            for( let selected_option of e.target.selectedOptions ) {
+
+
+                field_value.push(selected_option.value)
+
+            }
+
+
+        } else if( e.target.type === 'checkbox' ) {
 
             field_value = e.target.checked
 
+        } else if( e.target.type === 'datetime-local' ) {
+
+            if( e.target.value != '' ) {    // Convert to UTC
+
+                field_value = new Date(e.target.value).toISOString()
+
+            }
+
+        } else if(
+            (
+                String(field_value).startsWith('{')
+                || String(field_value).startsWith('[')
+            )
+            && (
+                String(field_value).endsWith('}')
+                || String(field_value).endsWith(']')
+            )
+        ) {
+
+            try { // While the json is being edited, it may be invalid.
+
+                field_value = JSON.parse(e.target.value)
+
+            } catch {
+                // Do Nothing
+            }
+            
         }
         
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
@@ -117,6 +168,18 @@ const ModelForm = ({
 
     return((page_data || ! edit ) &&
         <section>
+            {form_error && form_error['non_field_errors'] &&
+                <div>
+                    <ul>
+                    {form_error['non_field_errors'].map( (err) => {
+                        
+                        return (
+                            <li><span className="error-text">{err}</span></li>
+                        )
+                    })}
+                    </ul>
+                </div>
+            }
             <div className="content">
                 <form onSubmit={async e => {
                     e.preventDefault();
@@ -128,17 +191,24 @@ const ModelForm = ({
                         form_data
                     )
 
+                    setFormPost(true)
+
                     if ( response.ok ) {
 
                         navigate(url_builder.return_url)
 
+                    } else {
+
+                        setFormPost(false)
+                        window.scrollTo(0, 0)
+
                     }
                 }}>
-                    { metadata && params.action == 'delete' && 
+                    { !form_post && metadata && url_builder.params.action == 'delete' && 
                     <>
                     Are you sure you wish to delete this item?
                     </>}
-                    { ( metadata && params.action != 'delete' ) &&
+                    { ( !form_post && metadata && params.action != 'delete' ) &&
                     Object.keys(metadata.fields).map((field_key) => {
 
                         if( ! metadata.fields[field_key].read_only ) {
@@ -185,30 +255,23 @@ const ModelForm = ({
                                 case 'Relationship':
 
                                     return (<Select
-                                        choices={metadata.fields[field_key].choices}
                                         id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
                                         value={value}
                                         onChange={handleChange}
+                                        field_data={metadata.fields[field_key]}
                                     />)
 
-                                case 'JSON':
+                                case 'DateTime':
 
-                                    return (<TextArea
-                                    field_type="json"
-                                        id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
-                                        error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
-                                        value={value}
-                                        onChange={handleChange}
-                                    />)
+                                    if( value ) {    // Convert DateTime (UTC) to local Time
 
-                                default:
+                                        let datetime = new Date(value)
+                                        let local_datetime = new Date(datetime - datetime.getTimezoneOffset()*60*1000).toISOString();
+
+                                        value = String(local_datetime).split('.')[0]
+
+                                    }
 
                                     return (<TextField
                                         id = {field_key}
@@ -216,9 +279,59 @@ const ModelForm = ({
                                         helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
                                         required   = {metadata.fields[field_key].required}
+                                        type = {'datetime-local'}
                                         value={value}
                                         onChange={handleChange}
                                     />)
+
+                                case 'JSON':
+
+                                    value = JSON.stringify(value, null, 4)
+
+                                    return (<TextArea
+                                        id = {field_key}
+                                        error_text = {form_error && form_error[field_key]}
+                                        field_data={metadata.fields[field_key]}
+                                        value={value}
+                                        onChange={handleChange}
+                                    />)
+
+                                case 'Markdown':
+
+                                    return (<TextArea
+                                        id = {field_key}
+                                        error_text = {form_error && form_error[field_key]}
+                                        field_data={metadata.fields[field_key]}
+                                        value={value}
+                                        onChange={handleChange}
+                                    />)
+
+                                default:
+
+                                    if( 'multi_line' in metadata.fields[field_key] ) {
+
+
+                                        return (<TextArea
+                                            id = {field_key}
+                                            error_text = {form_error && form_error[field_key]}
+                                            field_data={metadata.fields[field_key]}
+                                            value={value}
+                                            onChange={handleChange}
+                                        />)
+
+                                    } else {
+
+                                        return (<TextField
+                                            id = {field_key}
+                                            label = {metadata.fields[field_key].label}
+                                            helptext   = {metadata.fields[field_key].help_text}
+                                            error_text = {form_error && form_error[field_key]}
+                                            required   = {metadata.fields[field_key].required}
+                                            value={value}
+                                            onChange={handleChange}
+                                        />)
+    
+                                    }
                             }
 
 

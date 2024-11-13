@@ -30,6 +30,12 @@ const TextField = ({
     )
     if( type === 'datetime-local') {
 
+        if( String(value).includes('+') ) {
+
+            value = String(value).split('+')[0]
+
+        }
+
         field = (
             <input
                 className="common-field"
@@ -40,7 +46,7 @@ const TextField = ({
                 // placeholder={helptext}
                 required={required}
                 type={type}
-                // value={value}
+                value={value}
             />
         )
 

@@ -24,6 +24,12 @@ const Section = ({
     
     let column
 
+
+    let textarea_fields = [
+        'json',
+        'markdown'
+    ]
+
     if( layout.layout === 'double' ) {
 
         column = (
@@ -32,6 +38,7 @@ const Section = ({
                 metadata={metadata}
                 left={layout.left}
                 right={layout.right}
+                textarea_fields = {textarea_fields}
             />
         )
 
@@ -42,6 +49,7 @@ const Section = ({
                 data={data}
                 metadata={metadata}
                 fields={layout.fields}
+                textarea_fields = {textarea_fields}
             />
         )
 

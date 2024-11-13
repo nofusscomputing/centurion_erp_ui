@@ -1,13 +1,10 @@
 
 const Select = ({
     id,
-    choices = [],
-    label,
-    helptext=null,
-    required=false,
     error_text=null,
     value = '',
-    onChange = null
+    onChange = null,
+    field_data = null
 }) => {
 
     
@@ -21,15 +18,16 @@ const Select = ({
 
     return (
         <fieldset>
-            <label className="name" for={id}>{label}</label>
+            <label className="name" for={id}>{field_data.label}</label>
             <select
                 id={id}
-                required={required}
+                required={field_data.required}
                 className="common-field"
                 onChange={onChange}
+                multiple = {field_data.relationship_type == 'ManyToMany' ? true : false}
             >
                 <option value="">Please select an option</option>
-                {choices.map((choice) => {
+                {field_data.choices.map((choice) => {
 
                     let selected = false
 
@@ -52,7 +50,7 @@ const Select = ({
 
                 })}
             </select>
-            <span className="help-text">{helptext}</span>
+            <span className="help-text">{field_data.help_text}</span>
             <span className="error-text">{error_text}</span>
         </fieldset>
     );

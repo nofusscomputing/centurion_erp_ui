@@ -159,6 +159,15 @@ function App() {
                         loader = {detailsLoader}
                     />
 
+                    <Route path="/:module/:common_model/:common_pk/:model/:pk"
+                        element={<Detail
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
                 </Route>
             ));
 
