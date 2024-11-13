@@ -60,7 +60,16 @@ const ModelForm = ({
 
                         if( data.fields[field_key].required ) {
                             if( page_data ) {
-                                initial_form_data[field_key] = page_data[field_key]
+
+                                if( typeof(page_data[field_key]) == 'object' ) {
+
+                                    initial_form_data[field_key] = Number(page_data[field_key].id)
+
+                                } else {
+
+                                    initial_form_data[field_key] = page_data[field_key]
+
+                                }
 
                             } else if( 'initial' in data.fields[field_key] ) {
                                  initial_form_data[field_key] = data.fields[field_key].initial
