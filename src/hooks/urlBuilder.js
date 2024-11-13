@@ -31,21 +31,47 @@ export default function urlBuilder(
 
     let path_directories = String(document.location.pathname).substring(1).split('/')
 
-    let action = params.action
+    let action = null
 
-    let module = params.module
+    let module = null
 
-    let model = params.model
+    let model = null
 
-    let pk = params.pk
+    let pk = null
 
     let common_model = null
     let common_pk = null
 
 
+    if( params.action ) {
+
+        action = params.action
+    }
+
     if( params.module ) {
 
-        url += '/' + String(params.module)
+        module = params.module
+    }
+
+    if( params.model ) {
+
+        model = params.model
+    }
+
+    if( params.pk ) {
+
+        pk = params.pk
+    }
+
+    if( ! module && path_directories[0] == 'settings' ) {
+
+        module = 'settings'
+
+    }
+
+    if( module ) {
+
+        url += '/' + String(module)
 
     }
 
@@ -224,7 +250,7 @@ export default function urlBuilder(
         
             }
 
-        }else if( action == 'edit' ) {
+        }else if( model && action == 'edit' ) {
 
             url += '/' + String( model )
 
@@ -258,7 +284,11 @@ export default function urlBuilder(
 
         method = 'DELETE'
 
-        return_url = String( return_url ).replace( '/' + pk )
+        if( pk ) {
+
+            return_url = String( return_url ).replace( '/' + pk )
+
+        }
 
     }else if( action ==  'edit' ) {
 
