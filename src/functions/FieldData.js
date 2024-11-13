@@ -18,6 +18,7 @@ const API_SPLIT = String('api/v2')
  * @param {Object} metadata  Django API HTTP/OPTION request body
  * @param {String} field_name name of the field. Must match the API field key
  * @param {Object} data The API request body.
+ * @param {Boolean} autolink Format the Field as a URL using `data._urls._self` as the anchor
  * 
  * @returns {String} The value of the field
  */
@@ -25,7 +26,8 @@ export default function FieldData({
     full_width = false,
     metadata,
     field_name,
-    data = null
+    data = null,
+    autolink = false
 })  {
 
     let field_data = '';
@@ -259,10 +261,19 @@ export default function FieldData({
 
                 if(
                     (
-                        field_name === 'name'
-                        || field_name === 'title'
+                        (
+                            field_name === 'name'
+                            || field_name === 'title'
+                        )
+                        && autolink
                     )
-                    && '_urls' in data
+                    || (
+                        '_urls' in data
+                        && (
+                            autolink
+                            && Boolean(metadata.fields[field_name].autolink)
+                        )
+                    )
                 ) {
 
                     field_data = (

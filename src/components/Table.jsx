@@ -230,12 +230,23 @@ const Table = ({
 
                                                 } else {
 
+                                                    let autolink = false
+
+                                                    if(
+                                                        key == 'name'
+                                                        || key == 'title'
+                                                        || Boolean(metadata.fields[key].autolink)
+                                                    ) {
+                                                        autolink = true
+                                                    }
+
                                                     return (
                                                         <td>
                                                             <FieldData
                                                                 metadata={metadata}
                                                                 field_name={key}
                                                                 data={data}
+                                                                autolink = {autolink}
                                                             />
                                                         </td>
                                                     )
