@@ -33,6 +33,8 @@ const ModelForm = ({
 
     const [form_error, setFormError] = useState(null)
 
+    const [form_post, setFormPost] = useState(false)
+
     const edit = Boolean(params.pk ? true : false )
 
     const navigate = useNavigate();
@@ -131,6 +133,25 @@ const ModelForm = ({
 
             }
 
+        } else if(
+            (
+                String(field_value).startsWith('{')
+                || String(field_value).startsWith('[')
+            )
+            && (
+                String(field_value).endsWith('}')
+                || String(field_value).endsWith(']')
+            )
+        ) {
+
+            try { // While the json is being edited, it may be invalid.
+
+                field_value = JSON.parse(e.target.value)
+
+            } catch {
+                // Do Nothing
+            }
+            
         }
         
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
@@ -161,21 +182,24 @@ const ModelForm = ({
                         form_data
                     )
 
+                    setFormPost(true)
+
                     if ( response.ok ) {
 
                         navigate(url_builder.return_url)
 
                     } else {
 
+                        setFormPost(false)
                         window.scrollTo(0, 0)
 
                     }
                 }}>
-                    { metadata && url_builder.params.action == 'delete' && 
+                    { !form_post && metadata && url_builder.params.action == 'delete' && 
                     <>
                     Are you sure you wish to delete this item?
                     </>}
-                    { ( metadata && params.action != 'delete' ) &&
+                    { ( !form_post && metadata && params.action != 'delete' ) &&
                     Object.keys(metadata.fields).map((field_key) => {
 
                         if( ! metadata.fields[field_key].read_only ) {
@@ -252,6 +276,8 @@ const ModelForm = ({
                                     />)
 
                                 case 'JSON':
+
+                                    value = JSON.stringify(value, null, 4)
 
                                     return (<TextArea
                                         id = {field_key}
