@@ -1,17 +1,55 @@
 const TextArea = ({
     id,
-    label,
-    helptext=null,
-    required=false,
     error_text=null,
     value= '',
     onChange = null,
-    class_name = null
+    class_name = null,
+    field_data = null
 }) => {
 
     if( value === null ) {
         value = ''
     }
+
+    let field_class_name = "common-field"
+    let helptext = null
+    let required = false
+    let label = ''
+
+    if( field_data ) {
+
+        field_data = Object(field_data)
+
+
+
+        if( 'help_text' in field_data) {
+
+            helptext = field_data['help_text']
+
+        }
+
+        if( 'label' in field_data ) {
+
+            label = field_data['label']
+
+        }
+
+        if( 'required' in field_data) {
+
+            required = field_data['required']
+
+        }
+
+        if( 'style' in field_data ) {
+
+            if( 'class' in field_data.style ) {
+
+                field_class_name += String( ' ' + field_data['style']['class'])
+
+            }
+        }
+    }
+
 
     return (
         <fieldset className={class_name}>
@@ -20,7 +58,7 @@ const TextArea = ({
             <textarea
                 id={id}
                 required={required}
-                className="common-field"
+                className={field_class_name}
                 onChange={onChange}
                 onKeyUp={(e) =>{
 

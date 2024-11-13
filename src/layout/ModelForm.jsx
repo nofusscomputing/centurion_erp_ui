@@ -255,10 +255,8 @@ const ModelForm = ({
 
                                     return (<TextArea
                                         id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
+                                        field_data={metadata.fields[field_key]}
                                         value={value}
                                         onChange={handleChange}
                                     />)
@@ -267,10 +265,8 @@ const ModelForm = ({
 
                                     return (<TextArea
                                         id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
                                         error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
+                                        field_data={metadata.fields[field_key]}
                                         value={value}
                                         onChange={handleChange}
                                     />)
@@ -282,10 +278,8 @@ const ModelForm = ({
 
                                         return (<TextArea
                                             id = {field_key}
-                                            label = {metadata.fields[field_key].label}
-                                            helptext   = {metadata.fields[field_key].help_text}
                                             error_text = {form_error && form_error[field_key]}
-                                            required   = {metadata.fields[field_key].required}
+                                            field_data={metadata.fields[field_key]}
                                             value={value}
                                             onChange={handleChange}
                                         />)
