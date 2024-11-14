@@ -128,12 +128,6 @@ const TicketComment = ({
                 name={'reply'}
             />
             <IconLoader
-                name={'task'}
-            />
-            <IconLoader
-                name={'notification'}
-            />
-            <IconLoader
                 name={'edit'}
             />
         </div>
