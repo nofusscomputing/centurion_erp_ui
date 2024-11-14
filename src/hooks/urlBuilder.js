@@ -63,9 +63,9 @@ export default function urlBuilder(
         pk = params.pk
     }
 
-    if( ! module && path_directories[0] == 'settings' ) {
+    if( ! module ) {
 
-        module = 'settings'
+        module = path_directories[0]
 
     }
 
@@ -75,12 +75,10 @@ export default function urlBuilder(
 
     }
 
-
     const allowed_actions = [ 'add', 'delete', 'edit' ]
 
     if( ! allowed_actions.includes( action ) ) {
 
-        action = null
 
         for( let dir of path_directories ) {
 
@@ -89,6 +87,12 @@ export default function urlBuilder(
             }
         }
     }
+
+    if( ! action && path_directories[path_directories.length-1] == 'history' ) {
+
+        action = 'history'
+    }
+
 
     const ticket_models = [
         'change',
@@ -294,6 +298,9 @@ export default function urlBuilder(
 
         method = 'PATCH'
 
+    } else if( action === 'history' ) {
+
+        url += '/history'
     }
 
     if(

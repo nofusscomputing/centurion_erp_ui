@@ -51,13 +51,12 @@ function App() {
                 >
                     <Route path='/login' element={<Login/>}/>
 
-                    <Route path="/core/:model/:pk/:action"
+                    <Route path="/core/:model/:pk/history"
                         element={<History
                             setContentHeading={setContentHeading}
                             SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
-                        loader = {detailsLoader}
                     />
 
                     <Route path="/settings"

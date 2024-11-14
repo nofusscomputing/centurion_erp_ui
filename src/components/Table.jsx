@@ -261,7 +261,7 @@ const Table = ({
                                     <td
                                         onClick={(e) => {
                                             let a = e
-                                            document.getElementById('expandable-' + e.currentTarget.parentElement.id).classList.toggle("hide-expandable-row")
+                                            document.getElementById('expandable-' + data.id).classList.toggle("hide-expandable-row")
                                         }}
                                     >
                                         <IconLoader
