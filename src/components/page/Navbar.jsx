@@ -86,7 +86,7 @@ const Navbar = ({
                                         />
                                         : 
                                         <IconLoader
-                                            name = {String(module.display_name)}
+                                            name = {String(module.name)}
                                         />
                                     }
                                 </span>
@@ -122,7 +122,7 @@ const Navbar = ({
                                                 />
                                                 : 
                                                 <IconLoader
-                                                    name = {String(page.display_name)}
+                                                    name = {String(page.name)}
                                                 />
                                             }
                                             </span>
