@@ -87,6 +87,15 @@ function App() {
                         loader = {detailsLoader}
                     />
 
+                    <Route path="/:module/ticket/:model/add"
+                        element={<ModelForm
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
                     <Route path="/:module/ticket/:model/:pk"
                         element={<Ticket
                             setContentHeading={setContentHeading}
