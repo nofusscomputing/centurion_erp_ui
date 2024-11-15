@@ -78,6 +78,16 @@ function App() {
                     />
 
                     {/* project_management/project/2/project_task/41 */}
+                    <Route path="/:module/:common_model/:common_pk/project_task/add"
+                        element={<ModelForm
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    {/* project_management/project/2/project_task/41 */}
                     <Route path="/:module/:common_model/:common_pk/project_task/:pk"
                         element={<Ticket
                             setContentHeading={setContentHeading}
