@@ -55,11 +55,16 @@ const Section = ({
 
     } else if( layout.layout === 'table' ) {
 
-        column = (
-            <Table
-                data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
-            />
-        )
+        if( layout.field in data._urls ) {
+
+            column = (
+                <Table
+                    data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
+                />
+            )
+        } else {
+            column = 'column data missing'
+        }
 
     }
 

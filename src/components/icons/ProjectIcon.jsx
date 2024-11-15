@@ -1,4 +1,4 @@
-const OrganizationIcon = ({
+const ProjectIcon = ({
     width = '20px',
     height = '20px',
     fill = '#FFF'
@@ -6,9 +6,9 @@ const OrganizationIcon = ({
 
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={ width } height={ height } fill={ fill }>
-            <path d="M17,16H15V22H12V17H8V22H5V16H3L10,10L17,16M6,2L10,6H9V9H7V6H5V9H3V6H2L6,2M18,3L23,8H22V12H19V9H17V12H15.34L14,10.87V8H13L18,3Z" />
+            <path d="M2,5H10V2H12V22H10V18H6V15H10V13H4V10H10V8H2V5M14,5H17V8H14V5M14,10H19V13H14V10M14,15H22V18H14V15Z" />
         </svg>
     );
 }
 
-export default OrganizationIcon
+export default ProjectIcon

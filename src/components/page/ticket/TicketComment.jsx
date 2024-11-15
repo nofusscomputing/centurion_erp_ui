@@ -11,7 +11,10 @@ const TicketComment = ({
     discussion = false,
     comment_data = {},
     metadata = null,
-    ticket_id = null
+    ticket_id = null,
+    post_url,
+    edit_callback = null,
+    callback_value = null
 }) => {
 
     let comment_header = ' wrote'
@@ -19,6 +22,8 @@ const TicketComment = ({
     let comment_class = 'comment comment-type-default'
 
     let comment_type = ''
+
+    let [ editing, setIsEditing ] = useState(false)
 
     try {
 
@@ -127,15 +132,15 @@ const TicketComment = ({
             <IconLoader
                 name={'reply'}
             />
-            <IconLoader
-                name={'task'}
-            />
-            <IconLoader
-                name={'notification'}
-            />
+            <span style={{
+                cursor: 'pointer'
+            }} onClick={(e) => {
+                    setIsEditing( true )
+                }}>
             <IconLoader
                 name={'edit'}
             />
+            </span>
         </div>
     )
 
@@ -151,6 +156,23 @@ const TicketComment = ({
     return (
         metadata &&
         <div className={discussion_class}>
+            { editing &&
+            <TicketCommentForm
+                comment_data={comment_data}
+                metadata={metadata}
+                post_url = {post_url}
+                ticket_id={ticket_id}
+                is_edit = {true}
+                cancelbuttonOnSubmit={(e) => {
+                    setIsEditing(false)
+                }}
+                commentCallback={() => {
+                    setIsEditing(false)
+                    edit_callback( callback_value ? false : true )
+                }}
+            />
+            }
+            { ! editing &&
             <div className={comment_class}>
 
                 <h4 className={comment_class}>
@@ -278,6 +300,7 @@ const TicketComment = ({
                     </fieldset>
                 </div>
             </div>
+            }
             { threads &&
             <div className="replies">
                 <h3 className="replies">
