@@ -2,4 +2,4 @@
 
 set -e
 
-npm version 0.1.0 --no-git-tag-version
+npm version ${NEW_VERSION} --no-git-tag-version
