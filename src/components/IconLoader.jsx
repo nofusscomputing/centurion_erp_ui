@@ -5,7 +5,6 @@ import ItamIcon from "./icons/ItamIcon";
 import MenuIcon from "./icons/MenuIcon";
 import NavDownIcon from "./icons/NavDownIcon";
 import NavRightIcon from "./icons/NavRightIcon";
-import OrganizationIcon from "./icons/OrganizationIcon";
 import SoftwareIcon from "./icons/SoftwareIcon";
 import ReplyIcon from "./icons/ReplyIcon";
 import NotificationIcon from "./icons/ticket/NotificationIcon";
@@ -36,13 +35,27 @@ import RelatedTicketBlocked from "./icons/ticket/RelatedTicketBlocked";
 import HelpIcon from "./icons/HelpIcon";
 import DeleteIcon from "./icons/DeleteIcon";
 import HistoryIcon from "./icons/HistoryIcon";
+import AccessIcon from "./icons/AccessIcon";
+import AnsibleIcon from "./icons/AnsibleIcon";
+import ClusterIcon from "./icons/ClusterIcon";
+import ConfigManagementIcon from "./icons/ConfigManagementIcon";
+import InformationIcon from "./icons/InformationIcon";
+import ITIMIcon from "./icons/ITIMIcon";
+import ServiceIcon from "./icons/ServiceIcon";
+import SettingsIcon from "./icons/SettingsIcon";
+import ProjectIcon from "./icons/ProjectIcon";
+import OrganizationIcon from "./icons/OrganizationIcon";
 
 
 const icon_components = {
+    access: AccessIcon,
     action_add:ActionAddIcon,
     action_install: ActionInstallIcon,
     action_remove: ActionRemoveIcon,
+    ansible: AnsibleIcon,
     assistance: AssistanceIcon,
+    cluster: ClusterIcon,
+    config_management: ConfigManagementIcon,
     device_status_bad: InventoryStatusBadIcon,
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
@@ -53,7 +66,9 @@ const icon_components = {
     edit: EditIcon,
     help: HelpIcon,
     history: HistoryIcon,
+    information: InformationIcon,
     itam: ItamIcon,
+    itim: ITIMIcon,
     link: LinkIcon,
     menu: MenuIcon,
     navdown: NavDownIcon,
@@ -61,7 +76,10 @@ const icon_components = {
     navright: NavRightIcon,
     notification: NotificationIcon,
     organization: OrganizationIcon,
+    project: ProjectIcon,
+    service: ServiceIcon,
     software: SoftwareIcon,
+    settings: SettingsIcon,
     task: TaskIcon,
     ticket_related_blocks: RelatedTicketBlocks,
     ticket_related_blocked_by: RelatedTicketBlocked,

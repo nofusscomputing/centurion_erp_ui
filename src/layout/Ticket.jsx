@@ -81,7 +81,7 @@ const Ticket = ({
             'OPTIONS'
         )
 
-    }, [])
+    }, [ page_data ])
 
 
     useEffect(() => {
@@ -103,7 +103,7 @@ const Ticket = ({
 
 
     return (
-        metadata !== null && <div className="ticket">
+        metadata && comment_metadata && page_data && <div className="ticket">
 
             <div className="contents">
 

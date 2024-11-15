@@ -56,7 +56,7 @@ const Settings = ({
                             body={(
                                 <ul>
                                     {card.links.map((link) => {
-                                        return (<li><a href={"/settings/" + link.model}>{link.name}</a></li>)
+                                        return (<li><Link to={String(page_data[link.model]).split('api/v2')[1]}>{link.name}</Link></li>)
                                     })}
                                 </ul>
                             )}

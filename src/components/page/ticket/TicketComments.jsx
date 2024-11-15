@@ -44,8 +44,11 @@ const TicketComments = ({
                         <li>
                             <TicketComment
                                 comment_data={comment}
+                                post_url = {comments_url}
                                 metadata={comment_metadata}
                                 ticket_id={ticket_id}
+                                edit_callback = {setRelaod}
+                                callback_value = {reload}
                             />
                         </li>
                     )

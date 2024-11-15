@@ -24,6 +24,12 @@ const Section = ({
     
     let column
 
+
+    let textarea_fields = [
+        'json',
+        'markdown'
+    ]
+
     if( layout.layout === 'double' ) {
 
         column = (
@@ -32,6 +38,7 @@ const Section = ({
                 metadata={metadata}
                 left={layout.left}
                 right={layout.right}
+                textarea_fields = {textarea_fields}
             />
         )
 
@@ -42,16 +49,22 @@ const Section = ({
                 data={data}
                 metadata={metadata}
                 fields={layout.fields}
+                textarea_fields = {textarea_fields}
             />
         )
 
     } else if( layout.layout === 'table' ) {
 
-        column = (
-            <Table
-                data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
-            />
-        )
+        if( layout.field in data._urls ) {
+
+            column = (
+                <Table
+                    data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
+                />
+            )
+        } else {
+            column = 'column data missing'
+        }
 
     }
 

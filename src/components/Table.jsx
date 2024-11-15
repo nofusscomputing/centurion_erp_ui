@@ -5,6 +5,7 @@ import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
 import { Link, useParams } from "react-router-dom";
 import IconLoader from "./IconLoader";
+import urlBuilder from "../hooks/urlBuilder";
 
 
 /**
@@ -40,6 +41,10 @@ const Table = ({
 
     const params = useParams();
 
+    const url_builder = urlBuilder(
+        params
+    )
+
     if( ! String(data_url_path).startsWith('/') ) {
         data_url_path = '/' + data_url_path
     }
@@ -47,7 +52,7 @@ const Table = ({
 
     if( String(window.location.pathname).includes('/ticket/') ) {
         
-        data_url_path = '/' + params.module + '/ticket/' + params.model
+        data_url_path = '/' + url_builder.params.module + '/ticket/' + url_builder.params.model
 
     }
 
@@ -230,12 +235,23 @@ const Table = ({
 
                                                 } else {
 
+                                                    let autolink = false
+
+                                                    if(
+                                                        key == 'name'
+                                                        || key == 'title'
+                                                        || Boolean(metadata.fields[key].autolink)
+                                                    ) {
+                                                        autolink = true
+                                                    }
+
                                                     return (
                                                         <td>
                                                             <FieldData
                                                                 metadata={metadata}
                                                                 field_name={key}
                                                                 data={data}
+                                                                autolink = {autolink}
                                                             />
                                                         </td>
                                                     )
@@ -250,7 +266,7 @@ const Table = ({
                                     <td
                                         onClick={(e) => {
                                             let a = e
-                                            document.getElementById('expandable-' + e.currentTarget.parentElement.id).classList.toggle("hide-expandable-row")
+                                            document.getElementById('expandable-' + data.id).classList.toggle("hide-expandable-row")
                                         }}
                                     >
                                         <IconLoader

@@ -5,7 +5,8 @@ import FieldData from "../../../functions/FieldData";
 const SingleColumn = ({
     data,
     metadata,
-    fields = []
+    fields = [],
+    textarea_fields = []
 }) => {
 
     let fieldClass = 'text'
@@ -16,8 +17,7 @@ const SingleColumn = ({
                 {fields.map((field) => {
 
                     if(
-                        field == "model_notes"
-                        || String(metadata.fields[field].type).toLowerCase() == "json"
+                        ( textarea_fields.includes(String(metadata.fields[field].type).toLowerCase()) )
                     ) {
 
                         return(

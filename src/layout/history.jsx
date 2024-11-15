@@ -22,7 +22,7 @@ const History = ({
             <div className="content">
                 <Table
                     callback={setContentHeading}
-                    data_url_path={'core/' + url_builder.model + '/' + url_builder.pk + '/history'}
+                    data_url_path={'core/' + url_builder.params.model + '/' + url_builder.params.pk + '/history'}
                 />
             </div>
         </section>

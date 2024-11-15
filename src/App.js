@@ -51,13 +51,12 @@ function App() {
                 >
                     <Route path='/login' element={<Login/>}/>
 
-                    <Route path="/core/:model/:pk/:action"
+                    <Route path="/core/:model/:pk/history"
                         element={<History
                             setContentHeading={setContentHeading}
                             SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
                         errorElement={<ErrorPage /> }
-                        loader = {detailsLoader}
                     />
 
                     <Route path="/settings"
@@ -79,8 +78,27 @@ function App() {
                     />
 
                     {/* project_management/project/2/project_task/41 */}
+                    <Route path="/:module/:common_model/:common_pk/project_task/add"
+                        element={<ModelForm
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    {/* project_management/project/2/project_task/41 */}
                     <Route path="/:module/:common_model/:common_pk/project_task/:pk"
                         element={<Ticket
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    <Route path="/:module/ticket/:model/add"
+                        element={<ModelForm
                             setContentHeading={setContentHeading}
                             SetContentHeaderIcon={SetContentHeaderIcon}
                         />}
@@ -152,6 +170,15 @@ function App() {
 
                     <Route path="/:module/:common_model/:common_pk/:model/:pk/:action"    // add
                         element={<ModelForm
+                            setContentHeading={setContentHeading}
+                            SetContentHeaderIcon={SetContentHeaderIcon}
+                        />}
+                        errorElement={<ErrorPage /> }
+                        loader = {detailsLoader}
+                    />
+
+                    <Route path="/:module/:common_model/:common_pk/:model/:pk"
+                        element={<Detail
                             setContentHeading={setContentHeading}
                             SetContentHeaderIcon={SetContentHeaderIcon}
                         />}

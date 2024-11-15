@@ -1038,10 +1038,12 @@ span.badge span.badge-icon.ticket-status-icon-testing svg {
   color: var(--text-colour);
   padding: 5px;
   border: 1px solid var(--border-colour);
-  display: inline-block;
-  width: 95%;
+  display:block;
+  width: 99%;
   word-wrap: break-word;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0px auto;
 }
 
 .hljs-comment,
@@ -1347,6 +1349,11 @@ textarea#model-note {
   margin: 0px auto;
 }
 
+textarea.large {
+  width: 900px;
+}
+
+
 section .model-note div.single-note {
   background-color: var(--background-colour-active);
   border: 1px solid var(--border-colour);
@@ -1458,10 +1465,11 @@ form fieldset label.name {
   padding-bottom: 5px;
 }
 
-form fieldset span.error-text {
+span.error-text {
   display: block;
   color: var(--text-colour-error);
   font-size: 10pt;
+  max-width: 400px;
 }
 
 form fieldset span.help-text {
@@ -1503,6 +1511,10 @@ form fieldset textarea:invalid {
 form fieldset select {
   border-color: var(--border-colour-form-field);
   height: 30px;
+}
+
+form fieldset select[multiple] {
+  height: 200px;
 }
 
 div.align-center {

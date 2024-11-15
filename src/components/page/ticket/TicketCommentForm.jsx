@@ -16,15 +16,83 @@ const TicketCommentForm = ({
     post_url = null,
     parent_id = null,
     ticket_id = null,
-    commentCallback = null
+    commentCallback = null,
+    is_edit = false,
+    cancelbuttonOnSubmit = null,
 }) => {
 
-        console.log(post_url)
+    if( String(post_url).includes('?') ) {
+        console.log('url has qs')
+        post_url = String(post_url).split('?')[0]
+    }
+
+    let HTTP_METHOD = 'POST'
+
+    if( is_edit ) {
+
+        post_url += '/' + comment_data['id']
+        HTTP_METHOD = 'PATCH'
+    }
+
     let comment_class = 'comment-type-default comment-form'
 
-    const [task_comment, setTaskComment] = useState(false)
 
-    const [form_data, setFormData] = useState({})
+    let edit_form_data = {}
+
+    if( comment_data && is_edit ) {
+
+        edit_form_data = {
+            'body': comment_data['body'],
+            'source': comment_data['source'],
+        }
+
+    }
+
+
+    const comment_types = metadata.fields['comment_type'].choices
+    let comment_type = ''
+
+    console.log(`menu entry click value ${comment_type}`)
+
+    for( let meta_comment_type of comment_types) {
+
+        if( Number(comment_data['comment_type']) === Number(meta_comment_type.value) ) {
+            comment_type = String(meta_comment_type.display_name).toLowerCase()
+        }
+
+    }
+
+
+    comment_type = String(comment_type).toLowerCase()
+
+    let is_task_comment = false
+
+    let is_solution_comment = false
+
+    let is_notification_comment = false
+
+
+    console.log(`menu entry is ${comment_type}`)
+
+    if( comment_type === 'task' ) {
+
+        is_task_comment = true
+
+    }else if( comment_type === 'solution' ) {
+
+        is_solution_comment = true
+
+    }else if( comment_type === 'notification' ) {
+
+        is_notification_comment = true
+
+    }
+
+
+
+    const [task_comment, setTaskComment] = useState( is_task_comment )
+
+    const [form_data, setFormData] = useState(edit_form_data)
 
     const handleChange = (e) => {
 
@@ -38,7 +106,7 @@ const TicketCommentForm = ({
 
         }
 
-        if( ! form_data.comment_type ) {
+        if( ! form_data.comment_type && ! is_edit ) {
 
             for( let comment_type of metadata.fields['comment_type'].choices) {
 
@@ -81,11 +149,17 @@ const TicketCommentForm = ({
                             const response = await apiFetch(
                                 post_url,
                                 setFormError,
-                                'POST',
+                                HTTP_METHOD,
                                 form_data
                             )
 
-                            if( response.status === 201 ) {
+                            if(
+                                response.status === 201
+                                || (
+                                    response.status === 200
+                                    && is_edit
+                                )
+                            ) {
 
                                 commentCallback();
                                 setFormData({});
@@ -100,27 +174,19 @@ const TicketCommentForm = ({
                         <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                        choices={metadata.fields['source'].choices}
                                         id = 'source'
-                                        label = {metadata.fields['source'].label}
-                                        helptext   = {metadata.fields['source'].help_text}
-                                        // error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields['source'].required}
-                                        // value={1}
+                                        field_data={metadata.fields['source']}
                                         onChange={handleChange}
+                                        value = {form_data['source']}
                                     />
                             </span>
                         </fieldset>
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['status'].choices}
                                     id = 'status'
-                                    label = {metadata.fields['status'].label}
-                                    helptext   = {metadata.fields['status'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    required   = {metadata.fields['status'].required}
-                                    value={1}
+                                    field_data={metadata.fields['status']}
+                                    value={comment_data['status']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -128,13 +194,8 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['responsible_user'].choices}
                                     id = 'responsible_user'
-                                    label = {metadata.fields['responsible_user'].label}
-                                    helptext   = {metadata.fields['responsible_user'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.fields['responsible_user'].required}
-                                    // value={1}
+                                    field_data={metadata.fields['responsible_user']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -142,13 +203,8 @@ const TicketCommentForm = ({
                         {task_comment && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['responsible_team'].choices}
                                     id = 'responsible_team'
-                                    label = {metadata.fields['responsible_team'].label}
-                                    helptext   = {metadata.fields['responsible_team'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.fields['responsible_user'].required}
-                                    // value={1}
+                                    field_data={metadata.fields['responsible_team']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -156,13 +212,8 @@ const TicketCommentForm = ({
                         { true && <fieldset className={comment_class}>
                             <span>
                                 <Select
-                                    choices={metadata.fields['category'].choices}
                                     id = 'category'
-                                    label = {metadata.fields['category'].label}
-                                    helptext   = {metadata.fields['category'].help_text}
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.fields['responsible_user'].required}
-                                    // value={1}
+                                    field_data={metadata.fields['responsible_user']}
                                     onChange={handleChange}
                                 />
                                 <FieldData
@@ -249,6 +300,20 @@ const TicketCommentForm = ({
 
                     </div>
 
+                    <div>
+                    { is_edit &&
+                    <Button
+                        buttonClickCallback={cancelbuttonOnSubmit}
+                        button_text = 'Cancel'
+                    />
+                    }
+                    { is_edit &&
+                     <Button
+                        button_text="Comment"
+                    />
+
+                    }
+                    { ! is_edit &&
                     <Button
                         button_text="Comment"
                         menu_entries={metadata.fields['comment_type'].choices}
@@ -294,6 +359,8 @@ const TicketCommentForm = ({
                             console.log(`menu entry click was set to ${task_comment}`)
                         } }
                     />
+                    }
+                    </div>
 
                 </Form>
             </div>
