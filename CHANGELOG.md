@@ -1,3 +1,42 @@
+## 0.2.0 (2024-11-15)
+
+### feat
+
+- **component**: Add missing navbar icons
+- **component**: Add ticket comment inline editing
+- add add route for ticket
+- **component**: Check for table data, if none report so
+- Add route for common model that contains PK
+- **layout**: Use the url's as provided by API for models
+- **component**: Format a charfield as hyperlink is metadata has `autolink=true`
+- **component**: Auto-Expand Text area to content height style
+- **component**: Auto-Expand Text area to content height
+- **component**: Correctly convert ISO8601 with TZ to display in browser local TZ
+- **component**: Support Timezoned DateTime fields
+- **function**: Add Delete mehod to urlBuilder
+- **layout**: display non-field errors at the top of the form
+- **layout**: Cater for multi-select values
+- **component**: Add support for multi-select form field
+- **layout**: Form field error, set to be no larger than field
+- **layout**: On form field error, scroll to top of form
+- Support Markdown field
+
+### Fixes
+
+- **layout**: ensure all metadata is loaded prior to rendering a ticket
+- Add missing route for project task add
+- correct logic for history route to work
+- **hook**: dont allow fields to be set to `undefined` within urlBuilder
+- **layout**: if field is dict, ensure initial data is correctly set to val of `.id`
+- **layout**: within form handle JSON data correctly when an object
+- **component**: dont attempt to access field in double column if it doesnt exist
+- **layout**: Ensure that Markdown code blocks do wrap text
+
+### Refactoring
+
+- **component**: Pass field object directly to textarea
+- **component**: Pass in the entire field meta and have the component figure out the values
+
 ## 0.1.0 (2024-11-10)
 
 ### feat
