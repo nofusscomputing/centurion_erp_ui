@@ -735,8 +735,9 @@ div.ticket .contents {
   width: 100%;
 }
 
-.ticket h3.description span.sub-script,
-.ticket .comment h4.comment #text span.sub-script {
+/* .ticket h3.description span.sub-script,
+.ticket .comment h4.comment #text span.sub-script */
+span.sub-script {
   font-size: smaller;
 }
 

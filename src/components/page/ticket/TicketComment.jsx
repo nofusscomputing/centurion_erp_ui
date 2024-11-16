@@ -122,6 +122,13 @@ const TicketComment = ({
                         field_name='body'
                         data={comment_data}
                     />
+                </span>&nbsp;
+                <span className="sub-script" style={{color: '#777', display: 'inline-block'}}>
+                    <FieldData
+                        metadata={metadata}
+                        field_name='created'
+                        data={comment_data}
+                    />
                 </span>
             </div>
         )
