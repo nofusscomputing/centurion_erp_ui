@@ -115,7 +115,7 @@ const TicketComment = ({
                         field_name='user'
                         data={comment_data}
                     />
-                </span>
+                </span>&nbsp;
                 <span className="markdown" style={{display: 'inline-block'}}>
                     <FieldData
                         metadata={metadata}
