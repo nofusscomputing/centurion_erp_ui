@@ -166,7 +166,7 @@ const ModelForm = ({
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
     }
 
-    return((page_data || ! edit ) &&
+    return((page_data || ! edit ) && metadata &&
         <section>
             {form_error && form_error['non_field_errors'] &&
                 <div>
@@ -350,7 +350,7 @@ const ModelForm = ({
                                 width: 'fit-content'
                             }}>
                             <button className="form common-field" type="submit">Save</button>
-                            <Link to={url_builder.return_url}><button className="form common-field inverse">Cancel</button></Link>
+                            <Link to={String(metadata.return_url).split('api/v2')[1]}><button type="button" className="form common-field inverse">Cancel</button></Link>
                         </div>
                     </div>
 
