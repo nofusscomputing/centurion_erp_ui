@@ -61,10 +61,22 @@ const ModelForm = ({
                         if( data.fields[field_key].required ) {
                             if( page_data ) {
 
-                                if( typeof(page_data[field_key]) == 'object' ) {
+                                if(
+                                    typeof(page_data[field_key]) == 'object'
+                                    && ! Array.isArray(page_data[field_key])
+                                ) {
 
                                     initial_form_data[field_key] = Number(page_data[field_key].id)
 
+                                }else if( Array.isArray(page_data[field_key]) ) {
+
+                                    initial_form_data[field_key] = []
+
+                                    for(let item of page_data[field_key]) {
+
+                                        initial_form_data[field_key] += [ item.id ]
+
+                                    }
                                 } else {
 
                                     initial_form_data[field_key] = page_data[field_key]
