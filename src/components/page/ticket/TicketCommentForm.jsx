@@ -213,13 +213,9 @@ const TicketCommentForm = ({
                             <span>
                                 <Select
                                     id = 'category'
-                                    field_data={metadata.fields['responsible_user']}
+                                    field_data={metadata.fields['category']}
+                                    value={form_data['category']}
                                     onChange={handleChange}
-                                />
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='category'
-                                    data={comment_data}
                                 />
                             </span>
                         </fieldset>}
