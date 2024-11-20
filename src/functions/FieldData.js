@@ -186,7 +186,7 @@ export default function FieldData({
 
                                     return (
                                         <>
-                                        <Link to={field.url}>{field.display_name}</Link>&nbsp;
+                                        <Link to={field.url}>{field.display_name}</Link>&nbsp;,
                                         </>
                                     );
 
@@ -194,7 +194,7 @@ export default function FieldData({
 
                                     return (
                                         <>
-                                        {field.display_name}&nbsp;
+                                        {field.display_name}&nbsp;,
                                         </>
                                     );
                                 }
