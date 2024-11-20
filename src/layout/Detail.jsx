@@ -36,6 +36,16 @@ const Detail = ({
         params
     )
 
+
+    useEffect(() => {
+
+        setActiveTab(null)
+
+    },[
+        url_builder.api.path
+    ])
+
+
     useEffect(() => {
 
         apiFetch(

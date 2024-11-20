@@ -735,8 +735,9 @@ div.ticket .contents {
   width: 100%;
 }
 
-.ticket h3.description span.sub-script,
-.ticket .comment h4.comment #text span.sub-script {
+/* .ticket h3.description span.sub-script,
+.ticket .comment h4.comment #text span.sub-script */
+span.sub-script {
   font-size: smaller;
 }
 
@@ -1251,7 +1252,10 @@ section .content .section fieldset.inline .text {
   border-bottom: 1px solid var(--border-colour-form-field);
   display: inline-block;
   height: 25px;
-  min-width: 350px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  width: 350px;
+  word-wrap: break-word;
 }
 
 section .content .section fieldset.textarea div.markdown {

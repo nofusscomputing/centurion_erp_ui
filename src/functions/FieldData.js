@@ -184,13 +184,17 @@ export default function FieldData({
 
                                 if( 'url' in field ) {
 
-                                    return ('');
+                                    return (
+                                        <>
+                                        <Link to={field.url}>{field.display_name}</Link>&nbsp;,
+                                        </>
+                                    );
 
                                 } else {
 
                                     return (
                                         <>
-                                        {field.display_name}&nbsp;
+                                        {field.display_name}&nbsp;,
                                         </>
                                     );
                                 }

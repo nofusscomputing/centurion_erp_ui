@@ -61,10 +61,22 @@ const ModelForm = ({
                         if( data.fields[field_key].required ) {
                             if( page_data ) {
 
-                                if( typeof(page_data[field_key]) == 'object' ) {
+                                if(
+                                    typeof(page_data[field_key]) == 'object'
+                                    && ! Array.isArray(page_data[field_key])
+                                ) {
 
                                     initial_form_data[field_key] = Number(page_data[field_key].id)
 
+                                }else if( Array.isArray(page_data[field_key]) ) {
+
+                                    initial_form_data[field_key] = []
+
+                                    for(let item of page_data[field_key]) {
+
+                                        initial_form_data[field_key] += [ item.id ]
+
+                                    }
                                 } else {
 
                                     initial_form_data[field_key] = page_data[field_key]
@@ -166,7 +178,7 @@ const ModelForm = ({
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
     }
 
-    return((page_data || ! edit ) &&
+    return((page_data || ! edit ) && metadata &&
         <section>
             {form_error && form_error['non_field_errors'] &&
                 <div>
@@ -195,7 +207,7 @@ const ModelForm = ({
 
                     if ( response.ok ) {
 
-                        navigate(url_builder.return_url)
+                        navigate(String(metadata.return_url).split('api/v2')[1])
 
                     } else {
 
@@ -350,7 +362,7 @@ const ModelForm = ({
                                 width: 'fit-content'
                             }}>
                             <button className="form common-field" type="submit">Save</button>
-                            <Link to={url_builder.return_url}><button className="form common-field inverse">Cancel</button></Link>
+                            <Link to={String(metadata.return_url).split('api/v2')[1]}><button type="button" className="form common-field inverse">Cancel</button></Link>
                         </div>
                     </div>
 

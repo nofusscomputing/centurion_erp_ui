@@ -45,6 +45,11 @@ import ServiceIcon from "./icons/ServiceIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import ProjectIcon from "./icons/ProjectIcon";
 import OrganizationIcon from "./icons/OrganizationIcon";
+import OperatingSystem from "./icons/OperatingSystem";
+import TicketRequest from "./icons/TicketRequest";
+import TicketIncident from "./icons/TicketIncident";
+import TicketProblem from "./icons/TicketProblem";
+import TicketChange from "./icons/TicketChange";
 
 
 const icon_components = {
@@ -75,15 +80,20 @@ const icon_components = {
     navdoubleleft: NavDoubleLeftIcon,
     navright: NavRightIcon,
     notification: NotificationIcon,
+    operating_system: OperatingSystem,
     organization: OrganizationIcon,
     project: ProjectIcon,
     service: ServiceIcon,
     software: SoftwareIcon,
     settings: SettingsIcon,
     task: TaskIcon,
+    ticket_change: TicketChange,
+    ticket_incident: TicketIncident,
+    ticket_problem: TicketProblem,
     ticket_related_blocks: RelatedTicketBlocks,
     ticket_related_blocked_by: RelatedTicketBlocked,
     ticket_related_related: RelatedTicketRelated,
+    ticket_request: TicketRequest,
     ticket_status_accepted: StatusAcceptedIcon,
     ticket_status_approvals: StatusApprovalsIcon,
     ticket_status_assigned: StatusAssignedIcon,
