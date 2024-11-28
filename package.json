@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build; mv build/static build/assets; sed -e 's:/static/:/assets/:g' -i build/index.html; sed -e 's:static/:assets/:g' -i build/assets/css/*.map; sed -e 's:static/:assets/:g' -i build/assets/js/*.map; sed -e 's:static/:assets/:g' -i build/asset-manifest.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
