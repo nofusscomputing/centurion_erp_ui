@@ -1,5 +1,5 @@
 /* light */
-:root {
+:root, html[data-theme='light'] {
 
   --contrasting-colour: #177ee6;
 
@@ -53,7 +53,7 @@
 
 /* AWX */
 /* :root { */
-.dark-theme {
+html[data-theme='dark'] {
 
   --contrasting-colour: #177ee6;
 
@@ -213,7 +213,7 @@ header a {
 
 header h1 {
   color: var(--text-colour-header);
-  display: inline;
+  display: inline-block;
   height: 76px;
   line-height: 76px;
   margin: 0px;
@@ -221,6 +221,21 @@ header h1 {
   width: fit-content;
   padding: 0px;
   text-decoration: none;
+}
+
+header .right {
+  /* background-color: #ff0000; */
+  display: flex;
+  /* float: right;
+  position:relative;
+  right: 10px; */
+  margin: 0 auto;
+  margin-right: 5px;
+  /* width:auto; */
+}
+
+header fieldset {
+  border: none;
 }
 
 .collapsible-hidden {
