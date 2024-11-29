@@ -1,4 +1,4 @@
-import { Link, json, redirect, useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { Link, json, redirect, useLoaderData, useNavigate, useParams } from "react-router";
 import Select from "../components/form/Select";
 import Slider from "../components/form/Slider";
 import TextArea from "../components/form/Textarea";

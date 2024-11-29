@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router";
 
 import { apiFetch } from "../hooks/apiFetch";
 import NavTabs from "../components/page/detail/Navtabs";

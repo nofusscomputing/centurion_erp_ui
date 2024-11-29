@@ -70,6 +70,9 @@ export async function apiFetch(
 
         .catch(err => {
 
+            console.log(`apiFetch: an error occured within the details page ${err}`)
+
+
             throw Error(err)
 
         });

@@ -3,7 +3,7 @@ import { useEffect, useId, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
 import urlBuilder from "../hooks/urlBuilder";
 

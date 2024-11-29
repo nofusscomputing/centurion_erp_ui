@@ -1,4 +1,4 @@
-import { Link, redirect, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, redirect, useLocation, useNavigate, useParams } from "react-router";
 import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
 import { ResponseException } from "../../classes/Exceptions";

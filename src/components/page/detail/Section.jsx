@@ -1,7 +1,7 @@
 import DoubleColumn from "./DoubleColumn";
 import SingleColumn from "./SingleColumn";
 import Table from "../../Table"
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import Badge from "../../Badge";
 import IconLoader from "../../IconLoader";
 import { useEffect, useState } from "react";
