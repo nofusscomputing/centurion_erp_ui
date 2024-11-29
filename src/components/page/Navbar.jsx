@@ -41,8 +41,6 @@ const Navbar = ({
 
             .then(response => {
 
-                console.log(`the data returned`)
-
                 if( response.status === 401 ) {
                     navigate('/login')
                 }
