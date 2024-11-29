@@ -80,6 +80,7 @@ function App() {
                         >
 
                             <Route path=":common_model/:common_pk/:sub_model/:sub_model_pk/:model/add" element={null} />
+                            <Route path=":common_model/:common_pk/:model/:pk/edit" element={null} />
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
                             <Route path=":common_model/:model/:pk/edit" element={null} />
