@@ -96,7 +96,7 @@ const Detail = ({
             'OPTIONS'
         )
     },[
-        page_data
+        url_builder.api.path
     ])
 
     useEffect(() => {
@@ -117,7 +117,7 @@ const Detail = ({
         }
 
     }, [
-        page_data
+        url_builder.api.path,
     ])
 
     useEffect(() => {
@@ -138,8 +138,8 @@ const Detail = ({
         }
 
     }, [
-        page_data,
-        update_notes
+        update_notes,
+        url_builder.api.path
     ])
 
 
