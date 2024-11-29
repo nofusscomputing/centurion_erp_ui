@@ -19,6 +19,7 @@ import ModelForm from "./layout/ModelForm";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
 import urlBuilder from "./hooks/urlBuilder";
+import { apiFetch } from "./hooks/apiFetch";
 
 const Login = () => {
 
@@ -162,28 +163,14 @@ const detailsLoader = async ({request, params}) => {
     )
 
 
-    const response = await fetch(url_builder.api.url, {
-        headers: {'X-CSRFToken': getCookie('csrftoken')},
-        credentials: 'include'
-    })
+    const data = await apiFetch(
+        url_builder.api.url,
+        (data) => {
 
-        .then( response => {
+            loader = data
 
-            if( ! response.ok ) {
-
-                throw new ResponseException(response)
-
-            }
-
-            loader = response.json()
-
-        })
-
-        .catch(err => {
-
-            throw Error(err)
-
-        })
+        }
+    )
 
     return loader
 
