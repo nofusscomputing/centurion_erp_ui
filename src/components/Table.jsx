@@ -27,8 +27,6 @@ const Table = ({
 
     const [metadata, setMetaData] = useState(null);
 
-    const [is_loaded, setLoaded] = useState(false);
-
     const [page, setPage] = useState(0);
 
     const [table_data, setTableData] = useState(null);
@@ -80,12 +78,6 @@ const Table = ({
                         </>
                     )
                 }
-
-                if( table_data ) {
-
-                    setLoaded(true)
-    
-                }
     
                 if( callback ) {
 
@@ -97,14 +89,11 @@ const Table = ({
             'OPTIONS' )
 
     }, [
-        data_url_path,
-        table_data
+        data_url_path
     ]);
 
 
     useEffect(() =>{
-
-        setLoaded(false)
 
         let url = null
 
@@ -122,11 +111,6 @@ const Table = ({
 
             setTableData(data)
 
-            if( metadata ) {
-
-                setLoaded(true)
-
-            }
         })
 
     }, [
@@ -155,7 +139,7 @@ const Table = ({
 
 
     return (
-        (is_loaded &&
+        ( metadata && table_data &&
         <div>
             { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
             <table>
