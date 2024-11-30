@@ -9,6 +9,7 @@ import urlBuilder from "../../hooks/urlBuilder";
 
 const Navbar = ({
     nav_visible,
+    api_version_callback
 }) => {
 
     const params = useParams();
@@ -34,6 +35,8 @@ const Navbar = ({
             (data) => {
 
                 SetNavigationEntries(data.navigation)
+
+                api_version_callback(data.version)
 
             },
             'OPTIONS'

@@ -15,6 +15,8 @@ const RootLayout = ({
 
     const [nav_visible, setNavVisible] = useState(true)
 
+    const [api_version_data, setAPIVersionData] = useState(null)
+
     return (
         <div>
             <Header
@@ -25,6 +27,11 @@ const RootLayout = ({
                 <Navbar
                     menu_entries={menu_entries}
                     nav_visible={nav_visible}
+                    api_version_callback={(data) => {
+
+                        setAPIVersionData(data)
+
+                    }}
                 />
                 <main>
                     <div className="content-header">
@@ -37,7 +44,9 @@ const RootLayout = ({
                     <article>
                         <Outlet />
                     </article>
-                    <Footer />
+                    <Footer
+                        api_version_data = {api_version_data}
+                    />
                 </main>
             </div>
         </div>

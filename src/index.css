@@ -1654,6 +1654,15 @@ footer .center {
   font-size: 9pt;
 }
 
+footer .right {
+  display: block;
+  align-items: right;
+  text-align: right;
+  padding: 25px;
+  color: var(--text-colour-footer);
+  font-size: 9pt;
+}
+
 
 /* The switch - the box around the slider */
 .switch {
