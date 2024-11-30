@@ -41,8 +41,8 @@ export async function apiFetch(
 
     }
 
+    url_path = String(url_path).replace('/add', '').replace('/delete', '').replace('/edit', '')
 
-    // let api_data = null
 
     let request_data = {
         credentials: 'include',
