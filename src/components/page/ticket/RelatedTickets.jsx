@@ -15,22 +15,13 @@ const RelatedTickets = ({
 
         apiFetch(
             data_url,
-            (data) => {
+            (data, metadata) => {
 
                 setPageData(data)
+
+                setMetaData(metadata)
+
             }
-        )
-    },[ data_url ])
-
-    useEffect(() => {
-
-        apiFetch(
-            data_url,
-            (data) => {
-
-                setMetaData(data)
-            },
-            'OPTIONS'
         )
     },[ data_url ])
 

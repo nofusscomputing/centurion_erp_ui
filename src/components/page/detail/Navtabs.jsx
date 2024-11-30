@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 
 import IconLoader from "../../IconLoader";
 
@@ -6,6 +6,7 @@ import IconLoader from "../../IconLoader";
 
 const NavTabs = ({
     tabs = [],
+    back_url,
     active_tab = null,
     setActiveTab = null
 }) => {
@@ -20,7 +21,7 @@ const NavTabs = ({
                         <IconLoader name='navdoubleleft' />
                     </span>
                     <span className="nav-tabs-text">
-                        <Link to={'/' + params.module + '/' + params.model}>Back to index</Link>
+                        <Link to={back_url}>Back to index</Link>
                     </span>
                 </div>
             </div>

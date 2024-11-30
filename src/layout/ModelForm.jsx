@@ -1,4 +1,4 @@
-import { Link, json, redirect, useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { Link, json, redirect, useLoaderData, useNavigate, useParams } from "react-router";
 import Select from "../components/form/Select";
 import Slider from "../components/form/Slider";
 import TextArea from "../components/form/Textarea";
@@ -13,8 +13,6 @@ const ModelForm = ({
     setContentHeading,
     SetContentHeaderIcon = null
 }) => {
-    
-    // SetContentHeaderIcon('')
 
     const values=[
         {
@@ -25,9 +23,7 @@ const ModelForm = ({
 
     const params = useParams();
 
-    const page_data = useLoaderData();
-
-    const [metadata, setMetaData] = useState(null);
+    const {page_data, metadata} = useLoaderData();
 
     const [form_data, setFormData] = useState({})
 
@@ -46,81 +42,62 @@ const ModelForm = ({
 
     useEffect(() => {
 
-        apiFetch(
-            url_builder.api.path,
-            (data) =>{
 
-                setMetaData(data)
 
-                setFormData(() => {
+        setFormData(() => {
 
-                    let initial_form_data = {}
-    
-                    Object.keys(data.fields).map((field_key) => {
+            let initial_form_data = {}
 
-                        if( data.fields[field_key].required ) {
-                            if( page_data ) {
+            Object.keys(metadata.fields).map((field_key) => {
 
-                                if(
-                                    typeof(page_data[field_key]) == 'object'
-                                    && ! Array.isArray(page_data[field_key])
-                                ) {
+                if( metadata.fields[field_key].required ) {
+                    if( page_data ) {
 
-                                    initial_form_data[field_key] = Number(page_data[field_key].id)
+                        if(
+                            typeof(page_data[field_key]) == 'object'
+                            && ! Array.isArray(page_data[field_key])
+                        ) {
 
-                                }else if( Array.isArray(page_data[field_key]) ) {
+                            initial_form_data[field_key] = Number(page_data[field_key].id)
 
-                                    initial_form_data[field_key] = []
+                        }else if( Array.isArray(page_data[field_key]) ) {
 
-                                    for(let item of page_data[field_key]) {
+                            initial_form_data[field_key] = []
 
-                                        initial_form_data[field_key] += [ item.id ]
+                            for(let item of page_data[field_key]) {
 
-                                    }
-                                } else {
+                                initial_form_data[field_key] += [ item.id ]
 
-                                    initial_form_data[field_key] = page_data[field_key]
-
-                                }
-
-                            } else if( 'initial' in data.fields[field_key] ) {
-                                 initial_form_data[field_key] = data.fields[field_key].initial
-                            }else {
-                                initial_form_data[field_key] = ''
                             }
+                        } else {
+
+                            initial_form_data[field_key] = page_data[field_key]
+
                         }
 
-                    })
-
-                    return initial_form_data;
-
-                },[])
-
-            },
-            'OPTIONS'
-        )
-
-        .then(((data) => {
-
-            if( page_data ) {
-                if( 'name' in page_data ) {
-
-                    setContentHeading(page_data['name']);
-
-                }else if( 'title' in page_data ) {
-
-                    setContentHeading(page_data['title']);
-
+                    } else if( 'initial' in metadata.fields[field_key] ) {
+                         initial_form_data[field_key] = metadata.fields[field_key].initial
+                    }else {
+                        initial_form_data[field_key] = ''
+                    }
                 }
-            
-            }else {
-                try {
-                    setContentHeading(metadata['name']);
-                } catch {
-                    
-                }
-            }
-        }))
+
+            })
+
+            return initial_form_data;
+
+        },[])
+
+
+        if( 'name' in page_data ) {
+
+            setContentHeading(page_data['name']);
+
+        }else if( 'title' in page_data ) {
+
+            setContentHeading(page_data['title']);
+
+        }
 
     },[])
 
@@ -178,6 +155,7 @@ const ModelForm = ({
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
     }
 
+
     return((page_data || ! edit ) && metadata &&
         <section>
             {form_error && form_error['non_field_errors'] &&
@@ -216,112 +194,89 @@ const ModelForm = ({
 
                     }
                 }}>
-                    { !form_post && metadata && url_builder.params.action == 'delete' && 
+                    { !form_post && url_builder.params.action === 'delete' && 
                     <>
                     Are you sure you wish to delete this item?
                     </>}
-                    { ( !form_post && metadata && params.action != 'delete' ) &&
-                    Object.keys(metadata.fields).map((field_key) => {
+                    { ( !form_post && url_builder.params.action !== 'delete' ) &&
+                        Object.keys(metadata.fields).map((field_key) => {
 
-                        if( ! metadata.fields[field_key].read_only ) {
+                            if( ! metadata.fields[field_key].read_only ) {
 
-                            let value = null
-
-
-                            if( field_key in form_data ) {
-
-                                value = form_data[field_key]
-
-                            } else if( page_data ) {
-
-                                value = page_data[field_key]
-
-                            } else if ( 'initial' in metadata.fields[field_key]) {
-
-                                if( metadata.fields[field_key].initial !== null ) {
-
-                                    value = metadata.fields[field_key].initial
-
-                                }
-
-                            }
+                                let value = null
 
 
-                            console.log(`field data: ${JSON.stringify(form_data)}`)
+                                if( field_key in form_data ) {
 
-                            switch(metadata.fields[field_key].type) {
+                                    value = form_data[field_key]
 
-                                case 'Boolean':
+                                } else if( page_data ) {
 
-                                    return (<Slider
-                                        id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        error_text = {form_error && form_error[field_key]}
-                                        helptext   = {metadata.fields[field_key].help_text}
-                                        required   = {metadata.fields[field_key].required}
-                                        value={value}
-                                        onChange={handleChange}
-                                    />)
+                                    value = page_data[field_key]
 
-                                case 'Choice':
-                                case 'Relationship':
+                                } else if ( 'initial' in metadata.fields[field_key]) {
 
-                                    return (<Select
-                                        id = {field_key}
-                                        error_text = {form_error && form_error[field_key]}
-                                        value={value}
-                                        onChange={handleChange}
-                                        field_data={metadata.fields[field_key]}
-                                    />)
+                                    if( metadata.fields[field_key].initial !== null ) {
 
-                                case 'DateTime':
-
-                                    if( value ) {    // Convert DateTime (UTC) to local Time
-
-                                        let datetime = new Date(value)
-                                        let local_datetime = new Date(datetime - datetime.getTimezoneOffset()*60*1000).toISOString();
-
-                                        value = String(local_datetime).split('.')[0]
+                                        value = metadata.fields[field_key].initial
 
                                     }
 
-                                    return (<TextField
-                                        id = {field_key}
-                                        label = {metadata.fields[field_key].label}
-                                        helptext   = {metadata.fields[field_key].help_text}
-                                        error_text = {form_error && form_error[field_key]}
-                                        required   = {metadata.fields[field_key].required}
-                                        type = {'datetime-local'}
-                                        value={value}
-                                        onChange={handleChange}
-                                    />)
+                                }
 
-                                case 'JSON':
 
-                                    value = JSON.stringify(value, null, 4)
+                                console.log(`field data: ${JSON.stringify(form_data)}`)
 
-                                    return (<TextArea
-                                        id = {field_key}
-                                        error_text = {form_error && form_error[field_key]}
-                                        field_data={metadata.fields[field_key]}
-                                        value={value}
-                                        onChange={handleChange}
-                                    />)
+                                switch(metadata.fields[field_key].type) {
 
-                                case 'Markdown':
+                                    case 'Boolean':
 
-                                    return (<TextArea
-                                        id = {field_key}
-                                        error_text = {form_error && form_error[field_key]}
-                                        field_data={metadata.fields[field_key]}
-                                        value={value}
-                                        onChange={handleChange}
-                                    />)
+                                        return (<Slider
+                                            id = {field_key}
+                                            label = {metadata.fields[field_key].label}
+                                            error_text = {form_error && form_error[field_key]}
+                                            helptext   = {metadata.fields[field_key].help_text}
+                                            required   = {metadata.fields[field_key].required}
+                                            value={value}
+                                            onChange={handleChange}
+                                        />)
 
-                                default:
+                                    case 'Choice':
+                                    case 'Relationship':
 
-                                    if( 'multi_line' in metadata.fields[field_key] ) {
+                                        return (<Select
+                                            id = {field_key}
+                                            error_text = {form_error && form_error[field_key]}
+                                            value={value}
+                                            onChange={handleChange}
+                                            field_data={metadata.fields[field_key]}
+                                        />)
 
+                                    case 'DateTime':
+
+                                        if( value ) {    // Convert DateTime (UTC) to local Time
+
+                                            let datetime = new Date(value)
+                                            let local_datetime = new Date(datetime - datetime.getTimezoneOffset()*60*1000).toISOString();
+
+                                            value = String(local_datetime).split('.')[0]
+
+                                        }
+
+                                        return (<TextField
+                                            id = {field_key}
+                                            label = {metadata.fields[field_key].label}
+                                            helptext   = {metadata.fields[field_key].help_text}
+                                            error_text = {form_error && form_error[field_key]}
+                                            required   = {metadata.fields[field_key].required}
+                                            type = {'datetime-local'}
+                                            value={value}
+                                            onChange={handleChange}
+                                        />)
+
+                                    case 'JSON':
+
+                                        value = JSON.stringify(value, null, 4)
 
                                         return (<TextArea
                                             id = {field_key}
@@ -331,25 +286,49 @@ const ModelForm = ({
                                             onChange={handleChange}
                                         />)
 
-                                    } else {
+                                    case 'Markdown':
 
-                                        return (<TextField
+                                        return (<TextArea
                                             id = {field_key}
-                                            label = {metadata.fields[field_key].label}
-                                            helptext   = {metadata.fields[field_key].help_text}
                                             error_text = {form_error && form_error[field_key]}
-                                            required   = {metadata.fields[field_key].required}
+                                            field_data={metadata.fields[field_key]}
                                             value={value}
                                             onChange={handleChange}
                                         />)
-    
-                                    }
+
+                                    default:
+
+                                        if( 'multi_line' in metadata.fields[field_key] ) {
+
+
+                                            return (<TextArea
+                                                id = {field_key}
+                                                error_text = {form_error && form_error[field_key]}
+                                                field_data={metadata.fields[field_key]}
+                                                value={value}
+                                                onChange={handleChange}
+                                            />)
+
+                                        } else {
+
+                                            return (<TextField
+                                                id = {field_key}
+                                                label = {metadata.fields[field_key].label}
+                                                helptext   = {metadata.fields[field_key].help_text}
+                                                error_text = {form_error && form_error[field_key]}
+                                                required   = {metadata.fields[field_key].required}
+                                                value={value}
+                                                onChange={handleChange}
+                                            />)
+        
+                                        }
+                                }
+
+
                             }
 
-
-                        }
-
-                    })}
+                        })
+                    }
 
                     <div style={{
                         display: 'flexbox',
@@ -362,7 +341,12 @@ const ModelForm = ({
                                 width: 'fit-content'
                             }}>
                             <button className="form common-field" type="submit">Save</button>
-                            <Link to={String(metadata.return_url).split('api/v2')[1]}><button type="button" className="form common-field inverse">Cancel</button></Link>
+                            <Link to={
+                                metadata.urls.return_url ?
+                                String(metadata.urls.return_url).split('api/v2')[1]
+                                : String(metadata.urls.self).split('api/v2')[1]
+
+                            }><button type="button" className="form common-field inverse">Cancel</button></Link>
                         </div>
                     </div>
 

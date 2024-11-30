@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import IconLoader from "../IconLoader";
 import Slider from "../form/Slider";
 import { useEffect, useState } from "react";

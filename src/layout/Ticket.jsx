@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router";
 import FieldData from "../functions/FieldData";
 
 import { apiFetch } from "../hooks/apiFetch";
@@ -36,52 +36,32 @@ const Ticket = ({
 
     SetContentHeaderIcon('')
 
-    const [comments, setComments] = useState(null)
-
     const [comment_metadata, setCommentMetaData] = useState(null);
 
-    const [metadata, setMetaData] = useState(null);
-
-    const page_data = useLoaderData();
+    const {page_data, metadata} = useLoaderData();
 
     const params = useParams();
 
     const [ ticket_type, SetTicketType ] = useState(null)
 
-    let [ticket_duration, setTicketDuration] = useState(0)
-
     setContentHeading(page_data['title'])
 
 
-    let url_builder = urlBuilder(
-        params
-    )
-
     useEffect(() => {
+        for(let ticket_type_entry of metadata.fields['ticket_type'].choices ) {
 
-        apiFetch(
-            url_builder.api.path,
-            (data) =>{
+            if( Number(ticket_type_entry.value) === Number(page_data['ticket_type']) ) {
 
-                setMetaData(data)
+                ticket_type_entry = String(ticket_type_entry.display_name).toLowerCase()
+                ticket_type_entry = ticket_type_entry.replace(' ', '-')
 
-                for(let ticket_type_entry of data.fields['ticket_type'].choices ) {
+                SetTicketType(ticket_type_entry)
 
-                    if( Number(ticket_type_entry.value) === Number(page_data['ticket_type']) ) {
+            }
 
-                        ticket_type_entry = String(ticket_type_entry.display_name).toLowerCase()
-                        ticket_type_entry = ticket_type_entry.replace(' ', '-')
+        }
 
-                        SetTicketType(ticket_type_entry)
-
-                    }
-
-                }
-            },
-            'OPTIONS'
-        )
-
-    }, [ page_data ])
+    }, [])
 
 
     useEffect(() => {
@@ -99,7 +79,7 @@ const Ticket = ({
             )
         }
 
-    }, [page_data['_urls']['comments']])
+    }, [])
 
 
     return (
@@ -138,7 +118,12 @@ const Ticket = ({
                             }}
 
                         /> */}
-                        <Link to="edit"><button className="common-field form">Edit</button></Link>
+                        <Link to={
+                            metadata.urls.return_url ?
+                            String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
+                            : String(metadata.urls.self).split('api/v2')[1] + '/edit'
+
+                        }><button className="common-field form">Edit</button></Link>
                         <FieldData
                             metadata={metadata}
                             field_name='description'

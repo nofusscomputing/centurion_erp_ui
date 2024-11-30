@@ -1,4 +1,4 @@
-import { Link, NavLink, json } from "react-router-dom";
+import { Link, NavLink, json } from "react-router";
 import RenderMarkdown from "./RenderMarkdown";
 import IconLoader from "../components/IconLoader";
 import Badge from "../components/Badge";

@@ -3,7 +3,7 @@ import { useEffect, useId, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
 import urlBuilder from "../hooks/urlBuilder";
 
@@ -26,8 +26,6 @@ const Table = ({
 }) => {
 
     const [metadata, setMetaData] = useState(null);
-
-    const [is_loaded, setLoaded] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -57,54 +55,7 @@ const Table = ({
     }
 
 
-    useEffect(() => {
-
-        apiFetch(
-            data_url_path,
-            (data) =>{
-
-                setMetaData(data)
-
-
-                if( SetContentHeaderIcon ) {
-
-                    SetContentHeaderIcon(
-                        <>
-                            {data['documentation'] &&
-                                <Link to={data['documentation']} target="_new">
-                                    <IconLoader
-                                        name='help'
-                                    />
-                                </Link>
-                            }
-                        </>
-                    )
-                }
-
-                if( table_data ) {
-
-                    setLoaded(true)
-    
-                }
-    
-                if( callback ) {
-
-                    callback(data.name)
-
-                }
-
-            },
-            'OPTIONS' )
-
-    }, [
-        data_url_path,
-        table_data
-    ]);
-
-
     useEffect(() =>{
-
-        setLoaded(false)
 
         let url = null
 
@@ -118,16 +69,37 @@ const Table = ({
 
         }
 
-        apiFetch(url, (data) => {
+        apiFetch(
+            url,
+            (data, metadata) => {
 
-            setTableData(data)
+                setTableData(data)
 
-            if( metadata ) {
+                setMetaData(metadata)
 
-                setLoaded(true)
+                if( SetContentHeaderIcon ) {
+
+                    SetContentHeaderIcon(
+                        <>
+                            {metadata['documentation'] &&
+                                <Link to={metadata['documentation']} target="_new">
+                                    <IconLoader
+                                        name='help'
+                                    />
+                                </Link>
+                            }
+                        </>
+                    )
+                }
+
+                if( callback ) {
+
+                    callback(metadata.name)
+
+                }
 
             }
-        })
+        )
 
     }, [
         data_url_path,
@@ -155,7 +127,7 @@ const Table = ({
 
 
     return (
-        (is_loaded &&
+        ( metadata && table_data &&
         <div>
             { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
             <table>

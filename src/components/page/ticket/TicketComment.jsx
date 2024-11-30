@@ -97,7 +97,10 @@ const TicketComment = ({
                 String(comment_data._urls.threads).split('api/v2')[1] + '?page[size]=500',
                 (data) => {
                     setThreads(data)
-                }
+                },
+                undefined,
+                undefined,
+                false
             )
 
             setRelaod(false)
