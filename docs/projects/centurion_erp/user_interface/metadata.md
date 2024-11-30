@@ -24,7 +24,7 @@ Django DRF provides metadata accessable by a HTTP/OPTIONS request. The UI uses t
 
 The `urls` key is used by the UI for navigation. There are two keys within this dictionary, they are:
 
-- `self`, 
+- `self`,
 
     This URL is used by the interface for the following items:
 
