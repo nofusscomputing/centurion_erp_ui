@@ -70,16 +70,19 @@ const Section = ({
 
     useEffect(() => {
 
-        if( 'external_links' in data._urls ) {
+        if( index === 0 ) {
 
-            apiFetch(
-                data._urls.external_links,
-                (response) =>{
+            if( 'external_links' in data._urls ) {
 
-                    setExternalLinks(response)
+                apiFetch(
+                    data._urls.external_links,
+                    (response) =>{
 
-                },
-            )
+                        setExternalLinks(response)
+
+                    },
+                )
+            }
         }
 
     },[])

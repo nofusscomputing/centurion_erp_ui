@@ -19,23 +19,19 @@ const Detail = ({
 
     const [active_tab, setActiveTab] = useState(null)
 
-    const page_data = useLoaderData();
+    const {metadata, page_data} = useLoaderData();
 
     const params = useParams();
 
-    const [metadata, setMetaData] = useState(null);
 
     const [ notes, setNotes ] = useState(null)
     const [ update_notes, setUpdateNotes ] = useState(false)
     const [ notes_form, setNotesForm ] = useState({})
     const [ note_metadata, setNoteMetadata ] = useState(null)
 
-    // SetContentHeaderIcon('')
-
     const url_builder = urlBuilder (
         params
     )
-
 
     useEffect(() => {
 
@@ -45,80 +41,51 @@ const Detail = ({
         url_builder.api.path
     ])
 
-
     useEffect(() => {
 
-        apiFetch(
-            url_builder.api.path,
-            (data) =>{
+        if( 'name' in page_data ) {
 
-                setMetaData(data)
+            setContentHeading(page_data['name']);
 
-                if( 'name' in page_data ) {
+        }else if( 'title' in page_data ) {
 
-                    setContentHeading(page_data['name']);
+            setContentHeading(page_data['title']);
 
-                }else if( 'title' in page_data ) {
-
-                    setContentHeading(page_data['title']);
-
-                }else{
-                    setContentHeading(data['name']);
-                }
-
-
-                SetContentHeaderIcon(
-                    <>
-                        { ('documentation' in data) &&
-                            <Link to={data['name']} target="_new">
-                                <IconLoader
-                                    name='help'
-                                />
-                            </Link>
-                        }
-                        {page_data['_urls']['history'] &&
-                            <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
-                                <IconLoader
-                                    name='history'
-                                />
-                            </Link>
-                        }
-                        {data['allowed_methods'].includes('DELETE') &&
-                            <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
-                                <IconLoader
-                                    name='delete'
-                                />
-                            </Link>
-                        }
-                    </>
-                )
-            },
-            'OPTIONS'
-        )
-    },[
-        url_builder.api.path
-    ])
-
-    useEffect(() => {
-
-        if( Object.keys(page_data['_urls']).includes('notes') ) {
-
-            if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
-
-                apiFetch(
-                    page_data['_urls']['notes'],
-                    (data) => {
-
-                        setNoteMetadata(data)
-                    },
-                    'OPTIONS'
-                )
-            }
+        }else{
+            setContentHeading(metadata['name']);
         }
 
-    }, [
-        url_builder.api.path,
+
+        SetContentHeaderIcon(
+            <>
+                { ('documentation' in metadata) &&
+                    <Link to={metadata['name']} target="_new">
+                        <IconLoader
+                            name='help'
+                        />
+                    </Link>
+                }
+                {page_data['_urls']['history'] &&
+                    <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
+                        <IconLoader
+                            name='history'
+                        />
+                    </Link>
+                }
+                {metadata['allowed_methods'].includes('DELETE') &&
+                    <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
+                        <IconLoader
+                            name='delete'
+                        />
+                    </Link>
+                }
+            </>
+        )
+
+    },[
+        page_data,
     ])
+
 
     useEffect(() => {
 
@@ -126,20 +93,20 @@ const Detail = ({
 
             if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
 
-                apiFetch(
+                const {api_metadata, api_page_data} = apiFetch(
                     page_data['_urls']['notes'],
-                    (data) => {
-
-                        setNotes(data)
-                    }
                 )
+
+                setNotes(api_page_data)
+
+                setNoteMetadata(api_metadata)
 
             }
         }
 
     }, [
         update_notes,
-        url_builder.api.path
+        page_data
     ])
 
 

@@ -16,32 +16,22 @@ const Settings = ({
     setContentHeading('Settings')
     SetContentHeaderIcon('')
 
-    const page_data = useLoaderData();
-
-    const [metadata, setMetaData] = useState(null);
+    const {metadata, page_data} = useLoaderData();
 
     useEffect(() => {
 
-        apiFetch(
-            '/settings',
-            (data) =>{
-
-                setMetaData(data)
-
-                SetContentHeaderIcon(
-                    <>
-                        {data['documentation'] &&
-                            <Link to={data['documentation']} target="_new">
-                                <IconLoader
-                                    name='help'
-                                />
-                            </Link>
-                        }
-                    </>
-                )
-            },
-            'OPTIONS'
+        SetContentHeaderIcon(
+            <>
+                {metadata['documentation'] &&
+                    <Link to={metadata['documentation']} target="_new">
+                        <IconLoader
+                            name='help'
+                        />
+                    </Link>
+                }
+            </>
         )
+
     },[])
 
 

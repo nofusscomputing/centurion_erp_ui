@@ -55,7 +55,6 @@ const Navbar = ({
 
         setNavPage(String(url_builder.params.module + '-' + url_builder.params.model))
 
-
     }, [
         url_builder.params.module,
         url_builder.params.model,

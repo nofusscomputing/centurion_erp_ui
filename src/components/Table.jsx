@@ -55,44 +55,6 @@ const Table = ({
     }
 
 
-    useEffect(() => {
-
-        apiFetch(
-            data_url_path,
-            (data) =>{
-
-                setMetaData(data)
-
-
-                if( SetContentHeaderIcon ) {
-
-                    SetContentHeaderIcon(
-                        <>
-                            {data['documentation'] &&
-                                <Link to={data['documentation']} target="_new">
-                                    <IconLoader
-                                        name='help'
-                                    />
-                                </Link>
-                            }
-                        </>
-                    )
-                }
-    
-                if( callback ) {
-
-                    callback(data.name)
-
-                }
-
-            },
-            'OPTIONS' )
-
-    }, [
-        data_url_path
-    ]);
-
-
     useEffect(() =>{
 
         let url = null
@@ -107,11 +69,37 @@ const Table = ({
 
         }
 
-        apiFetch(url, (data) => {
+        apiFetch(
+            url,
+            (data, metadata) => {
 
-            setTableData(data)
+                setTableData(data)
 
-        })
+                setMetaData(metadata)
+
+                if( SetContentHeaderIcon ) {
+
+                    SetContentHeaderIcon(
+                        <>
+                            {metadata['documentation'] &&
+                                <Link to={metadata['documentation']} target="_new">
+                                    <IconLoader
+                                        name='help'
+                                    />
+                                </Link>
+                            }
+                        </>
+                    )
+                }
+
+                if( callback ) {
+
+                    callback(metadata.name)
+
+                }
+
+            }
+        )
 
     }, [
         data_url_path,
