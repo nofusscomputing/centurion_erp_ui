@@ -37,12 +37,6 @@ const Detail = ({
 
         setActiveTab(null)
 
-    },[
-        url_builder.api.path
-    ])
-
-    useEffect(() => {
-
         if( 'name' in page_data ) {
 
             setContentHeading(page_data['name']);

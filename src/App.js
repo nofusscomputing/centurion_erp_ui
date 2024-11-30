@@ -50,7 +50,16 @@ function App() {
                     />}
                     errorElement={<ErrorPage /> }
                 >
+
+                    {/* ********************************************************
+                        Redirects
+                    ******************************************************** */}
+
                     <Route path='/login' element={<Login/>}/>
+
+                    {/* ********************************************************
+                        History View
+                    ******************************************************** */}
 
                     <Route path="/core/:model/:pk/history"
                         element={<History
@@ -59,6 +68,10 @@ function App() {
                         />}
                         errorElement={<ErrorPage /> }
                     />
+
+                    {/* ********************************************************
+                        Settings View
+                    ******************************************************** */}
 
                     <Route path="/settings"
                         element={<Settings
@@ -70,6 +83,10 @@ function App() {
                     />
 
                     < Route path=":module">
+
+                        {/* ********************************************************
+                            Form View
+                        ******************************************************** */}
 
                         <Route
                             element={<ModelForm
@@ -94,6 +111,10 @@ function App() {
 
                         </Route>
 
+                        {/* ********************************************************
+                            List View
+                        ******************************************************** */}
+
                         <Route
                             element={<List
                                 setContentHeading={setContentHeading}
@@ -108,34 +129,34 @@ function App() {
 
                         </Route>
 
-                        <Route
-                            element={<Ticket
+                        {/* ********************************************************
+                            Tickets View
+                        ******************************************************** */}
+
+                        <Route path=":common_model/:common_pk/project_task/:pk" element={<Ticket
                                 setContentHeading={setContentHeading}
                                 SetContentHeaderIcon={SetContentHeaderIcon}
-                            />}
-                            errorElement={<ErrorPage /> }
-                            loader = {pagedLoader}
-                        >
+                            />} loader = {pagedLoader} errorElement={<ErrorPage /> } />
 
-                            <Route path=":common_model/:common_pk/project_task/:pk" element={null} />
-                            <Route path="ticket/:model/:pk" element={null} />
-
-                        </Route>
-
-
-                        <Route
-                            element={<Detail
+                        <Route path="ticket/:model/:pk" element={<Ticket
                                 setContentHeading={setContentHeading}
                                 SetContentHeaderIcon={SetContentHeaderIcon}
-                            />}
-                            errorElement={<ErrorPage /> }
-                            loader = {pagedLoader}
-                        >
+                            />} loader = {pagedLoader} errorElement={<ErrorPage /> } />
 
-                            <Route path=":common_model/:common_pk/:model/:pk" element={null} />
-                            <Route path=":model/:pk" element={null} />
+                        {/* ********************************************************
+                            Detail View
+                        ******************************************************** */}
 
-                        </Route>
+                        <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
+                                setContentHeading={setContentHeading}
+                                SetContentHeaderIcon={SetContentHeaderIcon}
+                            />} loader = {pagedLoader} errorElement={<ErrorPage /> } />
+
+                        <Route path=":model/:pk"  element={<Detail
+                                setContentHeading={setContentHeading}
+                                SetContentHeaderIcon={SetContentHeaderIcon}
+                            />}  loader = {pagedLoader} errorElement={<ErrorPage /> } />
+
                     </Route>
                 </Route>
             ));
@@ -163,7 +184,8 @@ const pagedLoader = async ({request, params}) => {
     )
 
     const {api_metadata, api_page_data} = await apiFetch(
-        url_builder.api.url,
+        // url_builder.api.url,
+        String(request.url).replace(document.location.origin, '')
     )
 
     return {
