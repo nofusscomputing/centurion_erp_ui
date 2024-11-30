@@ -341,7 +341,12 @@ const ModelForm = ({
                                 width: 'fit-content'
                             }}>
                             <button className="form common-field" type="submit">Save</button>
-                            <Link to={String(metadata.return_url).split('api/v2')[1]}><button type="button" className="form common-field inverse">Cancel</button></Link>
+                            <Link to={
+                                metadata.urls.return_url ?
+                                String(metadata.urls.return_url).split('api/v2')[1]
+                                : String(metadata.urls.self).split('api/v2')[1]
+
+                            }><button type="button" className="form common-field inverse">Cancel</button></Link>
                         </div>
                     </div>
 
