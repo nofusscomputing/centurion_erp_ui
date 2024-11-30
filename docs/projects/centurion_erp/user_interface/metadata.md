@@ -22,7 +22,11 @@ Django DRF provides metadata accessable by a HTTP/OPTIONS request. The UI uses t
 
 ### URLs
 
-The `urls` key is used by the UI for navigation. There are two keys within this dictionary, they are:
+The `urls` key is used by the UI for navigation. This object will be rendered as a JSON dictionary. There are two keys within this dictionary, they are:
+
+- `back`
+
+    This URL is used for by the interface as the URL for a back operation. This URL is optional.
 
 - `self`,
 
@@ -30,10 +34,10 @@ The `urls` key is used by the UI for navigation. There are two keys within this 
 
     - To generate the action url(s) by appending the action to the url. Available UI actions are: `add` and `edit`
 
-    - As the default `return_url` if the `return_url` key is not provided.
+    - As the default `return_url`, if the `return_url` key is not provided.
 
     This URL is mandatory and **must** be provided on ALL views.
 
 - `return_url`
 
-    This URL if provided, is the URL used as the cancel or back url for a UI view. This key is optional and if it's not supplied, the `self` URL is to be used.
+    This URL if provided, is the URL used as the cancel url for a UI view. This key is optional and if it's not supplied, the `self` URL is to be used.
