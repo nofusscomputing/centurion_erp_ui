@@ -66,7 +66,7 @@ const ModelForm = ({
 
                             for(let item of page_data[field_key]) {
 
-                                initial_form_data[field_key] += [ item.id ]
+                                initial_form_data[field_key].push( Number(item.id) )
 
                             }
                         } else {
