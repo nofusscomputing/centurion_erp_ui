@@ -175,7 +175,8 @@ const ModelForm = ({
                     e.preventDefault();
 
                     const response = await apiFetch(
-                        url_builder.api.path,
+                        // url_builder.api.path,
+                        String(metadata.urls.self).split('api/v2')[1],
                         setFormError,
                         url_builder.method,
                         form_data
