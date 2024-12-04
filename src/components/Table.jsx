@@ -77,6 +77,12 @@ const Table = ({
 
                 setMetaData(metadata)
 
+                if( Array(metadata.table_fields).length < 2 ) {
+
+                    console.error("Missing Table Fields")
+
+                }
+
                 if( SetContentHeaderIcon ) {
 
                     SetContentHeaderIcon(
