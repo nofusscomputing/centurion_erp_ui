@@ -18,15 +18,17 @@ export async function apiFetch(
     metadata = true,
 ) {
 
-    console.debug(`apiFetch, using API_URL env variable:, ${window.env.API_URL}`)
+    console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
 
-    if( String(url_path).includes(window.env.API_URL) ) {    // normalise passed URLs
+    console.debug(`apiFetch was passed URL: [${url_path}]`)
 
-        console.debug(`url_path for function apiFetch was a full url, ${url_path}, normalizing...`)
+    if( String(url_path).includes(String(window.env.API_URL).trim()) ) {    // normalise passed URLs
 
-        url_path = String(url_path).replace(window.env.API_URL, '')
+        console.debug(`url_path for function apiFetch was a full url, [${url_path}], normalizing...`)
 
-        console.debug(`normailized to ${url_path}`)
+        url_path = String(url_path).replace(String(window.env.API_URL).trim(), '')
+
+        console.debug(`normailized to [${url_path}]`)
 
     }
 
@@ -141,6 +143,7 @@ export async function apiFetch(
     }
 
 
+    console.debug(`apiFetch finished for URL: [${url_path}]`)
 
     if(
         http_method === 'PATCH'
