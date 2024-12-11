@@ -345,7 +345,10 @@ const TicketComment = ({
                             <TicketComment
                                 comment_data={comment}
                                 discussion = {true}
-                                metadata={metadata}
+                                metadata = {metadata}
+                                edit_callback = {() => {
+                                    setRelaod(true)
+                                }}
                             />
                         </li>
                     ))}
