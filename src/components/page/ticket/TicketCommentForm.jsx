@@ -30,7 +30,7 @@ const TicketCommentForm = ({
 
     if( is_edit ) {
 
-        post_url += '/' + comment_data['id']
+        post_url = comment_data['_urls']['_self']
         HTTP_METHOD = 'PATCH'
     }
 
