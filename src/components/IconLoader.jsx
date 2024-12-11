@@ -51,6 +51,7 @@ import TicketIncident from "./icons/TicketIncident";
 import TicketProblem from "./icons/TicketProblem";
 import TicketChange from "./icons/TicketChange";
 import Documentation from "./icons/documentation";
+import SwaggerDcoumentation from "./icons/SwaggerDcoumentation";
 import Git from "./icons/Git";
 
 
@@ -90,6 +91,7 @@ const icon_components = {
     service: ServiceIcon,
     software: SoftwareIcon,
     settings: SettingsIcon,
+    swagger_docs: SwaggerDcoumentation,
     task: TaskIcon,
     ticket_change: TicketChange,
     ticket_incident: TicketIncident,
