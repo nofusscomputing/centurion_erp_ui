@@ -51,6 +51,7 @@ import TicketIncident from "./icons/TicketIncident";
 import TicketProblem from "./icons/TicketProblem";
 import TicketChange from "./icons/TicketChange";
 import Documentation from "./icons/documentation";
+import Git from "./icons/Git";
 
 
 const icon_components = {
@@ -71,6 +72,7 @@ const icon_components = {
     delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
+    git: Git,
     help: HelpIcon,
     history: HistoryIcon,
     information: InformationIcon,
