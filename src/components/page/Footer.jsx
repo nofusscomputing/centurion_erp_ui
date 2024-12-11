@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import IconLoader from "../IconLoader";
 
 const Footer = ({
     api_version_data
@@ -71,9 +72,14 @@ const Footer = ({
     }
 
 
-    return ( 
+    return (
         <footer>
-            <div className="column left">&nbsp;</div>
+            <div className="column left footer-icons">
+                <a href="https://nofusscomputing.com/projects/centurion_erp/" target="_blank"><IconLoader name = 'documentation' /></a>
+                <a href="/api/v2" target="_blank"><IconLoader name = 'webhook' /></a>
+                <a href="/api/v2/docs" target="_blank"><IconLoader name = 'swagger_docs' /></a>
+                <a href="https://github.com/nofusscomputing/centurion_erp" target="_blank"><IconLoader name = 'git' /></a>
+            </div>
             <div className="column center">Centurion ERP brought to you by <a href="https://nofusscomputing.com" target="new">No Fuss Computing</a></div>
             <div className="column right">{api_version}<br />{ui_version}</div>
         </footer>
