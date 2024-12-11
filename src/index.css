@@ -1501,7 +1501,6 @@ form fieldset span.help-text {
 .common-field {
   background-color: var(--background-colour-form-field);
   color: var(--text-colour);
-  font-size: inherit;
   line-height: 30px;
 }
 
@@ -1511,6 +1510,14 @@ input.common-field {
   border-bottom: 1px solid var(--border-colour-form-field);
 }
 
+input {
+  font-family: inherit;
+  font-size: 12pt;
+}
+textarea {
+  font-family: inherit;
+  font-size: 12pt;
+}
 
 .content form fieldset .common-field {
   min-width: 400px;
