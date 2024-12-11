@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import IconLoader from "../IconLoader";
 
 const Footer = ({
     api_version_data

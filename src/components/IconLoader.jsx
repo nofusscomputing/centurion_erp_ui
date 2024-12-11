@@ -50,6 +50,7 @@ import TicketRequest from "./icons/TicketRequest";
 import TicketIncident from "./icons/TicketIncident";
 import TicketProblem from "./icons/TicketProblem";
 import TicketChange from "./icons/TicketChange";
+import Documentation from "./icons/documentation";
 
 
 const icon_components = {
@@ -65,6 +66,7 @@ const icon_components = {
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
+    documentation: Documentation,
     reply: ReplyIcon,
     delete: DeleteIcon,
     device: DeviceIcon,
