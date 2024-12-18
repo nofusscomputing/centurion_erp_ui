@@ -156,7 +156,8 @@ export async function apiFetch(
     return {
         api_metadata: api_metadata,
         api_page_data: api_data,
-        response: api_data_response.response
+        response: api_data_response.response,
+        status: api_data_response.status,
     };
 
 }
