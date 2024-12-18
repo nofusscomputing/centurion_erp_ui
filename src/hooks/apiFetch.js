@@ -120,7 +120,7 @@ export async function apiFetch(
 
         if( api_metadata_response.status != 204 ) {
 
-            api_metadata = await api_metadata_response.json()
+            api_metadata = await api_metadata_response.clone().json()
 
         }
     }
@@ -128,7 +128,7 @@ export async function apiFetch(
 
     if( api_data_response.status != 204 ) {
 
-        api_data = await api_data_response.json()
+        api_data = await api_data_response.clone().json()
     
 
         if( callback && api_metadata ) {
@@ -156,7 +156,8 @@ export async function apiFetch(
     return {
         api_metadata: api_metadata,
         api_page_data: api_data,
-        response: api_data_response.response
+        response: api_data_response.response,
+        status: api_data_response.status,
     };
 
 }
