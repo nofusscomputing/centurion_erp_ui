@@ -192,8 +192,8 @@ const ModelForm = ({
 
                     if ( response.ok ) {
 
-                        navigate(metadata.urls.return_url ?
-                            String(metadata.urls.return_url).split('api/v2')[1]
+                        navigate(metadata.urls.back ?
+                            String(metadata.urls.back).split('api/v2')[1]
                             : String(metadata.urls.self).split('api/v2')[1])
 
                     } else {
