@@ -110,12 +110,14 @@ export default function FieldData({
 
             case 'DateTime':
 
+            // credit https://stackoverflow.com/a/74800084
             Date.prototype.format = function(formatString) {
                 return Object.entries({
                   YYYY: this.getFullYear(),
                   YY: this.getFullYear().toString().substring(2),
                   yyyy: this.getFullYear(),
                   yy: this.getFullYear().toString().substring(2),
+                  // `D` must be before month, as Dec with be processed as `#ec`
                   DDDD: this.toLocaleDateString('default', { weekday: 'long'  }),
                   DDD: this.toLocaleDateString('default',  { weekday: 'short' }),
                   DD: this.getDate().toString().padStart(2, '0'),
