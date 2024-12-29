@@ -27,6 +27,8 @@ const Table = ({
 
     const [metadata, setMetaData] = useState(null);
 
+    const [page_number_value, setPageNumberValue] = useState(1);
+
     const [page, setPage] = useState(0);
 
     const [table_data, setTableData] = useState(null);
@@ -121,19 +123,31 @@ const Table = ({
     ]);
 
 
-    const updatePageField = ( value ) => {
+    const updatePageField = ( event ) => {
 
-        if( value <= 0 ) {
+        setPageNumberValue(event.target.value)
 
-            setPage(1)
+    };
 
-        } else if( value <= table_data.meta.pagination.pages ) {
+    const submitPageField = ( event ) => {
 
-            setPage(value)
+        if( event.key === 'Enter' ) {
 
-        } else if( value > table_data.meta.pagination.pages ) {
+                if( page_number_value <= 0 ) {
 
-            setPage(table_data.meta.pagination.pages)
+                    setPage(1)
+                    setPageNumberValue(1)
+
+                } else if( page_number_value <= table_data.meta.pagination.pages ) {
+
+                    setPage(page_number_value)
+
+                } else if( page_number_value > table_data.meta.pagination.pages ) {
+
+                    setPage(table_data.meta.pagination.pages)
+                    setPageNumberValue(table_data.meta.pagination.pages)
+
+                }
 
         }
 
@@ -343,9 +357,11 @@ const Table = ({
                                 <TextField
                                     fieldset = {false}
                                     id={pagefieldId}
-                                    onchange={updatePageField}
+                                    onChange={updatePageField}
+                                    type = "number"
+                                    onKeyUp = {submitPageField}
                                     required = {true}
-                                    value={table_data.meta.pagination.page}
+                                    value={page_number_value}
                                 />
                                 of {table_data.meta.pagination.pages}
                             </span>
