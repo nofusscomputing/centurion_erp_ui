@@ -25,6 +25,8 @@ const Table = ({
     SetContentHeaderIcon = null
 }) => {
 
+    const [loaded, setPageLoaded] = useState(false)
+
     const [metadata, setMetaData] = useState(null);
 
     const [page_number_value, setPageNumberValue] = useState(1);
@@ -58,6 +60,8 @@ const Table = ({
 
 
     useEffect(() =>{
+
+        setPageLoaded(false)
 
         let url = null
 
@@ -112,9 +116,10 @@ const Table = ({
 
                     }
 
+                    setPageLoaded(true)
+
                 }
 
-                console.log('a1')
             })
 
     }, [
@@ -155,6 +160,8 @@ const Table = ({
 
 
     return (
+        <>
+        { loaded &&
         <>
         { metadata &&
             <div>
@@ -394,6 +401,8 @@ const Table = ({
                     </div>
                 }
             </div>
+        }
+        </>
         }
         </>
     );
