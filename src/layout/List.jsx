@@ -1,7 +1,8 @@
-import { useParams } from "react-router"
+import { useLoaderData, useParams } from "react-router"
 
 import Table from "../components/Table"
 import urlBuilder from "../hooks/urlBuilder";
+import { useEffect, useState } from "react";
 
 
 
@@ -17,6 +18,8 @@ const List = ({
         params
     )
 
+    const {metadata, page_data} = useLoaderData();
+
     return (
         <section>
             <div className="content">
@@ -24,6 +27,8 @@ const List = ({
                     callback={setContentHeading}
                     data_url_path={url_builder.api.path}
                     SetContentHeaderIcon = {SetContentHeaderIcon}
+                    loader_metadata = {metadata}
+                    loader_data = {page_data}
                 />
             </div>
         </section>

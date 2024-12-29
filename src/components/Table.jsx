@@ -22,7 +22,9 @@ import urlBuilder from "../hooks/urlBuilder";
 const Table = ({
     data_url_path,
     callback = null,
-    SetContentHeaderIcon = null
+    SetContentHeaderIcon = null,
+    loader_metadata = null,
+    loader_data = null
 }) => {
 
     const [loaded, setPageLoaded] = useState(false)
@@ -57,6 +59,42 @@ const Table = ({
         data_url_path = '/' + url_builder.params.module + '/ticket/' + url_builder.params.model
 
     }
+
+    useEffect(() => {
+
+        setPageLoaded(false)
+        setMetaData(loader_metadata)
+        setTableData(loader_data)
+        setPageNumberValue(1)
+        setPage(0)
+
+        if( SetContentHeaderIcon ) {
+
+            SetContentHeaderIcon(
+                <>
+                    {loader_metadata['documentation'] &&
+                        <Link to={loader_metadata['documentation']} target="_new">
+                            <IconLoader
+                                name='help'
+                            />
+                        </Link>
+                    }
+                </>
+            )
+        }
+
+        if( callback ) {
+
+            callback(loader_metadata.name)
+
+        }
+
+        setPageLoaded(true)
+
+    }, [
+        // loader_metadata,
+        loader_data
+    ])
 
 
     useEffect(() =>{
@@ -123,7 +161,6 @@ const Table = ({
             })
 
     }, [
-        data_url_path,
         page,
     ]);
 

@@ -116,16 +116,18 @@ function App() {
                         ******************************************************** */}
 
                         <Route
-                            element={<List
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />}
                             errorElement={<ErrorPage /> }
-                            loader = {pagedLoader}
                         >
 
-                            <Route path="ticket/:model" element={null} />
-                            <Route path=":model" element={null} />
+                            <Route path="ticket/:model" element={<List
+                                setContentHeading={setContentHeading}
+                                SetContentHeaderIcon={SetContentHeaderIcon}
+                            />} loader = {pagedLoader} />
+
+                            <Route path=":model" element={<List
+                                setContentHeading={setContentHeading}
+                                SetContentHeaderIcon={SetContentHeaderIcon}
+                            />} loader = {pagedLoader} />
 
                         </Route>
 
