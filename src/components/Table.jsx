@@ -69,43 +69,51 @@ const Table = ({
 
         }
 
-        apiFetch(
-            url,
-            (data, metadata) => {
+        apiFetch( url )
+            .then((result) => {
 
-                setTableData(data)
 
-                setMetaData(metadata)
+                if( result.status == 200 ) {
 
-                if( Array(metadata.table_fields).length < 2 ) {
+                    if( result.api_metadata !== null ) {
 
-                    console.error("Missing Table Fields")
+                        setMetaData(result.api_metadata)
+    
+                    }
+    
+                    setTableData(result.api_page_data)
+
+                    if( Array(result.api_metadata.table_fields).length < 2 ) {
+
+                        console.error("Missing Table Fields")
+
+                    }
+
+                    if( SetContentHeaderIcon ) {
+
+                        SetContentHeaderIcon(
+                            <>
+                                {result.api_metadata['documentation'] &&
+                                    <Link to={result.api_metadata['documentation']} target="_new">
+                                        <IconLoader
+                                            name='help'
+                                        />
+                                    </Link>
+                                }
+                            </>
+                        )
+                    }
+
+                    if( callback ) {
+
+                        callback(result.api_metadata.name)
+
+                    }
 
                 }
 
-                if( SetContentHeaderIcon ) {
-
-                    SetContentHeaderIcon(
-                        <>
-                            {metadata['documentation'] &&
-                                <Link to={metadata['documentation']} target="_new">
-                                    <IconLoader
-                                        name='help'
-                                    />
-                                </Link>
-                            }
-                        </>
-                    )
-                }
-
-                if( callback ) {
-
-                    callback(metadata.name)
-
-                }
-
-            }
-        )
+                console.log('a1')
+            })
 
     }, [
         data_url_path,
