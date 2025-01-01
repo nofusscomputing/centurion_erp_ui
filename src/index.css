@@ -1,5 +1,5 @@
 /* light */
-:root {
+:root, html[data-theme='light'] {
 
   --contrasting-colour: #177ee6;
 
@@ -53,7 +53,7 @@
 
 /* AWX */
 /* :root { */
-.dark-theme {
+html[data-theme='dark'] {
 
   --contrasting-colour: #177ee6;
 
@@ -213,7 +213,7 @@ header a {
 
 header h1 {
   color: var(--text-colour-header);
-  display: inline;
+  display: inline-block;
   height: 76px;
   line-height: 76px;
   margin: 0px;
@@ -221,6 +221,21 @@ header h1 {
   width: fit-content;
   padding: 0px;
   text-decoration: none;
+}
+
+header .right {
+  /* background-color: #ff0000; */
+  display: flex;
+  /* float: right;
+  position:relative;
+  right: 10px; */
+  margin: 0 auto;
+  margin-right: 5px;
+  /* width:auto; */
+}
+
+header fieldset {
+  border: none;
 }
 
 .collapsible-hidden {
@@ -735,8 +750,9 @@ div.ticket .contents {
   width: 100%;
 }
 
-.ticket h3.description span.sub-script,
-.ticket .comment h4.comment #text span.sub-script {
+/* .ticket h3.description span.sub-script,
+.ticket .comment h4.comment #text span.sub-script */
+span.sub-script {
   font-size: smaller;
 }
 
@@ -1251,7 +1267,10 @@ section .content .section fieldset.inline .text {
   border-bottom: 1px solid var(--border-colour-form-field);
   display: inline-block;
   height: 25px;
-  min-width: 350px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  width: 350px;
+  word-wrap: break-word;
 }
 
 section .content .section fieldset.textarea div.markdown {
@@ -1482,7 +1501,6 @@ form fieldset span.help-text {
 .common-field {
   background-color: var(--background-colour-form-field);
   color: var(--text-colour);
-  font-size: inherit;
   line-height: 30px;
 }
 
@@ -1492,6 +1510,22 @@ input.common-field {
   border-bottom: 1px solid var(--border-colour-form-field);
 }
 
+input {
+  font-family: inherit;
+  font-size: 12pt;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+     margin: 0; 
+}
+
+
+textarea {
+  font-family: inherit;
+  font-size: 12pt;
+}
 
 .content form fieldset .common-field {
   min-width: 400px;
@@ -1625,12 +1659,32 @@ footer .column {
 
 footer .left {
   display: block;
-  align-items: center;
+  align-items: left;
+  text-align: left;
+  padding-left: 10px;
+}
+
+footer .footer-icons svg {
+
+  fill: var(--contrasting-colour);
+  height: 30px;
+  width: 30px;
+  margin: 0px 3px;
+
 }
 
 
 footer .center {
   align-items: center;
+  color: var(--text-colour-footer);
+  font-size: 9pt;
+}
+
+footer .right {
+  display: block;
+  align-items: right;
+  text-align: right;
+  padding: 25px;
   color: var(--text-colour-footer);
   font-size: 9pt;
 }

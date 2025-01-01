@@ -9,7 +9,8 @@ const TextField = ({
     required = false,
     type = 'text',
     value = '',
-    onChange = null
+    onChange = null,
+    onKeyUp = null,
 }) => {
 
     if( value === null ) {
@@ -22,6 +23,7 @@ const TextField = ({
             id={id}
             key={id}
             onChange={onChange}
+            onKeyUp={onKeyUp}
             placeholder={helptext}
             required={required}
             type={type}
@@ -43,6 +45,7 @@ const TextField = ({
                 id={id}
                 key={id}
                 onChange={onChange}
+                onKeyUp={onKeyUp}
                 // placeholder={helptext}
                 required={required}
                 type={type}

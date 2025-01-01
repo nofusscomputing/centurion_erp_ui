@@ -8,11 +8,14 @@ const Select = ({
 }) => {
 
     
-    if( value === null ) {
+    if( value === null) {
         value = ''
     }
 
-    if( typeof(value) == 'object') {
+    if(
+        typeof(value) == 'object'
+        && ! Array.isArray(value)
+    ) {
         value = value.id
     }
 
@@ -33,11 +36,40 @@ const Select = ({
 
                     if( value !== null ) {
 
-                        if( choice.value == value ) {
+                        if( Array.isArray(value) ) {
 
-                            selected = ( choice.value === value )
+                            for(let item of value ) {
+
+                                if( typeof(item) == 'object' ) {
+
+                                    if( choice.value == item.id ) {
+
+                                        selected = ( choice.value == item.id )
+            
+                                    }
+    
+                                } else {
+
+                                    if( choice.value == Number(item) ) {
+
+                                        selected = ( choice.value == Number(item) )
+            
+                                    }
+        
+                                }
+
+                            }
+
+                        } else {
+
+                            if( choice.value == value ) {
+
+                                selected = ( choice.value === value )
+    
+                            }
 
                         }
+
                     }
 
                     return (

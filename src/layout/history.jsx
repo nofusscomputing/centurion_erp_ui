@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router"
 
 import Table from "../components/Table"
 import urlBuilder from "../hooks/urlBuilder";

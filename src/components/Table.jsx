@@ -3,7 +3,7 @@ import { useEffect, useId, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
 import urlBuilder from "../hooks/urlBuilder";
 
@@ -22,12 +22,16 @@ import urlBuilder from "../hooks/urlBuilder";
 const Table = ({
     data_url_path,
     callback = null,
-    SetContentHeaderIcon = null
+    SetContentHeaderIcon = null,
+    loader_metadata = null,
+    loader_data = null
 }) => {
+
+    const [loaded, setPageLoaded] = useState(false)
 
     const [metadata, setMetaData] = useState(null);
 
-    const [is_loaded, setLoaded] = useState(false);
+    const [page_number_value, setPageNumberValue] = useState(1);
 
     const [page, setPage] = useState(0);
 
@@ -56,55 +60,46 @@ const Table = ({
 
     }
 
-
     useEffect(() => {
 
-        apiFetch(
-            data_url_path,
-            (data) =>{
+        setPageLoaded(false)
+        setMetaData(loader_metadata)
+        setTableData(loader_data)
+        setPageNumberValue(1)
+        setPage(0)
 
-                setMetaData(data)
+        if( SetContentHeaderIcon ) {
 
+            SetContentHeaderIcon(
+                <>
+                    {loader_metadata['documentation'] &&
+                        <Link to={loader_metadata['documentation']} target="_new">
+                            <IconLoader
+                                name='help'
+                            />
+                        </Link>
+                    }
+                </>
+            )
+        }
 
-                if( SetContentHeaderIcon ) {
+        if( callback ) {
 
-                    SetContentHeaderIcon(
-                        <>
-                            {data['documentation'] &&
-                                <Link to={data['documentation']} target="_new">
-                                    <IconLoader
-                                        name='help'
-                                    />
-                                </Link>
-                            }
-                        </>
-                    )
-                }
+            callback(loader_metadata.name)
 
-                if( table_data ) {
+        }
 
-                    setLoaded(true)
-    
-                }
-    
-                if( callback ) {
-
-                    callback(data.name)
-
-                }
-
-            },
-            'OPTIONS' )
+        setPageLoaded(true)
 
     }, [
-        data_url_path,
-        table_data
-    ]);
+        // loader_metadata,
+        loader_data
+    ])
 
 
     useEffect(() =>{
 
-        setLoaded(false)
+        setPageLoaded(false)
 
         let url = null
 
@@ -118,36 +113,83 @@ const Table = ({
 
         }
 
-        apiFetch(url, (data) => {
+        apiFetch( url )
+            .then((result) => {
 
-            setTableData(data)
 
-            if( metadata ) {
+                if( result.status == 200 ) {
 
-                setLoaded(true)
+                    if( result.api_metadata !== null ) {
 
-            }
-        })
+                        setMetaData(result.api_metadata)
+    
+                    }
+    
+                    setTableData(result.api_page_data)
+
+                    if( Array(result.api_metadata.table_fields).length < 2 ) {
+
+                        console.error("Missing Table Fields")
+
+                    }
+
+                    if( SetContentHeaderIcon ) {
+
+                        SetContentHeaderIcon(
+                            <>
+                                {result.api_metadata['documentation'] &&
+                                    <Link to={result.api_metadata['documentation']} target="_new">
+                                        <IconLoader
+                                            name='help'
+                                        />
+                                    </Link>
+                                }
+                            </>
+                        )
+                    }
+
+                    if( callback ) {
+
+                        callback(result.api_metadata.name)
+
+                    }
+
+                    setPageLoaded(true)
+
+                }
+
+            })
 
     }, [
-        data_url_path,
         page,
     ]);
 
 
-    const updatePageField = ( value ) => {
+    const updatePageField = ( event ) => {
 
-        if( value <= 0 ) {
+        setPageNumberValue(event.target.value)
 
-            setPage(1)
+    };
 
-        } else if( value <= table_data.meta.pagination.pages ) {
+    const submitPageField = ( event ) => {
 
-            setPage(value)
+        if( event.key === 'Enter' ) {
 
-        } else if( value > table_data.meta.pagination.pages ) {
+                if( page_number_value <= 0 ) {
 
-            setPage(table_data.meta.pagination.pages)
+                    setPage(1)
+                    setPageNumberValue(1)
+
+                } else if( page_number_value <= table_data.meta.pagination.pages ) {
+
+                    setPage(page_number_value)
+
+                } else if( page_number_value > table_data.meta.pagination.pages ) {
+
+                    setPage(table_data.meta.pagination.pages)
+                    setPageNumberValue(table_data.meta.pagination.pages)
+
+                }
 
         }
 
@@ -155,240 +197,251 @@ const Table = ({
 
 
     return (
-        (is_loaded &&
-        <div>
-            { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
-            <table>
-                <thead>
-                    <tr>
-                    {metadata.table_fields.map((key, index) => {
+        <>
+        { loaded &&
+        <>
+        { metadata &&
+            <div>
+                { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
+                    <table>
+                        <thead>
+                            <tr>
+                            {metadata.table_fields.map((key, index) => {
 
-                        collapsable_fields = []
+                                collapsable_fields = []
 
-                        if( table_columns_count === 0 ) {
+                                if( table_columns_count === 0 ) {
 
-                            for( let field of metadata.table_fields ) {
+                                    for( let field of metadata.table_fields ) {
 
-                                if( typeof(field) === 'string' ) {
+                                        if( typeof(field) === 'string' ) {
 
-                                    table_columns_count += 1
+                                            table_columns_count += 1
+
+                                        }
+                                    }
 
                                 }
-                            }
 
-                        }
+                                if( key in metadata.fields ) {
 
-                        if( key in metadata.fields ) {
-
-                            if( typeof(key) === 'string' ) {
+                                    if( typeof(key) === 'string' ) {
 
 
-                                if (metadata.table_fields[key] === 'nbsp') {
+                                        if (metadata.table_fields[key] === 'nbsp') {
 
-                                    return (
-                                        <th>&nbsp;</th>
-                                    )
+                                            return (
+                                                <th>&nbsp;</th>
+                                            )
 
-                                } else {
+                                        } else {
 
-                                    return (
-                                        <th key={key}>{metadata.fields[key].label}</th>  
-                                    )
+                                            return (
+                                                <th key={key}>{metadata.fields[key].label}</th>  
+                                            )
+                                        }
+                                    } 
+                                } else if( typeof(key) === 'object' ) {
+
+                                    for( let sub_key of key ) {
+
+                                        collapsable_fields.push(sub_key)
+
+                                    }
+
+                                    console.log(`collapsable fields ${JSON.stringify(key)}`)
+
                                 }
-                            } 
-                        } else if( typeof(key) === 'object' ) {
 
-                            for( let sub_key of key ) {
-
-                                collapsable_fields.push(sub_key)
-
+                            })}
+                            { table_columns_count > 0 &&
+                                <td>&nbsp;</td>
                             }
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                            console.log(`collapsable fields ${JSON.stringify(key)}`)
+                            {table_data && table_data.results.map((data) => {
 
-                        }
+                            return (
+                                <>
+                                    <tr key={data.id}>
+                                        {
+                                            metadata.table_fields.map(key => {
 
-                    })}
-                    { table_columns_count > 0 &&
-                        <td>&nbsp;</td>
-                    }
-                    </tr>
-                </thead>
-                <tbody>
-                    {table_data.results.map((data) => {
+                                                if (key in metadata.fields) {
 
-                    return (
-                        <>
-                            <tr key={data.id}>
-                                {
-                                    metadata.table_fields.map(key => {
+                                                    if( typeof(key) === 'string' ) {
 
-                                        if (key in metadata.fields) {
+                                                        if (metadata.table_fields[key] === 'nbsp') {
 
-                                            if( typeof(key) === 'string' ) {
+                                                            return (
+                                                                <td>&nbsp;</td>
+                                                            )
 
-                                                if (metadata.table_fields[key] === 'nbsp') {
+                                                        } else {
 
-                                                    return (
-                                                        <td>&nbsp;</td>
-                                                    )
+                                                            let autolink = false
 
-                                                } else {
+                                                            if(
+                                                                key == 'name'
+                                                                || key == 'title'
+                                                                || Boolean(metadata.fields[key].autolink)
+                                                            ) {
+                                                                autolink = true
+                                                            }
 
-                                                    let autolink = false
+                                                            return (
+                                                                <td>
+                                                                    <FieldData
+                                                                        metadata={metadata}
+                                                                        field_name={key}
+                                                                        data={data}
+                                                                        autolink = {autolink}
+                                                                    />
+                                                                </td>
+                                                            )
 
-                                                    if(
-                                                        key == 'name'
-                                                        || key == 'title'
-                                                        || Boolean(metadata.fields[key].autolink)
-                                                    ) {
-                                                        autolink = true
+                                                        }
                                                     }
-
-                                                    return (
-                                                        <td>
-                                                            <FieldData
-                                                                metadata={metadata}
-                                                                field_name={key}
-                                                                data={data}
-                                                                autolink = {autolink}
-                                                            />
-                                                        </td>
-                                                    )
-
                                                 }
-                                            }
+
+                                            })
+                                        }
+                                        { collapsable_fields.length > 0 &&
+                                            <td
+                                                onClick={(e) => {
+                                                    let a = e
+                                                    document.getElementById('expandable-' + data.id).classList.toggle("hide-expandable-row")
+                                                }}
+                                            >
+                                                <IconLoader
+                                                    name='navdown'
+                                                    fill='#ccc'
+                                                />
+                                            </td>
                                         }
 
-                                    })
-                                }
-                                { collapsable_fields.length > 0 &&
-                                    <td
-                                        onClick={(e) => {
-                                            let a = e
-                                            document.getElementById('expandable-' + data.id).classList.toggle("hide-expandable-row")
-                                        }}
-                                    >
-                                        <IconLoader
-                                            name='navdown'
-                                            fill='#ccc'
-                                        />
-                                    </td>
-                                }
-
-                            </tr>
-                            {collapsable_fields.length > 0 &&
-                                <tr
-                                    key={data.id + 'collapsible'}
-                                    className='collapsible-row' 
-                                >
-                                    <td colspan={(metadata.table_fields.length)}>
-                                        <div
-                                            className="hide-expandable-row"
-                                            id={'expandable-' + data.id} 
-                                            key={'expandable-' + data.id}
+                                    </tr>
+                                    {collapsable_fields.length > 0 &&
+                                        <tr
+                                            key={data.id + 'collapsible'}
+                                            className='collapsible-row' 
                                         >
-                                        {collapsable_fields.map((collapsable_field,) => {
-                                            return (
-                                                <div className="dual-column"
+                                            <td colspan={(metadata.table_fields.length)}>
+                                                <div
+                                                    className="hide-expandable-row"
+                                                    id={'expandable-' + data.id} 
+                                                    key={'expandable-' + data.id}
                                                 >
-                                                    <span style={{
-                                                        display: 'block',
-                                                        fontWeight: 'bold',
-                                                        textAlign: 'center',
-                                                        width: '100%'
-                                                    }}>{collapsable_field}</span>
-                                                    <FieldData
-                                                        metadata={metadata}
-                                                        field_name={collapsable_field}
-                                                        data={data}
-                                                    />
+                                                {collapsable_fields.map((collapsable_field,) => {
+                                                    return (
+                                                        <div className="dual-column"
+                                                        >
+                                                            <span style={{
+                                                                display: 'block',
+                                                                fontWeight: 'bold',
+                                                                textAlign: 'center',
+                                                                width: '100%'
+                                                            }}>{collapsable_field}</span>
+                                                            <FieldData
+                                                                metadata={metadata}
+                                                                field_name={collapsable_field}
+                                                                data={data}
+                                                            />
+                                                        </div>
+                                                    )
+                                                })}
                                                 </div>
-                                            )
-                                        })}
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </>
-                    );
-                })}
-                </tbody>
-            </table>
-            <div style={{
-                'display': 'flexbox',
-                'height': '60px',
-                'margin': '0px',
-                'padding': '0px',
-                'textAlign': 'center',
-                'verticalAlign': 'middle'
-            }}>
-                <p className="table-pagination">
+                                            </td>
+                                        </tr>
+                                    }
+                                </>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                {table_data && 
+                    <div style={{
+                        'display': 'flexbox',
+                        'height': '60px',
+                        'margin': '0px',
+                        'padding': '0px',
+                        'textAlign': 'center',
+                        'verticalAlign': 'middle'
+                    }}>
+                        <p className="table-pagination">
 
-                    <span className="table-pagination-button" onClick={() => {
+                            <span className="table-pagination-button" onClick={() => {
 
-                        const url = table_data.links.prev
+                                const url = table_data.links.prev
 
-                        if( url ) {
+                                if( url ) {
 
-                            setPage(getPageNumber(url))
+                                    setPage(getPageNumber(url))
 
-                        }
+                                }
 
-                    }}>&lt;&lt;</span>
+                            }}>&lt;&lt;</span>
 
-                    <span className="table-pagination-button" onClick={() => {
+                            <span className="table-pagination-button" onClick={() => {
 
-                        const url = table_data.links.first
+                                const url = table_data.links.first
 
-                        if( url ) {
+                                if( url ) {
 
-                            setPage(getPageNumber(url))
+                                    setPage(getPageNumber(url))
 
-                        }
+                                }
 
-                    }}>First</span>
+                            }}>First</span>
 
-                    <span className="table-pagination-text">
-                        Page
-                        <TextField
-                            fieldset = {false}
-                            id={pagefieldId}
-                            onchange={updatePageField}
-                            required = {true}
-                            value={table_data.meta.pagination.page}
-                        />
-                        of {table_data.meta.pagination.pages}
-                    </span>
+                            <span className="table-pagination-text">
+                                Page
+                                <TextField
+                                    fieldset = {false}
+                                    id={pagefieldId}
+                                    onChange={updatePageField}
+                                    type = "number"
+                                    onKeyUp = {submitPageField}
+                                    required = {true}
+                                    value={page_number_value}
+                                />
+                                of {table_data.meta.pagination.pages}
+                            </span>
 
-                    <span className="table-pagination-button"onClick={() => {
+                            <span className="table-pagination-button"onClick={() => {
 
-                        const url = table_data.links.last
+                                const url = table_data.links.last
 
-                        if( url ) {
+                                if( url ) {
 
-                            setPage(getPageNumber(url))
+                                    setPage(getPageNumber(url))
 
-                        }
+                                }
 
-                    }}>Last</span>
+                            }}>Last</span>
 
-                    <span className="table-pagination-button" onClick={() => {
+                            <span className="table-pagination-button" onClick={() => {
 
-                    const url = table_data.links.next
+                            const url = table_data.links.next
 
-                        if( url ) {
+                                if( url ) {
 
-                            setPage(getPageNumber(url))
+                                    setPage(getPageNumber(url))
 
-                        }
+                                }
 
-                    }}>&gt;&gt;</span>
+                            }}>&gt;&gt;</span>
 
-                </p>
+                        </p>
+                    </div>
+                }
             </div>
-        </div>
-        )
+        }
+        </>
+        }
+        </>
     );
 }
  

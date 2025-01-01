@@ -1,7 +1,7 @@
 import DoubleColumn from "./DoubleColumn";
 import SingleColumn from "./SingleColumn";
 import Table from "../../Table"
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import Badge from "../../Badge";
 import IconLoader from "../../IconLoader";
 import { useEffect, useState } from "react";
@@ -70,16 +70,19 @@ const Section = ({
 
     useEffect(() => {
 
-        if( 'external_links' in data._urls ) {
+        if( index === 0 ) {
 
-            apiFetch(
-                data._urls.external_links,
-                (response) =>{
+            if( 'external_links' in data._urls ) {
 
-                    setExternalLinks(response)
+                apiFetch(
+                    data._urls.external_links,
+                    (response) =>{
 
-                },
-            )
+                        setExternalLinks(response)
+
+                    },
+                )
+            }
         }
 
     },[])
@@ -117,7 +120,12 @@ const Section = ({
                         && String(tab.name).toLowerCase() == 'details'
                         && metadata.allowed_methods.includes('PUT')
                     ) 
-                    && <Link to="edit"><button className="common-field form">Edit</button></Link>}
+                    && <Link to={
+                                metadata.urls.return_url ?
+                                String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
+                                : String(metadata.urls.self).split('api/v2')[1] + '/edit'
+
+                            }><button className="common-field form">Edit</button></Link>}
                 </div>
             </div>
         </div>

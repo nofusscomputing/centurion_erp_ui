@@ -20,27 +20,44 @@ const SingleColumn = ({
                         ( textarea_fields.includes(String(metadata.fields[field].type).toLowerCase()) )
                     ) {
 
-                        return(
+                        if( String(metadata.fields[field].type).toLowerCase() == 'markdown' ) {
 
-                            <fieldset className="textarea">
-                                <label>
-                                    {
-                                        (
-                                            field in metadata.fields
-                                        ) ?
-                                            metadata.fields[field].label
-                                            :
-                                            ""
-                                    }
-                                </label>
+                            return(
+                                <div className="markdown">
                                     <FieldData
                                         full_width = {true}
                                         metadata={metadata}
                                         field_name={field}
                                         data={data}
                                     />
-                            </fieldset>
-                        )
+                                </div>
+                            )
+
+                        } else {
+
+                            return(
+
+                                <fieldset className="textarea">
+                                    <label>
+                                        {
+                                            (
+                                                field in metadata.fields
+                                            ) ?
+                                                metadata.fields[field].label
+                                                :
+                                                ""
+                                        }
+                                    </label>
+                                        <FieldData
+                                            full_width = {true}
+                                            metadata={metadata}
+                                            field_name={field}
+                                            data={data}
+                                        />
+                                </fieldset>
+                            )
+
+                        }
 
                     } else {
 

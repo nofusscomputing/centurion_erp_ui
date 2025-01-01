@@ -21,13 +21,15 @@ const TicketComments = ({
     useEffect(() => {
 
         apiFetch(
-
             comments_url,
             (data) =>{
 
                 setComments(data)
 
             },
+            undefined,
+            undefined,
+            false
         )
 
     }, [reload, comments_url])

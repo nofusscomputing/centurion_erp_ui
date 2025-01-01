@@ -1,4 +1,4 @@
-import { Link, redirect, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, redirect, useLocation, useNavigate, useParams } from "react-router";
 import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
 import { ResponseException } from "../../classes/Exceptions";
@@ -9,6 +9,7 @@ import urlBuilder from "../../hooks/urlBuilder";
 
 const Navbar = ({
     nav_visible,
+    api_version_callback
 }) => {
 
     const params = useParams();
@@ -35,13 +36,13 @@ const Navbar = ({
 
                 SetNavigationEntries(data.navigation)
 
+                api_version_callback(data.version)
+
             },
             'OPTIONS'
         )
 
             .then(response => {
-
-                console.log(`the data returned`)
 
                 if( response.status === 401 ) {
                     navigate('/login')
@@ -56,7 +57,6 @@ const Navbar = ({
         setNavMenu(url_builder.params.module);
 
         setNavPage(String(url_builder.params.module + '-' + url_builder.params.model))
-
 
     }, [
         url_builder.params.module,

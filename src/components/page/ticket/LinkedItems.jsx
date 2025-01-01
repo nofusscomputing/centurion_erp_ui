@@ -14,7 +14,10 @@ const LinkedItems = ({
             data_url,
             (data) => {
                 setPageData(data)
-            }
+            },
+            undefined,
+            undefined,
+            false
         )
     }, [ data_url ])
 

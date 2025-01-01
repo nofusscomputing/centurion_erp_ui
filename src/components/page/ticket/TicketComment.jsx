@@ -17,6 +17,11 @@ const TicketComment = ({
     callback_value = null
 }) => {
 
+    if( String(post_url).includes('?') ) {
+        console.log('url has qs')
+        post_url = String(post_url).split('?')[0]
+    }
+
     let comment_header = ' wrote'
 
     let comment_class = 'comment comment-type-default'
@@ -86,23 +91,28 @@ const TicketComment = ({
         </div>
     )
 
+    const [threads_url, setThreadsURL] = useState(comment_data._urls.threads ? String(comment_data._urls.threads).split('api/v2')[1] : null)
+
 
     const [ threads, setThreads ] = useState(null)
     const [ reload, setRelaod ] = useState(false)
 
     useEffect(() => {
 
-        if( comment_data._urls.threads ) {
+        if( threads_url ) {
             apiFetch(
-                String(comment_data._urls.threads).split('api/v2')[1] + '?page[size]=500',
+                threads_url + '?page[size]=500',
                 (data) => {
                     setThreads(data)
-                }
+                },
+                undefined,
+                undefined,
+                false
             )
 
             setRelaod(false)
         }
-    },[ reload ])
+    },[ reload, threads_url ])
 
 
     if( comment_type === 'action' ) {
@@ -115,11 +125,18 @@ const TicketComment = ({
                         field_name='user'
                         data={comment_data}
                     />
-                </span>
+                </span>&nbsp;
                 <span className="markdown" style={{display: 'inline-block'}}>
                     <FieldData
                         metadata={metadata}
                         field_name='body'
+                        data={comment_data}
+                    />
+                </span>&nbsp;
+                <span className="sub-script" style={{color: '#777', display: 'inline-block'}}>
+                    <FieldData
+                        metadata={metadata}
+                        field_name='created'
                         data={comment_data}
                     />
                 </span>
@@ -129,9 +146,19 @@ const TicketComment = ({
 
     const header_icons = (
         <div id="icons">
-            <IconLoader
+            {comment_data['parent'] == null &&
+             <span style={{
+                cursor: 'pointer'
+                }} onClick={(e) => {
+                    setThreads( {
+                        results: []
+                    } )
+            }}>
+                <IconLoader
                 name={'reply'}
             />
+            </span>
+            }
             <span style={{
                 cursor: 'pointer'
             }} onClick={(e) => {
@@ -318,18 +345,23 @@ const TicketComment = ({
                             <TicketComment
                                 comment_data={comment}
                                 discussion = {true}
-                                metadata={metadata}
+                                metadata = {metadata}
+                                edit_callback = {() => {
+                                    setRelaod(true)
+                                }}
                             />
                         </li>
                     ))}
                     <li className="replies">
                         <TicketCommentForm
                             metadata={metadata}
-                            post_url = {comment_data['_urls']['threads']}
+                            post_url = {post_url + '/' + comment_data['id'] + '/threads'}
                             ticket_id={ticket_id}
-                            parent_id = {threads.results[0].parent}
+                            parent_id = {comment_data['id'] ? comment_data['id'] : threads.results[0].parent}
                             commentCallback={() => {
                                 setRelaod(true)
+
+                                setThreadsURL(post_url + '/' + comment_data['id'] + '/threads')
                             }}
                         />
                     </li>
