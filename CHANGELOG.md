@@ -1,3 +1,69 @@
+## 0.3.0 (2025-01-01)
+
+### feat
+
+- **componentt**: On click or new line expand text area height to equal, min content height
+- **componentt**: On making a ticket comment, reset the comment form
+- **style**: Remove arrows from number fields
+- **component**: Add Loaded gate to table
+- **component**: Add onKeyUp event to text field
+- **hook**: Dont consume the body object as part of the apiFetch
+- **component**: Enable replying to comment
+- **component**: Replicate currect footer icons
+- **component**: add swagger docs icon
+- **component**: add swagger docs icon
+- **component**: add git icon
+- **component**: add documentation icon
+- **component**: Log error to console if table has no `table_fields`
+- **component**: Add UI release details to the footer
+- **component**: Add API release details to the footer
+- **node**: upgrade 22.11.0 -> 23 (edge)
+- **npm**: upgrade react-router 6.26.2 -> 7.0.1
+- **component**: Add ticket type icons
+- **function**: Support multi-select fields
+- **layout**: ticket created successfuly navigatae to list view
+- **layout**: if detail view url changes, ensure active tab is reset
+- **layout**: modelform to use metadata.return_url
+- **component**: Add creation date to ticket action comments
+- **component**: Seperate action comment user and message
+
+### Fixes
+
+- **componentt**: Ensure field data is fetched for fields
+- **component**: Make Table page number editable
+- **function**: reorder date formating so month letters are not re-interprited
+- **layout**: use `back` url not `return_url` if it exists
+- **hook**: ensure status is returned from apiFetch
+- **layout**: If field is `write_only=true` dont add it to form_data on ModelForm
+- **component**: Add missing edit callback for discussion comment
+- **component**: When editing a ticket comment always use self url as post url
+- **layout**: hwen posting a form, post to `.url.self`
+- **component**: Ensure single column markdown field has markdown css class added
+- **layout**: use correct method for adding select field to ititial data
+- **layout**: Use metadata return url when posting a form
+- **docker**: ensure entrypoiont creates valid env file for UI again.....
+- **docker**: ensure entrypoiont creates valid env fiel for UI
+- **layout**: Support the API metadata `back` URL
+- **hook**: ensure UI action words are removed from API reuqest URL
+- Detail and Ticket routes require their own loader
+- Add missing route for common_model edits
+- Dont allow field overflow, wrap text
+- **component**: Ticket comment category now uses correct key
+
+### Refactoring
+
+- **layout**: Use PageLoader for ListView
+- **component**: Dont render table if the data required is missing
+- **component**: For Table process apiFetch results on return
+- set form field font size to match common text size
+- Use the api self and return_url as provided within the metadata
+- **hook**: apiFetch by default make a meta request and return an object of all requests and the response
+- loader to use apiFetch hook
+- **layout**: remove page_data dependency from details useEffect hooks
+- **component**: remove is_loading state object from table
+- adjust routing to use Layout and Route Prefixes
+- change static path static -> assets
+
 ## 0.2.0 (2024-11-15)
 
 ### feat
