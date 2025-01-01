@@ -169,8 +169,12 @@ const TicketCommentForm = ({
                             ) {
 
                                 commentCallback();
-                                setFormData({});
+                                is_task_comment = false
+                                is_solution_comment = false
+                                is_notification_comment = false
                                 e.target.reset();
+                                setFormData(edit_form_data);
+                                setTaskComment(false)
                             }
 
                         }
