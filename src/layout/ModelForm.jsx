@@ -50,7 +50,13 @@ const ModelForm = ({
 
             Object.keys(metadata.fields).map((field_key) => {
 
-                if( metadata.fields[field_key].required ) {
+                if(
+                    metadata.fields[field_key].required
+                    && (
+                        ! metadata.fields[field_key].write_only
+                        && edit
+                    )
+                ) {
                     if( page_data ) {
 
                         if(
@@ -186,8 +192,8 @@ const ModelForm = ({
 
                     if ( response.ok ) {
 
-                        navigate(metadata.urls.return_url ?
-                            String(metadata.urls.return_url).split('api/v2')[1]
+                        navigate(metadata.urls.back ?
+                            String(metadata.urls.back).split('api/v2')[1]
                             : String(metadata.urls.self).split('api/v2')[1])
 
                     } else {

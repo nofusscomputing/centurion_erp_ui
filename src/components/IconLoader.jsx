@@ -50,6 +50,10 @@ import TicketRequest from "./icons/TicketRequest";
 import TicketIncident from "./icons/TicketIncident";
 import TicketProblem from "./icons/TicketProblem";
 import TicketChange from "./icons/TicketChange";
+import Webhook from "./icons/Webhook";
+import Documentation from "./icons/documentation";
+import SwaggerDcoumentation from "./icons/SwaggerDcoumentation";
+import Git from "./icons/Git";
 
 
 const icon_components = {
@@ -65,10 +69,12 @@ const icon_components = {
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
+    documentation: Documentation,
     reply: ReplyIcon,
     delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
+    git: Git,
     help: HelpIcon,
     history: HistoryIcon,
     information: InformationIcon,
@@ -86,6 +92,7 @@ const icon_components = {
     service: ServiceIcon,
     software: SoftwareIcon,
     settings: SettingsIcon,
+    swagger_docs: SwaggerDcoumentation,
     task: TaskIcon,
     ticket_change: TicketChange,
     ticket_incident: TicketIncident,
@@ -105,7 +112,8 @@ const icon_components = {
     ticket_status_new: StatusNewIcon,
     ticket_status_pending: StatusPendingIcon,
     ticket_status_solved: StatusSolvedIcon,
-    ticket_status_testing: StatusTestingIcon
+    ticket_status_testing: StatusTestingIcon,
+    webhook: Webhook,
     
 };
 

@@ -110,16 +110,14 @@ export default function FieldData({
 
             case 'DateTime':
 
+            // credit https://stackoverflow.com/a/74800084
             Date.prototype.format = function(formatString) {
                 return Object.entries({
                   YYYY: this.getFullYear(),
                   YY: this.getFullYear().toString().substring(2),
                   yyyy: this.getFullYear(),
                   yy: this.getFullYear().toString().substring(2),
-                  MMMM: this.toLocaleString('default', { month: 'long'  }),
-                  MMM: this.toLocaleString('default',  { month: 'short' }),
-                  MM: (this.getMonth() + 1).toString().padStart(2, '0'),
-                  M: this.getMonth() + 1,
+                  // `D` must be before month, as Dec with be processed as `#ec`
                   DDDD: this.toLocaleDateString('default', { weekday: 'long'  }),
                   DDD: this.toLocaleDateString('default',  { weekday: 'short' }),
                   DD: this.getDate().toString().padStart(2, '0'),
@@ -128,10 +126,14 @@ export default function FieldData({
                   ddd: this.toLocaleDateString('default',  { weekday: 'short' }),
                   dd: this.getDate().toString().padStart(2, '0'),
                   d: this.getDate(),
+                  MMMM: this.toLocaleString('default', { month: 'long'  }),
+                  MMM: this.toLocaleString('default',  { month: 'short' }),
+                  MM: (this.getMonth() + 1).toString().padStart(2, '0'),
+                  M: this.getMonth() + 1,
                   HH: this.getHours().toString().padStart(2, '0'), // military
                   H: this.getHours().toString(), // military
                   hh: (this.getHours() % 12).toString().padStart(2, '0'),
-                //   h: (this.getHours() % 12).toString(),
+                  h: (this.getHours() % 12).toString(),
                   mm: this.getMinutes().toString().padStart(2, '0'),
                   m: this.getMinutes(),
                   SS: this.getSeconds().toString().padStart(2, '0'),

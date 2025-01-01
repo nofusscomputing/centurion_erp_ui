@@ -30,7 +30,7 @@ const TicketCommentForm = ({
 
     if( is_edit ) {
 
-        post_url += '/' + comment_data['id']
+        post_url = comment_data['_urls']['_self']
         HTTP_METHOD = 'PATCH'
     }
 
@@ -44,6 +44,13 @@ const TicketCommentForm = ({
         edit_form_data = {
             'body': comment_data['body'],
             'source': comment_data['source'],
+            'responsible_user': comment_data['responsible_user'],
+            'responsible_team': comment_data['responsible_team'],
+            'category': comment_data['category'],
+            'planned_start_date': comment_data['planned_start_date'],
+            'planned_finish_date': comment_data['planned_finish_date'],
+            'real_start_date': comment_data['real_start_date'],
+            'real_finish_date': comment_data['real_finish_date'],
         }
 
     }
@@ -162,8 +169,12 @@ const TicketCommentForm = ({
                             ) {
 
                                 commentCallback();
-                                setFormData({});
+                                is_task_comment = false
+                                is_solution_comment = false
+                                is_notification_comment = false
                                 e.target.reset();
+                                setFormData(edit_form_data);
+                                setTaskComment(false)
                             }
 
                         }
@@ -186,7 +197,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'status'
                                     field_data={metadata.fields['status']}
-                                    value={comment_data['status']}
+                                    value={form_data['status']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -196,6 +207,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'responsible_user'
                                     field_data={metadata.fields['responsible_user']}
+                                    value={form_data['responsible_user']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -205,6 +217,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'responsible_team'
                                     field_data={metadata.fields['responsible_team']}
+                                    value={form_data['responsible_team']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -243,7 +256,7 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    // value={value}
+                                    value={String(form_data['planned_start_date']).replace('Z', '')}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -258,7 +271,7 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    // value={value}
+                                    value={form_data['planned_finish_date']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -273,7 +286,7 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    // value={value}
+                                    value={form_data['real_start_date']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -282,13 +295,13 @@ const TicketCommentForm = ({
                         { task_comment && <fieldset className={comment_class}>
                             <span>
                                 <TextField
-                                    id = 'real_start_date'
+                                    id = 'real_finish_date'
                                     label = {metadata.fields['real_finish_date'].label}
                                     helptext   = {metadata.fields['real_finish_date'].help_text}
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    // value={value}
+                                    value={form_data['real_finish_date']}
                                     onChange={handleChange}
                                 />
                             </span>

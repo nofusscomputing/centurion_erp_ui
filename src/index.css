@@ -1501,7 +1501,6 @@ form fieldset span.help-text {
 .common-field {
   background-color: var(--background-colour-form-field);
   color: var(--text-colour);
-  font-size: inherit;
   line-height: 30px;
 }
 
@@ -1511,6 +1510,22 @@ input.common-field {
   border-bottom: 1px solid var(--border-colour-form-field);
 }
 
+input {
+  font-family: inherit;
+  font-size: 12pt;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+     margin: 0; 
+}
+
+
+textarea {
+  font-family: inherit;
+  font-size: 12pt;
+}
 
 .content form fieldset .common-field {
   min-width: 400px;
@@ -1644,7 +1659,18 @@ footer .column {
 
 footer .left {
   display: block;
-  align-items: center;
+  align-items: left;
+  text-align: left;
+  padding-left: 10px;
+}
+
+footer .footer-icons svg {
+
+  fill: var(--contrasting-colour);
+  height: 30px;
+  width: 30px;
+  margin: 0px 3px;
+
 }
 
 
