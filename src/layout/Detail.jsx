@@ -53,7 +53,7 @@ const Detail = ({
         SetContentHeaderIcon(
             <>
                 { ('documentation' in metadata) &&
-                    <Link to={metadata['name']} target="_new">
+                    <Link to={metadata['documentation']} target="_new">
                         <IconLoader
                             name='help'
                         />
