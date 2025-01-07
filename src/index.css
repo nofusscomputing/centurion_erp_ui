@@ -756,6 +756,7 @@ span.sub-script {
   font-size: smaller;
 }
 
+span.sub-script.metadata,
 .ticket h3.description span.sub-script {
   color: #777;
 }

@@ -2,6 +2,7 @@ import hljs from 'highlight.js'
 
 import markdownIt from "markdown-it";
 import { full as emoji } from 'markdown-it-emoji'
+import model_link_plugin from './markdown_plugins/ModelLink';
 
 
 
@@ -34,7 +35,9 @@ const md = markdownIt({
 
     .use( require('markdown-it-footnote') )
 
-    .use( require('markdown-it-task-lists') );
+    .use( require('markdown-it-task-lists') )
+
+    .use(model_link_plugin);
 
 
 
