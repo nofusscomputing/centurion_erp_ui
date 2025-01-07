@@ -43,7 +43,7 @@ const md = markdownIt({
 
 export default function RenderMarkdown(markdown, full_width=false) {
 
-    let rendered_markdown = md.render( String(markdown.children) )
+    let rendered_markdown = md.render( String(markdown.children), markdown.env )
 
     let class_name = null
 

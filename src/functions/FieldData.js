@@ -257,7 +257,7 @@ export default function FieldData({
             case 'Markdown':
 
                 field_data = (
-                    <RenderMarkdown>
+                    <RenderMarkdown env={metadata.fields[field_name].render ?? {}}>
                         {data_field}
                     </RenderMarkdown>
                 )
