@@ -65,6 +65,8 @@ const RelatedTickets = ({
 
                 }
 
+                related_ticket['display_name'] = '#' + String(this_id.id)
+
                 return (
                 <div id="linked-tickets" className="related-ticket">
                     <div className={"icon icon-related-ticket ticket-related-" + String(related_name).replace(' ', '_')}>
