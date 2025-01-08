@@ -13,15 +13,24 @@ function model_link (state) {
   let start = state.pos
   let end = state.pos
 
+  let begining = state.pos
+
   const re = new RegExp(UNESCAPE_RE);
 
   const fields = [ ...String(state.src).matchAll(re) ]
 
 
   if( fields.length === 0 ) {
-    state.pos = start + 1
+
     return false
+
   }
+
+  if( fields[0].index !== begining ) {
+
+    return false
+
+  } 
 
 
   for( let item_link of fields) {
@@ -29,12 +38,7 @@ function model_link (state) {
     start = item_link.index
     end = start + String(item_link.groups.markdown).length
 
-    if( state.tokens.length === 0 && start >= 0 ) {    // start text
-
-      const before_text = state.push('text', '', 0)
-      before_text.content = state.src.slice(0, start)
-
-    }else if ( start !== state.posMax ) {    // middle text
+    if ( start !== state.posMax ) {    // middle text
 
       const middle_text = state.push('text', '', 0)
       middle_text.content = state.src.slice(state.posMax, start)
@@ -71,7 +75,7 @@ function model_link (state) {
 
 
           const anchor_t = state.push('text', '', 0)
-          anchor_t.content = state.env.models[item_link.groups.model_type][item_link.groups.model_id].title
+          anchor_t.content = ' ' + state.env.models[item_link.groups.model_type][item_link.groups.model_id].title
 
 
           const item_o = state.push('item_open', 'span', 1)
@@ -103,5 +107,6 @@ function model_link (state) {
 }
 
 export default function model_link_plugin (md) {
-  md.inline.ruler.after('emphasis', 'sup', model_link)
+  md.inline.ruler.push('model_link', model_link)
+
 };
