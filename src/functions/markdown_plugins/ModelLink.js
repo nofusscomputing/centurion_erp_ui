@@ -78,7 +78,7 @@ function model_link (state) {
 
           icon_t.content = renderToStaticMarkup(
             <IconLoader
-              name={String( item_link.groups.model_type ).toLowerCase().replace('kb', 'information')}
+              name={String( item_link.groups.model_type ).toLowerCase()}
               fill="#777"
             />
           )
