@@ -68,7 +68,7 @@ function model_link (state) {
             const item_t = state.push('text', '', 0)
             item_t.content = ', ' + String( item_link.groups.model_type ) + ' '
 
-          const item_c = state.push('item_open', 'span', -1)
+          const item_c = state.push('item_close', 'span', -1)
 
 
         const anchor_c = state.push('a_close', 'a', -1)
