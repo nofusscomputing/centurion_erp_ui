@@ -1,3 +1,5 @@
+import { renderToStaticMarkup } from "react-dom/server";
+import IconLoader from "../../components/IconLoader";
 
 const UNESCAPE_RE = /(?<markdown>\$(?<model_type>[a-z_]+)-(?<model_id>\d+))/g
 
@@ -45,17 +47,27 @@ function model_link (state) {
     if( state.env.models[item_link.groups.model_type][item_link.groups.model_id] ?? null ) {
 
       const span_o = state.push('span_open', 'span', 1)
+      span_o.attrPush(['class', 'text-inline'])
 
         const anchor_o = state.push('a_open', 'a', 1)
         anchor_o.attrPush(['href', state.env.models[item_link.groups.model_type][item_link.groups.model_id].url])
 
 
-          // const icon_o = state.push('icon_open', 'span', 1)
+          const icon_o = state.push('icon_open', 'span', 1)
+          icon_o.attrPush([
+            'class', 'badge-icon'
+          ])
 
-          //   const icon_t = state.push('text', '', 0)
-          //   icon_t.content = 'icon '
+            const icon_t = state.push('html_inline', '', 0)
 
-          // const icon_c = state.push('icon_close', 'span', -1)
+            icon_t.content = renderToStaticMarkup(
+              <IconLoader
+                name={String( item_link.groups.model_type ).toLowerCase().replace('kb', 'information')}
+                fill="#777"
+              />
+            )
+
+          const icon_c = state.push('icon_close', 'span', -1)
 
 
           const anchor_t = state.push('text', '', 0)
