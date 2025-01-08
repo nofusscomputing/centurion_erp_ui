@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../../../hooks/apiFetch";
 import IconLoader from "../../IconLoader";
 import RenderMarkdown from "../../../functions/RenderMarkdown";
+import FieldData from "../../../functions/FieldData";
 
 const RelatedTickets = ({
     data_url = null,
@@ -79,9 +80,11 @@ const RelatedTickets = ({
                         <span style={{
                             display: 'inline-block'
                             }}>
-                                <RenderMarkdown>
-                                    {'#'+this_id['id']}
-                                </RenderMarkdown>
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='display_name'
+                                    data={related_ticket}
+                                />
                             </span>
                     </div>
                 </div>
