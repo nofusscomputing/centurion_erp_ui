@@ -7,17 +7,21 @@ const LinkedItems = ({
 }) => {
 
     const [ page_data, setPageData ] = useState(null)
+    const [ metadata, setMetaData ] = useState(null)
 
     useEffect(() => {
 
         apiFetch(
             data_url,
-            (data) => {
+            (data, metadata) => {
+
                 setPageData(data)
+
+                setMetaData(metadata)
+
             },
             undefined,
             undefined,
-            false
         )
     }, [ data_url ])
 
