@@ -802,6 +802,29 @@ span.sub-script.metadata,
   padding: 10px
 }
 
+.external-links a {
+  color: var(--text-colour);
+  text-decoration: none;
+}
+
+
+span.text-inline {
+  display: inline-block;
+  line-height: inherit;
+}
+
+span.text-inline span.badge-icon {
+  display: inline-block;
+  width: fit-content;
+
+}
+
+span.text-inline span.badge-icon svg {
+  transform: translateY(5px);
+
+}
+
+
 span.badge {
   background-color: var(--background-colour-active);
   border: 1px solid var(--border-colour-form-field);
@@ -813,11 +836,6 @@ span.badge {
   text-align: left;
   width: fit-content;
   margin: 0px 2px;
-}
-
-.external-links a {
-  color: var(--text-colour);
-  text-decoration: none;
 }
 
 
@@ -877,65 +895,78 @@ span.badge span.badge-text.badge-text-action-remove {
 
 
 
+span.badge-icon.ticket-status-icon svg,
 span.badge span.badge-icon.ticket-status-icon svg {
   border-radius: 10px;
 }
 
+span.badge-icon.ticket-status-icon-accepted svg,
 span.badge span.badge-icon.ticket-status-icon-accepted svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
+span.badge-icon.ticket-status-icon-approvals svg,
 span.badge span.badge-icon.ticket-status-icon-approvals svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
+span.badge-icon.ticket-status-icon-assigned svg,
 span.badge span.badge-icon.ticket-status-icon-assigned svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
+span.badge-icon.ticket-status-icon-assigned_planning svg,
 span.badge span.badge-icon.ticket-status-icon-assigned_planning svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
+span.badge-icon.ticket-status-icon-closed svg,
 span.badge span.badge-icon.ticket-status-icon-closed svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
+span.badge-icon.ticket-status-icon-draft svg,
 span.badge span.badge-icon.ticket-status-icon-draft svg {
   background-color: #cacaca;
   fill: #4d4d4d;
 }
 
+span.badge-icon.ticket-status-icon-evaluation svg,
 span.badge span.badge-icon.ticket-status-icon-evaluation svg {
   background-color: #b2d6ff;
   fill: #007592;
 }
 
+span.badge-icon.ticket-status-icon-invalid svg,
 span.badge span.badge-icon.ticket-status-icon-invalid svg {
   background-color: #ffb2b6;
   fill: #920000;
 }
 
+span.badge-icon.ticket-status-icon-new svg,
 span.badge span.badge-icon.ticket-status-icon-new svg {
   background-color: #b2dcff;
   fill: #004492
 }
 
+span.badge-icon.ticket-status-icon-pending svg,
 span.badge span.badge-icon.ticket-status-icon-pending svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
+span.badge-icon.ticket-status-icon-solved svg,
 span.badge span.badge-icon.ticket-status-icon-solved svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
+span.badge-icon.ticket-status-icon-testing svg,
 span.badge span.badge-icon.ticket-status-icon-testing svg {
   background-color: #b2d3ff;
   fill: #8c00ff;

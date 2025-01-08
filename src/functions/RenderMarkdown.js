@@ -3,6 +3,7 @@ import hljs from 'highlight.js'
 import markdownIt from "markdown-it";
 import { full as emoji } from 'markdown-it-emoji'
 import model_link_plugin from './markdown_plugins/ModelLink';
+import ticket_link_plugin from './markdown_plugins/TicketLink';
 
 
 
@@ -36,6 +37,8 @@ const md = markdownIt({
     .use( require('markdown-it-footnote') )
 
     .use( require('markdown-it-task-lists') )
+
+    .use(ticket_link_plugin)
 
     .use(model_link_plugin);
 
