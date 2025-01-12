@@ -118,7 +118,7 @@ const TicketComment = ({
     if( comment_type === 'action' ) {
 
         return(
-            <div style={{padding: '0px', margin: '0px'}}>
+            <div>
                 <span style={{display: 'inline-block'}}>
                     <FieldData
                         metadata={metadata}

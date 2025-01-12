@@ -157,6 +157,8 @@ body {
   height: 100%;
   margin: 0px;
   width: 100%;
+
+  --font-size: 12pt
 }
 
 .app {
@@ -798,7 +800,6 @@ span.sub-script.metadata,
 
 .ticket .comment .markdown {
   background-color: var(--background-colour-active);
-  margin: 15px;
   padding: 10px
 }
 
@@ -977,18 +978,88 @@ span.badge span.badge-icon.ticket-status-icon-testing svg {
 
 
 
+div.markdown h1 {
+  font-size: 22pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+
+}
+
+div.markdown h2 {
+  font-size: 20pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h3 {
+  font-size: 18pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h4 {
+  font-size: 16pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h5 {
+  font-size: 14pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h6 {
+  font-size: 12pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+
+
+span.markdown:not(.ticket .comment .markdown) {
+  padding: 0px;
+  margin: 0px;
+  font-size: var(--font-size);
+}
 
 
 
 .markdown p:not(div.admonition p) {
   background-color: inherit;
-  font-size: inherit;
-  line-height: 25px;
-  padding: 0px;
+  font-size: var(--font-size);
+  line-height: calc( var(--font-size) * 1.5 );
+  padding: calc( var(--font-size) * 0.5 ) 0px;
   margin: 0px;
   text-align: left;
 
 }
+
+
+div.markdown ol,
+div.markdown ul {
+  margin: 0px;
+  padding: var(--font-size);
+}
+
+
+div.markdown ol li,
+div.markdown ul li {
+  line-height: calc( var(--font-size) * 1.5 );
+  margin: 5px;
+  padding: 0px;
+  padding-left: 20px;
+}
+
+
+
+
 
 .markdown div.admonition {
   border-width: 1px;
