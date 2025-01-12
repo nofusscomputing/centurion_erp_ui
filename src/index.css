@@ -1152,6 +1152,34 @@ div.markdown ul li {
 }
 
 
+
+.markdown div.admonition.success {
+  background-color: #00ff4c88;
+  border-color: #00ff4c;
+}
+
+.markdown div.admonition.success p.admonition-title {
+  background-color: #00ff4c;
+  color: #777;
+}
+
+
+.markdown div.admonition.failure {
+  background-color: #ff000088;
+  border-color: #ff0000;
+  color: #fff;
+}
+
+.markdown div.admonition.failure p.admonition-title {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.markdown div.admonition.failure p:not(p.admonition-title) {
+  color: #fff;
+}
+
+
 .hljs {
   background: var(--background-colour-inactive);
   color: var(--text-colour);
