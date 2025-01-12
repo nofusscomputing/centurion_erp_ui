@@ -1057,7 +1057,11 @@ div.markdown ul li {
   padding-left: 20px;
 }
 
-
+div.markdown p code {
+  background: var(--background-colour-inactive);
+  color: var(--text-colour);
+  padding: 0px 3px;
+}
 
 
 
