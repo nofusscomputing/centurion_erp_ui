@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../../hooks/apiFetch";
-import RenderMarkdown from "../../../functions/RenderMarkdown";
 import FieldData from "../../../functions/FieldData";
 
 const LinkedItems = ({
@@ -33,7 +32,7 @@ const LinkedItems = ({
             {page_data && metadata &&
                 page_data.results.map((linked_item) => {
                     return (
-                        <div className="item">
+                        <div className="item" key={linked_item['id']+'-linked_item'}>
                             <div className="markdown align-center">
                                 <FieldData
                                     metadata={metadata}

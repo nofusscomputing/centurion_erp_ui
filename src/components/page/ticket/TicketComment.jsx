@@ -18,7 +18,7 @@ const TicketComment = ({
 }) => {
 
     if( String(post_url).includes('?') ) {
-        console.log('url has qs')
+
         post_url = String(post_url).split('?')[0]
     }
 
@@ -43,21 +43,21 @@ const TicketComment = ({
     const comment_updated = false
 
 
-    if( comment_type == 'action' ) {
+    if( comment_type === 'action' ) {
 
         comment_class += ' comment-type-action'
 
-    }else if( comment_type == 'notification' ) {
+    }else if( comment_type === 'notification' ) {
 
         comment_class += ' comment-type-notification'
 
-    }else if( comment_type == 'task' ) {
+    }else if( comment_type === 'task' ) {
 
         comment_class += ' comment-type-task'
 
         comment_header = ' created a task'
 
-    } else if( comment_type == 'solution' ) {
+    } else if( comment_type === 'solution' ) {
 
         comment_class += ' comment-type-solution'
 
@@ -118,7 +118,7 @@ const TicketComment = ({
     if( comment_type === 'action' ) {
 
         return(
-            <div>
+            <div key={'comment-' + comment_data['id']}>
                 <span style={{display: 'inline-block'}}>
                     <FieldData
                         metadata={metadata}
