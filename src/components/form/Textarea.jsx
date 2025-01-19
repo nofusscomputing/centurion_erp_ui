@@ -1,4 +1,5 @@
 const TextArea = ({
+    auto_content_height = false,
     id,
     error_text=null,
     fieldset = true,
@@ -13,6 +14,10 @@ const TextArea = ({
     let helptext = null
     let required = false
     let label = ''
+
+    /** CSS style for the textarea */
+    let style = {};
+    
 
     if( field_data ) {
 
@@ -42,11 +47,25 @@ const TextArea = ({
 
             if( 'class' in field_data.style ) {
 
-                field_class_name += String( ' ' + field_data['style']['class'])
+                // field_class_name += String( ' ' + field_data['style']['class'])
 
             }
         }
     }
+
+
+
+    if( auto_content_height ) {
+
+        style = {
+            ...style,
+            height: String(( String(value).match(/\n/g)?.length * 25 )  + 'pt'),
+
+        }
+
+    }
+
+    console.log(`new lines: ${String(( String(value).match(/\n/g)?.length * 25 )  + 'px')}`)
 
     let field = (
         <>
@@ -54,6 +73,7 @@ const TextArea = ({
             id={id}
             required={required}
             className={fieldset ? field_class_name : field_class_name + ' ' + class_name}
+            style={style}
             onChange={onChange}
             onKeyUp={(e) =>{
 
