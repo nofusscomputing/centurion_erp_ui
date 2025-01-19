@@ -1,15 +1,13 @@
 const TextArea = ({
     id,
     error_text=null,
-    value= '',
+    fieldset = true,
+    value='',
     onChange = null,
     class_name = null,
     field_data = null
 }) => {
 
-    if( value === null ) {
-        value = ''
-    }
 
     let field_class_name = "common-field"
     let helptext = null
@@ -50,17 +48,14 @@ const TextArea = ({
         }
     }
 
-
-    return (
-        <fieldset className={class_name}>
-            <label className="name" for={id}>{label}</label>
-            <span className="help-text">{helptext}</span>
-            <textarea
-                id={id}
-                required={required}
-                className={field_class_name}
-                onChange={onChange}
-                onKeyUp={(e) =>{
+    let field = (
+        <>
+        <textarea
+            id={id}
+            required={required}
+            className={fieldset ? field_class_name : field_class_name + ' ' + class_name}
+            onChange={onChange}
+            onKeyUp={(e) =>{
 
                     const currentScrollY = window.scrollY
 
@@ -85,9 +80,29 @@ const TextArea = ({
                 }}
     
             >{value}</textarea>
-            <span className="error-text">{error_text}</span>
-        </fieldset>
-     );
+        </>
+    )
+
+
+    if( fieldset ) {
+
+        return (
+            <fieldset className={class_name}>
+                <label className="name" for={id}>{label}</label>
+                <span className="help-text">{helptext}</span>
+                {field}
+                <span className="error-text">{error_text}</span>
+            </fieldset>
+        );
+
+    } else {
+
+        return ( 
+            <>
+            {field}
+            </>
+        )
+    }
 }
  
 export default TextArea;
