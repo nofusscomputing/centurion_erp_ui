@@ -60,7 +60,7 @@ const Button = ({
             <div
                 className={div_align}
             >
-                <button className="form common-field" onClick={handleButtonClick} type={type}>{button_text}</button>
+                <button id={'button-' + String(button_text).toLowerCase()} className="form common-field" onClick={handleButtonClick} type={type}>{button_text}</button>
             </div>);
     } else if( menu_entries ) {
 
@@ -70,7 +70,7 @@ const Button = ({
             >
 
                 <div className="submit-dropdown-button">
-                    <button className="button submit-button" onClick={handleButtonClick} type={type}>{button_text}</button>
+                    <button id={'button-' + String(button_text).toLowerCase()} className="button submit-button" onClick={handleButtonClick} type={type}>{button_text}</button>
                     <div
                         className="button dropdown-button"
                         onClick={(e) =>

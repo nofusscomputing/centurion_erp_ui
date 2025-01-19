@@ -34,9 +34,9 @@ const MarkdownEditor = ({
 
     const handleSave = (e) => {
 
-        if( ! document.getElementById(field_name).disabled ) {    // prevent re-submission
+        if( ! document.getElementById('button-save').disabled ) {    // prevent re-submission
 
-            document.getElementById(field_name).disabled = true
+            document.getElementById('button-save').disabled = true
 
             if( document.getElementById('textarea-' + field_name) ) {
 
