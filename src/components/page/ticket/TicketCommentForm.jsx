@@ -312,7 +312,7 @@ const TicketCommentForm = ({
                     <div>
                     { is_edit &&
                     <Button
-                        buttonClickCallback={cancelbuttonOnSubmit}
+                        onClick={cancelbuttonOnSubmit}
                         button_text = 'Cancel'
                     />
                     }
