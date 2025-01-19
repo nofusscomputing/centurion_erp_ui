@@ -38,6 +38,8 @@ const Ticket = ({
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
+    const [ editing_description, setEditingDescription ] = useState( false )
+
     const {page_data, metadata} = useLoaderData();
 
     const [ ticket_data, setTicketData] = useState(null)
@@ -45,8 +47,6 @@ const Ticket = ({
     const [ ticket_metadata, setTicketMetaData] = useState(null)
 
     const [ ticket_type, SetTicketType ] = useState(null)
-
-    const [ editing_description, setEditingDescription ] = useState( true )
 
 
     setContentHeading(page_data['title'])
@@ -160,8 +160,7 @@ const Ticket = ({
                         metadata={metadata}
                         onCancel={handleDescriptionCancel}
                         onSave={handleDescriptionSave}
-                        markdown={page_data['description']}
-                        page_data = {page_data}
+                        markdown={ticket_data['description']}
                     />
                 </section>
             }
