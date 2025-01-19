@@ -144,6 +144,23 @@ html[data-theme='dark'] {
 
 
 
+/* ############################################
+#
+#   Forms rewrite
+#
+############################################ */
+
+
+
+
+/* ############################################
+#
+#   EoF Forms rewrite
+#
+############################################ */
+
+
+
 a {
   color: var(--contrasting-colour);
   text-decoration: none;
@@ -1667,12 +1684,14 @@ textarea {
 }
 
 
+textarea,
 form fieldset textarea {
   border-color: var(--border-colour-form-field);
 }
 
 form fieldset input:invalid,
 form fieldset select:invalid,
+textarea:invalid,
 form fieldset textarea:invalid {
   border: 1px solid var(--border-colour-error);
 }
@@ -1887,3 +1906,67 @@ input:checked+.slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+
+
+
+section div.tabs {
+  /* background-color: #00b0e8; */
+  /* padding: 5px 0px; */
+  /* background-color: var(--background-colour-active); */
+  border-bottom: 1px solid var(--border-colour);
+  display: flex;
+  height: 30px;
+
+}
+
+section div.tabs span.tab {
+  /* background-color:#008000; */
+  border-bottom: 3px solid transparent;
+  color: var(--text-colour-navtab);
+  cursor: pointer;
+  display: inline-flex;
+  margin: auto 0px;
+  margin-bottom: 0px;
+  padding: 5px 10px 5px 10px;
+}
+
+section div.tabs span.tab:hover {
+  border-bottom: 3px solid var(--border-colour-navbar-hover);
+}
+
+
+section div.tabs span.tab.active {
+  border-bottom: 3px solid var(--contrasting-colour);
+}
+
+
+textarea {
+  display: flex;
+  margin: 0px;
+  padding: 5px;
+  width: calc(100% - 12px);
+  /* width: inherit; */
+  /* min-height: fit-content;
+  overflow-y: hidden; */
+  /* field-sizing: content; */
+  
+}
+
+
+.md-editor {
+  /* background-color: #8c00ff; */
+  display: flexbox;
+  /* width: 100%; */
+  padding: 5px;
+}
+
+
+
+
+
+
+
+

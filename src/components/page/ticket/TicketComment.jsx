@@ -65,7 +65,7 @@ const TicketComment = ({
 
     }
 
-    const comment_header_text_updated = (<span class="sub-script">Updated </span>)
+    const comment_header_text_updated = (<span className="sub-script">Updated </span>)
 
     const comment_header_text = (
         metadata && comment_data &&
@@ -75,7 +75,7 @@ const TicketComment = ({
                 field_name='user'
                 data={comment_data}
             />
-            <span class="sub-script">{comment_header} on </span>
+            <span className="sub-script">{comment_header} on </span>
             <FieldData
                 metadata={metadata}
                 field_name='created'
@@ -182,7 +182,7 @@ const TicketComment = ({
 
     return (
         metadata &&
-        <div className={discussion_class}>
+        <div className={discussion_class} key={'comment-' + comment_data['id']}>
             { editing &&
             <TicketCommentForm
                 comment_data={comment_data}

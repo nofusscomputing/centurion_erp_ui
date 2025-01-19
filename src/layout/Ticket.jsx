@@ -199,6 +199,7 @@ const Ticket = ({
                 </section>
             }
 
+                <div>
                 { page_data['_urls']['related_tickets'] &&
                 <RelatedTickets
                     data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
@@ -221,6 +222,7 @@ const Ticket = ({
                     comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + '?page[size]=500'}
                     ticket_id = {page_data['id']}
                 />}
+                </div>
             </div>
 
             <div className="sidebar">

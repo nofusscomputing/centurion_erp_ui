@@ -70,7 +70,7 @@ const TextArea = ({
     let field = (
         <>
         <textarea
-            id={id}
+            id={'textarea-' + id}
             required={required}
             className={fieldset ? field_class_name : field_class_name + ' ' + class_name}
             style={style}
