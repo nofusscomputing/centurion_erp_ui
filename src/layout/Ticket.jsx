@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router";
+import { useLoaderData } from "react-router";
 import FieldData from "../functions/FieldData";
 
 import { apiFetch } from "../hooks/apiFetch";
 import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
 import TicketComments from "../components/page/ticket/TicketComments";
-import urlBuilder from "../hooks/urlBuilder";
+import MarkdownEditor from "../components/MarkdownEditor";
 
 
 
@@ -40,11 +40,27 @@ const Ticket = ({
 
     const {page_data, metadata} = useLoaderData();
 
-    const params = useParams();
+    const [ ticket_data, setTicketData] = useState(null)
+    
+    const [ ticket_metadata, setTicketMetaData] = useState(null)
 
     const [ ticket_type, SetTicketType ] = useState(null)
 
+    const [ editing_description, setEditingDescription ] = useState( true )
+
+
     setContentHeading(page_data['title'])
+
+
+    useEffect( () => {
+
+        setTicketData(page_data)
+        setTicketMetaData(metadata)
+
+    },[
+        page_data,
+        metadata
+    ])
 
 
     useEffect(() => {
@@ -61,7 +77,10 @@ const Ticket = ({
 
         }
 
-    }, [])
+    }, [
+        metadata.fields,
+        page_data
+    ])
 
 
     useEffect(() => {
@@ -79,14 +98,75 @@ const Ticket = ({
             )
         }
 
-    }, [])
+    }, [
+        page_data
+    ])
+
+
+    const handleDescriptionCancel = () => {
+
+        setEditingDescription(false)
+
+    }
+
+
+    const handleDescriptionEdit = () => {
+
+        setEditingDescription(true)
+
+    }
+
+
+    const handleDescriptionSave = ({event, description}) => {
+
+
+        let form_data = {
+            'id': page_data['id'],
+            'description': description
+        }
+
+        if( ticket_data['description'] !== form_data['description'] ) {    // Dont post if no changes
+
+            apiFetch(
+                page_data['_urls']['_self'],
+                (data) => {
+
+                    setTicketData(data)
+
+                    setEditingDescription(false)
+                },
+                'PATCH',
+                form_data
+            )
+        } else {
+
+            setEditingDescription(false)
+
+        }
+
+    }
 
 
     return (
-        metadata && comment_metadata && page_data && <div className="ticket">
+        ticket_metadata && comment_metadata && ticket_data && <div className="ticket">
 
             <div className="contents">
 
+            { editing_description &&
+                <section className="description">
+                    <MarkdownEditor
+                        auto_content_height = {true}
+                        field_name = 'description'
+                        metadata={metadata}
+                        onCancel={handleDescriptionCancel}
+                        onSave={handleDescriptionSave}
+                        markdown={page_data['description']}
+                        page_data = {page_data}
+                    />
+                </section>
+            }
+
+            { ! editing_description &&
                 <section className="description">
                     <h3 className={"description ticket-type-" + ticket_type}>
                         <span class="sub-script">opened by&nbsp;</span>
@@ -109,28 +189,15 @@ const Ticket = ({
                         />
                     </h3>
                     <div className="markdown">
-                        {/* <Button
-                            button_text = 'Edit'
-                            button_align = 'right'
-                            type='button'
-                            buttonClickCallback = {() => {
-                                console.log('button clicked')
-                            }}
-
-                        /> */}
-                        <Link to={
-                            metadata.urls.return_url ?
-                            String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
-                            : String(metadata.urls.self).split('api/v2')[1] + '/edit'
-
-                        }><button className="common-field form">Edit</button></Link>
+                        <button className="common-field form" onClick={handleDescriptionEdit}>Edit</button>
                         <FieldData
                             metadata={metadata}
                             field_name='description'
-                            data={page_data}
+                            data={ticket_data}
                         />
                     </div>
                 </section>
+            }
 
                 { page_data['_urls']['related_tickets'] &&
                 <RelatedTickets
