@@ -34,9 +34,9 @@ const MarkdownEditor = ({
 
     const handleSave = (e) => {
 
-        if( ! e.target.disabled ) {    // prevent re-submission
+        if( ! document.getElementById(field_name).disabled ) {    // prevent re-submission
 
-            e.target.disabled = true
+            document.getElementById(field_name).disabled = true
 
             if( document.getElementById('textarea-' + field_name) ) {
 
@@ -73,7 +73,7 @@ const MarkdownEditor = ({
     }
 
 
-    console.debug(JSON.stringify(form_data))
+    console.debug('MarkdownEditor: ' + JSON.stringify(form_data))
 
     return (
         <div
@@ -99,6 +99,7 @@ const MarkdownEditor = ({
                     field_data = {metadata.fields[field_name]}
                     value = {form_data[field_name]}
                     onChange = {handleChange}
+                    onSubmit={handleSave}
                 />
                 </>
                 }
