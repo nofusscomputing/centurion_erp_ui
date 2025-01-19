@@ -23,21 +23,32 @@ const MarkdownEditor = ({
 
     const [ editing, setEditing ] = useState( true )
 
-    const [form_data, setFormData ] = useState({ 'description': markdown })
+    const [form_data, setFormData ] = useState({ [field_name]: markdown })
 
 
     const handleChange = (e) => {
 
-        setFormData({'description': e.target.value})
+        setFormData({[field_name]: e.target.value})
 
     }
 
     const handleSave = (e) => {
 
-        onSave({
-            'event': e,
-            ...form_data
-        })
+        if( ! e.target.disabled ) {    // prevent re-submission
+
+            e.target.disabled = true
+
+            if( document.getElementById('textarea-' + field_name) ) {
+
+                document.getElementById('textarea-' + field_name).disabled = true
+
+            }
+
+            onSave({
+                'event': e,
+                ...form_data
+            })
+        }
 
     }
 
@@ -71,7 +82,7 @@ const MarkdownEditor = ({
                 width: '100%'
             }}
         >
-            <div id="tabs" className="description-edit tabs">
+            <div id="tabs" className="markdown-edit tabs">
                 <span id="tab-edit" className="tab active" onClick={handletabClick}>Edit</span>
                 <span id="tab-preview" className="tab" onClick={handletabClick}>Preview</span>
             </div>
@@ -106,11 +117,11 @@ const MarkdownEditor = ({
                 <Button
                     button_text = 'Cancel'
                     type = 'cancel'
-                    buttonClickCallback = {onCancel}
+                    onClick = {onCancel}
                 />
                 <Button
                     button_text = 'Save'
-                    buttonClickCallback = {handleSave}
+                    onClick = {handleSave}
                 />
             </div>
         </div>
