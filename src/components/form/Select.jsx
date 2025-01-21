@@ -25,6 +25,7 @@ const Select = ({
         return(
             <select
                 id={id}
+                name = {id}
                 required={field_data.required}
                 className="common-field"
                 onChange={onChange}
