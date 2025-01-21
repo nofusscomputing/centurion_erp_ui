@@ -7,6 +7,7 @@ import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
 import TicketComments from "../components/page/ticket/TicketComments";
 import MarkdownEditor from "../components/MarkdownEditor";
+import InlineField from "../components/InlineFields";
 import ContentHeader from "../components/page/ContentHeader";
 
 
@@ -175,19 +176,19 @@ const Ticket = () => {
                         <FieldData
                             metadata={metadata}
                             field_name='opened_by'
-                            data={page_data}
+                            data={ticket_data}
                         />&nbsp;
                         <span class="sub-script">on&nbsp;</span> 
                         <FieldData
                             metadata={metadata}
                             field_name='created'
-                            data={page_data}
+                            data={ticket_data}
                         />&nbsp;
                         <span class="sub-script">Updated&nbsp;</span> 
                         <FieldData
                             metadata={metadata}
                             field_name='modified'
-                            data={page_data}
+                            data={ticket_data}
                         />
                     </h3>
                     <div className="markdown">
@@ -201,7 +202,7 @@ const Ticket = () => {
                 </section>
             }
 
-                <div>
+            <div>
                 { page_data['_urls']['related_tickets'] &&
                 <RelatedTickets
                     data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
@@ -224,124 +225,118 @@ const Ticket = () => {
                     comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + '?page[size]=500'}
                     ticket_id = {page_data['id']}
                 />}
-                </div>
             </div>
+        </div>
 
-            <div className="sidebar">
+        <div className="sidebar">
 
-                <div className="metadata">
-                    <div>
+            <div className="metadata">
+                <div>
 
-                        <h3 className={"metadata ticket-type-" + ticket_type}>
-                            Ticket&nbsp;#
-                            <FieldData
-                            metadata={metadata}
-                            field_name='id'
-                            data={page_data}
-                        />
-                        &nbsp;
-                        {page_data['external_ref'] &&(
-                           ('( #') + page_data['external_ref'] + (')')
-                        )}
-                        </h3>
+                    <h3 className={"metadata ticket-type-" + ticket_type}>
+                        Ticket&nbsp;#
+                        <FieldData
+                        metadata={metadata}
+                        field_name='id'
+                        data={ticket_data}
+                    />
+                    &nbsp;
+                    {ticket_data['external_ref'] &&(
+                        ('( #') + ticket_data['external_ref'] + (')')
+                    )}
+                    </h3>
 
-                        <fieldset>
-                            <label>Assigned</label>
-                            <span className="text">
-                            <FieldData
-                                metadata={metadata}
-                                field_name='assigned_users'
-                                data={page_data}
-                            />
-                            </span>
-                        </fieldset>
-                        <fieldset>
-                            <label>Status</label>
-                            <span className="text">
-                            <FieldData
-                                metadata={metadata}
-                                field_name='status_badge'
-                                data={page_data}
-                            />
-                            </span>
-                        </fieldset>
-                        <fieldset>
-                            <label>Labels</label>
-                            <span className="text">val</span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='assigned_users'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Category</label>
-                            <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='category'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='assigned_teams'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Project</label>
-                            <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='project'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='status_badge'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Milestone</label>
-                            <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='milestone'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <fieldset>
+                        <label>Labels</label>
+                        <span className="text">val</span>
+                    </fieldset>
 
-                        <fieldset>
-                            <label>Priority</label>
-                            <span className="text">U 
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='urgency'
-                                    data={page_data}
-                                />
-                             / I
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='impact'
-                                    data={page_data}
-                                />
-                             / P
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='priority'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='category'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Duration</label>
-                            <span className="text">
-                                {secondsToTime(page_data['duration'])}
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='project'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Roadmap(s)</label>
-                            <span className="text">val</span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='milestone'
+                        metadata={metadata}
+                    />
 
-                    </div>
+                    <fieldset>
+                        <label>Duration</label>
+                        <span className="text">
+                            {secondsToTime(page_data['duration'])}
+                        </span>
+                    </fieldset>
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='urgency'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='impact'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='priority'
+                        metadata={metadata}
+                    />
+
+                    <fieldset>
+                        <label>Estimate</label>
+                        <span className="text">
+                            {secondsToTime(page_data['estimate'])}
+                        </span>
+                    </fieldset>
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='subscribed_users'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='subscribed_teams'
+                        metadata={metadata}
+                    />
+
+                    <fieldset>
+                        <label>Roadmap(s)</label>
+                        <span className="text">val</span>
+                    </fieldset>
 
                 </div>
-
             </div>
 
         </div>

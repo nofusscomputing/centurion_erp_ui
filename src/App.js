@@ -17,6 +17,7 @@ import History from "./layout/history";
 import Settings from "./layout/Settings";
 import urlBuilder from "./hooks/urlBuilder";
 import { apiFetch } from "./hooks/apiFetch";
+import { InlineFieldAction } from "./components/InlineFields";
 import MainLayout from "./layout/Main";
 
 const Login = () => {
@@ -105,10 +106,10 @@ function App() {
                         ******************************************************** */}
 
                         <Route path=":common_model/:common_pk/project_task/:pk" element={<Ticket
-                            />} loader = {pagedLoader}/>
+                            />} loader = {pagedLoader} action={InlineFieldAction} />
 
                         <Route path="ticket/:model/:pk" element={<Ticket
-                            />} loader = {pagedLoader}/>
+                            />} loader = {pagedLoader} action={InlineFieldAction} />
 
                         {/* ********************************************************
                             Detail View

@@ -464,6 +464,7 @@ div.content-header .column.right svg {
   width: 30px;
 }
 
+
 svg.help {
   fill: var(--contrasting-colour);
 }
@@ -568,6 +569,13 @@ article div.ticket div.metadata div {
   display: block;
   margin: 10px;
   border: none;
+}
+
+.ticket .metadata fieldset input,
+.ticket .metadata fieldset select {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
 }
 
 .ticket .metadata fieldset label {
@@ -1812,21 +1820,6 @@ div.submit-dropdown-button div.button svg {
 
 .show {
   display:block;
-}
-
-button.form {
-  background-color: var(--contrasting-colour);
-  color: var(--text-colour-button);
-  border: none;
-  font-size: inherit;
-  height: 30px;
-  margin: 5px;
-  padding: 0px 20px;
-}
-
-form button.inverse {
-  background-color: var(--background-colour-active);
-  color: var(--contrasting-colour);
 }
 
 footer {
