@@ -76,12 +76,12 @@ html[data-theme='dark'] {
   --background-colour-ticket-comment-solution: #b7ff96be;
   --background-colour-ticket-comment-task: #f8ff96d3;
 
-  --background-colour-ticket-type-change: #badff7;
-  --background-colour-ticket-type-incident: #f7baba;
-  --background-colour-ticket-type-issue: #baf7db;
-  --background-colour-ticket-type-request: #f7e9ba;
-  --background-colour-ticket-type-problem: #f7d0ba;
-  --background-colour-ticket-type-project-task: #c5baf7;
+  --background-colour-ticket-type-change: #badff7c5;
+  --background-colour-ticket-type-incident: #f7babac5;
+  --background-colour-ticket-type-issue: #baf7dbc5;
+  --background-colour-ticket-type-request: #f7e9bac5;
+  --background-colour-ticket-type-problem: #f7d0bac5;
+  --background-colour-ticket-type-project-task: #c5baf7c5;
 
   --colour-status-ok: #319c3a;
   --colour-status-warn: #cf9925;
@@ -149,6 +149,52 @@ html[data-theme='dark'] {
 #   Forms rewrite
 #
 ############################################ */
+
+
+button.align-right {
+  float: right;
+}
+
+
+button.form {
+  background-color: var(--contrasting-colour);
+  color: var(--text-colour-button);
+  border: none;
+  font-size: inherit;
+  height: 30px;
+  margin: 5px;
+  padding: 0px 20px;
+}
+
+button.inverse {
+  background-color: var(--background-colour-active);
+  color: var(--contrasting-colour);
+}
+
+button.mini {
+  font-size: smaller;
+  padding: 0px;
+}
+
+select,
+textarea {
+  border-color: var(--border-colour-form-field);
+}
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border: 1px solid var(--border-colour-error);
+}
+
+select {
+  height: 30px;
+}
+
+select[multiple] {
+  height: 200px;
+}
+
 
 
 
@@ -382,30 +428,37 @@ main {
   width: 100%;
 }
 
-main .content-header {
+
+div.content-header {
   background-color: var(--background-colour-active);
   display: grid;
   gap: 0px;
   grid-template-columns: 1fr 2fr 1fr;
   height: 80px;
+  width: calc(100% + 80px);
+  /* margin: -20px; */
+  margin-top: -20px;
+  margin-bottom: 20px;
 }
 
-main .content-header .column {
+
+div.content-header .column {
   margin: auto 0px;
   text-align: center;
+  
 }
 
 main h2 {
   margin: auto;
 }
 
-main .content-header .column.right {
+div.content-header .column.right {
   margin: auto 0px;
   padding-right: 20px;
   text-align: right;
 }
 
-main .content-header .column.right svg {
+div.content-header .column.right svg {
   height: 30px;
   margin-right: 10px;
   width: 30px;
@@ -1683,27 +1736,6 @@ textarea {
   min-width: 400px;
 }
 
-
-textarea,
-form fieldset textarea {
-  border-color: var(--border-colour-form-field);
-}
-
-form fieldset input:invalid,
-form fieldset select:invalid,
-textarea:invalid,
-form fieldset textarea:invalid {
-  border: 1px solid var(--border-colour-error);
-}
-
-form fieldset select {
-  border-color: var(--border-colour-form-field);
-  height: 30px;
-}
-
-form fieldset select[multiple] {
-  height: 200px;
-}
 
 div.align-center {
   text-align: center;
