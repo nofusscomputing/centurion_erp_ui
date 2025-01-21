@@ -1,10 +1,11 @@
 
 const Select = ({
+    error_text = null,
+    field_data = null,
+    field_only = false,
     id,
-    error_text=null,
-    value = '',
     onChange = null,
-    field_data = null
+    value = '',
 }) => {
 
     
@@ -16,12 +17,12 @@ const Select = ({
         typeof(value) == 'object'
         && ! Array.isArray(value)
     ) {
-        value = value.id
+        value = Number(value.id)
     }
 
-    return (
-        <fieldset>
-            <label className="name" for={id}>{field_data.label}</label>
+    const field = () => {
+
+        return(
             <select
                 id={id}
                 required={field_data.required}
@@ -42,7 +43,7 @@ const Select = ({
 
                                 if( typeof(item) == 'object' ) {
 
-                                    if( choice.value == item.id ) {
+                                    if( choice.value === item.id ) {
 
                                         selected = ( choice.value == item.id )
             
@@ -50,7 +51,7 @@ const Select = ({
     
                                 } else {
 
-                                    if( choice.value == Number(item) ) {
+                                    if( choice.value === Number(item) ) {
 
                                         selected = ( choice.value == Number(item) )
             
@@ -62,7 +63,7 @@ const Select = ({
 
                         } else {
 
-                            if( choice.value == value ) {
+                            if( Number(choice.value) === Number(value) ) {
 
                                 selected = ( choice.value === value )
     
@@ -82,10 +83,27 @@ const Select = ({
 
                 })}
             </select>
-            <span className="help-text">{field_data.help_text}</span>
-            <span className="error-text">{error_text}</span>
-        </fieldset>
-    );
+        )
+    }
+
+
+    if( field_only ) {
+
+        return field();
+
+    } else {
+
+        return (
+            <fieldset>
+                <label className="name" for={id}>{field_data.label}</label>
+
+                {field()}
+                
+                <span className="help-text">{field_data.help_text}</span>
+                <span className="error-text">{error_text}</span>
+            </fieldset>
+        );
+    }
 }
  
 export default Select;
