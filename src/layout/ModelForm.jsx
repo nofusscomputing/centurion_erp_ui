@@ -1,4 +1,4 @@
-import { Link, json, redirect, useLoaderData, useNavigate, useParams } from "react-router";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router";
 import Select from "../components/form/Select";
 import Slider from "../components/form/Slider";
 import TextArea from "../components/form/Textarea";
@@ -6,20 +6,14 @@ import TextField from "../components/form/Textfield";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import urlBuilder from "../hooks/urlBuilder";
+import ContentHeader from "../components/page/ContentHeader";
 
 
 
-const ModelForm = ({
-    setContentHeading,
-    SetContentHeaderIcon = null
-}) => {
+const ModelForm = () => {
 
-    const values=[
-        {
-            label: 'One',
-            value: '1'
-        }
-    ]
+    const [ content_heading, setContentHeading ] = useState(null)
+    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const params = useParams();
 
@@ -95,13 +89,13 @@ const ModelForm = ({
         },[])
 
 
-        if( 'name' in page_data ) {
+        if( 'name' in metadata ) {
 
-            setContentHeading(page_data['name']);
+            setContentHeading(metadata['name']);
 
-        }else if( 'title' in page_data ) {
+        }else if( 'title' in metadata ) {
 
-            setContentHeading(page_data['title']);
+            setContentHeading(metadata['title']);
 
         }
 
@@ -163,6 +157,11 @@ const ModelForm = ({
 
 
     return((page_data || ! edit ) && metadata &&
+        <>
+        <ContentHeader
+            content_heading={content_heading}
+            content_header_icon={content_header_icon}
+        />
         <section>
             {form_error && form_error['non_field_errors'] &&
                 <div>
@@ -362,6 +361,7 @@ const ModelForm = ({
                 </form>
             </div>
         </section>
+        </>
     )
 }
  

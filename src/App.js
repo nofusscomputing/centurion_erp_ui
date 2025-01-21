@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import {
     Route,
     RouterProvider,
@@ -10,9 +9,7 @@ import {
 import './index.css'
 import Detail from "./layout/Detail";
 import ErrorPage from "./layout/Error";
-import { getCookie } from "./hooks/getCookie";
 import List from "./layout/List";
-import { ResponseException } from "./classes/Exceptions";
 import RootLayout from "./layout/Root";
 import Ticket from "./layout/Ticket";
 import ModelForm from "./layout/ModelForm";
@@ -20,6 +17,7 @@ import History from "./layout/history";
 import Settings from "./layout/Settings";
 import urlBuilder from "./hooks/urlBuilder";
 import { apiFetch } from "./hooks/apiFetch";
+import MainLayout from "./layout/Main";
 
 const Login = () => {
 
@@ -34,39 +32,28 @@ const Login = () => {
 
 function App() {
 
-    const [content_heading, setContentHeading] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+    const router = createBrowserRouter(
 
-    const router = useMemo(() => {
-
-        return createBrowserRouter(
-
-            createRoutesFromElements(
+        createRoutesFromElements(
+            <Route element={<RootLayout />} >
 
                 <Route path="/"
-                    element={<RootLayout
-                        content_heading={content_heading}
-                        content_header_icon={content_header_icon}
-                    />}
-                    errorElement={<ErrorPage /> }
+                    element={<MainLayout />}
+                    errorElement={<ErrorPage />}
                 >
 
                     {/* ********************************************************
                         Redirects
                     ******************************************************** */}
 
-                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/login' element={<Login />}/>
 
                     {/* ********************************************************
                         History View
                     ******************************************************** */}
 
                     <Route path="/core/:model/:pk/history"
-                        element={<History
-                            setContentHeading={setContentHeading}
-                            SetContentHeaderIcon={SetContentHeaderIcon}
-                        />}
-                        errorElement={<ErrorPage /> }
+                        element={<History />}
                     />
 
                     {/* ********************************************************
@@ -74,11 +61,7 @@ function App() {
                     ******************************************************** */}
 
                     <Route path="/settings"
-                        element={<Settings
-                            setContentHeading={setContentHeading}
-                            SetContentHeaderIcon={SetContentHeaderIcon}
-                        />}
-                        errorElement={<ErrorPage /> }
+                        element={<Settings />}
                         loader = {pagedLoader}
                     />
 
@@ -89,11 +72,7 @@ function App() {
                         ******************************************************** */}
 
                         <Route
-                            element={<ModelForm
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />}
-                            errorElement={<ErrorPage /> }
+                            element={<ModelForm />}
                             loader = {pagedLoader}
                         >
 
@@ -115,58 +94,36 @@ function App() {
                             List View
                         ******************************************************** */}
 
-                        <Route
-                            errorElement={<ErrorPage /> }
-                        >
+                        <Route path="ticket/:model" element={<List
+                        />} loader = {pagedLoader} />
 
-                            <Route path="ticket/:model" element={<List
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />} loader = {pagedLoader} />
-
-                            <Route path=":model" element={<List
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />} loader = {pagedLoader} />
-
-                        </Route>
+                        <Route path=":model" element={<List
+                        />} loader = {pagedLoader} />
 
                         {/* ********************************************************
                             Tickets View
                         ******************************************************** */}
 
                         <Route path=":common_model/:common_pk/project_task/:pk" element={<Ticket
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />} loader = {pagedLoader} errorElement={<ErrorPage /> } />
+                            />} loader = {pagedLoader}/>
 
                         <Route path="ticket/:model/:pk" element={<Ticket
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />} loader = {pagedLoader} errorElement={<ErrorPage /> } />
+                            />} loader = {pagedLoader}/>
 
                         {/* ********************************************************
                             Detail View
                         ******************************************************** */}
 
                         <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />} loader = {pagedLoader} errorElement={<ErrorPage /> } />
+                            />} loader = {pagedLoader} />
 
-                        <Route path=":model/:pk"  element={<Detail
-                                setContentHeading={setContentHeading}
-                                SetContentHeaderIcon={SetContentHeaderIcon}
-                            />}  loader = {pagedLoader} errorElement={<ErrorPage /> } />
+                        <Route path=":model/:pk" element={<Detail
+                            />}  loader = {pagedLoader} />
 
                     </Route>
                 </Route>
-            ));
-
-    }, [
-        content_heading,
-        setContentHeading,
-    ]);
+            </Route>
+        ));
 
 
     return (

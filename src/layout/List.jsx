@@ -3,17 +3,16 @@ import { useLoaderData, useParams } from "react-router"
 import Table from "../components/Table"
 import urlBuilder from "../hooks/urlBuilder";
 import { useEffect, useState } from "react";
+import ContentHeader from "../components/page/ContentHeader";
 
 
 
-const List = ({
-    setContentHeading,
-    SetContentHeaderIcon = null
-}) => {
+const List = () => {
+
+    const [ content_heading, setContentHeading ] = useState(null)
+    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const params = useParams();
-    SetContentHeaderIcon('')
-
     const url_builder = urlBuilder(
         params
     )
@@ -21,6 +20,11 @@ const List = ({
     const {metadata, page_data} = useLoaderData();
 
     return (
+        <>
+        <ContentHeader
+            content_heading={content_heading}
+            content_header_icon={content_header_icon}
+        />
         <section>
             <div className="content">
                 <Table
@@ -32,6 +36,7 @@ const List = ({
                 />
             </div>
         </section>
+        </>
     );
 }
 

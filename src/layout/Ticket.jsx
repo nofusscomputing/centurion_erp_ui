@@ -7,6 +7,7 @@ import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
 import TicketComments from "../components/page/ticket/TicketComments";
 import MarkdownEditor from "../components/MarkdownEditor";
+import ContentHeader from "../components/page/ContentHeader";
 
 
 
@@ -29,14 +30,12 @@ export function secondsToTime(secs) {
 }
 
 
-const Ticket = ({
-    setContentHeading = null,
-    SetContentHeaderIcon = null
-}) => {
-
-    SetContentHeaderIcon('')
+const Ticket = () => {
 
     const [comment_metadata, setCommentMetaData] = useState(null);
+
+    const [ content_heading, setContentHeading ] = useState(null)
+    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const [ editing_description, setEditingDescription ] = useState( false )
 
@@ -49,13 +48,12 @@ const Ticket = ({
     const [ ticket_type, SetTicketType ] = useState(null)
 
 
-    setContentHeading(page_data['title'])
-
-
     useEffect( () => {
 
         setTicketData(page_data)
         setTicketMetaData(metadata)
+
+        setContentHeading(page_data['title'])
 
     },[
         page_data,
@@ -148,9 +146,14 @@ const Ticket = ({
 
 
     return (
-        ticket_metadata && comment_metadata && ticket_data && <div className="ticket">
-
-            <div className="contents">
+        ticket_metadata && comment_metadata && ticket_data && (
+        <>
+        <ContentHeader
+            content_heading={content_heading}
+            content_header_icon={content_header_icon}
+        />
+        <div className="ticket">
+        <div className="contents">
 
             { editing_description &&
                 <section className="description">
@@ -342,6 +345,9 @@ const Ticket = ({
             </div>
 
         </div>
+        </div>
+        </>
+        )
 
     );
 }
