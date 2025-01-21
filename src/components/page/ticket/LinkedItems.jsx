@@ -30,7 +30,7 @@ const LinkedItems = ({
         <section className="linked-items">
             <h3 className="linked-items">Linked Items</h3>
             {page_data && metadata &&
-                page_data.results.map((linked_item) => {
+                page_data.results?.map((linked_item) => {
                     return (
                         <div className="item" key={linked_item['id']+'-linked_item'}>
                             <div className="markdown align-center">
