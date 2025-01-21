@@ -39,7 +39,7 @@ const TicketComments = ({
         (comments && comment_metadata) &&
         <div id="div-ticket-comments" className="comments" key={"div-ticket-comments"}>
             <ul className="comments">
-                {comments.results.map((comment) => {
+                {comments.results?.map((comment) => {
 
                     return (
                         comment_metadata &&
@@ -55,7 +55,7 @@ const TicketComments = ({
                         </li>
                     )
                 })}
-                {comment_metadata &&
+                {comment_metadata && comments.results &&
                     <li>
                         <TicketCommentForm
                             metadata={comment_metadata}
