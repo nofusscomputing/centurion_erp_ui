@@ -185,7 +185,7 @@ export default function FieldData({
 
                             data_field.map((field) => {
 
-                                if( 'url' in field ) {
+                                if( field.hasOwnProperty('url') ) {
 
                                     return (
                                         <>
