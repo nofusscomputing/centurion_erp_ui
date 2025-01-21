@@ -32,7 +32,7 @@ const RelatedTickets = ({
             <h3 className="related-tickets">Related Tickets</h3>
             {(metadata && page_data) &&
 
-            page_data.results.map((related_ticket) => {
+            page_data.results?.map((related_ticket) => {
 
                 let from = true
 
