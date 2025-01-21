@@ -24,17 +24,21 @@ import IconLoader from "../IconLoader"
  */
 const Button = ({
     button_align = 'right',
+    button_class = '',
     button_text = 'Submit',
     id=null,
     type = 'submit',
     menu_entries = null,
     MenuClickCallback = null,
-    onClick = null
+    onClick = null,
 }) => {
 
     let div_align = 'align-'
+    button_class = button_class + ' form common-field'
+
     if( button_align ) {
         div_align = div_align + button_align
+        button_class += ' ' + div_align
     }
 
 
@@ -60,7 +64,7 @@ const Button = ({
             <div
                 className={div_align}
             >
-                <button id={'button-' + String(button_text).toLowerCase()} className="form common-field" onClick={handleButtonClick} type={type}>{button_text}</button>
+                <button id={'button-' + String(button_text).toLowerCase()} className={button_class} onClick={handleButtonClick} type={type}>{button_text}</button>
             </div>);
     } else if( menu_entries ) {
 
