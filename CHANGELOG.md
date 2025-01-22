@@ -1,3 +1,54 @@
+## 0.4.0 (2025-01-22)
+
+### feat
+
+- **function**: Convert DateTime to user specified Time Zone
+- **layout**: Add date fields for tickets to ticket meta bar
+- **layout**: Ticket Meta fields made inline editable
+- **component**: Inline form field editor
+- **component**: Add name attribute to select field
+- **component**: Add ability to set button class
+- **component**: Enable select to return fieldset or isolated select
+- **component**: Add support for textarea ctrl-enter for submission
+- **component**: hande button clicks in Markdown editor
+- **layout**: Add inline editing of ticket description
+- **component**: Add to textarea option to expand to fit content height
+- **component**: Markdown editor
+- **component**: Format inline codeblock to match div code block
+- **component**: Format admonition success and failure
+- **component**: Format md for clarity
+- **component**: Add ability to use either name or button text for external link text
+- **component**: Fetch ticket linked items metadata
+- **function**: Improved error handling for markdown plugins for items that have no metadata
+- **function**: Add model icon to rendered markdown model tags
+- **function**: pass metadata.fields.x.render for markdown rendering
+- **function**: Markdown-it plugin to render model tags
+
+### Fixes
+
+- **component**: Update page number within table page number field
+- router improvement to decrease requests and reliance on memo
+- **component**: If no ticket comments are returned, dont attempt to process them
+- **component**: If no linked ticket items are returned, dont attempt to process them
+- **component**: If no related tickets are returned, dont attempt to process them
+- **component**: Ensure correct elements are disabled on markdown edit
+- **layout**: Use correct object for ticket description edit
+- **component**: Dynamically update related ticket id prior to rendering
+- **function**: Reorder formatter so that seconds is before month
+- **function**: correct tag typo in model link
+- **layout**: use correct key for fetching documentation field if defined
+
+### Refactoring
+
+- **component**: Use Form for aditing ticket description
+- **function**: field may return null, use function to check presence of key
+- **component**: Enable text area to be within a fieldset or not
+- **component**: Related Ticket field to use FiledData Component to render markdown
+- **component**: Ticket Linked Item field to use FiledData Component to render markdown
+- **component**: map markdown rendering model name within icon loader
+- **function**: Add markdown rendering of ticket reference
+- **function**: Add further checks to ensure correct tag is valid
+
 ## 0.3.0 (2025-01-01)
 
 ### feat
