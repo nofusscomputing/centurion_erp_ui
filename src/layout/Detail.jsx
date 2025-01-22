@@ -9,15 +9,16 @@ import TextArea from "../components/form/Textarea";
 import Button from "../components/form/Button";
 import IconLoader from "../components/IconLoader";
 import urlBuilder from "../hooks/urlBuilder";
+import ContentHeader from "../components/page/ContentHeader";
 
 
 
-const Detail = ({
-    setContentHeading,
-    SetContentHeaderIcon = null
-}) => {
+const Detail = () => {
 
     const [active_tab, setActiveTab] = useState(null)
+
+    const [ content_heading, setContentHeading ] = useState(null)
+    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const {metadata, page_data} = useLoaderData();
 
@@ -106,6 +107,11 @@ const Detail = ({
 
     return (
         page_data &&
+        <>
+        <ContentHeader
+            content_heading={content_heading}
+            content_header_icon={content_header_icon}
+        />
         <section>
 
             { metadata && <NavTabs
@@ -218,6 +224,7 @@ const Detail = ({
                 }
             })}
         </section>
+        </>
      );
 }
  

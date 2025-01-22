@@ -104,7 +104,7 @@ const Section = ({
                                     <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
                                         <Badge
                                             background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
-                                            message = {external_link.name}
+                                            message = {external_link.button_text ? external_link.button_text : external_link.name}
                                         >
                                             <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
                                         </Badge>
