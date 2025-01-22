@@ -4,8 +4,10 @@ import { Form } from "react-router"
 import Select from "../../form/Select"
 import TextField from "../../form/Textfield"
 import Button from "../../form/Button"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { apiFetch } from "../../../hooks/apiFetch"
+import { FormatTime } from "../../../functions/FormatTime"
+import UserContext from "../../../hooks/UserContext"
 
 
 
@@ -20,6 +22,8 @@ const TicketCommentForm = ({
     is_edit = false,
     cancelbuttonOnSubmit = null,
 }) => {
+
+    const user = useContext(UserContext)
 
     if( String(post_url).includes('?') ) {
         console.log('url has qs')
@@ -41,17 +45,6 @@ const TicketCommentForm = ({
 
     if( comment_data && is_edit ) {
 
-        edit_form_data = {
-            'body': comment_data['body'],
-            'source': comment_data['source'],
-            'responsible_user': comment_data['responsible_user'],
-            'responsible_team': comment_data['responsible_team'],
-            'category': comment_data['category'],
-            'planned_start_date': comment_data['planned_start_date'],
-            'planned_finish_date': comment_data['planned_finish_date'],
-            'real_start_date': comment_data['real_start_date'],
-            'real_finish_date': comment_data['real_finish_date'],
-        }
 
     }
 
@@ -152,12 +145,36 @@ const TicketCommentForm = ({
 
                             e.preventDefault();
 
+                            let processed_form_data = {}
+
+                            for (let [key, value] of Object.entries(form_data)) {
+
+
+                                if( String(metadata.fields[key].type).toLowerCase() === 'datetime' ) {
+
+                                    value = FormatTime({
+                                        time: String(value),
+                                        iso: true,
+                                        tz: user.settings.timezone
+                                    });
+
+                                }
+
+                                processed_form_data = {
+                                    ...processed_form_data,
+                                    [key]: value
+                                }
+
+
+
+                            }
+
 
                             const response = await apiFetch(
                                 post_url,
                                 setFormError,
                                 HTTP_METHOD,
-                                form_data
+                                processed_form_data
                             )
 
                             if(
@@ -188,7 +205,7 @@ const TicketCommentForm = ({
                                         id = 'source'
                                         field_data={metadata.fields['source']}
                                         onChange={handleChange}
-                                        value = {form_data['source']}
+                                        value = {form_data['source'] ? form_data['source'] : comment_data['source']}
                                     />
                             </span>
                         </fieldset>
@@ -197,7 +214,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'status'
                                     field_data={metadata.fields['status']}
-                                    value={form_data['status']}
+                                    value={form_data['status'] ? form_data['status'] : comment_data['status']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -207,7 +224,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'responsible_user'
                                     field_data={metadata.fields['responsible_user']}
-                                    value={form_data['responsible_user']}
+                                    value={form_data['responsible_user'] ? form_data['responsible_user'] : comment_data['responsible_user']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -217,7 +234,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'responsible_team'
                                     field_data={metadata.fields['responsible_team']}
-                                    value={form_data['responsible_team']}
+                                    value={form_data['responsible_team'] ? form_data['responsible_team'] : comment_data['responsible_team']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -227,7 +244,7 @@ const TicketCommentForm = ({
                                 <Select
                                     id = 'category'
                                     field_data={metadata.fields['category']}
-                                    value={form_data['category']}
+                                    value={form_data['category'] ? form_data['category'] : comment_data['category']}
                                     onChange={handleChange}
                                 />
                             </span>
@@ -240,7 +257,7 @@ const TicketCommentForm = ({
                             id='body'
                             class_name='fieldset-tester'
                             onChange={handleChange}
-                            value={form_data.body}
+                            value={form_data.body ? form_data.body : comment_data['body']}
                         />
 
                     <hr />
@@ -256,7 +273,12 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={String(form_data['planned_start_date']).replace('Z', '')}
+                                    value={
+                                        form_data['planned_start_date'] ?
+                                            String(form_data['planned_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                        :
+                                            String(comment_data['planned_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                    }
                                     onChange={handleChange}
                                 />
                             </span>
@@ -271,7 +293,12 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={form_data['planned_finish_date']}
+                                    value={
+                                        form_data['planned_finish_date'] ?
+                                            String(form_data['planned_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                        :
+                                            String(comment_data['planned_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                    }
                                     onChange={handleChange}
                                 />
                             </span>
@@ -286,7 +313,12 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={form_data['real_start_date']}
+                                    value={
+                                        form_data['real_start_date'] ?
+                                            form_data['real_start_date']?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                        :
+                                            String(comment_data['real_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                    }
                                     onChange={handleChange}
                                 />
                             </span>
@@ -301,7 +333,12 @@ const TicketCommentForm = ({
                                     type='datetime-local'
                                     // error_text = {form_error && form_error[field_key]}
                                     // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={form_data['real_finish_date']}
+                                    value={
+                                        form_data['real_finish_date'] ?
+                                            form_data['real_finish_date']?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                        :
+                                            String(comment_data['real_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                                    }
                                     onChange={handleChange}
                                 />
                             </span>

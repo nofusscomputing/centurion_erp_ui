@@ -19,6 +19,7 @@ import urlBuilder from "./hooks/urlBuilder";
 import { apiFetch } from "./hooks/apiFetch";
 import { InlineFieldAction } from "./components/InlineFields";
 import MainLayout from "./layout/Main";
+import { UserProvider } from './hooks/UserContext';
 
 const Login = () => {
 
@@ -28,7 +29,7 @@ const Login = () => {
         <section>redirect</section>
     );
 }
- 
+
 
 
 function App() {
@@ -129,7 +130,9 @@ function App() {
 
     return (
         <div className="app">
-            <RouterProvider router={router} />
+            <UserProvider>
+                <RouterProvider router={router} />
+            </UserProvider>
         </div>
     );
 }

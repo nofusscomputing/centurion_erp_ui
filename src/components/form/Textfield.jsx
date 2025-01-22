@@ -8,7 +8,7 @@ const TextField = ({
     label = null,
     required = false,
     type = 'text',
-    value = '',
+    value = null,
     onChange = null,
     onKeyUp = null,
 }) => {
@@ -35,9 +35,17 @@ const TextField = ({
 
     if( type === 'datetime-local') {
 
-        if( String(value).includes('+') ) {
+        if(
+            String(value).includes('+')
+            ||
+            String(value).includes('-')
+        ) {
 
-            value = String(value).split('+')[0]
+            value = String(value).replace(/[+|-]\d{2}\:\d{2}$/, '')
+
+        } else if( String(value).endsWith('Z') ) {
+
+            value = String(value).replace('Z', '')
 
         }
 

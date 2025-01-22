@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import FieldData from "../functions/FieldData";
 import Select from "./form/Select";
@@ -6,6 +6,9 @@ import { apiFetch } from "../hooks/apiFetch";
 import Button from "./form/Button";
 import { Form, useParams, useRouteError } from "react-router";
 import TextField from "./form/Textfield";
+import { FormatTime } from "../functions/FormatTime";
+import UserContext from "../hooks/UserContext";
+
 
 
 
@@ -44,6 +47,8 @@ const InlineField = ({
         [sanitized_field_name]: [data[sanitized_field_name]]
     })
 
+    const user = useContext(UserContext)
+
 
     const handleEditClick = (e) => {
 
@@ -74,9 +79,9 @@ const InlineField = ({
 
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
 
-        console.log(JSON.stringify(form_data))
     }
 
+    console.debug(JSON.stringify(form_data))
 
     const fetchFormField = () => {
 
@@ -139,6 +144,7 @@ const InlineField = ({
             { editing && 
                 <>
                 <input id="id" type="hidden"  name="id" value={data['id']} />
+                <input id="tz" type="hidden"  name="tz" value={user.settings.timezone} />
                 <input id="metadata" type="hidden"  name="metadata" value={JSON.stringify(metadata)} />
                 <Button
                     button_align = 'right'
@@ -180,11 +186,13 @@ export async function InlineFieldAction({
 
     const metadata = JSON.parse(data.get('metadata'))
 
+    const timezone = data.get('tz')
+
     let form_data = {}
 
     for (const itItem of data.entries()) {
 
-        if( itItem[0] === 'metadata' ) {
+        if( ['metadata', 'tz'].includes( itItem[0] ) ) {
 
             continue;
         }
@@ -203,6 +211,16 @@ export async function InlineFieldAction({
             case 'boolean':
 
                 value = Boolean(itItem[1]);
+
+                break;
+
+            case 'datetime':
+
+                value = FormatTime({
+                    time: String(itItem[1]),
+                    iso: true,
+                    tz: timezone
+                });
 
                 break;
 

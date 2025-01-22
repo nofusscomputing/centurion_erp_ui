@@ -2,6 +2,9 @@ import { Link, NavLink, json } from "react-router";
 import RenderMarkdown from "./RenderMarkdown";
 import IconLoader from "../components/IconLoader";
 import Badge from "../components/Badge";
+import { FormatTime } from "./FormatTime";
+import { useContext } from "react";
+import UserContext from "../hooks/UserContext";
 
 
 
@@ -33,6 +36,8 @@ export default function FieldData({
     let field_data = '';
 
     let data_field = field_lookup(field_name, data)
+
+    const user = useContext(UserContext)
 
     if( data_field ) {
 
@@ -110,50 +115,10 @@ export default function FieldData({
 
             case 'DateTime':
 
-            // credit https://stackoverflow.com/a/74800084
-            Date.prototype.format = function(formatString) {
-                return Object.entries({
-                  YYYY: this.getFullYear(),
-                  YY: this.getFullYear().toString().substring(2),
-                  yyyy: this.getFullYear(),
-                  yy: this.getFullYear().toString().substring(2),
-                  // `D` must be before month, as Dec with be processed as `#ec`
-                  DDDD: this.toLocaleDateString('default', { weekday: 'long'  }),
-                  DDD: this.toLocaleDateString('default',  { weekday: 'short' }),
-                  DD: this.getDate().toString().padStart(2, '0'),
-                  D: this.getDate(),
-                  dddd: this.toLocaleDateString('default', { weekday: 'long'  }),
-                  ddd: this.toLocaleDateString('default',  { weekday: 'short' }),
-                  dd: this.getDate().toString().padStart(2, '0'),
-                  d: this.getDate(),
-                  // `S` must be before month, as Sep with be processed as `#ep`
-                  SS: this.getSeconds().toString().padStart(2, '0'),
-                  S: this.getSeconds(),
-                  ss: this.getSeconds().toString().padStart(2, '0'),
-                  s: this.getSeconds(),
-                  MMMM: this.toLocaleString('default', { month: 'long'  }),
-                  MMM: this.toLocaleString('default',  { month: 'short' }),
-                  MM: (this.getMonth() + 1).toString().padStart(2, '0'),
-                  M: this.getMonth() + 1,
-                  HH: this.getHours().toString().padStart(2, '0'), // military
-                  H: this.getHours().toString(), // military
-                  hh: (this.getHours() % 12).toString().padStart(2, '0'),
-                  h: (this.getHours() % 12).toString(),
-                  mm: this.getMinutes().toString().padStart(2, '0'),
-                  m: this.getMinutes(),
-                  TTT: this.getMilliseconds().toString().padStart(3, '0'),
-                  ttt: this.getMilliseconds().toString().padStart(3, '0'),
-                  AMPM: this.getHours() < 13 ? 'AM' : 'PM',
-                  ampm: this.getHours() < 13 ? 'am' : 'pm',
-                }).reduce((acc, entry) => {
-                  return acc.replace(entry[0], entry[1].toString())
-                }, formatString)
-              }
-
-
-                let datetime = new Date(String(data_field))
-
-                field_data = datetime.format('HH:mm dd MMM YYYY')
+                field_data = FormatTime({
+                    time: String(data_field),
+                    tz: user.settings.timezone
+                })
 
                 break;
 
