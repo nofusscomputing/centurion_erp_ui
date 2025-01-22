@@ -116,32 +116,9 @@ const Ticket = () => {
     }
 
 
-    const handleDescriptionSave = ({event, description}) => {
+    const handleDescriptionSave = ({event}) => {
 
-
-        let form_data = {
-            'id': page_data['id'],
-            'description': description
-        }
-
-        if( ticket_data['description'] !== form_data['description'] ) {    // Dont post if no changes
-
-            apiFetch(
-                page_data['_urls']['_self'],
-                (data) => {
-
-                    setTicketData(data)
-
-                    setEditingDescription(false)
-                },
-                'PATCH',
-                form_data
-            )
-        } else {
-
-            setEditingDescription(false)
-
-        }
+        setEditingDescription(false)
 
     }
 
@@ -160,11 +137,11 @@ const Ticket = () => {
                 <section className="description">
                     <MarkdownEditor
                         auto_content_height = {true}
+                        data={ticket_data}
                         field_name = 'description'
                         metadata={metadata}
                         onCancel={handleDescriptionCancel}
                         onSave={handleDescriptionSave}
-                        markdown={ticket_data['description']}
                     />
                 </section>
             }

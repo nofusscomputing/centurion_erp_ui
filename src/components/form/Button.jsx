@@ -44,10 +44,13 @@ const Button = ({
 
     const handleButtonClick = (e) => {
 
-        if( ! e.target.disabled && onClick) {
+        if( onClick ) {
 
-            onClick(e)
+            if( ! e.target.disabled && onClick) {
 
+                onClick(e)
+
+            }
         }
 
     }

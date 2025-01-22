@@ -72,6 +72,7 @@ const TextArea = ({
         <>
         <textarea
             id={id}
+            name = {id}
             required={required}
             className={fieldset ? field_class_name : field_class_name + ' ' + class_name}
             style={style}
@@ -86,10 +87,7 @@ const TextArea = ({
 
                 } else if( e.code === 'Enter' && e.ctrlKey ) {    // Enable ctrl-enter to be used to submit
 
-                    if( onSubmit !== null ) {
-
-                        onSubmit(e)
-                    }
+                    e.target.form.requestSubmit()
 
                 }
 
