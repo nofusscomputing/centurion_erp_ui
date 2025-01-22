@@ -76,12 +76,12 @@ html[data-theme='dark'] {
   --background-colour-ticket-comment-solution: #b7ff96be;
   --background-colour-ticket-comment-task: #f8ff96d3;
 
-  --background-colour-ticket-type-change: #badff7;
-  --background-colour-ticket-type-incident: #f7baba;
-  --background-colour-ticket-type-issue: #baf7db;
-  --background-colour-ticket-type-request: #f7e9ba;
-  --background-colour-ticket-type-problem: #f7d0ba;
-  --background-colour-ticket-type-project-task: #c5baf7;
+  --background-colour-ticket-type-change: #badff7c5;
+  --background-colour-ticket-type-incident: #f7babac5;
+  --background-colour-ticket-type-issue: #baf7dbc5;
+  --background-colour-ticket-type-request: #f7e9bac5;
+  --background-colour-ticket-type-problem: #f7d0bac5;
+  --background-colour-ticket-type-project-task: #c5baf7c5;
 
   --colour-status-ok: #319c3a;
   --colour-status-warn: #cf9925;
@@ -144,6 +144,69 @@ html[data-theme='dark'] {
 
 
 
+/* ############################################
+#
+#   Forms rewrite
+#
+############################################ */
+
+
+button.align-right {
+  float: right;
+}
+
+
+button.form {
+  background-color: var(--contrasting-colour);
+  color: var(--text-colour-button);
+  border: none;
+  font-size: inherit;
+  height: 30px;
+  margin: 5px;
+  padding: 0px 20px;
+}
+
+button.inverse {
+  background-color: var(--background-colour-active);
+  color: var(--contrasting-colour);
+}
+
+button.mini {
+  font-size: smaller;
+  padding: 0px;
+}
+
+select,
+textarea {
+  border-color: var(--border-colour-form-field);
+}
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border: 1px solid var(--border-colour-error);
+}
+
+select {
+  height: 30px;
+}
+
+select[multiple] {
+  height: 200px;
+}
+
+
+
+
+
+/* ############################################
+#
+#   EoF Forms rewrite
+#
+############################################ */
+
+
+
 a {
   color: var(--contrasting-colour);
   text-decoration: none;
@@ -157,6 +220,8 @@ body {
   height: 100%;
   margin: 0px;
   width: 100%;
+
+  --font-size: 12pt
 }
 
 .app {
@@ -363,34 +428,42 @@ main {
   width: 100%;
 }
 
-main .content-header {
+
+div.content-header {
   background-color: var(--background-colour-active);
   display: grid;
   gap: 0px;
   grid-template-columns: 1fr 2fr 1fr;
   height: 80px;
+  width: calc(100% + 80px);
+  /* margin: -20px; */
+  margin-top: -20px;
+  margin-bottom: 20px;
 }
 
-main .content-header .column {
+
+div.content-header .column {
   margin: auto 0px;
   text-align: center;
+  
 }
 
 main h2 {
   margin: auto;
 }
 
-main .content-header .column.right {
+div.content-header .column.right {
   margin: auto 0px;
   padding-right: 20px;
   text-align: right;
 }
 
-main .content-header .column.right svg {
+div.content-header .column.right svg {
   height: 30px;
   margin-right: 10px;
   width: 30px;
 }
+
 
 svg.help {
   fill: var(--contrasting-colour);
@@ -496,6 +569,13 @@ article div.ticket div.metadata div {
   display: block;
   margin: 10px;
   border: none;
+}
+
+.ticket .metadata fieldset input,
+.ticket .metadata fieldset select {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
 }
 
 .ticket .metadata fieldset label {
@@ -756,6 +836,7 @@ span.sub-script {
   font-size: smaller;
 }
 
+span.sub-script.metadata,
 .ticket h3.description span.sub-script {
   color: #777;
 }
@@ -797,9 +878,31 @@ span.sub-script {
 
 .ticket .comment .markdown {
   background-color: var(--background-colour-active);
-  margin: 15px;
   padding: 10px
 }
+
+.external-links a {
+  color: var(--text-colour);
+  text-decoration: none;
+}
+
+
+span.text-inline {
+  display: inline-block;
+  line-height: inherit;
+}
+
+span.text-inline span.badge-icon {
+  display: inline-block;
+  width: fit-content;
+
+}
+
+span.text-inline span.badge-icon svg {
+  transform: translateY(5px);
+
+}
+
 
 span.badge {
   background-color: var(--background-colour-active);
@@ -812,11 +915,6 @@ span.badge {
   text-align: left;
   width: fit-content;
   margin: 0px 2px;
-}
-
-.external-links a {
-  color: var(--text-colour);
-  text-decoration: none;
 }
 
 
@@ -876,65 +974,78 @@ span.badge span.badge-text.badge-text-action-remove {
 
 
 
+span.badge-icon.ticket-status-icon svg,
 span.badge span.badge-icon.ticket-status-icon svg {
   border-radius: 10px;
 }
 
+span.badge-icon.ticket-status-icon-accepted svg,
 span.badge span.badge-icon.ticket-status-icon-accepted svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
+span.badge-icon.ticket-status-icon-approvals svg,
 span.badge span.badge-icon.ticket-status-icon-approvals svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
+span.badge-icon.ticket-status-icon-assigned svg,
 span.badge span.badge-icon.ticket-status-icon-assigned svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
+span.badge-icon.ticket-status-icon-assigned_planning svg,
 span.badge span.badge-icon.ticket-status-icon-assigned_planning svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
+span.badge-icon.ticket-status-icon-closed svg,
 span.badge span.badge-icon.ticket-status-icon-closed svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
+span.badge-icon.ticket-status-icon-draft svg,
 span.badge span.badge-icon.ticket-status-icon-draft svg {
   background-color: #cacaca;
   fill: #4d4d4d;
 }
 
+span.badge-icon.ticket-status-icon-evaluation svg,
 span.badge span.badge-icon.ticket-status-icon-evaluation svg {
   background-color: #b2d6ff;
   fill: #007592;
 }
 
+span.badge-icon.ticket-status-icon-invalid svg,
 span.badge span.badge-icon.ticket-status-icon-invalid svg {
   background-color: #ffb2b6;
   fill: #920000;
 }
 
+span.badge-icon.ticket-status-icon-new svg,
 span.badge span.badge-icon.ticket-status-icon-new svg {
   background-color: #b2dcff;
   fill: #004492
 }
 
+span.badge-icon.ticket-status-icon-pending svg,
 span.badge span.badge-icon.ticket-status-icon-pending svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
+span.badge-icon.ticket-status-icon-solved svg,
 span.badge span.badge-icon.ticket-status-icon-solved svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
+span.badge-icon.ticket-status-icon-testing svg,
 span.badge span.badge-icon.ticket-status-icon-testing svg {
   background-color: #b2d3ff;
   fill: #8c00ff;
@@ -945,18 +1056,92 @@ span.badge span.badge-icon.ticket-status-icon-testing svg {
 
 
 
+div.markdown h1 {
+  font-size: 22pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+
+}
+
+div.markdown h2 {
+  font-size: 20pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h3 {
+  font-size: 18pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h4 {
+  font-size: 16pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h5 {
+  font-size: 14pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+div.markdown h6 {
+  font-size: 12pt;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: calc( var(--font-size) * 0.5 ) 0px;
+}
+
+
+
+span.markdown:not(.ticket .comment .markdown) {
+  padding: 0px;
+  margin: 0px;
+  font-size: var(--font-size);
+}
 
 
 
 .markdown p:not(div.admonition p) {
   background-color: inherit;
-  font-size: inherit;
-  line-height: 25px;
-  padding: 0px;
+  font-size: var(--font-size);
+  line-height: calc( var(--font-size) * 1.5 );
+  padding: calc( var(--font-size) * 0.5 ) 0px;
   margin: 0px;
   text-align: left;
 
 }
+
+
+div.markdown ol,
+div.markdown ul {
+  margin: 0px;
+  padding: var(--font-size);
+}
+
+
+div.markdown ol li,
+div.markdown ul li {
+  line-height: calc( var(--font-size) * 1.5 );
+  margin: 5px;
+  padding: 0px;
+  padding-left: 20px;
+}
+
+div.markdown p code {
+  background: var(--background-colour-inactive);
+  color: var(--text-colour);
+  padding: 0px 3px;
+}
+
+
 
 .markdown div.admonition {
   border-width: 1px;
@@ -1046,6 +1231,34 @@ span.badge span.badge-icon.ticket-status-icon-testing svg {
 
 .markdown div.admonition.quote p:not(p.admonition-title) {
   font-style: italic;
+}
+
+
+
+.markdown div.admonition.success {
+  background-color: #00ff4c88;
+  border-color: #00ff4c;
+}
+
+.markdown div.admonition.success p.admonition-title {
+  background-color: #00ff4c;
+  color: #777;
+}
+
+
+.markdown div.admonition.failure {
+  background-color: #ff000088;
+  border-color: #ff0000;
+  color: #fff;
+}
+
+.markdown div.admonition.failure p.admonition-title {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.markdown div.admonition.failure p:not(p.admonition-title) {
+  color: #fff;
 }
 
 
@@ -1532,25 +1745,6 @@ textarea {
 }
 
 
-form fieldset textarea {
-  border-color: var(--border-colour-form-field);
-}
-
-form fieldset input:invalid,
-form fieldset select:invalid,
-form fieldset textarea:invalid {
-  border: 1px solid var(--border-colour-error);
-}
-
-form fieldset select {
-  border-color: var(--border-colour-form-field);
-  height: 30px;
-}
-
-form fieldset select[multiple] {
-  height: 200px;
-}
-
 div.align-center {
   text-align: center;
 }
@@ -1626,21 +1820,6 @@ div.submit-dropdown-button div.button svg {
 
 .show {
   display:block;
-}
-
-button.form {
-  background-color: var(--contrasting-colour);
-  color: var(--text-colour-button);
-  border: none;
-  font-size: inherit;
-  height: 30px;
-  margin: 5px;
-  padding: 0px 20px;
-}
-
-form button.inverse {
-  background-color: var(--background-colour-active);
-  color: var(--contrasting-colour);
 }
 
 footer {
@@ -1752,3 +1931,67 @@ input:checked+.slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+
+
+
+section div.tabs {
+  /* background-color: #00b0e8; */
+  /* padding: 5px 0px; */
+  /* background-color: var(--background-colour-active); */
+  border-bottom: 1px solid var(--border-colour);
+  display: flex;
+  height: 30px;
+
+}
+
+section div.tabs span.tab {
+  /* background-color:#008000; */
+  border-bottom: 3px solid transparent;
+  color: var(--text-colour-navtab);
+  cursor: pointer;
+  display: inline-flex;
+  margin: auto 0px;
+  margin-bottom: 0px;
+  padding: 5px 10px 5px 10px;
+}
+
+section div.tabs span.tab:hover {
+  border-bottom: 3px solid var(--border-colour-navbar-hover);
+}
+
+
+section div.tabs span.tab.active {
+  border-bottom: 3px solid var(--contrasting-colour);
+}
+
+
+textarea {
+  display: flex;
+  margin: 0px;
+  padding: 5px;
+  width: calc(100% - 12px);
+  /* width: inherit; */
+  /* min-height: fit-content;
+  overflow-y: hidden; */
+  /* field-sizing: content; */
+  
+}
+
+
+.md-editor {
+  /* background-color: #8c00ff; */
+  display: flexbox;
+  /* width: 100%; */
+  padding: 5px;
+}
+
+
+
+
+
+
+
+

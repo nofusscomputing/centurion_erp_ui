@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../../../hooks/apiFetch";
 import IconLoader from "../../IconLoader";
 import RenderMarkdown from "../../../functions/RenderMarkdown";
+import FieldData from "../../../functions/FieldData";
 
 const RelatedTickets = ({
     data_url = null,
@@ -27,11 +28,11 @@ const RelatedTickets = ({
 
 
     return (
-        <section className="related-tickets">
+        <section id={'section-related-tickets'} className="related-tickets" key={'section-related-tickets'}>
             <h3 className="related-tickets">Related Tickets</h3>
             {(metadata && page_data) &&
 
-            page_data.results.map((related_ticket) => {
+            page_data.results?.map((related_ticket) => {
 
                 let from = true
 
@@ -64,14 +65,16 @@ const RelatedTickets = ({
 
                 }
 
+                related_ticket['display_name'] = '#' + String(this_id.id)
+
                 return (
-                <div id="linked-tickets" className="related-ticket">
+                <div id={"linked-ticket-" + related_ticket['id']} className="related-ticket" key={"linked-ticket-" + related_ticket['id']}>
                     <div className={"icon icon-related-ticket ticket-related-" + String(related_name).replace(' ', '_')}>
                         <IconLoader
                             name={'ticket_related_' + String(related_name).replace(' ', '_')}
                         />
                          &nbsp;</div>
-                    {/* <div id="markdown" className="text text-related-ticket"> */}
+
                     <div className="markdown">
 
                         {related_name}&nbsp;
@@ -79,9 +82,11 @@ const RelatedTickets = ({
                         <span style={{
                             display: 'inline-block'
                             }}>
-                                <RenderMarkdown>
-                                    {'#'+this_id['id']}
-                                </RenderMarkdown>
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='display_name'
+                                    data={related_ticket}
+                                />
                             </span>
                     </div>
                 </div>

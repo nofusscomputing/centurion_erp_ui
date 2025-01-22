@@ -129,6 +129,11 @@ export async function apiFetch(
     if( api_data_response.status != 204 ) {
 
         api_data = await api_data_response.clone().json()
+        
+        if( api_data_response.status == 400 ) {
+
+            throw Error(JSON.stringify(api_data))
+        }
     
 
         if( callback && api_metadata ) {

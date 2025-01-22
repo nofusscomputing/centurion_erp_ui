@@ -154,6 +154,12 @@ const Table = ({
 
                     }
 
+                    if( page !== 0 ) {
+                        
+                        setPageNumberValue(page)
+
+                    }
+
                     setPageLoaded(true)
 
                 }

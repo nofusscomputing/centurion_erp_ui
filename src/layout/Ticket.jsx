@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router";
+import { useLoaderData } from "react-router";
 import FieldData from "../functions/FieldData";
 
 import { apiFetch } from "../hooks/apiFetch";
 import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
 import TicketComments from "../components/page/ticket/TicketComments";
-import urlBuilder from "../hooks/urlBuilder";
+import MarkdownEditor from "../components/MarkdownEditor";
+import InlineField from "../components/InlineFields";
+import ContentHeader from "../components/page/ContentHeader";
 
 
 
@@ -29,22 +31,35 @@ export function secondsToTime(secs) {
 }
 
 
-const Ticket = ({
-    setContentHeading = null,
-    SetContentHeaderIcon = null
-}) => {
-
-    SetContentHeaderIcon('')
+const Ticket = () => {
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
+    const [ content_heading, setContentHeading ] = useState(null)
+    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+
+    const [ editing_description, setEditingDescription ] = useState( false )
+
     const {page_data, metadata} = useLoaderData();
 
-    const params = useParams();
+    const [ ticket_data, setTicketData] = useState(null)
+    
+    const [ ticket_metadata, setTicketMetaData] = useState(null)
 
     const [ ticket_type, SetTicketType ] = useState(null)
 
-    setContentHeading(page_data['title'])
+
+    useEffect( () => {
+
+        setTicketData(page_data)
+        setTicketMetaData(metadata)
+
+        setContentHeading(page_data['title'])
+
+    },[
+        page_data,
+        metadata
+    ])
 
 
     useEffect(() => {
@@ -61,7 +76,10 @@ const Ticket = ({
 
         }
 
-    }, [])
+    }, [
+        metadata.fields,
+        page_data
+    ])
 
 
     useEffect(() => {
@@ -79,59 +97,89 @@ const Ticket = ({
             )
         }
 
-    }, [])
+    }, [
+        page_data
+    ])
+
+
+    const handleDescriptionCancel = () => {
+
+        setEditingDescription(false)
+
+    }
+
+
+    const handleDescriptionEdit = () => {
+
+        setEditingDescription(true)
+
+    }
+
+
+    const handleDescriptionSave = ({event}) => {
+
+        setEditingDescription(false)
+
+    }
 
 
     return (
-        metadata && comment_metadata && page_data && <div className="ticket">
+        ticket_metadata && comment_metadata && ticket_data && (
+        <>
+        <ContentHeader
+            content_heading={content_heading}
+            content_header_icon={content_header_icon}
+        />
+        <div className="ticket">
+        <div className="contents">
 
-            <div className="contents">
+            { editing_description &&
+                <section className="description">
+                    <MarkdownEditor
+                        auto_content_height = {true}
+                        data={ticket_data}
+                        field_name = 'description'
+                        metadata={metadata}
+                        onCancel={handleDescriptionCancel}
+                        onSave={handleDescriptionSave}
+                    />
+                </section>
+            }
 
+            { ! editing_description &&
                 <section className="description">
                     <h3 className={"description ticket-type-" + ticket_type}>
                         <span class="sub-script">opened by&nbsp;</span>
                         <FieldData
                             metadata={metadata}
                             field_name='opened_by'
-                            data={page_data}
+                            data={ticket_data}
                         />&nbsp;
                         <span class="sub-script">on&nbsp;</span> 
                         <FieldData
                             metadata={metadata}
                             field_name='created'
-                            data={page_data}
+                            data={ticket_data}
                         />&nbsp;
                         <span class="sub-script">Updated&nbsp;</span> 
                         <FieldData
                             metadata={metadata}
                             field_name='modified'
-                            data={page_data}
+                            data={ticket_data}
                         />
                     </h3>
                     <div className="markdown">
-                        {/* <Button
-                            button_text = 'Edit'
-                            button_align = 'right'
-                            type='button'
-                            buttonClickCallback = {() => {
-                                console.log('button clicked')
-                            }}
-
-                        /> */}
-                        <Link to={
-                            metadata.urls.return_url ?
-                            String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
-                            : String(metadata.urls.self).split('api/v2')[1] + '/edit'
-
-                        }><button className="common-field form">Edit</button></Link>
+                        <button className="common-field form" onClick={handleDescriptionEdit}>Edit</button>
                         <FieldData
                             metadata={metadata}
                             field_name='description'
-                            data={page_data}
+                            data={ticket_data}
                         />
                     </div>
                 </section>
+            }
 
+            <div>
                 { page_data['_urls']['related_tickets'] &&
                 <RelatedTickets
                     data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
@@ -155,125 +203,150 @@ const Ticket = ({
                     ticket_id = {page_data['id']}
                 />}
             </div>
+        </div>
 
-            <div className="sidebar">
+        <div className="sidebar">
 
-                <div className="metadata">
-                    <div>
+            <div className="metadata">
+                <div>
 
-                        <h3 className={"metadata ticket-type-" + ticket_type}>
-                            Ticket&nbsp;#
-                            <FieldData
-                            metadata={metadata}
-                            field_name='id'
-                            data={page_data}
-                        />
-                        &nbsp;
-                        {page_data['external_ref'] &&(
-                           ('( #') + page_data['external_ref'] + (')')
-                        )}
-                        </h3>
+                    <h3 className={"metadata ticket-type-" + ticket_type}>
+                        Ticket&nbsp;#
+                        <FieldData
+                        metadata={metadata}
+                        field_name='id'
+                        data={ticket_data}
+                    />
+                    &nbsp;
+                    {ticket_data['external_ref'] &&(
+                        ('( #') + ticket_data['external_ref'] + (')')
+                    )}
+                    </h3>
 
-                        <fieldset>
-                            <label>Assigned</label>
-                            <span className="text">
-                            <FieldData
-                                metadata={metadata}
-                                field_name='assigned_users'
-                                data={page_data}
-                            />
-                            </span>
-                        </fieldset>
-                        <fieldset>
-                            <label>Status</label>
-                            <span className="text">
-                            <FieldData
-                                metadata={metadata}
-                                field_name='status_badge'
-                                data={page_data}
-                            />
-                            </span>
-                        </fieldset>
-                        <fieldset>
-                            <label>Labels</label>
-                            <span className="text">val</span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='assigned_users'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Category</label>
-                            <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='category'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='assigned_teams'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Project</label>
-                            <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='project'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='status_badge'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Milestone</label>
-                            <span className="text">
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='milestone'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <fieldset>
+                        <label>Labels</label>
+                        <span className="text">val</span>
+                    </fieldset>
 
-                        <fieldset>
-                            <label>Priority</label>
-                            <span className="text">U 
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='urgency'
-                                    data={page_data}
-                                />
-                             / I
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='impact'
-                                    data={page_data}
-                                />
-                             / P
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='priority'
-                                    data={page_data}
-                                />
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='category'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Duration</label>
-                            <span className="text">
-                                {secondsToTime(page_data['duration'])}
-                            </span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='project'
+                        metadata={metadata}
+                    />
 
-                        <fieldset>
-                            <label>Roadmap(s)</label>
-                            <span className="text">val</span>
-                        </fieldset>
+                    <InlineField
+                        data={ticket_data}
+                        field_name='milestone'
+                        metadata={metadata}
+                    />
 
-                    </div>
+                    <fieldset>
+                        <label>Duration</label>
+                        <span className="text">
+                            {secondsToTime(page_data['duration'])}
+                        </span>
+                    </fieldset>
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='urgency'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='impact'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='priority'
+                        metadata={metadata}
+                    />
+
+                    <fieldset>
+                        <label>Estimate</label>
+                        <span className="text">
+                            {secondsToTime(page_data['estimate'])}
+                        </span>
+                    </fieldset>
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='planned_start_date'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='real_start_date'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='planned_finish_date'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='real_finish_date'
+                        metadata={metadata}
+                    />
+
+
+
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='subscribed_users'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='subscribed_teams'
+                        metadata={metadata}
+                    />
+
+                    <fieldset>
+                        <label>Roadmap(s)</label>
+                        <span className="text">val</span>
+                    </fieldset>
 
                 </div>
-
             </div>
 
         </div>
+        </div>
+        </>
+        )
 
     );
 }

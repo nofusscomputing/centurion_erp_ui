@@ -1,20 +1,24 @@
 const TextArea = ({
+    auto_content_height = false,
+    class_name = null,
     id,
     error_text=null,
-    value= '',
+    field_data = null,
+    fieldset = true,
+    value='',
     onChange = null,
-    class_name = null,
-    field_data = null
+    onSubmit = null,
 }) => {
 
-    if( value === null ) {
-        value = ''
-    }
 
     let field_class_name = "common-field"
     let helptext = null
     let required = false
     let label = ''
+
+    /** CSS style for the textarea */
+    let style = {};
+    
 
     if( field_data ) {
 
@@ -44,50 +48,87 @@ const TextArea = ({
 
             if( 'class' in field_data.style ) {
 
-                field_class_name += String( ' ' + field_data['style']['class'])
+                // field_class_name += String( ' ' + field_data['style']['class'])
 
             }
         }
     }
 
 
-    return (
-        <fieldset className={class_name}>
-            <label className="name" for={id}>{label}</label>
-            <span className="help-text">{helptext}</span>
-            <textarea
-                id={id}
-                required={required}
-                className={field_class_name}
-                onChange={onChange}
-                onKeyUp={(e) =>{
 
-                    const currentScrollY = window.scrollY
+    if( auto_content_height ) {
 
-                    if( e.code === 'Enter' ) {
+        style = {
+            ...style,
+            height: String(( String(value).match(/\n/g)?.length * 25 )  + 'pt'),
 
-                        e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
+        }
 
-                    }
+    }
 
-                    window.scrollTo(0, currentScrollY);    // Prevent window scrolling to y=0
+    console.log(`new lines: ${String(( String(value).match(/\n/g)?.length * 25 )  + 'px')}`)
 
-                }}
-                onClick={(e) =>{
+    let field = (
+        <>
+        <textarea
+            id={id}
+            name = {id}
+            required={required}
+            className={fieldset ? field_class_name : field_class_name + ' ' + class_name}
+            style={style}
+            onChange={onChange}
+            onKeyUp={(e) =>{
+
+                const currentScrollY = window.scrollY
+
+                if( e.code === 'Enter'  && ! e.ctrlKey) {
+
+                    e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
+
+                } else if( e.code === 'Enter' && e.ctrlKey ) {    // Enable ctrl-enter to be used to submit
+
+                    e.target.form.requestSubmit()
+
+                }
+
+                window.scrollTo(0, currentScrollY);    // Prevent window scrolling to y=0
+
+            }}
+            onClick={(e) =>{
 
 
-                    if( e.target.scrollHeight > e.target.clientHeight) {
+                if( e.target.scrollHeight > e.target.clientHeight) {
 
-                        e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
+                    e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
 
-                    }
+                }
 
-                }}
+            }}
     
             >{value}</textarea>
-            <span className="error-text">{error_text}</span>
-        </fieldset>
-     );
+        </>
+    )
+
+
+    if( fieldset ) {
+
+        return (
+            <fieldset className={class_name}>
+                <label className="name" for={id}>{label}</label>
+                <span className="help-text">{helptext}</span>
+                {field}
+                <span className="error-text">{error_text}</span>
+            </fieldset>
+        );
+
+    } else {
+
+        return ( 
+            <>
+            {field}
+            </>
+        )
+    }
 }
  
 export default TextArea;

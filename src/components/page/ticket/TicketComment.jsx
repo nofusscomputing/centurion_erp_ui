@@ -18,7 +18,7 @@ const TicketComment = ({
 }) => {
 
     if( String(post_url).includes('?') ) {
-        console.log('url has qs')
+
         post_url = String(post_url).split('?')[0]
     }
 
@@ -43,21 +43,21 @@ const TicketComment = ({
     const comment_updated = false
 
 
-    if( comment_type == 'action' ) {
+    if( comment_type === 'action' ) {
 
         comment_class += ' comment-type-action'
 
-    }else if( comment_type == 'notification' ) {
+    }else if( comment_type === 'notification' ) {
 
         comment_class += ' comment-type-notification'
 
-    }else if( comment_type == 'task' ) {
+    }else if( comment_type === 'task' ) {
 
         comment_class += ' comment-type-task'
 
         comment_header = ' created a task'
 
-    } else if( comment_type == 'solution' ) {
+    } else if( comment_type === 'solution' ) {
 
         comment_class += ' comment-type-solution'
 
@@ -65,7 +65,7 @@ const TicketComment = ({
 
     }
 
-    const comment_header_text_updated = (<span class="sub-script">Updated </span>)
+    const comment_header_text_updated = (<span className="sub-script">Updated </span>)
 
     const comment_header_text = (
         metadata && comment_data &&
@@ -75,7 +75,7 @@ const TicketComment = ({
                 field_name='user'
                 data={comment_data}
             />
-            <span class="sub-script">{comment_header} on </span>
+            <span className="sub-script">{comment_header} on </span>
             <FieldData
                 metadata={metadata}
                 field_name='created'
@@ -118,7 +118,7 @@ const TicketComment = ({
     if( comment_type === 'action' ) {
 
         return(
-            <div style={{padding: '0px', margin: '0px'}}>
+            <div key={'comment-' + comment_data['id']}>
                 <span style={{display: 'inline-block'}}>
                     <FieldData
                         metadata={metadata}
@@ -182,7 +182,7 @@ const TicketComment = ({
 
     return (
         metadata &&
-        <div className={discussion_class}>
+        <div className={discussion_class} key={'comment-' + comment_data['id']}>
             { editing &&
             <TicketCommentForm
                 comment_data={comment_data}
