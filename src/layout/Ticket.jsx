@@ -298,6 +298,33 @@ const Ticket = () => {
 
                     <InlineField
                         data={ticket_data}
+                        field_name='planned_start_date'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='real_start_date'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='planned_finish_date'
+                        metadata={metadata}
+                    />
+
+                    <InlineField
+                        data={ticket_data}
+                        field_name='real_finish_date'
+                        metadata={metadata}
+                    />
+
+
+
+
+                    <InlineField
+                        data={ticket_data}
                         field_name='subscribed_users'
                         metadata={metadata}
                     />

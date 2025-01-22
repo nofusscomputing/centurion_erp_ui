@@ -5,6 +5,7 @@ import Select from "./form/Select";
 import { apiFetch } from "../hooks/apiFetch";
 import Button from "./form/Button";
 import { Form, useParams, useRouteError } from "react-router";
+import TextField from "./form/Textfield";
 
 
 
@@ -39,6 +40,10 @@ const InlineField = ({
 
     const [ editing, setEditing ] = useState(false)
 
+    const [form_data, setFormData] = useState({
+        [sanitized_field_name]: [data[sanitized_field_name]]
+    })
+
 
     const handleEditClick = (e) => {
 
@@ -57,8 +62,20 @@ const InlineField = ({
 
     }
 
+    const onChange = (e) => {
 
-    console.debug(`InlineField: ${JSON.stringify(data)}`)
+        let field_value = e.target.value
+
+        if( e.target.type === 'checkbox' ) {
+
+            field_value = e.target.checked
+
+        }
+
+        setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
+
+        console.log(JSON.stringify(form_data))
+    }
 
 
     const fetchFormField = () => {
@@ -75,6 +92,19 @@ const InlineField = ({
                     field_data={metadata.fields[sanitized_field_name]}
                     field_only={true}
                 />)
+
+            case 'DateTime':
+
+                return (
+                    <TextField
+                        id = {sanitized_field_name}
+                        type='datetime-local'
+                        value={String(form_data[sanitized_field_name]).replace('Z', '')}
+                        onChange={onChange}
+                        fieldset = {false}
+                    />
+                )
+
         }
     }
 

@@ -22,6 +22,7 @@ const TextField = ({
             className="common-field"
             id={id}
             key={id}
+            name={id}
             onChange={onChange}
             onKeyUp={onKeyUp}
             placeholder={helptext}
@@ -30,6 +31,8 @@ const TextField = ({
             value={value}
         />
     )
+
+
     if( type === 'datetime-local') {
 
         if( String(value).includes('+') ) {
@@ -44,6 +47,7 @@ const TextField = ({
                 format="%Y-%m-%dT%H:%M"
                 id={id}
                 key={id}
+                name={id}
                 onChange={onChange}
                 onKeyUp={onKeyUp}
                 // placeholder={helptext}
