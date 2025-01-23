@@ -32,7 +32,10 @@ const RootLayout = ({
                     }}
                 />
 
-                <main>
+                <main style={{
+                    backgroundColor: 'var(--background-colour-inactive);',
+                    width: "100%"
+                }}>
 
                     <Outlet />
 

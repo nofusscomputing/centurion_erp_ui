@@ -205,11 +205,10 @@ select[multiple] {
 #
 ############################################ */
 
+html {
+  height: -webkit-fill-available;
 
-
-a {
-  color: var(--contrasting-colour);
-  text-decoration: none;
+  --font-size: 12pt
 }
 
 body {
@@ -218,10 +217,16 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12pt;
   height: 100%;
-  margin: 0px;
+  height: -webkit-fill-available;
+  margin: 0;
+  padding: 0;
   width: 100%;
 
-  --font-size: 12pt
+}
+
+a {
+  color: var(--contrasting-colour);
+  text-decoration: none;
 }
 
 .app {
@@ -418,51 +423,10 @@ nav .page span.icon {
   display: flex;
   height: 100%;
   padding: 0px;
+  margin: 0;
   width: 100%;
 }
 
-main {
-  background-color: var(--background-colour-inactive);
-  display: inline-block;
-  margin: 0px auto;
-  width: 100%;
-}
-
-
-div.content-header {
-  background-color: var(--background-colour-active);
-  display: grid;
-  gap: 0px;
-  grid-template-columns: 1fr 2fr 1fr;
-  height: 80px;
-  width: calc(100% + 80px);
-  /* margin: -20px; */
-  margin-top: -20px;
-  margin-bottom: 20px;
-}
-
-
-div.content-header .column {
-  margin: auto 0px;
-  text-align: center;
-  
-}
-
-main h2 {
-  margin: auto;
-}
-
-div.content-header .column.right {
-  margin: auto 0px;
-  padding-right: 20px;
-  text-align: right;
-}
-
-div.content-header .column.right svg {
-  height: 30px;
-  margin-right: 10px;
-  width: 30px;
-}
 
 
 svg.help {
@@ -477,16 +441,7 @@ svg.delete {
   fill: #ff0000;
 }
 
-article {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0px auto;
-  padding: 20px;
-}
-
-
-
-article div.ticket {
+div.ticket {
   display: flex;
   width: 100%;
   padding: 0px;
@@ -1344,7 +1299,8 @@ section {
   background-color: var(--background-colour-active);
   border: 1px solid var(--border-colour);
   padding: 0px;
-  width: 100%;
+  flex-grow: 1;
+  margin: 0 .8rem .8rem .8rem;
 }
 
 section hr {
@@ -2030,3 +1986,42 @@ div.testing p {
 
 
 
+/* *******************************************
+
+CSS Rewrite (mobile readyness)
+
+******************************************* */
+
+
+div.content .header .column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  min-width: 300px;
+  text-align: center;
+
+}
+
+div.content .header .column.left {
+  padding-left: 1rem;
+  text-align: left;
+}
+
+div.content .header .column.right {
+  padding-right: 1rem;
+  text-align: right;
+}
+
+.content .header span.inline.icon {
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+  align-self: self-end;
+}
+
+.content .header .icon svg {
+  width: 1.9rem;
+  height: 1.9rem;
+  margin: 0 3px;
+}
