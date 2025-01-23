@@ -910,16 +910,18 @@ span.badge {
   border-radius: 15px;
   display: inline-flex;
   font-size: 10pt;
-  height: fit-content;
-  padding: 0px;
+  padding: 0px 3px;
   text-align: left;
-  width: fit-content;
-  margin: 0px 2px;
+  margin: auto 0px;
+  vertical-align: bottom;
+}
+
+span.badge svg {
+  margin: auto 0px;
 }
 
 
 span.badge span {
-  display: inline-block;
   line-height: normal;
 }
 
@@ -937,7 +939,7 @@ span.badge span.badge-text {
   border-top-right-radius: 10px;
   height: fit-content;
   margin: 2px 2px;
-  padding: 0px 5px 0px 2px;
+  padding: 0px 3px 0px 2px;
 }
 
 a.badge-link {
@@ -945,27 +947,27 @@ a.badge-link {
   color: inherit;
 }
 
-span.badge span.badge-icon.badge-icon-action-add {
+span.badge.badge-icon.badge-icon-action-add {
   fill: var(--text-colour-software-action-add);
 }
 
-span.badge span.badge-text.badge-text-action-add {
+span.badge.badge-text.badge-text-action-add {
   color: var(--text-colour-software-action-add);
 }
 
-span.badge span.badge-icon.badge-icon-action-install {
+span.badge.badge-icon.badge-icon-action-install {
   fill: var(--text-colour-software-action-install);
 }
 
-span.badge span.badge-text.badge-text-action-install {
+span.badge.badge-text.badge-text-action-install {
   color: var(--text-colour-software-action-install);
 }
 
-span.badge span.badge-icon.badge-icon-action-remove {
+span.badge.badge-icon.badge-icon-action-remove {
   fill: var(--text-colour-software-action-remove);
 }
 
-span.badge span.badge-text.badge-text-action-remove {
+span.badge.badge-text.badge-text-action-remove {
   color: var(--text-colour-software-action-remove);
 }
 
@@ -975,78 +977,78 @@ span.badge span.badge-text.badge-text-action-remove {
 
 
 span.badge-icon.ticket-status-icon svg,
-span.badge span.badge-icon.ticket-status-icon svg {
+span.badge.badge-icon.ticket-status-icon svg {
   border-radius: 10px;
 }
 
 span.badge-icon.ticket-status-icon-accepted svg,
-span.badge span.badge-icon.ticket-status-icon-accepted svg {
+span.badge.badge-icon.ticket-status-icon-accepted svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
 span.badge-icon.ticket-status-icon-approvals svg,
-span.badge span.badge-icon.ticket-status-icon-approvals svg {
+span.badge.badge-icon.ticket-status-icon-approvals svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
 span.badge-icon.ticket-status-icon-assigned svg,
-span.badge span.badge-icon.ticket-status-icon-assigned svg {
+span.badge.badge-icon.ticket-status-icon-assigned svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
 span.badge-icon.ticket-status-icon-assigned_planning svg,
-span.badge span.badge-icon.ticket-status-icon-assigned_planning svg {
+span.badge.badge-icon.ticket-status-icon-assigned_planning svg {
   background-color: #e1ffb2;
   fill: #2e9200;
 }
 
 span.badge-icon.ticket-status-icon-closed svg,
-span.badge span.badge-icon.ticket-status-icon-closed svg {
+span.badge.badge-icon.ticket-status-icon-closed svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
 span.badge-icon.ticket-status-icon-draft svg,
-span.badge span.badge-icon.ticket-status-icon-draft svg {
+span.badge.badge-icon.ticket-status-icon-draft svg {
   background-color: #cacaca;
   fill: #4d4d4d;
 }
 
 span.badge-icon.ticket-status-icon-evaluation svg,
-span.badge span.badge-icon.ticket-status-icon-evaluation svg {
+span.badge.badge-icon.ticket-status-icon-evaluation svg {
   background-color: #b2d6ff;
   fill: #007592;
 }
 
 span.badge-icon.ticket-status-icon-invalid svg,
-span.badge span.badge-icon.ticket-status-icon-invalid svg {
+span.badge.badge-icon.ticket-status-icon-invalid svg {
   background-color: #ffb2b6;
   fill: #920000;
 }
 
 span.badge-icon.ticket-status-icon-new svg,
-span.badge span.badge-icon.ticket-status-icon-new svg {
+span.badge.badge-icon.ticket-status-icon-new svg {
   background-color: #b2dcff;
   fill: #004492
 }
 
 span.badge-icon.ticket-status-icon-pending svg,
-span.badge span.badge-icon.ticket-status-icon-pending svg {
+span.badge.badge-icon.ticket-status-icon-pending svg {
   background-color: #ffceb2;
   fill: #d86100;
 }
 
 span.badge-icon.ticket-status-icon-solved svg,
-span.badge span.badge-icon.ticket-status-icon-solved svg {
+span.badge.badge-icon.ticket-status-icon-solved svg {
   background-color: #c9b2ff;
   fill: #640092;
 }
 
 span.badge-icon.ticket-status-icon-testing svg,
-span.badge span.badge-icon.ticket-status-icon-testing svg {
+span.badge.badge-icon.ticket-status-icon-testing svg {
   background-color: #b2d3ff;
   fill: #8c00ff;
 }
@@ -1990,8 +1992,41 @@ textarea {
 
 
 
+div.testing {
+
+  background-color: #a7c8e7;
+  height: 400px;
+  line-height: 25px;
+  font-size: inherit;
+}
+
+div.testing p {
+  background-color: #73cc73;
+  line-height: inherit;
+  font-size: inherit;
+}
 
 
+.testing span.inline {
+  background-color: #00f;
+  display: inline-flex;
+  line-height: 25px;
+  /* font-size: inherit; */
+  margin: auto 0px;
+  height: 25px;
+  vertical-align: bottom;
+  /* padding: 0%; */
+  /* align-content: baseline; */
+}
+
+.testing span.inline .text {
+  background-color: #cf9925;
+}
+
+.testing span.inline svg {
+  /* background-color: rgb(255, 0, 64); */
+  margin: auto 0px;
+}
 
 
 
