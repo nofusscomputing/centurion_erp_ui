@@ -54,6 +54,7 @@ import Webhook from "./icons/Webhook";
 import Documentation from "./icons/documentation";
 import SwaggerDcoumentation from "./icons/SwaggerDcoumentation";
 import Git from "./icons/Git";
+import CircleIcon from "./icons/Circle";
 
 
 const icon_components = {
@@ -63,6 +64,7 @@ const icon_components = {
     action_remove: ActionRemoveIcon,
     ansible: AnsibleIcon,
     assistance: AssistanceIcon,
+    circle: CircleIcon,
     cluster: ClusterIcon,
     config_group: ConfigManagementIcon,
     config_management: ConfigManagementIcon,
