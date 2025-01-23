@@ -847,16 +847,6 @@ span.text-inline {
   line-height: inherit;
 }
 
-span.text-inline span.badge-icon {
-  display: inline-block;
-  width: fit-content;
-
-}
-
-span.text-inline span.badge-icon svg {
-  transform: translateY(5px);
-
-}
 
 
 span.badge {
@@ -880,12 +870,9 @@ span.badge span {
   line-height: normal;
 }
 
-span.badge span.badge-icon {
+span.badge.badge-icon {
   height: fit-content;
-  margin: auto 1px auto 3px;
-  padding: 0px;
-  width: fit-content;
-
+  padding: 0px 1px 0 2px;
 }
 
 span.badge span.badge-text {
@@ -894,7 +881,7 @@ span.badge span.badge-text {
   border-top-right-radius: 10px;
   height: fit-content;
   margin: 2px 2px;
-  padding: 0px 3px 0px 2px;
+  padding: 0 3px 0 2px;
 }
 
 a.badge-link {
@@ -2024,4 +2011,60 @@ div.content .header .column.right {
   width: 1.9rem;
   height: 1.9rem;
   margin: 0 3px;
+}
+
+
+
+
+
+.badge.status svg {
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+}
+
+
+.badge.status.very-low {
+  color: #008cff;
+}
+
+.badge.status.very-low svg {
+  background-color: #008cff83;
+  fill: #008cff;
+}
+
+.badge.status.low svg {
+  background-color: #00921383;
+  fill: #009213;
+}
+
+.badge.status.low {
+  color: #009213;
+}
+
+.badge.status.med svg {
+  background-color: #fbff0083;
+  fill: #fbff00;
+}
+
+.badge.status.med {
+  color: #fbff00;
+}
+
+.badge.status.high svg {
+  background-color: #ff880083;
+  fill: #ff8800;
+}
+
+.badge.status.high {
+  color: #ff8800;
+}
+
+.badge.status.very-high svg {
+  background-color: #ff000083;
+  fill: #ff0000;
+}
+
+.badge.status.very-high {
+  color: #ff0000;
 }
