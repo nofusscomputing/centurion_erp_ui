@@ -36,7 +36,7 @@ const RootLayout = ({
                 />
 
                 <main id={mainId} style={{
-                    backgroundColor: 'var(--background-colour-inactive);',
+                    backgroundColor: 'var(--background-colour-inactive)',
                     width: "100%"
                 }}>
 
