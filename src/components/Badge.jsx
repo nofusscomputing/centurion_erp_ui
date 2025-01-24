@@ -1,3 +1,4 @@
+import { useId } from "react";
 import FieldData from "../functions/FieldData";
 
 
@@ -10,6 +11,9 @@ const Badge = ({
     text_style = null,
 
 }) => {
+
+    const badgeId = useId()
+    const badgeTextId = useId()
 
     message = message ? message : '-'
 
@@ -52,10 +56,11 @@ const Badge = ({
     return (
         <span
             className={class_name}
+            id={badgeId}
             style={style}
         >
             { children }
-        <span className={text_style}>{message}</span>
+        <span className={text_style} id={badgeTextId}>{message}</span>
      </span>
     );
 }
