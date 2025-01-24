@@ -221,6 +221,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  line-height: 1.5rem;
 
 }
 
@@ -2042,7 +2043,7 @@ div.content .header .column.right {
   color: #009213;
 }
 
-.badge.status.med svg {
+.badge.status.medium svg {
   background-color: #fbff0083;
   fill: #fbff00;
 }
