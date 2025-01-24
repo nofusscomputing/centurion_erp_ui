@@ -845,7 +845,7 @@ span.sub-script.metadata,
 
 span.text-inline {
   display: inline-block;
-  line-height: inherit;
+  /* line-height: inherit; */
 }
 
 
@@ -1716,7 +1716,7 @@ div.submit-dropdown-button div.button {
   display: inline-block;
   font-size: inherit;
   height: 30px;
-  line-height: 30px;
+  /* line-height: 30px; */
   padding: 0px 20px;
 
 }

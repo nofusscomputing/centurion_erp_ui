@@ -128,7 +128,7 @@ const InlineField = ({
                         float: 'right',
                         fontSize: 'smaller',
                         fontWeight: 'normal',
-                        paddingRight: '10px;'
+                        paddingRight: '10px'
                     }}
                 >
                     Edit

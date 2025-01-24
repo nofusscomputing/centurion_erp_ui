@@ -118,7 +118,7 @@ const TicketComment = ({
     if( comment_type === 'action' ) {
 
         return(
-            <div key={'comment-' + comment_data['id']}>
+            <div id={'comment-' + comment_data['id']} key={'comment-' + comment_data['id']}>
                 <span style={{display: 'inline-block'}}>
                     <FieldData
                         metadata={metadata}
@@ -182,7 +182,7 @@ const TicketComment = ({
 
     return (
         metadata &&
-        <div className={discussion_class} key={'comment-' + comment_data['id']}>
+        <div id={'comment-' + comment_data['id']} className={discussion_class} key={'comment-' + comment_data['id']}>
             { editing &&
             <TicketCommentForm
                 comment_data={comment_data}
