@@ -273,7 +273,7 @@ const Ticket = () => {
 
                     <InlineField
                         data={ticket_data}
-                        field_name='urgency'
+                        field_name='urgency_badge'
                         metadata={metadata}
                     />
 
