@@ -1,13 +1,20 @@
-import FieldData from "../../../functions/FieldData"
-import TextArea from "../../form/Textarea"
+import {
+    useContext,
+    useId,
+    useState 
+} from "react"
 import { Form } from "react-router"
-import Select from "../../form/Select"
-import TextField from "../../form/Textfield"
-import Button from "../../form/Button"
-import { useContext, useState } from "react"
-import { apiFetch } from "../../../hooks/apiFetch"
+
 import { FormatTime } from "../../../functions/FormatTime"
+
+import { apiFetch } from "../../../hooks/apiFetch"
 import UserContext from "../../../hooks/UserContext"
+
+import Button from "../../form/Button"
+import Section from "../../Section"
+import Select from "../../form/Select"
+import TextArea from "../../form/Textarea"
+import TextField from "../../form/Textfield"
 
 
 
@@ -22,6 +29,8 @@ const TicketCommentForm = ({
     is_edit = false,
     cancelbuttonOnSubmit = null,
 }) => {
+
+    const formId = useId();
 
     const user = useContext(UserContext)
 
@@ -136,229 +145,208 @@ const TicketCommentForm = ({
 
     const [form_error, setFormError] = useState(null)
 
+
     return (
-        metadata && <div className="">
-            <div className={comment_class}>
+        metadata &&
+        <Section
+            className={comment_class}
+        >
 
-                <Form 
-                    onSubmit={async e => {
+            <Form
+                id={formId}
+                onSubmit={async e => {
 
-                            e.preventDefault();
+                    e.preventDefault();
 
-                            let processed_form_data = {}
+                    let processed_form_data = {}
 
-                            for (let [key, value] of Object.entries(form_data)) {
-
-
-                                if( String(metadata.fields[key].type).toLowerCase() === 'datetime' ) {
-
-                                    value = FormatTime({
-                                        time: String(value),
-                                        iso: true,
-                                        tz: user.settings.timezone
-                                    });
-
-                                }
-
-                                processed_form_data = {
-                                    ...processed_form_data,
-                                    [key]: value
-                                }
+                    for (let [key, value] of Object.entries(form_data)) {
 
 
+                        if( String(metadata.fields[key].type).toLowerCase() === 'datetime' ) {
 
-                            }
-
-
-                            const response = await apiFetch(
-                                post_url,
-                                setFormError,
-                                HTTP_METHOD,
-                                processed_form_data
-                            )
-
-                            if(
-                                response.status === 201
-                                || (
-                                    response.status === 200
-                                    && is_edit
-                                )
-                            ) {
-
-                                commentCallback();
-                                is_task_comment = false
-                                is_solution_comment = false
-                                is_notification_comment = false
-                                e.target.reset();
-                                setFormData(edit_form_data);
-                                setTaskComment(false)
-                            }
+                            value = FormatTime({
+                                time: String(value),
+                                iso: true,
+                                tz: user.settings.timezone
+                            });
 
                         }
+
+                        processed_form_data = {
+                            ...processed_form_data,
+                            [key]: value
+                        }
+
                     }
-                >
 
-                    <div style={{lineHeight: '30px'}}>
-                        <fieldset className={comment_class}>
-                            <span>
-                                <Select
-                                        id = 'source'
-                                        field_data={metadata.fields['source']}
-                                        onChange={handleChange}
-                                        value = {form_data['source'] ? form_data['source'] : comment_data['source']}
-                                    />
-                            </span>
-                        </fieldset>
-                        {task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <Select
-                                    id = 'status'
-                                    field_data={metadata.fields['status']}
-                                    value={form_data['status'] ? form_data['status'] : comment_data['status']}
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
-                        {task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <Select
-                                    id = 'responsible_user'
-                                    field_data={metadata.fields['responsible_user']}
-                                    value={form_data['responsible_user'] ? form_data['responsible_user'] : comment_data['responsible_user']}
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
-                        {task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <Select
-                                    id = 'responsible_team'
-                                    field_data={metadata.fields['responsible_team']}
-                                    value={form_data['responsible_team'] ? form_data['responsible_team'] : comment_data['responsible_team']}
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
-                        { true && <fieldset className={comment_class}>
-                            <span>
-                                <Select
-                                    id = 'category'
-                                    field_data={metadata.fields['category']}
-                                    value={form_data['category'] ? form_data['category'] : comment_data['category']}
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
-                    </div>
+                    const response = await apiFetch(
+                        post_url,
+                        setFormError,
+                        HTTP_METHOD,
+                        processed_form_data
+                    )
 
-                    <hr />
-                        <TextArea 
-                            required = {true}
-                            id='body'
-                            class_name='fieldset-tester'
+                    if(
+                        response.status === 201
+                        || (
+                            response.status === 200
+                            && is_edit
+                        )
+                    ) {
+
+                        commentCallback();
+                        is_task_comment = false
+                        is_solution_comment = false
+                        is_notification_comment = false
+                        e.target.reset();
+                        setFormData(edit_form_data);
+                        setTaskComment(false)
+                    }
+
+                }}
+            >
+
+                <div className="comment form row">
+
+                    <Select
+                            id = 'source'
+                            field_data={metadata.fields['source']}
                             onChange={handleChange}
-                            value={form_data.body ? form_data.body : comment_data['body']}
+                            value = {form_data['source'] ? form_data['source'] : comment_data['source']}
                         />
 
-                    <hr />
+                    {task_comment &&
+                    <Select
+                        id = 'status'
+                        field_data={metadata.fields['status']}
+                        value={form_data['status'] ? form_data['status'] : comment_data['status']}
+                        onChange={handleChange}
+                    />}
 
-                    <div>
+                    {task_comment &&
+                    <Select
+                        id = 'responsible_user'
+                        field_data={metadata.fields['responsible_user']}
+                        value={form_data['responsible_user'] ? form_data['responsible_user'] : comment_data['responsible_user']}
+                        onChange={handleChange}
+                    />}
 
-                        { task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <TextField
-                                    id = 'planned_start_date'
-                                    label = {metadata.fields['planned_start_date'].label}
-                                    helptext   = {metadata.fields['planned_start_date'].help_text}
-                                    type='datetime-local'
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={
-                                        form_data['planned_start_date'] ?
-                                            String(form_data['planned_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                        :
-                                            String(comment_data['planned_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                    }
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
+                    {task_comment &&
+                    <Select
+                        id = 'responsible_team'
+                        field_data={metadata.fields['responsible_team']}
+                        value={form_data['responsible_team'] ? form_data['responsible_team'] : comment_data['responsible_team']}
+                        onChange={handleChange}
+                    />}
 
-                        { task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <TextField
-                                    id = 'planned_finish_date'
-                                    label = {metadata.fields['planned_finish_date'].label}
-                                    helptext   = {metadata.fields['planned_finish_date'].help_text}
-                                    type='datetime-local'
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={
-                                        form_data['planned_finish_date'] ?
-                                            String(form_data['planned_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                        :
-                                            String(comment_data['planned_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                    }
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
+                    { true &&
 
-                        { task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <TextField
-                                    id = 'real_start_date'
-                                    label = {metadata.fields['real_start_date'].label}
-                                    helptext   = {metadata.fields['real_start_date'].help_text}
-                                    type='datetime-local'
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={
-                                        form_data['real_start_date'] ?
-                                            form_data['real_start_date']?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                        :
-                                            String(comment_data['real_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                    }
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
+                    <Select
+                        id = 'category'
+                        field_data={metadata.fields['category']}
+                        value={form_data['category'] ? form_data['category'] : comment_data['category']}
+                        onChange={handleChange}
+                    />}
+                </div>
 
-                        { task_comment && <fieldset className={comment_class}>
-                            <span>
-                                <TextField
-                                    id = 'real_finish_date'
-                                    label = {metadata.fields['real_finish_date'].label}
-                                    helptext   = {metadata.fields['real_finish_date'].help_text}
-                                    type='datetime-local'
-                                    // error_text = {form_error && form_error[field_key]}
-                                    // required   = {metadata.actions[meta_action][field_key].required}
-                                    value={
-                                        form_data['real_finish_date'] ?
-                                            form_data['real_finish_date']?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                        :
-                                            String(comment_data['real_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
-                                    }
-                                    onChange={handleChange}
-                                />
-                            </span>
-                        </fieldset>}
+                <hr />
 
-                    </div>
+                    <TextArea 
+                        required = {true}
+                        id='body'
+                        class_name='fieldset-tester'
+                        onChange={handleChange}
+                        value={form_data.body ? form_data.body : comment_data['body']}
+                    />
 
-                    <div>
+                <hr />
+
+                <div className="comment form row">
+
+                    { task_comment &&
+                    <TextField
+                        id = 'planned_start_date'
+                        label = {metadata.fields['planned_start_date'].label}
+                        helptext   = {metadata.fields['planned_start_date'].help_text}
+                        type='datetime-local'
+                        // error_text = {form_error && form_error[field_key]}
+                        // required   = {metadata.actions[meta_action][field_key].required}
+                        value={
+                            form_data['planned_start_date'] ?
+                                String(form_data['planned_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                            :
+                                String(comment_data['planned_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                        }
+                        onChange={handleChange}
+                    />}
+
+                    { task_comment &&
+                    <TextField
+                        id = 'planned_finish_date'
+                        label = {metadata.fields['planned_finish_date'].label}
+                        helptext   = {metadata.fields['planned_finish_date'].help_text}
+                        type='datetime-local'
+                        // error_text = {form_error && form_error[field_key]}
+                        // required   = {metadata.actions[meta_action][field_key].required}
+                        value={
+                            form_data['planned_finish_date'] ?
+                                String(form_data['planned_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                            :
+                                String(comment_data['planned_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                        }
+                        onChange={handleChange}
+                    />}
+
+                    { task_comment &&
+                    <TextField
+                        id = 'real_start_date'
+                        label = {metadata.fields['real_start_date'].label}
+                        helptext   = {metadata.fields['real_start_date'].help_text}
+                        type='datetime-local'
+                        // error_text = {form_error && form_error[field_key]}
+                        // required   = {metadata.actions[meta_action][field_key].required}
+                        value={
+                            form_data['real_start_date'] ?
+                                form_data['real_start_date']?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                            :
+                                String(comment_data['real_start_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                        }
+                        onChange={handleChange}
+                    />}
+
+                    { task_comment &&
+                    <TextField
+                        id = 'real_finish_date'
+                        label = {metadata.fields['real_finish_date'].label}
+                        helptext   = {metadata.fields['real_finish_date'].help_text}
+                        type='datetime-local'
+                        // error_text = {form_error && form_error[field_key]}
+                        // required   = {metadata.actions[meta_action][field_key].required}
+                        value={
+                            form_data['real_finish_date'] ?
+                                form_data['real_finish_date']?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                            :
+                                String(comment_data['real_finish_date'])?.replace('Z', '').replace(/[+|-]\d{2}\:\d{2}$/, '')
+                        }
+                        onChange={handleChange}
+                    />}
+
+                </div>
+
+                <div>
+
                     { is_edit &&
                     <Button
                         onClick={cancelbuttonOnSubmit}
                         button_text = 'Cancel'
-                    />
-                    }
-                    { is_edit &&
-                     <Button
-                        button_text="Comment"
-                    />
+                    />}
 
-                    }
+                    { is_edit &&
+                    <Button
+                        button_text="Comment"
+                    />}
+
                     { ! is_edit &&
                     <Button
                         button_text="Comment"
@@ -404,13 +392,11 @@ const TicketCommentForm = ({
                     
                             console.log(`menu entry click was set to ${task_comment}`)
                         } }
-                    />
-                    }
-                    </div>
+                    />}
 
-                </Form>
-            </div>
-        </div>
+                </div>
+            </Form>
+        </Section>
     );
 }
 

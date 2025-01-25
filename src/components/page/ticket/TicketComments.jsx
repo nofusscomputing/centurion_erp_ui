@@ -93,7 +93,7 @@ const TicketComments = ({
                         comment_metadata &&
                         <li
                             className="comments"
-                            id={'li-ticket-comment-' + comments.comments[key].id} key={'li-ticket-comment-' + comments.comments[key].id}
+                            key={'ticket-comment-' + comments.comments[key].id}
                         >
                             <TicketComment
                                 comment_data={comments.comments[key]}
@@ -107,7 +107,9 @@ const TicketComments = ({
                     )
                 })}
                 {comment_metadata &&
-                    <li id="li-ticket-comment-form">
+                    <li
+                        key={'ticket-comment-reply-form'}
+                    >
                         <TicketCommentForm
                             metadata={comment_metadata}
                             post_url = {comments_url}
