@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useId, useState } from "react";
 
 import FieldData from "../functions/FieldData";
 import Select from "./form/Select";
 import { apiFetch } from "../hooks/apiFetch";
 import Button from "./form/Button";
-import { Form, useParams, useRouteError } from "react-router";
+import { Form } from "react-router";
 import TextField from "./form/Textfield";
 import { FormatTime } from "../functions/FormatTime";
 import UserContext from "../hooks/UserContext";
@@ -46,6 +46,11 @@ const InlineField = ({
     const [form_data, setFormData] = useState({
         [sanitized_field_name]: [data[sanitized_field_name]]
     })
+
+    const fieldsetId = useId();
+    const fieldsetFormId = useId();
+    const fieldsetLabelId = useId();
+    const fieldsetTextId = useId();
 
     const user = useContext(UserContext)
 
@@ -113,35 +118,30 @@ const InlineField = ({
         }
     }
 
-
     return (
-        <fieldset>
-            <Form method="patch" action={String(data._urls._self).split('api/v2')[1]} onSubmit={handleFormSubmit}>
-            <label>
-                {metadata.fields[field_name].label}
-                { ! metadata.fields[sanitized_field_name].read_only &&
-                <span
-                    id={'edit-field-' + field_name}
-                    onClick={handleEditClick}
-                    style={{
-                        color: 'var(--contrasting-colour)',
-                        float: 'right',
-                        fontSize: 'smaller',
-                        fontWeight: 'normal',
-                        paddingRight: '10px'
-                    }}
-                >
-                    Edit
-                </span>}
-            </label>
+        <fieldset id={fieldsetId}>
+            <Form id={fieldsetFormId} method="patch" action={String(data._urls._self).split('api/v2')[1]} onSubmit={handleFormSubmit}>
+                <label id={fieldsetLabelId}>
+                    {metadata.fields[field_name].label}
+                    { ! metadata.fields[sanitized_field_name].read_only &&
+                    <span
+                        id={'edit-field-' + field_name}
+                        onClick={handleEditClick}
+                        style={{
+                            color: 'var(--contrasting-colour)',
+                            float: 'right',
+                            fontSize: 'smaller',
+                            fontWeight: 'normal',
+                            paddingRight: '10px'
+                        }}
+                    >
+                        Edit
+                    </span>}
+                </label>
 
-            { editing &&
+                { editing && fetchFormField() }
 
-            fetchFormField()
-
-            }
-
-            { editing && 
+                { editing && 
                 <>
                 <input id="id" type="hidden"  name="id" value={data['id']} />
                 <input id="tz" type="hidden"  name="tz" value={user.settings.timezone} />
@@ -152,11 +152,11 @@ const InlineField = ({
                     button_text = 'Save'
                 />
                 </>
-            }
+                }
 
-            { ! editing &&
+                { ! editing &&
 
-                <span className="text">
+                <span className="text" id={fieldsetTextId}>
                     <FieldData
                         metadata = {metadata}
                         field_name = {field_name}
@@ -164,8 +164,9 @@ const InlineField = ({
                     />
                 </span>
 
-            }
+                }
             </Form>
+
         </fieldset>
     );
 }
