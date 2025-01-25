@@ -31,7 +31,7 @@ const Select = ({
                 onChange={onChange}
                 multiple = {field_data.relationship_type == 'ManyToMany' ? true : false}
             >
-                <option value="">Please select an option</option>
+                <option value={null}>Please select an option</option>
                 {field_data.choices.map((choice) => {
 
                     let selected = false
