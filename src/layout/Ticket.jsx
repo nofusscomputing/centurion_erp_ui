@@ -149,19 +149,19 @@ const Ticket = () => {
             { ! editing_description &&
                 <section className="description">
                     <h3 className={"description ticket-type-" + ticket_type}>
-                        <span class="sub-script">opened by&nbsp;</span>
+                        <span className="sub-script">opened by&nbsp;</span>
                         <FieldData
                             metadata={metadata}
                             field_name='opened_by'
                             data={ticket_data}
                         />&nbsp;
-                        <span class="sub-script">on&nbsp;</span> 
+                        <span className="sub-script">on&nbsp;</span> 
                         <FieldData
                             metadata={metadata}
                             field_name='created'
                             data={ticket_data}
                         />&nbsp;
-                        <span class="sub-script">Updated&nbsp;</span> 
+                        <span className="sub-script">Updated&nbsp;</span> 
                         <FieldData
                             metadata={metadata}
                             field_name='modified'
@@ -199,7 +199,7 @@ const Ticket = () => {
                 ) && 
                 <TicketComments
                     comment_metadata = {comment_metadata}
-                    comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + '?page[size]=500'}
+                    comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + ''}
                     ticket_id = {page_data['id']}
                 />}
             </div>

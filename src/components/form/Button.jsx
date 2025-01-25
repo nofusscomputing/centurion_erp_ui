@@ -92,14 +92,14 @@ const Button = ({
                             width="35px"
                         />
                     </div>
-                    <div id="myDropdown" class="dropdown-content">
+                    <div id="myDropdown" className="dropdown-content">
                         {menu_entries.map((menu_text) => {
 
                             if( String(menu_text.display_name).toLowerCase() !== 'action' ) {
 
                                 return (
 
-                                    <button className="dropdown-menu-entry" onClick={handleMenuClick} type="button" value={menu_text.value}>{menu_text.display_name}</button>
+                                    <button id={'button-dropdown-' + String(button_text).toLowerCase()} key={'button-dropdown-' + String(button_text).toLowerCase() + '-' + menu_text.value} className="dropdown-menu-entry" onClick={handleMenuClick} type="button" value={menu_text.value}>{menu_text.display_name}</button>
 
                                 );
                             } else{
