@@ -1,8 +1,8 @@
 import { useEffect, useId, useState } from "react";
 
 import { apiFetch } from "../../../hooks/apiFetch";
-import TicketCommentForm from "./TicketCommentForm";
 import TicketComment from "./TicketComment";
+import TicketCommentForm from "./TicketCommentForm";
 
 
 
@@ -68,18 +68,33 @@ const TicketComments = ({
     }, [reload, comments_url])
 
 
-
-
-
     return (
         (comments && comment_metadata) &&
-        <div id={ticktCommentsId} className="comments" key={"div-ticket-comments"}>
-            <ul id={ticktCommentsListId} className="comments">
+        <div
+            className="comments"
+            id={ticktCommentsId}
+            key={"div-ticket-comments"}
+            style={{
+                marginLeft: '.8rem',
+                paddingLeft: '1.6rem'
+            }}
+        >
+
+            <ul
+                id={ticktCommentsListId}
+                className="comments"
+                style={{
+                    paddingLeft: '0'
+                }}
+            >
                 {Object.keys(comments.comments).map(key => {
 
                     return (
                         comment_metadata &&
-                        <li id={'li-ticket-comment-' + comments.comments[key].id} key={'li-ticket-comment-' + comments.comments[key].id}>
+                        <li
+                            className="comments"
+                            key={'ticket-comment-' + comments.comments[key].id}
+                        >
                             <TicketComment
                                 comment_data={comments.comments[key]}
                                 post_url = {comments_url}
@@ -92,7 +107,9 @@ const TicketComments = ({
                     )
                 })}
                 {comment_metadata &&
-                    <li id="li-ticket-comment-form">
+                    <li
+                        key={'ticket-comment-reply-form'}
+                    >
                         <TicketCommentForm
                             metadata={comment_metadata}
                             post_url = {comments_url}

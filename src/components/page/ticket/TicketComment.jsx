@@ -1,9 +1,13 @@
-import IconLoader from "../../IconLoader"
-import FieldData from "../../../functions/FieldData"
 import { useEffect, useState } from "react"
+
 import { apiFetch } from "../../../hooks/apiFetch"
-import TicketCommentForm from "./TicketCommentForm"
+
+import FieldData from "../../../functions/FieldData"
+
+import IconLoader from "../../IconLoader"
 import { secondsToTime } from "../../../layout/Ticket"
+import Section from "../../Section"
+import TicketCommentForm from "./TicketCommentForm"
 
 
 
@@ -69,7 +73,7 @@ const TicketComment = ({
 
     const comment_header_text = (
         metadata && comment_data &&
-        <div id="text">
+        <div className="text">
             <FieldData
                 metadata={metadata}
                 field_name='user'
@@ -145,7 +149,7 @@ const TicketComment = ({
     }
 
     const header_icons = (
-        <div id="icons">
+        <div id={'comment-icons-' + comment_data['id']} className="icons">
             {comment_data['parent'] == null &&
              <span style={{
                 cursor: 'pointer'
@@ -175,14 +179,25 @@ const TicketComment = ({
 
     let discussion_class = ''
 
+    let style = {}
+
     if( is_discussion ) {
 
         discussion_class = ' discussion'
+        style = {
+            backgroundColor: "var(--background-colour-inactive)",
+            paddingBottom: "20px"
+        }
     }
 
     return (
         metadata &&
-        <div id={'comment-' + comment_data['id']} className={discussion_class} key={'comment-' + comment_data['id']}>
+        <div
+            className={discussion_class}
+            id={'comment-' + comment_data['id']}
+            key={'comment-' + comment_data['id']}
+            style={style}
+        >
             { editing &&
             <TicketCommentForm
                 comment_data={comment_data}
@@ -200,16 +215,21 @@ const TicketComment = ({
             />
             }
             { ! editing &&
-            <div className={comment_class}>
+            <Section
+                className={comment_class}
+                titleBar={(
+                    <h4 className={comment_class}>
+                        {comment_header_text}{header_icons}
+                    </h4>
+                )}
+            >
 
-                <h4 className={comment_class}>
-                    {comment_header_text}{header_icons}
-                </h4>
+                <div className="comment row">
 
-                <div style={{lineHeight: '30px'}}>
-                    { comment_data.source && <fieldset className={comment_class}>
+                    { comment_data.source &&
+                    <fieldset className={comment_class}>
                         <label>Source</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='source'
@@ -217,9 +237,11 @@ const TicketComment = ({
                             />
                         </span>
                     </fieldset>}
-                    {comment_data.status &&<fieldset className={comment_class}>
+
+                    {comment_data.status &&
+                    <fieldset className={comment_class}>
                         <label>Status</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='status'
@@ -227,9 +249,11 @@ const TicketComment = ({
                             />
                         </span>
                     </fieldset>}
-                    {comment_data.responsible_user && <fieldset className={comment_class}>
+
+                    {comment_data.responsible_user &&
+                    <fieldset className={comment_class}>
                         <label>Responsible User</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='responsible_user'
@@ -237,11 +261,13 @@ const TicketComment = ({
                             />
                         </span>
                     </fieldset>}
-                    {comment_data.responsible_team && <fieldset className={comment_class}>
+
+                    {comment_data.responsible_team &&
+                    <fieldset className={comment_class}>
                         <label>
                             Responsible Team
                         </label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='responsible_team'
@@ -249,9 +275,11 @@ const TicketComment = ({
                             />
                         </span>
                     </fieldset>}
-                    { comment_data.category && <fieldset className={comment_class}>
+
+                    { comment_data.category &&
+                    <fieldset className={comment_class}>
                         <label>Category</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='category'
@@ -259,6 +287,7 @@ const TicketComment = ({
                             />
                         </span>
                     </fieldset>}
+
                 </div>
 
                 <hr />
@@ -273,11 +302,12 @@ const TicketComment = ({
 
                 <hr />
 
-                <div>
+                <div className="comment row">
 
-                    { comment_data.planned_start_date && <fieldset className={comment_class}>
+                    { comment_data.planned_start_date &&
+                    <fieldset className={comment_class}>
                         <label>Planned Start</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='planned_start_date'
@@ -286,9 +316,10 @@ const TicketComment = ({
                         </span>
                     </fieldset>}
 
-                    { comment_data.planned_finish_date && <fieldset className={comment_class}>
+                    { comment_data.planned_finish_date &&
+                    <fieldset className={comment_class}>
                         <label>Planned Finish</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='planned_finish_date'
@@ -297,9 +328,10 @@ const TicketComment = ({
                         </span>
                     </fieldset>}
 
-                    { comment_data.real_start_date && <fieldset className={comment_class}>
+                    { comment_data.real_start_date &&
+                    <fieldset className={comment_class}>
                         <label>Actual Start</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='real_start_date'
@@ -308,9 +340,10 @@ const TicketComment = ({
                         </span>
                     </fieldset>}
 
-                    { comment_data.real_finish_date && <fieldset className={comment_class}>
+                    { comment_data.real_finish_date &&
+                    <fieldset className={comment_class}>
                         <label>Actual Finish</label>
-                        <span>
+                        <span className="text">
                             <FieldData
                                 metadata={metadata}
                                 field_name='real_finish_date'
@@ -321,15 +354,27 @@ const TicketComment = ({
 
                     <fieldset className={comment_class}>
                         <label>Duration</label>
-                        <span>
+                        <span className="text">
                             {secondsToTime(comment_data['duration'])}
                         </span>
                     </fieldset>
+
                 </div>
-            </div>
+
+            </Section>
             }
             { threads &&
-            <div className="replies">
+            <div
+                className="replies"
+                style={{
+                    border: "1px solid var(--contrasting-colour)",
+                    borderRight: "none",
+                    borderTop: "none,",
+                    margin: ".8rem",
+                    marginTop: "-.8rem",
+                    paddingBottom: "1rem"
+                }}
+            >
                 <h3 className="replies">
                     Replies
                     <IconLoader
@@ -338,21 +383,33 @@ const TicketComment = ({
                         width = '20px'
                     />
                 </h3>
-                <ul className="replies">
+                <ul
+                    className="replies"
+                    style={{
+                        paddingLeft: '1.6rem'
+                    }}
+                >
                     { threads.results &&
                     threads.results.map((comment, index) => (
-                        <li className="replies">
-                            <TicketComment
-                                comment_data={comment}
-                                discussion = {true}
-                                metadata = {metadata}
-                                edit_callback = {() => {
-                                    setRelaod(true)
-                                }}
-                            />
-                        </li>
+                    <li
+                        className="replies"
+                        id={comment.id}
+                        key={'comment-reply-' + comment.id}
+                    >
+                        <TicketComment
+                            comment_data={comment}
+                            discussion = {true}
+                            metadata = {metadata}
+                            edit_callback = {() => {
+                                setRelaod(true)
+                            }}
+                        />
+                    </li>
                     ))}
-                    <li className="replies">
+                    <li
+                        className="replies"
+                        key={'comment-reply-form-' + comment_data.id}
+                    >
                         <TicketCommentForm
                             metadata={metadata}
                             post_url = {post_url + '/' + comment_data['id'] + '/threads'}

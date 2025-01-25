@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useLoaderData } from "react-router";
+
+import '../styles/ticket.css'
+
+import ContentHeader from "../components/page/ContentHeader";
+import InlineField from "../components/InlineFields";
+import LinkedItems from "../components/page/ticket/LinkedItems";
+import MarkdownEditor from "../components/MarkdownEditor";
+import RelatedTickets from "../components/page/ticket/RelatedTickets";
+import Section from "../components/Section";
+import TicketComments from "../components/page/ticket/TicketComments";
+
 import FieldData from "../functions/FieldData";
 
 import { apiFetch } from "../hooks/apiFetch";
-import LinkedItems from "../components/page/ticket/LinkedItems";
-import RelatedTickets from "../components/page/ticket/RelatedTickets";
-import TicketComments from "../components/page/ticket/TicketComments";
-import MarkdownEditor from "../components/MarkdownEditor";
-import InlineField from "../components/InlineFields";
-import ContentHeader from "../components/page/ContentHeader";
 
 
 
@@ -123,6 +128,8 @@ const Ticket = () => {
     }
 
 
+    const ticketDescriptionId = useId()
+
     return (
         ticket_metadata && comment_metadata && ticket_data && (
         <>
@@ -130,11 +137,45 @@ const Ticket = () => {
             content_heading={content_heading}
             content_header_icon={content_header_icon}
         />
-        <div className="ticket">
-        <div className="contents">
+        <div id={'ticket-' + ticket_data.id} className="ticket">
 
-            { editing_description &&
-                <section className="description">
+            <div className="contents">
+
+                <Section
+                    className="description"
+                    titleBar={(
+                        ! editing_description && (
+                        <h3 className={"description ticket-type-" + ticket_type}>
+                            <span>
+                                <span className="sub-script">opened by&nbsp;</span>
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='opened_by'
+                                    data={ticket_data}
+                                />
+                            </span>&nbsp;
+                            <span>
+                                <span className="sub-script">on&nbsp;</span> 
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='created'
+                                    data={ticket_data}
+                                />
+                            </span>&nbsp;
+                            <span>
+                            <span className="sub-script">Updated&nbsp;</span> 
+                            <FieldData
+                                metadata={metadata}
+                                field_name='modified'
+                                data={ticket_data}
+                            />
+                            </span>
+                        </h3>
+                        )
+                    )}
+                >
+                    { editing_description &&
+
                     <MarkdownEditor
                         auto_content_height = {true}
                         data={ticket_data}
@@ -143,31 +184,11 @@ const Ticket = () => {
                         onCancel={handleDescriptionCancel}
                         onSave={handleDescriptionSave}
                     />
-                </section>
-            }
 
-            { ! editing_description &&
-                <section className="description">
-                    <h3 className={"description ticket-type-" + ticket_type}>
-                        <span className="sub-script">opened by&nbsp;</span>
-                        <FieldData
-                            metadata={metadata}
-                            field_name='opened_by'
-                            data={ticket_data}
-                        />&nbsp;
-                        <span className="sub-script">on&nbsp;</span> 
-                        <FieldData
-                            metadata={metadata}
-                            field_name='created'
-                            data={ticket_data}
-                        />&nbsp;
-                        <span className="sub-script">Updated&nbsp;</span> 
-                        <FieldData
-                            metadata={metadata}
-                            field_name='modified'
-                            data={ticket_data}
-                        />
-                    </h3>
+                    }
+
+                    { ! editing_description && (
+
                     <div className="markdown">
                         <button className="common-field form" onClick={handleDescriptionEdit}>Edit</button>
                         <FieldData
@@ -176,17 +197,19 @@ const Ticket = () => {
                             data={ticket_data}
                         />
                     </div>
-                </section>
-            }
+                    )}
 
-            <div>
+                </Section>
+
                 { page_data['_urls']['related_tickets'] &&
+
                 <RelatedTickets
                     data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
                     ticket_id={page_data['id']}
                 />}
 
                 { page_data['_urls']['linked_items'] &&
+
                 <LinkedItems
                     data_url={String(page_data['_urls']['linked_items']).split('api/v2')[1]}
                 />}
@@ -197,31 +220,48 @@ const Ticket = () => {
                     && page_data['id']
 
                 ) && 
+
                 <TicketComments
                     comment_metadata = {comment_metadata}
                     comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + ''}
                     ticket_id = {page_data['id']}
                 />}
+
             </div>
-        </div>
 
-        <div className="sidebar">
-
-            <div className="metadata">
-                <div>
-
-                    <h3 className={"metadata ticket-type-" + ticket_type}>
+            <Section
+                className="sidebar"
+                id={'ticket-sidebar-' + ticket_data.id} 
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+                titleBar={(
+                    <h3
+                        className={"sidebar ticket-type-" + ticket_type}
+                        style={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                        }}
+                    >
                         Ticket&nbsp;#
                         <FieldData
-                        metadata={metadata}
-                        field_name='id'
-                        data={ticket_data}
-                    />
-                    &nbsp;
-                    {ticket_data['external_ref'] &&(
-                        ('( #') + ticket_data['external_ref'] + (')')
-                    )}
+                            metadata={metadata}
+                            field_name='id'
+                            data={ticket_data}
+                        />
+                        &nbsp;
+                        {ticket_data['external_ref'] &&(
+                            ('( #') + ticket_data['external_ref'] + (')')
+                        )}
                     </h3>
+                )}
+            >
+
+                <div
+                    className="metadata"
+                    id={'ticket-sidebar-metadata-' + ticket_data.id} 
+                >
 
                     <InlineField
                         data={ticket_data}
@@ -320,9 +360,6 @@ const Ticket = () => {
                         metadata={metadata}
                     />
 
-
-
-
                     <InlineField
                         data={ticket_data}
                         field_name='subscribed_users'
@@ -341,9 +378,8 @@ const Ticket = () => {
                     </fieldset>
 
                 </div>
-            </div>
 
-        </div>
+            </Section>
         </div>
         </>
         )
