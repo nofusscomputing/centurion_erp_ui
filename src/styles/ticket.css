@@ -1,0 +1,360 @@
+div.ticket {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+div.ticket .contents {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+div.ticket section h3.description .sub-script,
+div.ticket section h3.sidebar .sub-script {
+  color: #777;
+}
+
+div.ticket hr {
+  border: none;
+  border-bottom: 1px solid var(--border-colour-form-field);
+  margin: .5rem 0;
+}
+
+
+div.ticket h3.description.ticket-type-change,
+div.ticket section.sidebar h3.ticket-type-change {
+  background-color: var(--background-colour-ticket-type-change);
+}
+
+div.ticket h3.description.ticket-type-incident,
+div.ticket section.sidebar h3.metadata.ticket-type-incident {
+  background-color: var(--background-colour-ticket-type-incident);
+}
+
+div.ticket h3.description.ticket-type-issue,
+div.ticket section.sidebar h3.metadata.ticket-type-issue {
+  background-color: var(--background-colour-ticket-type-issue);
+}
+
+div.ticket h3.description.ticket-type-problem,
+div.ticket section.sidebar h3.metadata.ticket-type-problem {
+  background-color: var(--background-colour-ticket-type-problem);
+}
+
+div.ticket h3.description.ticket-type-project-task,
+div.ticket section.sidebar h3.metadata.ticket-type-project-task {
+  background-color: var(--background-colour-ticket-type-project-task);
+}
+
+div.ticket h3.description.ticket-type-request,
+div.ticket section.sidebar h3.ticket-type-request {
+  background-color: var(--background-colour-ticket-type-request);
+}
+
+
+div.ticket section.sidebar {
+  background-color: var(--background-colour-active);
+  border: 1px solid var(--border-colour);
+  display: flex;
+  flex-direction: column;
+  top: 76px;
+  bottom: 0px;
+  position: sticky;
+  margin: 0;
+  top: 76px;
+  height: calc(100vh - 154px - 30px);
+
+}
+
+div.ticket section.sidebar h3 {
+  background-color: chocolate;
+  display: flow-root;
+}
+
+div.ticket section.sidebar .metadata {
+  overflow-x:hidden;
+  overflow-y: auto;
+  height: calc(100vh - 154px - 30px - 30px);
+  scrollbar-width: thin;
+
+}
+
+div.ticket .sidebar .metadata fieldset {
+  border: none;
+  margin-bottom: .5rem;
+  min-width: 300px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+div.ticket .sidebar .metadata fieldset label {
+  display: flow-root;
+  font-weight: bold;
+}
+
+
+
+div.ticket section h3.related-tickets,
+div.ticket section h3.linked-items {
+  background-color: var(--contrasting-colour);
+  color: var(--text-colour-button);
+}
+
+
+div.ticket section.related-tickets .items {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+div.ticket section.related-tickets .item:hover {
+  filter: brightness(60%);
+}
+
+div.ticket section.related-tickets .icon svg {
+  align-self: center;
+  background-color: #0b91ff;
+}
+
+div.ticket section.related-tickets .ticket-related-blocks svg {
+  background-color: #fcd5b1;
+  border-radius: 10px;
+  fill: #e79b37;
+}
+
+div.ticket section.related-tickets .ticket-related-blocked_by svg {
+  background-color: #f3c6c6;
+  border-radius: 10px;
+  fill: #ff1c1c;
+}
+
+div.ticket section.related-tickets .ticket-related-related svg {
+  background-color: #afdbff;
+  border-radius: 10px;
+  fill: #0b91ff;
+}
+
+
+
+
+
+
+
+div.ticket section.linked-items {
+  display: flex;
+}
+
+
+
+
+
+
+div.ticket div.comments ul.comments li,
+div.ticket div.comments ul.replies li {
+  padding-left: .5rem;
+}
+
+
+.ticket .discussion {
+  background-color: var(--background-colour-inactive);
+  padding-bottom: 20px;
+}
+
+.ticket .discussion .replies h3 {
+  display: flex;
+  flex-direction: row;
+  padding-left: .5rem;
+}
+.ticket .discussion .replies h3 svg {
+  align-self: center;
+  fill: var(--text-colour);
+}
+
+
+div.ticket div.comments .replies section {
+  margin-right: 0rem;
+}
+
+
+div.ticket section.comment {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.ticket .comment h4.comment {
+  display: flex;
+  flex-direction: row;
+  font-size: var(--font-size);
+  font-weight: normal;
+  padding-left: .5rem;
+}
+
+.ticket .comment h4.comment .text {
+  flex-grow: 1;
+}
+
+.ticket .comment h4 .icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.ticket .comment h4 .icons span {
+  display: flex;
+}
+
+.ticket .comment h4.comment .icons svg {
+  align-self: center;
+  padding: 0 .1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+div.ticket section div.comment.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+div.ticket .comments section div.comment.row fieldset {
+  padding: 0 .2rem;
+}
+
+div.ticket .comments section div.comment.row:not(.form) fieldset {
+  padding: 0 .5rem;
+}
+
+.ticket .comments section .comment-form fieldset textarea {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.ticket .comment-form form fieldset span.help-text {
+  font-size: xx-small;
+}
+
+
+
+
+.ticket .comment-type-default {
+  border-color: var(--background-colour-ticket-comment-default);
+}
+
+.ticket .comment-type-default h4.comment {
+  background-color: var(--background-colour-ticket-comment-default);
+  color: var(--text-colour-contrasting);
+}
+
+.ticket .comment-type-default h4.comment .icons svg {
+  fill: var(--text-colour-contrasting);
+}
+
+.ticket .comment-type-notification {
+  border-color: var(--background-colour-ticket-comment-notification);
+}
+
+.ticket .comment-type-notification h4.comment {
+  background-color: var(--background-colour-ticket-comment-notification);
+  color: var(--contrasting-colour);
+}
+
+.ticket .comment-type-notification h4.comment .icons svg {
+  fill: var(--contrasting-colour);
+}
+
+.ticket .comment-type-solution {
+  border-color: var(--background-colour-ticket-comment-solution);
+}
+
+.ticket .comment-type-solution h4.comment {
+  background-color: var(--background-colour-ticket-comment-solution);
+  color: var(--contrasting-colour);
+}
+
+.ticket .comment-type-solution h4.comment .icons svg {
+  fill: var(--contrasting-colour);
+}
+
+.ticket .comment-type-task {
+  border-color: var(--background-colour-ticket-comment-task);
+}
+
+.ticket .comment-type-task h4.comment {
+  background-color: var(--background-colour-ticket-comment-task);
+  color: var(--contrasting-colour);
+}
+
+.ticket .comment-type-task h4.comment .icons svg {
+  fill: var(--contrasting-colour);
+}
+
+
+
+@media all and ( max-width: 1160px) {
+
+  div.ticket section.sidebar {
+    top: unset;
+    bottom: unset;
+    margin: 1rem;
+    margin-right: 1rem;
+    position: unset;
+    height: fit-content;
+
+  }
+
+  div.ticket section.sidebar .metadata {
+    overflow-y: unset;
+    height: fit-content;
+  }
+
+
+  div.ticket {
+    flex-wrap: wrap;
+  }
+
+
+}
+
+
+
+
+@media all and ( max-width: 850px) {
+
+
+  /* Hide navigation menu and reformat to be on */
+
+
+}
+
+
+
+/* ###################################################################
+
+ticket fixme
+
+################################################################### */
+
+
+
+
+
+.ticket .comment .markdown {
+  padding: 1rem;
+}
+
+
+
