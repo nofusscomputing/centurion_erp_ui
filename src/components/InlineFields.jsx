@@ -233,18 +233,25 @@ export async function InlineFieldAction({
 
             case 'relationship':
 
-                if( form_data.hasOwnProperty( itItem[0] ) ) {
+                if( String(metadata.fields[itItem[0]].relationship_type) == "ManyToOne") {
 
-                    value = [ ...form_data[itItem[0]], Number(itItem[1]) ]
+                    value = Number(itItem[1]);
 
                 } else {
 
-                    value = [ Number(itItem[1]) ]
+                    if( form_data.hasOwnProperty( itItem[0] ) ) {
 
-                    if( typeof(itItem[1]) === 'array' ) {
+                        value = [ ...form_data[itItem[0]], Number(itItem[1]) ]
 
-                        value = Number(itItem[1])
+                    } else {
 
+                        value = [ Number(itItem[1]) ]
+
+                        if( typeof(itItem[1]) === 'array' ) {
+
+                            value = Number(itItem[1])
+
+                        }
                     }
                 }
 
