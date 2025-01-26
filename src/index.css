@@ -274,8 +274,63 @@ fieldset span.help-text {
   padding-left: .2em;
 }
 
+fieldset.inline {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 1rem;
+}
+
+fieldset.inline label {
+  flex-grow: 0;
+  text-align: right;
+  padding-right: .5rem;
+  width: 150px;
+}
+
+fieldset.textarea label {
+  text-align: left;
+  width: 100%;
+}
+
+fieldset.inline .text {
+  border-bottom: 1px solid var(--border-colour-form-field);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  width: 350px;
+  word-wrap: break-word;
+}
 
 
+h1 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+h2 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+
+hr {
+  border: none;
+  border-bottom: 1px solid var(--border-colour);
+  margin: 1rem 0;
+}
 
 
 header .icon {
@@ -880,12 +935,6 @@ section {
   margin: 0 .8rem .8rem .8rem;
 }
 
-section hr {
-  border: none;
-  border-bottom: 1px solid var(--border-colour);
-  margin: 0px 10px;
-}
-
 section.error {
   display: flexbox;
   padding: 0px;
@@ -912,7 +961,7 @@ section .nav-tabs {
   border-bottom: 1px solid var(--border-colour);
   display: flex;
   height: 50px;
-  margin: 0px 10px;
+  /* margin: 0px 10px; */
 
 }
 
@@ -968,77 +1017,6 @@ section .nav-tabs .nav-tabs-tab .nav-tabs-text {
 }
 
 
-section .content {
-  margin: 10px;
-}
-
-section .content .section {
-  display: flexbox;
-  width: 100%;
-}
-
-section .content .section fieldset {
-  border: none;
-}
-
-section .content .section .double {
-  display: flexbox;
-  width: fit-content;
-  margin: 0px auto;
-}
-
-section .content .section .double .column {
-  display: inline-block;
-  width: fit-content;
-  vertical-align: top;
-}
-
-section .content .section .column label {
-  font-weight: bold;
-}
-
-section .content .section .column fieldset.inline label {
-  display: inline-block;
-  padding-right: 20px;
-  text-align: right;
-  width: 150px;
-}
-
-section .content .section .column fieldset.textarea label {
-  display: block;
-  padding-bottom: 5px;
-  text-align: left;
-  width: 100%;
-}
-
-section .content .section fieldset.inline .text {
-  border-bottom: 1px solid var(--border-colour-form-field);
-  display: inline-block;
-  height: 25px;
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
-  width: 350px;
-  word-wrap: break-word;
-}
-
-section .content .section fieldset.textarea div.markdown {
-  border: 1px solid var(--border-colour-form-field);
-  display: block;
-  margin: 0px auto;
-  min-height: 100px;
-  padding: 10px;
-}
-
-section .content .section fieldset.textarea div:not(.full-width) {
-  width: 500px;
-}
-
-.section fieldset.textarea div.full-width div.markdown {
-  display: flex;
-  margin: 0px auto;
-  width: 90%;
-}
-
 section .content table {
   width: 100%;
 }
@@ -1085,29 +1063,6 @@ section .content td {
 
 
 
-
-section .model-notes {
-  background-color: var(--background-colour-inactive);
-}
-
-section .model-notes div.notes {
-  background-color: var(--background-colour-inactive);
-  padding: 10px;
-}
-
-section .model-notes .model-notes-comment {
-  background-color: var(--background-colour-active);
-  padding: 10px;
-}
-
-section .model-notes .model-note {
-  margin: 10px 0px;
-}
-
-section .model-notes fieldset {
-  display: flex;
-  width: 90%;
-}
 
 textarea#model-note {
   width: 40%;
@@ -1636,18 +1591,6 @@ div.content .header .column.right {
 ticket fixed
 
    ################################################################### */
-
-
-
-
-section h3 {
-  display: flex;
-  flex-direction: row;
-  font-weight: normal;
-  flex-wrap: wrap;
-  font-size: var(--font-size);
-  padding: 0 .5rem;
-}
 
 
 section h3 span {
