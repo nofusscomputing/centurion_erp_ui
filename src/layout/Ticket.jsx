@@ -145,7 +145,14 @@ const Ticket = () => {
                     className="description"
                     titleBar={(
                         ! editing_description && (
-                        <h3 className={"description ticket-type-" + ticket_type}>
+                        <h3
+                            className={"description ticket-type-" + ticket_type}
+                            style={{
+                                fontSize: 'var(--font-size)',
+                                fontWeight: 'normal',
+                                margin: '0',
+                            }}
+                        >
                             <span>
                                 <span className="sub-script">opened by&nbsp;</span>
                                 <FieldData

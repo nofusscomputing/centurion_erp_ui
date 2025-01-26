@@ -28,22 +28,22 @@ div.ticket section.sidebar h3.ticket-type-change {
 }
 
 div.ticket h3.description.ticket-type-incident,
-div.ticket section.sidebar h3.metadata.ticket-type-incident {
+div.ticket section.sidebar h3.ticket-type-incident {
   background-color: var(--background-colour-ticket-type-incident);
 }
 
 div.ticket h3.description.ticket-type-issue,
-div.ticket section.sidebar h3.metadata.ticket-type-issue {
+div.ticket section.sidebar h3.ticket-type-issue {
   background-color: var(--background-colour-ticket-type-issue);
 }
 
 div.ticket h3.description.ticket-type-problem,
-div.ticket section.sidebar h3.metadata.ticket-type-problem {
+div.ticket section.sidebar h3.ticket-type-problem {
   background-color: var(--background-colour-ticket-type-problem);
 }
 
 div.ticket h3.description.ticket-type-project-task,
-div.ticket section.sidebar h3.metadata.ticket-type-project-task {
+div.ticket section.sidebar h3.ticket-type-project-task {
   background-color: var(--background-colour-ticket-type-project-task);
 }
 
@@ -164,6 +164,7 @@ div.ticket div.comments ul.replies li {
 .ticket .discussion .replies h3 {
   display: flex;
   flex-direction: row;
+  /* padding: 0; */
   padding-left: .5rem;
 }
 .ticket .discussion .replies h3 svg {
@@ -187,6 +188,7 @@ div.ticket section.comment {
   flex-direction: row;
   font-size: var(--font-size);
   font-weight: normal;
+  margin: 0;
   padding-left: .5rem;
 }
 

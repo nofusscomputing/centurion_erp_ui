@@ -37,7 +37,15 @@ const RelatedTickets = ({
             className="related-tickets"
             id={'section-related-tickets'}
             titleBar={(
-                <h3 className="related-tickets">Related Tickets</h3>
+                <h3
+                    className="related-tickets"
+                    style={{
+                        fontSize: 'var(--font-size)',
+                        margin: '0',
+                    }}
+                >
+                    Related Tickets
+                </h3>
             )}
         >
 

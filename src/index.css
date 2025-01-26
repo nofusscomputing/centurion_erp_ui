@@ -1692,6 +1692,11 @@ span.badge.badge-icon.ticket-status-icon-testing svg {
 
 
 
+.section fieldset.textarea div.full-width div.markdown {
+  display: flex;
+  margin: 0px auto;
+  width: 90%;
+}
 
 
 

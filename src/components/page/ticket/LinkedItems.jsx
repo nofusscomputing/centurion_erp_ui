@@ -40,7 +40,15 @@ const LinkedItems = ({
                 flexWrap: 'row wrap',
             }}
             titleBar={(
-                <h3 className="linked-items">Linked Items</h3>
+                <h3
+                    className="linked-items"
+                    style={{
+                        fontSize: 'var(--font-size)',
+                        margin: '0',
+                    }}
+                >
+                    Linked Items
+                </h3>
             )}
         >
             <div
