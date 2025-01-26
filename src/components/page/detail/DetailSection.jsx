@@ -1,17 +1,19 @@
-import DoubleColumn from "./DoubleColumn";
-import SingleColumn from "./SingleColumn";
-import Table from "../../Table"
-import { Link, useParams } from "react-router";
-import Badge from "../../Badge";
-import IconLoader from "../../IconLoader";
 import { useEffect, useState } from "react";
-import { apiFetch } from "../../../hooks/apiFetch";
+
+import { Link } from "react-router";
 
 import nunjucks from 'nunjucks'
 
-// require('nunjucks')
+import { apiFetch } from "../../../hooks/apiFetch";
+import Badge from "../../Badge";
+import DoubleColumn from "./DoubleColumn";
+import IconLoader from "../../IconLoader";
+import SingleColumn from "./SingleColumn";
+import Table from "../../Table"
 
-const Section = ({
+
+
+const DetailSection = ({
     layout,
     data,
     metadata,
@@ -93,23 +95,32 @@ const Section = ({
 
     return (
         <div>
+
             <div className="content">
+
                 <div className="section">
+
                     <h3>
                         {'name' in layout ? layout.name : index === 0 ? tab.name : ''}
                         {Object.keys(external_links).length > 0 &&
-                            (index === 0 && String(tab.name).toLowerCase() == 'details') &&
+
+                                (index === 0 && String(tab.name).toLowerCase() == 'details') &&
                                 <span className="external-links" style={{fontWeight: 'normal', float: 'right'}}>
-                                {external_links.results.map((external_link) => (
+
+                                    {external_links.results.map((external_link) => (
                                     <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
+
                                         <Badge
                                             background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
                                             message = {external_link.button_text ? external_link.button_text : external_link.name}
                                         >
+
                                             <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
+
                                         </Badge>
-                                    </Link>
-                                ))}
+
+                                    </Link>))}
+
                                 </span>
                         }
                     </h3>
@@ -131,4 +142,4 @@ const Section = ({
     );
 }
 
-export default Section;
+export default DetailSection;
