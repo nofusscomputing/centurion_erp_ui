@@ -119,19 +119,19 @@ const Detail = () => {
             content_heading={content_heading}
             content_header_icon={content_header_icon}
         />
-        <Section>
-
-            { metadata &&
-
-            <NavTabs
+        <Section
+            className="detail"
+            titleBar={(
+                <NavTabs
                 active_tab={active_tab}
                 back_url = {metadata.urls.back ?
                     String(metadata.urls.back).split('api/v2')[1]
                     : '/' + params.module + '/' + params.model
                 }
                 setActiveTab={setActiveTab}
-                tabs={metadata.layout}
-            />}
+                tabs={metadata.layout} />
+            )}
+        >
 
             { metadata && metadata.layout.map(( tab, index ) => {
 

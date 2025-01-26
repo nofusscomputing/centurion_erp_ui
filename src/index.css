@@ -274,8 +274,63 @@ fieldset span.help-text {
   padding-left: .2em;
 }
 
+fieldset.inline {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 1rem;
+}
+
+fieldset.inline label {
+  flex-grow: 0;
+  text-align: right;
+  padding-right: .5rem;
+  width: 150px;
+}
+
+fieldset.textarea label {
+  text-align: left;
+  width: 100%;
+}
+
+fieldset.inline .text {
+  border-bottom: 1px solid var(--border-colour-form-field);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  width: 350px;
+  word-wrap: break-word;
+}
 
 
+h1 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+h2 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+
+hr {
+  border: none;
+  border-bottom: 1px solid var(--border-colour);
+  margin: 1rem 0;
+}
 
 
 header .icon {
@@ -880,12 +935,6 @@ section {
   margin: 0 .8rem .8rem .8rem;
 }
 
-section hr {
-  border: none;
-  border-bottom: 1px solid var(--border-colour);
-  margin: 0px 10px;
-}
-
 section.error {
   display: flexbox;
   padding: 0px;
@@ -912,7 +961,7 @@ section .nav-tabs {
   border-bottom: 1px solid var(--border-colour);
   display: flex;
   height: 50px;
-  margin: 0px 10px;
+  /* margin: 0px 10px; */
 
 }
 
@@ -1014,29 +1063,6 @@ section .content td {
 
 
 
-
-section .model-notes {
-  background-color: var(--background-colour-inactive);
-}
-
-section .model-notes div.notes {
-  background-color: var(--background-colour-inactive);
-  padding: 10px;
-}
-
-section .model-notes .model-notes-comment {
-  background-color: var(--background-colour-active);
-  padding: 10px;
-}
-
-section .model-notes .model-note {
-  margin: 10px 0px;
-}
-
-section .model-notes fieldset {
-  display: flex;
-  width: 90%;
-}
 
 textarea#model-note {
   width: 40%;
@@ -1565,18 +1591,6 @@ div.content .header .column.right {
 ticket fixed
 
    ################################################################### */
-
-
-
-
-section h3 {
-  display: flex;
-  flex-direction: row;
-  font-weight: normal;
-  flex-wrap: wrap;
-  font-size: var(--font-size);
-  padding: 0 .5rem;
-}
 
 
 section h3 span {

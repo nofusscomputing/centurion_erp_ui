@@ -13,11 +13,18 @@ const DoubleColumn = ({
 
     return (
 
-        <div className="double">
+        <div
+            className="double"
+            style={{
+                display: 'flex',
+                flexFlow: 'row wrap',
+                justifyContent: 'center',
+            }}
+        >
 
             <div className="column">
-            {left.map((field) => {
 
+                {left.map((field) => {
                 if( field in metadata.fields ) {
 
                     return (

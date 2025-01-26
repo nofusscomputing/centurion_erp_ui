@@ -1,82 +1,46 @@
 
-
-section .content {
-  margin: 10px;
+section.detail .content {
+  display: flex;
+  flex-flow: column wrap;
 }
 
-section .content .section {
-  display: flexbox;
-  width: 100%;
+section.detail .content .section {
+  display: flex;
+  flex-flow: column wrap;
+  padding: 0;
+  margin: 0;
 }
 
-section .content .section fieldset {
-  border: none;
-}
-
-section .content .section .double {
-  display: flexbox;
+section.detail div.column {
   width: fit-content;
-  margin: 0px auto;
 }
 
-section .content .section .double .column {
-  display: inline-block;
-  width: fit-content;
-  vertical-align: top;
+section .model-notes {
+  background-color: var(--background-colour-inactive);
 }
 
-section .content .section .column label {
-  font-weight: bold;
+section .model-notes div.notes {
+  background-color: var(--background-colour-inactive);
+  padding: 10px;
 }
 
-section .content .section .column fieldset.inline label {
-  display: inline-block;
-  padding-right: 20px;
-  text-align: right;
-  width: 150px;
+section .model-notes .model-notes-comment {
+  background-color: var(--background-colour-active);
+  padding: 10px;
 }
 
-section .content .section .column fieldset.textarea label {
-  display: block;
-  padding-bottom: 5px;
-  text-align: left;
-  width: 100%;
+section .model-notes .model-note {
+  margin: 10px 0px;
 }
 
-section .content .section fieldset.inline .text {
-  border-bottom: 1px solid var(--border-colour-form-field);
-  display: inline-block;
-  height: 25px;
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
-  width: 350px;
-  word-wrap: break-word;
+section .model-notes fieldset {
+  display: flex;
+  width: 90%;
 }
 
 section .content .section fieldset.textarea div.markdown {
   border: 1px solid var(--border-colour-form-field);
-  display: block;
-  margin: 0px auto;
+  flex-grow: 1;
   min-height: 100px;
-  padding: 10px;
+  padding: .5rem;
 }
-
-section .content .section fieldset.textarea div:not(.full-width) {
-  width: 500px;
-}
-
-
-
-
-
-.section fieldset.textarea div.full-width div.markdown {
-  display: flex;
-  margin: 0px auto;
-  width: 90%;
-}
-
-
-
-
-
-

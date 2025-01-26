@@ -10,6 +10,7 @@ import DoubleColumn from "./DoubleColumn";
 import IconLoader from "../../IconLoader";
 import SingleColumn from "./SingleColumn";
 import Table from "../../Table"
+import Button from "../../form/Button";
 
 
 
@@ -100,12 +101,33 @@ const DetailSection = ({
 
                 <div className="section">
 
-                    <h3>
-                        {'name' in layout ? layout.name : index === 0 ? tab.name : ''}
+                    <h3
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <span
+                            className="text"
+                            style={{
+                                flexGrow: '1'
+                            }}
+                        >
+
+                            {'name' in layout ? layout.name : index === 0 ? tab.name : ''}
+
+                        </span>
+
                         {Object.keys(external_links).length > 0 &&
 
                                 (index === 0 && String(tab.name).toLowerCase() == 'details') &&
-                                <span className="external-links" style={{fontWeight: 'normal', float: 'right'}}>
+                                <span
+                                    className="external-links"
+                                    style={{
+                                        alignSelf: 'flex-start',
+                                        fontWeight: 'normal',
+                                    }}
+                                >
 
                                     {external_links.results.map((external_link) => (
                                     <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
@@ -124,18 +146,32 @@ const DetailSection = ({
                                 </span>
                         }
                     </h3>
+
                     {column}
+
                     {(
                         index === 0
                         && String(tab.name).toLowerCase() == 'details'
                         && metadata.allowed_methods.includes('PUT')
-                    ) 
-                    && <Link to={
-                                metadata.urls.return_url ?
-                                String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
-                                : String(metadata.urls.self).split('api/v2')[1] + '/edit'
+                    ) &&
 
-                            }><button className="common-field form">Edit</button></Link>}
+                    <Link 
+                        to={
+                            metadata.urls.return_url ?
+                            String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
+                            : String(metadata.urls.self).split('api/v2')[1] + '/edit'
+
+                        }
+                        style={{
+                            width: 'fit-content'
+                        }}
+                    >
+
+                        <Button
+                            button_text = "Edit"
+                        />
+
+                    </Link>}
                 </div>
             </div>
         </div>
