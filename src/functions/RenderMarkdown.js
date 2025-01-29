@@ -4,6 +4,7 @@ import markdownIt from "markdown-it";
 import { full as emoji } from 'markdown-it-emoji'
 import model_link_plugin from './markdown_plugins/ModelLink';
 import ticket_link_plugin from './markdown_plugins/TicketLink';
+import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
 
 
 
@@ -25,7 +26,9 @@ const md = markdownIt({
     
         return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
 
-    }
+    },
+    html: false,
+    breaks: true,
 })
 
     .use( require( 'markdown-it-admon' ) )
@@ -40,7 +43,9 @@ const md = markdownIt({
 
     .use(ticket_link_plugin)
 
-    .use(model_link_plugin);
+    .use(model_link_plugin)
+
+    .use(html_whitelist_plugin);
 
 
 
