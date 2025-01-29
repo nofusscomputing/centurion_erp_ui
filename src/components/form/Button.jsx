@@ -69,7 +69,7 @@ const Button = ({
             <div
                 className={div_align}
             >
-                <button id={buttonId} className={button_class} onClick={handleButtonClick} type={type}>{button_text}</button>
+                <button id={id ? id : buttonId} className={button_class} onClick={handleButtonClick} type={type}>{button_text}</button>
             </div>);
     } else if( menu_entries ) {
 
@@ -79,7 +79,7 @@ const Button = ({
             >
 
                 <div className="submit-dropdown-button">
-                    <button id={buttonId} className="button submit-button" onClick={handleButtonClick} type={type}>{button_text}</button>
+                    <button id={id ? id : buttonId} className="button submit-button" onClick={handleButtonClick} type={type}>{button_text}</button>
                     <div
                         className="button dropdown-button"
                         onClick={(e) =>
