@@ -37,7 +37,8 @@ const LinkedItems = ({
             className="linked-items"
             style={{
                 display: 'flex',
-                flexWrap: 'row wrap',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
             }}
             titleBar={(
                 <h3
@@ -55,6 +56,7 @@ const LinkedItems = ({
                 className="items"
                 style={{
                     display: 'flex',
+                    flexWrap: 'wrap',
                 }}
             >
                 {page_data && metadata &&
