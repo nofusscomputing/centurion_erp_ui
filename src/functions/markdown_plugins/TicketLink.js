@@ -74,7 +74,7 @@ function ticket_link (state, silent) {
 
         const icon_o = state.push('icon_open', 'span', 1)
         icon_o.attrPush([
-          'class', 'badge-icon ticket-status-icon ticket-status-icon-' + String(state.env.tickets[item_link.groups.model_id].status).toLowerCase().replace(' ', '_').replace('(', '').replace(')', '')
+          'class', 'badge-icon icon ticket-status-icon ticket-status-icon-' + String(state.env.tickets[item_link.groups.model_id].status).toLowerCase().replace(' ', '_').replace('(', '').replace(')', '')
         ])
 
           const icon_t = state.push('html_inline', '', 0)
@@ -96,16 +96,20 @@ function ticket_link (state, silent) {
 
         const ref_c = state.push('ref_close', 'span', -1)
 
-
-        const anchor_t = state.push('text', '', 0)
-        anchor_t.content = state.env.tickets[item_link.groups.model_id].title
+        const text_o = state.push('text_open', 'span', 1)
+        text_o.attrPush([
+          'class', 'text'
+        ])
+          const text_content = state.push('text', '', 0)
+          text_content.content = state.env.tickets[item_link.groups.model_id].title + ','
+        const text_c = state.push('text_close', 'span', -1)
 
 
         const item_o = state.push('item_open', 'span', 1)
           item_o.attrPush(["class", "sub-script metadata"])
 
           const item_t = state.push('text', '', 0)
-          item_t.content = ', ' + String( state.env.tickets[item_link.groups.model_id].ticket_type ) + ' '
+          item_t.content = String( state.env.tickets[item_link.groups.model_id].ticket_type ) + ' '
 
         const item_c = state.push('item_close', 'span', -1)
 

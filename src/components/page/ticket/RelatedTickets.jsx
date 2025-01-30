@@ -117,7 +117,6 @@ const RelatedTickets = ({
                             style={{
                                 alignSelf: 'center',
                                 marginRight: '.5rem',
-                                lineHeight: '1.5rem',
                                 width: '78px',
                             }}
                         >

@@ -115,7 +115,6 @@ div.ticket section.related-tickets .item:hover {
 
 div.ticket section.related-tickets .icon svg {
   align-self: center;
-  background-color: #0b91ff;
 }
 
 div.ticket section.related-tickets .ticket-related-blocks svg {
@@ -135,18 +134,6 @@ div.ticket section.related-tickets .ticket-related-related svg {
   border-radius: 10px;
   fill: #0b91ff;
 }
-
-
-
-
-
-
-
-div.ticket section.linked-items {
-  display: flex;
-}
-
-
 
 
 
