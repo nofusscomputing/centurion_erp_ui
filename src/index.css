@@ -850,6 +850,17 @@ div.markdown p code {
   color: #fff;
 }
 
+div.code-copy {
+  display: flex;
+  flex-direction: column;
+  margin-top: -1rem;
+  padding-top: -1rem;
+}
+
+button.code-copy svg {
+  fill: var(--text-colour-help);
+
+}
 
 .hljs {
   background: var(--background-colour-inactive);

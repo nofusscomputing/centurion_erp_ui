@@ -1,3 +1,4 @@
+import { renderToString } from 'react-dom/server'
 import hljs from 'highlight.js'
 
 import markdownIt from "markdown-it";
@@ -5,6 +6,9 @@ import { full as emoji } from 'markdown-it-emoji'
 import model_link_plugin from './markdown_plugins/ModelLink';
 import ticket_link_plugin from './markdown_plugins/TicketLink';
 import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
+import IconLoader from '../components/IconLoader';
+import CodeCopy_plugin from './markdown_plugins/CodeCopy';
+
 
 
 
@@ -35,7 +39,7 @@ const md = markdownIt({
 
     .use( anchor, { permalink: true} )
 
-    .use( emoji)
+    .use( emoji )
 
     .use( require('markdown-it-footnote') )
 
@@ -45,7 +49,15 @@ const md = markdownIt({
 
     .use(model_link_plugin)
 
-    .use(html_whitelist_plugin);
+    .use(html_whitelist_plugin)
+
+    .use(CodeCopy_plugin, {
+        element: renderToString(
+            <span  className="icon" >
+                <IconLoader name = 'copy' fill='#ff0000' />
+            </span>
+        )
+    });
 
 
 
