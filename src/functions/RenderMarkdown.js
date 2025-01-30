@@ -3,6 +3,9 @@ import hljs from 'highlight.js'
 
 import markdownIt from "markdown-it";
 import { full as emoji } from 'markdown-it-emoji'
+
+import '../styles/markdown.css'
+
 import model_link_plugin from './markdown_plugins/ModelLink';
 import ticket_link_plugin from './markdown_plugins/TicketLink';
 import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
