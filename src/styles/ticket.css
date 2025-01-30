@@ -84,6 +84,7 @@ div.ticket .sidebar .metadata fieldset {
   border: none;
   margin-bottom: .5rem;
   min-width: 300px;
+  max-width: 300px;
   border-bottom: 1px solid #ccc;
   padding-bottom: 1rem;
 }
@@ -323,7 +324,10 @@ div.ticket .comments section div.comment.row:not(.form) fieldset {
     height: fit-content;
   }
 
-
+  div.ticket .sidebar .metadata fieldset {
+    max-width: unset;
+  }
+  
   div.ticket {
     flex-wrap: wrap;
   }

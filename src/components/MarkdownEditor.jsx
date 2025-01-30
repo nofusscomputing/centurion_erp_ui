@@ -1,8 +1,9 @@
 import TextArea from "./form/Textarea";
 import Button from "./form/Button";
-import { useState } from "react";
+import { useContext, useId, useState } from "react";
 import RenderMarkdown from "../functions/RenderMarkdown";
 import { Form } from "react-router";
+import UserContext from "../hooks/UserContext";
 
 /**
  * Markdown Editor with preview tab.
@@ -25,6 +26,10 @@ const MarkdownEditor = ({
     const [ editing, setEditing ] = useState( true )
 
     const [form_data, setFormData ] = useState({ [field_name]: data[field_name] })
+
+    const fieldsetFormId = useId();
+
+    const user = useContext(UserContext)
 
 
     const handleChange = (e) => {
@@ -74,7 +79,7 @@ const MarkdownEditor = ({
     console.debug('MarkdownEditor: ' + JSON.stringify(form_data))
 
     return (
-        <Form name="inline_form" method="patch" action={String(data._urls._self).split('api/v2')[1]} onSubmit={handleSave}>
+        <Form id={fieldsetFormId} name="inline_form" method="patch" action={String(data._urls._self).split('api/v2')[1]} onSubmit={handleSave}>
             <div
                 style={{
                     display: 'block',
@@ -102,6 +107,7 @@ const MarkdownEditor = ({
                             handleSave(e)
                         }}
                     />
+                    <input id="tz" type="hidden"  name="tz" value={user.settings.timezone} />
                     <input id="metadata" type="hidden"  name="metadata" value={JSON.stringify(metadata)} />
                     </>
                     }
@@ -123,6 +129,7 @@ const MarkdownEditor = ({
                         onClick = {onCancel}
                     />
                     <Button
+                        id="button-save"
                         button_text = 'Save'
                     />
                 </div>
