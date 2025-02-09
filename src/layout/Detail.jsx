@@ -93,17 +93,18 @@ const Detail = () => {
 
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
-            if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
+            const {api_metadata, api_page_data} = apiFetch(
+                page_data['_urls']['notes'],
+            )
 
-                const {api_metadata, api_page_data} = apiFetch(
-                    page_data['_urls']['notes'],
-                )
+                .then((data) =>{
 
-                setNotes(api_page_data)
+                    setNotes(data.api_page_data)
 
-                setNoteMetadata(api_metadata)
+                    setNoteMetadata(data.api_metadata)
 
-            }
+                })
+
         }
 
     }, [
@@ -175,9 +176,9 @@ const Detail = () => {
                                             onChange = {(e) => {
                                                 setNotesForm((prevState) => ({ 
                                                     ...prevState,
-                                                    note: e.target.value,
-                                                    organization: page_data['organization'].id,
-                                                    device: page_data.id
+                                                    content: e.target.value,
+                                                    // organization: page_data['organization'].id,
+                                                    // device: page_data.id
                                                 }
                                                 ))
 
