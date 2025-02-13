@@ -183,7 +183,6 @@ textarea {
 
 select {
   height: 30px;
-  min-width: 230px;
 }
 
 select[multiple] {
@@ -950,7 +949,7 @@ textarea {
 }
 
 .content form fieldset .common-field {
-  min-width: 300px;
+  min-width: none;
 }
 
 

@@ -95,6 +95,11 @@ div.ticket .sidebar .metadata fieldset label {
 }
 
 
+div.ticket .sidebar .metadata fieldset label input,
+div.ticket .sidebar .metadata fieldset label select {
+  width: 95%;
+}
+
 
 div.ticket section h3.related-tickets,
 div.ticket section h3.linked-items {
