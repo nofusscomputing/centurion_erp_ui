@@ -173,10 +173,8 @@ const InlineField = ({
  
 export default InlineField;
 
-export async function InlineFieldAction({
-    request,
-    params,
-}) {
+
+export const InlineFieldAction = async ({ request, params }) => {
 
     if( ! String(request.url).endsWith(document.location.pathname) ) {    // as request does not contain the path, check doc path
 
@@ -272,9 +270,13 @@ export async function InlineFieldAction({
 
         }
 
-        form_data = {
-            ...form_data,
-            [itItem[0]]: value
+        if( value !== '' && value !== 0 ){
+
+            form_data = {
+                ...form_data,
+                [itItem[0]]: value
+            }
+
         }
 
         console.debug(`InlineFieldAction (json apend): ${JSON.stringify(form_data)}`)
@@ -285,14 +287,23 @@ export async function InlineFieldAction({
 
     const update = await apiFetch(
         document.location.pathname,
-        (data) => {
 
-            // onUpdated(data)
-
-        },
+        null,
         request.method,
         form_data
     )
+        .then(data => {
+
+            return data
+
+        });
+
+    const api_return = await update.clone().json()
+
+    if( String(request.method).toLowerCase() == 'post' ) {
+
+        return redirect(String(api_return._urls._self.split('api/v2')[1]))
+    }
 
     return null;
 
