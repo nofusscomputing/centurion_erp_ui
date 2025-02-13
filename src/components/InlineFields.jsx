@@ -4,7 +4,7 @@ import FieldData from "../functions/FieldData";
 import Select from "./form/Select";
 import { apiFetch } from "../hooks/apiFetch";
 import Button from "./form/Button";
-import { Form } from "react-router";
+import { Form, redirect } from "react-router";
 import TextField from "./form/Textfield";
 import { FormatTime } from "../functions/FormatTime";
 import UserContext from "../hooks/UserContext";
@@ -20,10 +20,17 @@ import UserContext from "../hooks/UserContext";
  * - Choice / Select (Single and multiselect)
  *
  * - Relationship / Select (Single and multiselect)
+ * 
+ * ## onFieldChange
+ * 
+ * This function is a callback that is called with field name and field value.
+ * Its use case is that of converting the inline field to a field that is part
+ * of a form. For this to function correctly, parameter `data` must be `null`.
  *
  * @param {Object} data API data containing the field
  * @param {String} field_name Name of the field
  * @param {Object} metadata API Metadata for the field
+ * @param {Function} onFieldChange Callback that will contain the objects {field name, field value}
  *
  * @returns Inline Field
  */
@@ -31,6 +38,7 @@ const InlineField = ({
     data,
     field_name,
     metadata,
+    onFieldChange,
 }) => {
 
     let sanitized_field_name = field_name
@@ -41,10 +49,14 @@ const InlineField = ({
 
     }
 
-    const [ editing, setEditing ] = useState(false)
+    const [ editing, setEditing ] = useState(
+        
+        data ? false : true
+
+    )
 
     const [form_data, setFormData] = useState({
-        [sanitized_field_name]: [data[sanitized_field_name]]
+        [sanitized_field_name]: [data?.sanitized_field_name]
     })
 
     const fieldsetId = useId();
@@ -68,11 +80,16 @@ const InlineField = ({
 
     const handleFormSubmit = (e) => {
 
-        setEditing(false)
+        if( data ) {
+
+            setEditing(false)
+
+        }
 
     }
 
     const onChange = (e) => {
+
 
         let field_value = e.target.value
 
@@ -82,7 +99,31 @@ const InlineField = ({
 
         }
 
+
+        if ( onFieldChange && ! data ) {
+
+            let select_val = Array()
+
+            if( e.target.type === 'select-multiple' ) {
+
+                for( const option of e.target ) {
+
+                    if( option.selected ) {
+                        select_val.push(Number(option.value))
+                    }
+
+                }
+
+                field_value = select_val
+            }
+
+            onFieldChange(e.target.name, field_value)
+
+
+        }
+
         setFormData((prevState) => ({ ...prevState, [e.target.id]: field_value }))
+
 
     }
 
@@ -98,12 +139,13 @@ const InlineField = ({
 
                 return (<Select
                     id = {sanitized_field_name}
-                    value={data[sanitized_field_name]}
+                    value={data ? data[sanitized_field_name] : ''}
                     field_data={metadata.fields[sanitized_field_name]}
                     field_only={true}
+                    onChange={onChange}
                 />)
 
-            case 'DateTime':
+                case 'DateTime':
 
                 return (
                     <TextField
@@ -112,71 +154,100 @@ const InlineField = ({
                         value={String(form_data[sanitized_field_name]).replace('Z', '')}
                         onChange={onChange}
                         fieldset = {false}
+                        disabled = {metadata.fields[sanitized_field_name].read_only}
+                    />
+                )
+
+                case 'String':
+
+                return (
+                    <TextField
+                        id = {sanitized_field_name}
+                        value={form_data[sanitized_field_name]}
+                        onChange={onChange}
+                        fieldset = {false}
+                        disabled = {metadata.fields[sanitized_field_name].read_only}
+                        required = {metadata.fields[sanitized_field_name].required}
                     />
                 )
 
         }
     }
 
-    return (
-        <fieldset id={fieldsetId}>
-            <Form id={fieldsetFormId} method="patch" action={String(data._urls._self).split('api/v2')[1]} onSubmit={handleFormSubmit}>
-                <label id={fieldsetLabelId}>
-                    {metadata.fields[field_name].label}
-                    { ! metadata.fields[sanitized_field_name].read_only &&
-                    <span
-                        id={'edit-field-' + field_name}
-                        onClick={handleEditClick}
-                        style={{
-                            color: 'var(--contrasting-colour)',
-                            float: 'right',
-                            fontSize: 'smaller',
-                            fontWeight: 'normal',
-                            paddingRight: '10px'
-                        }}
-                    >
-                        Edit
-                    </span>}
-                </label>
+    const return_field = (
+        <label id={fieldsetLabelId}>
+            {metadata.fields[field_name].label}
+            { ! metadata.fields[sanitized_field_name].read_only && data &&
+            <span
+                id={'edit-field-' + field_name}
+                onClick={handleEditClick}
+                style={{
+                    color: 'var(--contrasting-colour)',
+                    float: 'right',
+                    fontSize: 'smaller',
+                    fontWeight: 'normal',
+                    paddingRight: '10px'
+                }}
+            >
+                Edit
+            </span>}
+            { editing && fetchFormField() }
+        </label>
+    )
 
-                { editing && fetchFormField() }
 
-                { editing && 
-                <>
-                <input id="id" type="hidden"  name="id" value={data['id']} />
-                <input id="tz" type="hidden"  name="tz" value={user.settings.timezone} />
-                <input id="metadata" type="hidden"  name="metadata" value={JSON.stringify(metadata)} />
-                <Button
-                    button_align = 'right'
-                    button_class = 'mini inverse'
-                    button_text = 'Save'
-                />
-                </>
-                }
+    if( ! data && onChange ){
 
-                { ! editing &&
+        return (
+            <fieldset id={fieldsetId}>
+                {return_field}
+            </fieldset>
+        )
 
-                <span className="text" id={fieldsetTextId}>
-                    <FieldData
-                        metadata = {metadata}
-                        field_name = {field_name}
-                        data = {data}
+    } else {
+
+
+        return (
+            <fieldset id={fieldsetId}>
+                <Form id={fieldsetFormId} method="patch" action={String(data?._urls?._self).split('api/v2')[1]} onSubmit={handleFormSubmit}>
+
+                    {return_field}
+
+                    { editing && data &&
+                    <>
+                    <input id="id" type="hidden"  name="id" value={data?.id} />
+                    <input id="tz" type="hidden"  name="tz" value={user.settings.timezone} />
+                    <input id="metadata" type="hidden"  name="metadata" value={JSON.stringify(metadata)} />
+                    <Button
+                        button_align = 'right'
+                        button_class = 'mini inverse'
+                        button_text = 'Save'
                     />
-                </span>
+                    </>
+                    }
 
-                }
-            </Form>
+                    { ! editing &&
 
-        </fieldset>
-    );
+                    <span className="text" id={fieldsetTextId}>
+                        <FieldData
+                            metadata = {metadata}
+                            field_name = {field_name}
+                            data = {data ? data : null}
+                        />
+                    </span>
+
+                    }
+                </Form>
+
+            </fieldset>
+        );
+    }
 }
  
 export default InlineField;
 
-export async function InlineFieldAction({
-    request,
-    params,
-}) {
+
+export const InlineFieldAction = async ({ request, params }) => {
 
     if( ! String(request.url).endsWith(document.location.pathname) ) {    // as request does not contain the path, check doc path
 
@@ -272,9 +343,13 @@ export async function InlineFieldAction({
 
         }
 
-        form_data = {
-            ...form_data,
-            [itItem[0]]: value
+        if( value !== '' && value !== 0 ){
+
+            form_data = {
+                ...form_data,
+                [itItem[0]]: value
+            }
+
         }
 
         console.debug(`InlineFieldAction (json apend): ${JSON.stringify(form_data)}`)
@@ -285,14 +360,23 @@ export async function InlineFieldAction({
 
     const update = await apiFetch(
         document.location.pathname,
-        (data) => {
 
-            // onUpdated(data)
-
-        },
+        null,
         request.method,
         form_data
     )
+        .then(data => {
+
+            return data
+
+        });
+
+    const api_return = await update.clone().json()
+
+    if( String(request.method).toLowerCase() == 'post' ) {
+
+        return redirect(String(api_return._urls._self.split('api/v2')[1]))
+    }
 
     return null;
 

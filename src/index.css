@@ -181,18 +181,19 @@ textarea {
   border-color: var(--border-colour-form-field);
 }
 
-input:invalid,
-select:invalid,
-textarea:invalid {
-  border: 1px solid var(--border-colour-error);
-}
-
 select {
   height: 30px;
 }
 
 select[multiple] {
   height: 200px;
+}
+
+input:invalid,
+input[type=text]:invalid,
+select:invalid,
+textarea:invalid {
+  border: 1px solid var(--border-colour-error);
 }
 
 
@@ -948,7 +949,7 @@ textarea {
 }
 
 .content form fieldset .common-field {
-  min-width: 300px;
+  min-width: none;
 }
 
 

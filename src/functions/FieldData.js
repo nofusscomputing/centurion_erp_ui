@@ -33,11 +33,16 @@ export default function FieldData({
     autolink = false
 })  {
 
+    const user = useContext(UserContext)
+
+    if( ! data ) {
+
+        return null;
+    }
+
     let field_data = '';
 
     let data_field = field_lookup(field_name, data)
-
-    const user = useContext(UserContext)
 
     if( data_field ) {
 
