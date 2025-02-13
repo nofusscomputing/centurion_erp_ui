@@ -111,7 +111,7 @@ function App() {
                         <Route path="ticket/:model/:pk" element={<Ticket
                             />} loader = {pagedLoader} action={InlineFieldAction} />
 
-                        <Route path="ticket/change/add" element={<Ticket
+                        <Route path="ticket/:model/add" element={<Ticket
                         />} action={InlineFieldAction} loader = {pagedLoader}/>
 
                         {/* ********************************************************
