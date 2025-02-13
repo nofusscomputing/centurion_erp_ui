@@ -32,7 +32,9 @@ const Select = ({
                 multiple = {field_data.relationship_type == 'ManyToMany' ? true : false}
                 disabled = {field_data.read_only}
             >
-                <option value={null}>Please select an option</option>
+                { field_data.relationship_type !== 'ManyToMany' &&
+                <option selected value={""}> - Please select an option - </option>}
+
                 {field_data.choices.map((choice) => {
 
                     let selected = false
