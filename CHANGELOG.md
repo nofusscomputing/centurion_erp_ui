@@ -1,3 +1,55 @@
+## 0.5.0 (2025-02-14)
+
+### feat
+
+- **layout**: Ticket metadata fields to fit width of bar
+- **layout**: New Ticket form migrated from ModelForm -> Ticket
+- **component**: Markdown Editor support for being part of existing form
+- **component**: InlineField support for being part of existing form
+- **component**: Form action `POST` returns redirect to `response._urls._self`
+- **component**: Text field disabled added as option
+- **function**: if `FieldData.data=null` dont process
+- **component**: Select field disabled added as option
+- **component**: Detect Browser mode from user settings
+- **component**: Update to use new notes model
+- **fuunction**: Markdown plugin code block copy buton
+- **component**: Add Copy Icon
+- **function**: Markdown Plugin HTML Tag Whitelist
+- **component**: Add new component section
+- **component**: fetch ALL paginated results for a tickets comments
+- **layout**: Add priority badge field to ticket
+- **layout**: Add impact badge field to ticket
+- **layout**: Add urgency badge field to ticket
+
+### Fixes
+
+- Route for creating tickets must be dynamic
+- **component**: Select field multiselect css psudo class input
+- **component**: when linked items reach end of row, wrap
+- **component**: Ensure the inline edit save button functions for markdown editing
+- **layout**: ensure ticket metadata sidebar doesnt exceed max-width
+- **component**: IF button id specified, use it
+- **layout**: correct ticket layout/css issues
+- **component**: Cater for ManyToOne field for inline form action
+- **component**: select field default to null
+- **component**: for tables if no meta exists dont attempt to access
+
+### Refactoring
+
+- **function**: add text to span element for ticket link
+- **function**: add text to span element for model link
+- **component**: remove line height from replated tickets
+- **layout**: CSS Clean and alignment of items
+- **layout**: Detail view updated to use section and to offer mobile support
+- **layout**: ticket styles for mobile support
+- **component**: Ticket linked items updated to use section and to offer mobile support
+- **layout**: Ticket related tickets updated to use section and to offer mobile support
+- **layout**: Ticket comment(s) updated to use section and to offer mobilke support
+- **layout**: Adjust Ticket to use Section Component
+- **component**: Adjust TicketComments to use Section Component
+- **component**: move styles to components and begin to make more mobile friendly
+- **component**: rejig the badge style so items are aligned
+
 ## 0.4.0 (2025-01-22)
 
 ### feat
