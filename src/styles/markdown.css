@@ -1,0 +1,312 @@
+
+div.markdown h1 {
+  font-size: 22pt;
+  /* margin: 0px;
+  padding: 0px; */
+  padding-bottom: 1rem;
+
+}
+
+div.markdown h2 {
+  font-size: 20pt;
+  /* margin: 0px;
+  padding: 0px; */
+  padding-bottom: 1rem;
+}
+
+div.markdown h3 {
+  font-size: 18pt;
+  /* margin: 0px;
+  padding: 0px; */
+  padding-bottom: 1rem;
+}
+
+div.markdown h4 {
+  font-size: 16pt;
+  /* margin: 0px;
+  padding: 0px; */
+  padding-bottom: 1rem;
+}
+
+div.markdown h5 {
+  font-size: 14pt;
+  /* margin: 0px;
+  padding: 0px; */
+  padding-bottom: 1rem;
+}
+
+div.markdown h6 {
+  font-size: 12pt;
+  /* margin: 0px;
+  padding: 0px; */
+  padding-bottom: 1rem;
+}
+
+
+
+span.markdown:not(.ticket .comment .markdown) {
+
+  font-size: var(--font-size);
+  line-height: var(--line-height-common);
+}
+
+
+
+.markdown p:not(div.admonition p) {
+  background-color: inherit;
+  font-size: var(--font-size);
+  line-height: var(--line-height-common);
+
+  text-align: left;
+
+}
+
+
+div.markdown ol,
+div.markdown ul {
+  margin: 0px;
+  padding: var(--font-size);
+  line-height: var(--line-height-common);
+}
+
+
+div.markdown ol li,
+div.markdown ul li {
+
+  line-height: var(--line-height-common);
+  margin: 5px;
+  /* padding: 0px; */
+  padding-left: 20px;
+}
+
+div.markdown p code {
+  background: var(--background-colour-inactive);
+  color: var(--text-colour);
+  padding: 0px 3px;
+}
+
+
+
+.markdown div.admonition {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 10px;
+  font-size: inherit;
+  margin: 10px;
+  padding: 0px;
+}
+
+.markdown div.admonition p.admonition-title {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: inherit;
+  margin: 0px;
+  padding: 2px 10px 2px 10px;
+}
+
+.markdown div.admonition p:not(p.admonition-title) {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  font-size: inherit;
+  padding: 10px;
+  margin: 0px;
+  width: 100%;
+  color: #3b3b3b;
+}
+
+.markdown div.admonition.info {
+  background-color: #b6f5dd;
+  border-color: #27ffbe;
+}
+
+.markdown div.admonition.info p.admonition-title {
+  background-color: #1ef59170;
+}
+
+.markdown div.admonition.note {
+  background-color: #b6d3f5;
+  border-color: #278cff;
+}
+
+.markdown div.admonition.note p.admonition-title {
+  background-color: #1e82f570;
+  color: #fff;
+}
+
+.markdown div.admonition.tip {
+  background-color: #bbf5b6;
+  border-color: #39ff27;
+}
+
+.markdown div.admonition.tip p.admonition-title {
+  background-color: #37f51e70;
+  color: #fff;
+}
+
+.markdown div.admonition.warning {
+  background-color: #f5d8b6;
+  border-color: #ffa127;
+}
+
+.markdown div.admonition.warning p.admonition-title {
+  background-color: #f5911e70;
+  color: #fff;
+}
+
+.markdown div.admonition.danger {
+  background-color: #f5b6b6;
+  border-color: #ff2727;
+}
+
+.markdown div.admonition.danger p.admonition-title {
+  background-color: #f51e1e70;
+  color: #fff;
+}
+
+.markdown div.admonition.quote {
+  background-color: #d3d3d3;
+  border-color: #868686;
+}
+
+.markdown div.admonition.quote p.admonition-title {
+  background-color: #81818170;
+  color: #fff;
+}
+
+.markdown div.admonition.quote p:not(p.admonition-title) {
+  font-style: italic;
+}
+
+
+
+.markdown div.admonition.success {
+  background-color: #00ff4c88;
+  border-color: #00ff4c;
+}
+
+.markdown div.admonition.success p.admonition-title {
+  background-color: #00ff4c;
+  color: #777;
+}
+
+
+.markdown div.admonition.failure {
+  background-color: #ff000088;
+  border-color: #ff0000;
+  color: #fff;
+}
+
+.markdown div.admonition.failure p.admonition-title {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.markdown div.admonition.failure p:not(p.admonition-title) {
+  color: #fff;
+}
+
+div.code-copy {
+  display: flex;
+  flex-direction: column;
+  margin-top: -1rem;
+  padding-top: -1rem;
+}
+
+button.code-copy svg {
+  fill: var(--text-colour-help);
+
+}
+
+.hljs {
+  background: var(--background-colour-inactive);
+  color: var(--text-colour);
+  padding: 5px;
+  border: 1px solid var(--border-colour);
+  display:block;
+  width: 99%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0px auto;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-variable {
+  color: #008000;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #00f;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type {
+  color: #c28866;
+}
+
+.hljs-addition {
+  color: #73cc73;
+}
+
+.hljs-deletion {
+  color: #ff7b53;
+}
+
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-meta {
+  color: #2b91af;
+}
+
+.hljs-doctag {
+  color: #808080;
+}
+
+.hljs-attr {
+  color: #3166c9;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link {
+  color: #00b0e8;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+.section fieldset.textarea div.full-width div.markdown {
+  display: flex;
+  margin: 0px auto;
+  width: 90%;
+}
+
+
+
+
+
+

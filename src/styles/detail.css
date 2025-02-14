@@ -1,0 +1,46 @@
+
+section.detail .content {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+section.detail .content .section {
+  display: flex;
+  flex-flow: column wrap;
+  padding: 0;
+  margin: 0;
+}
+
+section.detail div.column {
+  width: fit-content;
+}
+
+section .model-notes {
+  background-color: var(--background-colour-inactive);
+}
+
+section .model-notes div.notes {
+  background-color: var(--background-colour-inactive);
+  padding: 10px;
+}
+
+section .model-notes .model-notes-comment {
+  background-color: var(--background-colour-active);
+  padding: 10px;
+}
+
+section .model-notes .model-note {
+  margin: 10px 0px;
+}
+
+section .model-notes fieldset {
+  display: flex;
+  width: 90%;
+}
+
+section .content .section fieldset.textarea div.markdown {
+  border: 1px solid var(--border-colour-form-field);
+  flex-grow: 1;
+  min-height: 100px;
+  padding: .5rem;
+}

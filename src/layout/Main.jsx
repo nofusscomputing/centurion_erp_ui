@@ -5,9 +5,12 @@ import { Outlet } from "react-router";
 const MainLayout = () => {
 
     return (
-        <article>
+        <div className="content" style={{
+            display: "flex",
+            flexDirection: "column"
+        }}>
             <Outlet />
-        </article>
+        </div>
     );
 }
 

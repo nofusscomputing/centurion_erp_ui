@@ -13,7 +13,6 @@ const History = () => {
     const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const params = useParams();
-    SetContentHeaderIcon('')
 
     const url_builder = urlBuilder(
         params

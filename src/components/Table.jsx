@@ -85,8 +85,11 @@ const Table = ({
 
         if( callback ) {
 
-            callback(loader_metadata.name)
+            if( loader_metadata ) {
 
+                callback(loader_metadata.name)
+
+            }
         }
 
         setPageLoaded(true)

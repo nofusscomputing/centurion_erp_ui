@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import { apiFetch } from "../../../hooks/apiFetch";
-import IconLoader from "../../IconLoader";
-import RenderMarkdown from "../../../functions/RenderMarkdown";
+
 import FieldData from "../../../functions/FieldData";
+
+import { apiFetch } from "../../../hooks/apiFetch";
+
+import IconLoader from "../../IconLoader";
+import Section from "../../Section";
+
+
 
 const RelatedTickets = ({
     data_url = null,
@@ -28,8 +33,24 @@ const RelatedTickets = ({
 
 
     return (
-        <section id={'section-related-tickets'} className="related-tickets" key={'section-related-tickets'}>
-            <h3 className="related-tickets">Related Tickets</h3>
+        <Section
+            className="related-tickets"
+            id={'section-related-tickets'}
+            titleBar={(
+                <h3
+                    className="related-tickets"
+                    style={{
+                        fontSize: 'var(--font-size)',
+                        margin: '0',
+                    }}
+                >
+                    Related Tickets
+                </h3>
+            )}
+        >
+
+            <div className="items">
+
             {(metadata && page_data) &&
 
             page_data.results?.map((related_ticket) => {
@@ -67,32 +88,57 @@ const RelatedTickets = ({
 
                 related_ticket['display_name'] = '#' + String(this_id.id)
 
-                return (
-                <div id={"linked-ticket-" + related_ticket['id']} className="related-ticket" key={"linked-ticket-" + related_ticket['id']}>
-                    <div className={"icon icon-related-ticket ticket-related-" + String(related_name).replace(' ', '_')}>
-                        <IconLoader
-                            name={'ticket_related_' + String(related_name).replace(' ', '_')}
-                        />
-                         &nbsp;</div>
-
-                    <div className="markdown">
-
-                        {related_name}&nbsp;
-
-                        <span style={{
-                            display: 'inline-block'
-                            }}>
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='display_name'
-                                    data={related_ticket}
-                                />
-                            </span>
+                return(
+                    <div style={{
+                        display: 'inline-block'
+                    }}>
+                    <div
+                        id={"linked-ticket-" + related_ticket['id']}
+                        className="item"
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            margin: '.1rem 0',
+                            textAlign: 'left',
+                        }}
+                    >
+                        <span
+                            className={"icon icon-related-ticket ticket-related-" + String(related_name).replace(' ', '_')}
+                            style={{
+                                marginRight: '.5rem'
+                            }}
+                        >
+                            <IconLoader
+                                name={'ticket_related_' + String(related_name).replace(' ', '_')}
+                            />
+                        </span>
+                        <span
+                            className="text"
+                            style={{
+                                alignSelf: 'center',
+                                marginRight: '.5rem',
+                                width: '78px',
+                            }}
+                        >
+                            {related_name}
+                        </span>
+                        <span
+                            className="text"
+                        >
+                            <FieldData
+                                metadata={metadata}
+                                field_name='display_name'
+                                data={related_ticket}
+                            />
+                        </span>
                     </div>
-                </div>
+                    </div>
                 );
+
             })}
-        </section>
+            </div>
+
+        </Section>
     );
 }
  

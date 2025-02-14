@@ -84,8 +84,7 @@ function App() {
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
                             <Route path=":common_model/:model/:pk/edit" element={null} />
-                            
-                            <Route path="ticket/:model/add" element={null} />
+
                             <Route path=":model/add" element={null} />
                             <Route path=":model/:pk/delete" element={null} />
                             <Route path=":model/:pk/edit" element={null} />
@@ -111,6 +110,9 @@ function App() {
 
                         <Route path="ticket/:model/:pk" element={<Ticket
                             />} loader = {pagedLoader} action={InlineFieldAction} />
+
+                        <Route path="ticket/:model/add" element={<Ticket
+                        />} action={InlineFieldAction} loader = {pagedLoader}/>
 
                         {/* ********************************************************
                             Detail View

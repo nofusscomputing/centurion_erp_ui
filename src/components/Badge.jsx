@@ -1,54 +1,66 @@
+import { useId } from "react";
 import FieldData from "../functions/FieldData";
 
 
 
-const Badge = (params) => {
+const Badge = ({
+    background = null,
+    children = null,
+    icon_style = null,
+    message = null,
+    text_style = null,
 
-    let message = params.message ? params.message : '-'
+}) => {
 
-    if( 'children' in params ) {
+    const badgeId = useId()
+    const badgeTextId = useId()
 
-        if( params.children.type?.name == "TicketStatusIcon" ) {
+    message = message ? message : '-'
+
+    if( children ) {
+
+        if( children.type?.name == "TicketStatusIcon" ) {
 
             message = FieldData({
-                metadata: params.children.props.metadata,
+                metadata: children.props.metadata,
                 field_name:'status',
-                data: params.children.props.page_data
+                data: children.props.page_data
             })
 
         }
 
     }
 
+
+    let class_name = 'badge badge-icon '
+    if( icon_style ) {
+
+        class_name += ' icon ' + icon_style
+    }
+
     let style = {
         backgroundColor: 'var(--background-colour-active)'
     }
-    if( params.background ) {
+    if( background ) {
 
         style = {
-            backgroundColor: params.background
+            backgroundColor: background
         }
     }
 
-    let icon_style = 'badge-icon'
-    if( params.icon_style ) {
-        icon_style = icon_style + ' ' + params.icon_style
-    }
-
-    let text_style = 'badge-text'
-    if( params.text_style ) {
-        text_style = text_style + ' ' + params.text_style
+    text_style = 'badge-text ' + text_style
+    if( text_style ) {
+        text_style = text_style + ' ' + text_style
     }
 
     return (
         <span
-            className="badge"
+            className={class_name}
+            id={badgeId}
             style={style}
         >
-        <span className={icon_style}>
-            { params.children }
-        </span>
-        <span className={text_style}>{message}</span>
+            { children }
+        <span className={text_style} id={badgeTextId}>{message}</span>
      </span>
     );
 }

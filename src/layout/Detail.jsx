@@ -1,15 +1,26 @@
-import { useEffect, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router";
+import {
+    useEffect,
+    useState
+} from "react";
+
+import {
+    Link,
+    useLoaderData,
+    useParams
+} from "react-router";
+
+import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
-import NavTabs from "../components/page/detail/Navtabs";
-import Section from "../components/page/detail/Section";
-import ModelNote from "../components/page/detail/ModelNote";
-import TextArea from "../components/form/Textarea";
+
 import Button from "../components/form/Button";
-import IconLoader from "../components/IconLoader";
-import urlBuilder from "../hooks/urlBuilder";
 import ContentHeader from "../components/page/ContentHeader";
+import IconLoader from "../components/IconLoader";
+import ModelNote from "../components/page/detail/ModelNote";
+import NavTabs from "../components/page/detail/Navtabs";
+import DetailSection from "../components/page/detail/DetailSection";
+import TextArea from "../components/form/Textarea";
+import Section from "../components/Section";
 
 
 
@@ -29,10 +40,6 @@ const Detail = () => {
     const [ update_notes, setUpdateNotes ] = useState(false)
     const [ notes_form, setNotesForm ] = useState({})
     const [ note_metadata, setNoteMetadata ] = useState(null)
-
-    const url_builder = urlBuilder (
-        params
-    )
 
     useEffect(() => {
 
@@ -86,17 +93,18 @@ const Detail = () => {
 
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
-            if( String(page_data['_urls']['notes']).includes('/') ) {    // is URL
+            const {api_metadata, api_page_data} = apiFetch(
+                page_data['_urls']['notes'],
+            )
 
-                const {api_metadata, api_page_data} = apiFetch(
-                    page_data['_urls']['notes'],
-                )
+                .then((data) =>{
 
-                setNotes(api_page_data)
+                    setNotes(data.api_page_data)
 
-                setNoteMetadata(api_metadata)
+                    setNoteMetadata(data.api_metadata)
 
-            }
+                })
+
         }
 
     }, [
@@ -112,17 +120,20 @@ const Detail = () => {
             content_heading={content_heading}
             content_header_icon={content_header_icon}
         />
-        <section>
-
-            { metadata && <NavTabs
+        <Section
+            className="detail"
+            titleBar={(
+                <NavTabs
                 active_tab={active_tab}
                 back_url = {metadata.urls.back ?
                     String(metadata.urls.back).split('api/v2')[1]
                     : '/' + params.module + '/' + params.model
                 }
                 setActiveTab={setActiveTab}
-                tabs={metadata.layout}
-            />}
+                tabs={metadata.layout} />
+            )}
+        >
+
             { metadata && metadata.layout.map(( tab, index ) => {
 
                 if( active_tab === tab.name.toLowerCase()
@@ -136,7 +147,9 @@ const Detail = () => {
 
                         return(
                             <div className="model-notes">
+
                                 <div className="model-notes-comment">
+
                                     <form onSubmit={async (e) => {
                                         e.preventDefault()
 
@@ -163,9 +176,9 @@ const Detail = () => {
                                             onChange = {(e) => {
                                                 setNotesForm((prevState) => ({ 
                                                     ...prevState,
-                                                    note: e.target.value,
-                                                    organization: page_data['organization'].id,
-                                                    device: page_data.id
+                                                    content: e.target.value,
+                                                    // organization: page_data['organization'].id,
+                                                    // device: page_data.id
                                                 }
                                                 ))
 
@@ -178,6 +191,7 @@ const Detail = () => {
                                         />
                                     </form>
                                 </div>
+
                                 <div className="notes">
                                 {(notes && note_metadata) &&
                                     notes.results.map((note) => {
@@ -198,8 +212,10 @@ const Detail = () => {
                                 
                                 return(
                                     <div>
+
                                         <hr />
-                                        <Section
+
+                                        <DetailSection
                                             index = { section_index }
                                             layout = {section}
                                             data = { page_data }
@@ -211,7 +227,7 @@ const Detail = () => {
                             }
 
                             return(
-                                <Section
+                                <DetailSection
                                     index = { section_index }
                                     layout = {section}
                                     data = { page_data }
@@ -223,7 +239,7 @@ const Detail = () => {
                     }
                 }
             })}
-        </section>
+        </Section>
         </>
      );
 }

@@ -1,9 +1,17 @@
+import { renderToString } from 'react-dom/server'
 import hljs from 'highlight.js'
 
 import markdownIt from "markdown-it";
 import { full as emoji } from 'markdown-it-emoji'
+
+import '../styles/markdown.css'
+
 import model_link_plugin from './markdown_plugins/ModelLink';
 import ticket_link_plugin from './markdown_plugins/TicketLink';
+import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
+import IconLoader from '../components/IconLoader';
+import CodeCopy_plugin from './markdown_plugins/CodeCopy';
+
 
 
 
@@ -25,14 +33,16 @@ const md = markdownIt({
     
         return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
 
-    }
+    },
+    html: false,
+    breaks: true,
 })
 
     .use( require( 'markdown-it-admon' ) )
 
     .use( anchor, { permalink: true} )
 
-    .use( emoji)
+    .use( emoji )
 
     .use( require('markdown-it-footnote') )
 
@@ -40,7 +50,17 @@ const md = markdownIt({
 
     .use(ticket_link_plugin)
 
-    .use(model_link_plugin);
+    .use(model_link_plugin)
+
+    .use(html_whitelist_plugin)
+
+    .use(CodeCopy_plugin, {
+        element: renderToString(
+            <span  className="icon" >
+                <IconLoader name = 'copy' fill='#ff0000' />
+            </span>
+        )
+    });
 
 
 

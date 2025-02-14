@@ -1,3 +1,4 @@
+import { useId } from "react"
 import IconLoader from "../IconLoader"
 
 
@@ -61,13 +62,14 @@ const Button = ({
         MenuClickCallback(Number(e.target.value))
     }
 
+    const buttonId = useId();
 
     if( ! menu_entries ) {
         return (
             <div
                 className={div_align}
             >
-                <button id={'button-' + String(button_text).toLowerCase()} className={button_class} onClick={handleButtonClick} type={type}>{button_text}</button>
+                <button id={id ? id : buttonId} className={button_class} onClick={handleButtonClick} type={type}>{button_text}</button>
             </div>);
     } else if( menu_entries ) {
 
@@ -77,7 +79,7 @@ const Button = ({
             >
 
                 <div className="submit-dropdown-button">
-                    <button id={'button-' + String(button_text).toLowerCase()} className="button submit-button" onClick={handleButtonClick} type={type}>{button_text}</button>
+                    <button id={id ? id : buttonId} className="button submit-button" onClick={handleButtonClick} type={type}>{button_text}</button>
                     <div
                         className="button dropdown-button"
                         onClick={(e) =>
@@ -92,14 +94,14 @@ const Button = ({
                             width="35px"
                         />
                     </div>
-                    <div id="myDropdown" class="dropdown-content">
+                    <div id="myDropdown" className="dropdown-content">
                         {menu_entries.map((menu_text) => {
 
                             if( String(menu_text.display_name).toLowerCase() !== 'action' ) {
 
                                 return (
 
-                                    <button className="dropdown-menu-entry" onClick={handleMenuClick} type="button" value={menu_text.value}>{menu_text.display_name}</button>
+                                    <button id={'button-dropdown-' + buttonId} key={'button-dropdown-' + String(button_text).toLowerCase() + '-' + menu_text.value} className="dropdown-menu-entry" onClick={handleMenuClick} type="button" value={menu_text.value}>{menu_text.display_name}</button>
 
                                 );
                             } else{
