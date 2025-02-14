@@ -23,9 +23,9 @@ export function secondsToTime(secs) {
     const hour = 3600
     const minute = 60
 
-    const hours = Math.floor( (secs % hour ) / hour )
+    const hours = Math.floor( secs / hour )
     const minutes = Math.floor( ( secs % hour ) / minute )
-    const seconds = Math.floor( (secs % hour) % minute )
+    const seconds = Math.floor( secs % minute )
 
 
     var obj = {
