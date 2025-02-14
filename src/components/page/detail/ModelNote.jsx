@@ -29,7 +29,7 @@ const ModelNote = ({
                     <span>
                         <FieldData
                             metadata={metadata}
-                            field_name='usercreated'
+                            field_name='created_by'
                             data={note_data}
                         />
                     </span>
@@ -38,7 +38,7 @@ const ModelNote = ({
 
                 <div className="comment-body">
                     <RenderMarkdown>
-                        {note_data['note']}
+                        {note_data['content']}
                     </RenderMarkdown>
                 </div>
 

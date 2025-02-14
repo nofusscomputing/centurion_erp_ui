@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import { apiFetch } from "../../../hooks/apiFetch";
-import TicketCommentForm from "./TicketCommentForm";
 import TicketComment from "./TicketComment";
+import TicketCommentForm from "./TicketCommentForm";
 
 
 
@@ -14,38 +14,89 @@ const TicketComments = ({
     comments_url
 }) => {
 
-    const [comments, setComments] = useState(null)
-    const [ reload, setRelaod ] = useState(false)
+    const [comments, setComments] = useState({
+        fetch_url: comments_url,
+        comments: {}
+    });
+
+    const [ reload, setRelaod ] = useState(false);
+
+    const ticktCommentsId = useId();
+    const ticktCommentsListId = useId();
 
 
     useEffect(() => {
 
-        apiFetch(
-            comments_url,
-            (data) =>{
+        let url = comments.fetch_url
 
-                setComments(data)
+        async function do_fetch() {
 
-            },
-            undefined,
-            undefined,
-            false
-        )
+            do {
+
+                await apiFetch(
+                    url,
+                    null,
+                    undefined,
+                    undefined,
+                    false
+                )
+                    .then((response) => {
+        
+                        response.api_page_data.results.map(( comment ) => {
+        
+                            setComments((prevState) => ({
+                                fetch_url: response.api_page_data.links.last,
+                                comments: {
+                                    ...prevState.comments,
+                                    [comment.id]: comment
+                                }
+                            }))
+        
+                        })
+        
+                        url = response.api_page_data.links.next
+        
+                    })
+
+            } while( url );
+
+        }
+
+        do_fetch();
+
 
     }, [reload, comments_url])
 
 
     return (
         (comments && comment_metadata) &&
-        <div id="div-ticket-comments" className="comments" key={"div-ticket-comments"}>
-            <ul className="comments">
-                {comments.results?.map((comment) => {
+        <div
+            className="comments"
+            id={ticktCommentsId}
+            key={"div-ticket-comments"}
+            style={{
+                marginLeft: '.8rem',
+                paddingLeft: '1.6rem'
+            }}
+        >
+
+            <ul
+                id={ticktCommentsListId}
+                className="comments"
+                style={{
+                    paddingLeft: '0'
+                }}
+            >
+                {Object.keys(comments.comments).map(key => {
 
                     return (
                         comment_metadata &&
-                        <li id={'li-ticket-comment-' + comment.id} key={'li-ticket-comment-' + comment.id}>
+                        <li
+                            className="comments"
+                            key={'ticket-comment-' + comments.comments[key].id}
+                        >
                             <TicketComment
-                                comment_data={comment}
+                                comment_data={comments.comments[key]}
                                 post_url = {comments_url}
                                 metadata={comment_metadata}
                                 ticket_id={ticket_id}
@@ -55,8 +106,10 @@ const TicketComments = ({
                         </li>
                     )
                 })}
-                {comment_metadata && comments.results &&
-                    <li>
+                {comment_metadata &&
+                    <li
+                        key={'ticket-comment-reply-form'}
+                    >
                         <TicketCommentForm
                             metadata={comment_metadata}
                             post_url = {comments_url}

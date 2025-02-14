@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router";
+import { useEffect, useId, useState } from "react";
+import { Form, useLoaderData, useParams } from "react-router";
+
+import '../styles/ticket.css'
+
+import ContentHeader from "../components/page/ContentHeader";
+import InlineField from "../components/InlineFields";
+import LinkedItems from "../components/page/ticket/LinkedItems";
+import MarkdownEditor from "../components/MarkdownEditor";
+import RelatedTickets from "../components/page/ticket/RelatedTickets";
+import Section from "../components/Section";
+import TicketComments from "../components/page/ticket/TicketComments";
+
 import FieldData from "../functions/FieldData";
 
 import { apiFetch } from "../hooks/apiFetch";
-import LinkedItems from "../components/page/ticket/LinkedItems";
-import RelatedTickets from "../components/page/ticket/RelatedTickets";
-import TicketComments from "../components/page/ticket/TicketComments";
-import MarkdownEditor from "../components/MarkdownEditor";
-import InlineField from "../components/InlineFields";
-import ContentHeader from "../components/page/ContentHeader";
+import urlBuilder from "../hooks/urlBuilder";
 
 
 
@@ -31,7 +37,9 @@ export function secondsToTime(secs) {
 }
 
 
-const Ticket = () => {
+const Ticket = ({
+    actionData = null,
+}) => {
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
@@ -39,6 +47,8 @@ const Ticket = () => {
     const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
 
     const [ editing_description, setEditingDescription ] = useState( false )
+
+    const [ new_ticket_form, setNewTicketFormData ] = useState({})
 
     const {page_data, metadata} = useLoaderData();
 
@@ -48,17 +58,41 @@ const Ticket = () => {
 
     const [ ticket_type, SetTicketType ] = useState(null)
 
+    const params = useParams();
+
+    const url_params = urlBuilder(params);
+
+    const [new_ticket, setNewTicket] = useState(
+        url_params.params.action === 'add' ? true : false
+    )
+
+
+    useEffect( ()=> {
+
+        setNewTicket(url_params.params.action === 'add' ? true : false)
+
+    }, [
+        url_params.params.action
+    ])
+
 
     useEffect( () => {
 
-        setTicketData(page_data)
-        setTicketMetaData(metadata)
+        if( url_params.params.action !== 'add' ) {
 
-        setContentHeading(page_data['title'])
+            setTicketData(page_data)
+
+            setContentHeading(page_data['title'])
+
+        }else{
+            setContentHeading('New ' + metadata.name)
+        }
+
+        setTicketMetaData(metadata)
 
     },[
         page_data,
-        metadata
+        metadata,
     ])
 
 
@@ -84,21 +118,25 @@ const Ticket = () => {
 
     useEffect(() => {
 
-        if( page_data['_urls']['comments'] ) {
+        if( ! new_ticket ) {
 
-            apiFetch(
-                page_data['_urls']['comments'],
-                (data) =>{
+            if( page_data['_urls']['comments'] ) {
 
-                    setCommentMetaData(data)
+                apiFetch(
+                    page_data['_urls']['comments'],
+                    (data) =>{
 
-                },
-                'OPTIONS'
-            )
+                        setCommentMetaData(data)
+
+                    },
+                    'OPTIONS'
+                )
+            }
         }
 
     }, [
-        page_data
+        new_ticket,
+        page_data,
     ])
 
 
@@ -123,51 +161,113 @@ const Ticket = () => {
     }
 
 
-    return (
-        ticket_metadata && comment_metadata && ticket_data && (
+    const ticketElementIdRandom = useId()
+
+    const ticketElementId = () => {
+
+        if( new_ticket ) {
+
+            return ticketElementIdRandom
+
+        } else {
+
+            return ticket_data.id
+
+        }
+    }
+
+    const onFieldChange = ( field_name, field_value ) => {
+        
+        setNewTicketFormData((prevState) => ({
+            ...prevState,
+            [field_name]: field_value
+        }))
+    }
+
+    console.debug(`new form data: ${JSON.stringify( new_ticket_form )}`)
+
+
+    const return_data = (
+        ticket_metadata && (
         <>
+
         <ContentHeader
             content_heading={content_heading}
             content_header_icon={content_header_icon}
         />
-        <div className="ticket">
-        <div className="contents">
+        <div id={'ticket-' + ticketElementId()} className="ticket">
 
-            { editing_description &&
-                <section className="description">
+            <div className="contents">
+
+                <Section
+                    className="description"
+                    titleBar={(
+                        ! editing_description && (
+                        <h3
+                            className={"description ticket-type-" + ticket_type}
+                            style={{
+                                fontSize: 'var(--font-size)',
+                                fontWeight: 'normal',
+                                margin: '0',
+                            }}
+                        >
+                            <span>
+                                <span className="sub-script">opened by&nbsp;</span>
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='opened_by'
+                                    data={ticket_data}
+                                />
+                            </span>&nbsp;
+                            <span>
+                                <span className="sub-script">on&nbsp;</span> 
+                                <FieldData
+                                    metadata={metadata}
+                                    field_name='created'
+                                    data={ticket_data}
+                                />
+                            </span>&nbsp;
+                            <span>
+                            <span className="sub-script">Updated&nbsp;</span> 
+                            <FieldData
+                                metadata={metadata}
+                                field_name='modified'
+                                data={ticket_data}
+                            />
+                            </span>
+                        </h3>
+                        )
+                    )}
+                >
+                    {new_ticket && 
+                        <>
+                        <InlineField
+                        data={null}
+                        field_name='title'
+                        metadata={metadata}
+                        onFieldChange={onFieldChange}
+                    />
+
+                    <button id="random-id" className="button submit-button" type="Submit">Test Submit</button>
+                    </>
+                    }
+                    { (editing_description || new_ticket) && (
+
+
                     <MarkdownEditor
                         auto_content_height = {true}
                         data={ticket_data}
                         field_name = 'description'
                         metadata={metadata}
                         onCancel={handleDescriptionCancel}
+                        onChange={onFieldChange}
                         onSave={handleDescriptionSave}
                     />
-                </section>
-            }
 
-            { ! editing_description &&
-                <section className="description">
-                    <h3 className={"description ticket-type-" + ticket_type}>
-                        <span class="sub-script">opened by&nbsp;</span>
-                        <FieldData
-                            metadata={metadata}
-                            field_name='opened_by'
-                            data={ticket_data}
-                        />&nbsp;
-                        <span class="sub-script">on&nbsp;</span> 
-                        <FieldData
-                            metadata={metadata}
-                            field_name='created'
-                            data={ticket_data}
-                        />&nbsp;
-                        <span class="sub-script">Updated&nbsp;</span> 
-                        <FieldData
-                            metadata={metadata}
-                            field_name='modified'
-                            data={ticket_data}
-                        />
-                    </h3>
+                    )}
+
+                    {  ! editing_description && ! new_ticket && (
+
                     <div className="markdown">
                         <button className="common-field form" onClick={handleDescriptionEdit}>Edit</button>
                         <FieldData
@@ -176,69 +276,93 @@ const Ticket = () => {
                             data={ticket_data}
                         />
                     </div>
-                </section>
-            }
+                    )}
 
-            <div>
-                { page_data['_urls']['related_tickets'] &&
+                </Section>
+
+                { ! new_ticket &&
+
                 <RelatedTickets
-                    data_url={String(page_data['_urls']['related_tickets']).split('api/v2')[1]}
-                    ticket_id={page_data['id']}
+                    data_url={String(page_data?._urls?.related_tickets).split('api/v2')[1]}
+                    ticket_id={page_data?.id}
                 />}
 
-                { page_data['_urls']['linked_items'] &&
+                { ! new_ticket &&
+
                 <LinkedItems
-                    data_url={String(page_data['_urls']['linked_items']).split('api/v2')[1]}
+                    data_url={String(page_data?._urls?.linked_items).split('api/v2')[1]}
                 />}
 
-                { (
-                    comment_metadata
-                    && page_data['_urls']['comments']
-                    && page_data['id']
+                { comment_metadata &&
 
-                ) && 
                 <TicketComments
                     comment_metadata = {comment_metadata}
-                    comments_url = {String(page_data['_urls']['comments']).split('api/v2')[1] + '?page[size]=500'}
+                    comments_url = {String(page_data?._urls?.comments).split('api/v2')[1] + ''}
                     ticket_id = {page_data['id']}
                 />}
+
             </div>
-        </div>
 
-        <div className="sidebar">
-
-            <div className="metadata">
-                <div>
-
-                    <h3 className={"metadata ticket-type-" + ticket_type}>
+            <Section
+                className="sidebar"
+                id={'ticket-sidebar-' + ticketElementId()} 
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+                titleBar={(
+                    <h3
+                        className={"sidebar ticket-type-" + ticket_type}
+                        style={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                        }}
+                    >
                         Ticket&nbsp;#
                         <FieldData
-                        metadata={metadata}
-                        field_name='id'
-                        data={ticket_data}
-                    />
-                    &nbsp;
-                    {ticket_data['external_ref'] &&(
-                        ('( #') + ticket_data['external_ref'] + (')')
-                    )}
+                            metadata={metadata}
+                            field_name='id'
+                            data={ticket_data}
+                        />
+                        &nbsp;
+                        {ticket_data?.external_ref &&(
+                            ('( #') + ticket_data['external_ref'] + (')')
+                        )}
                     </h3>
+                )}
+            >
+
+                <div
+                    className="metadata"
+                    id={'ticket-sidebar-metadata-' + ticketElementId()} 
+                >
+                    { new_ticket &&
+                    <InlineField
+                        data={ticket_data}
+                        field_name='organization'
+                        metadata={metadata}
+                        onFieldChange={onFieldChange}
+                    />}
 
                     <InlineField
                         data={ticket_data}
                         field_name='assigned_users'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
                         field_name='assigned_teams'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
                         field_name='status_badge'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <fieldset>
@@ -250,6 +374,7 @@ const Ticket = () => {
                         data={ticket_data}
                         field_name='category'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
@@ -262,6 +387,7 @@ const Ticket = () => {
                         data={ticket_data}
                         field_name='milestone'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <fieldset>
@@ -273,20 +399,23 @@ const Ticket = () => {
 
                     <InlineField
                         data={ticket_data}
-                        field_name='urgency'
+                        field_name='urgency_badge'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
-                        field_name='impact'
+                        field_name='impact_badge'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
-                        field_name='priority'
+                        field_name='priority_badge'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <fieldset>
@@ -300,39 +429,42 @@ const Ticket = () => {
                         data={ticket_data}
                         field_name='planned_start_date'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
                         field_name='real_start_date'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
                         field_name='planned_finish_date'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
                         field_name='real_finish_date'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
-
-
-
 
                     <InlineField
                         data={ticket_data}
                         field_name='subscribed_users'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <InlineField
                         data={ticket_data}
                         field_name='subscribed_teams'
                         metadata={metadata}
+                        onFieldChange={onFieldChange}
                     />
 
                     <fieldset>
@@ -341,14 +473,38 @@ const Ticket = () => {
                     </fieldset>
 
                 </div>
-            </div>
 
-        </div>
+            </Section>
         </div>
         </>
         )
 
     );
+
+
+    if( new_ticket ) {
+
+        return (
+            <Form id={'create-' + ticketElementId()} method="POST" action={String(document.location.href).replace(document.location.origin, '')}
+                onSubmit={(e) => {
+                    
+                    setCommentMetaData(null)
+                    setNewTicketFormData({})
+                }}
+            >
+                {return_data}
+            </Form>
+        )
+    } else {
+
+
+        return (
+            <>
+                {return_data}
+            </>
+        )
+
+    }
 }
 
 export default Ticket;

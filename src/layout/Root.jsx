@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Outlet } from "react-router";
 
 import Header from "../components/page/Header";
@@ -11,9 +11,12 @@ const RootLayout = ({
     menu_entries,
 }) => {
 
+    const [api_version_data, setAPIVersionData] = useState(null)
+
     const [nav_visible, setNavVisible] = useState(true)
 
-    const [api_version_data, setAPIVersionData] = useState(null)
+    const mainId = useId();
+    const viewPortId = useId();
 
     return (
         <div>
@@ -21,7 +24,7 @@ const RootLayout = ({
                 nav_visible={nav_visible}
                 setNavVisible={setNavVisible}
             />
-            <div className="view-port">
+            <div id={viewPortId} className="view-port">
                 <Navbar
                     menu_entries={menu_entries}
                     nav_visible={nav_visible}
@@ -32,7 +35,10 @@ const RootLayout = ({
                     }}
                 />
 
-                <main>
+                <main id={mainId} style={{
+                    backgroundColor: 'var(--background-colour-inactive)',
+                    width: "100%"
+                }}>
 
                     <Outlet />
 

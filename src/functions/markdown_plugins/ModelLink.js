@@ -71,7 +71,7 @@ function model_link (state) {
 
         const icon_o = state.push('icon_open', 'span', 1)
         icon_o.attrPush([
-          'class', 'badge-icon'
+          'class', 'badge-icon icon'
         ])
 
           const icon_t = state.push('html_inline', '', 0)
@@ -86,15 +86,20 @@ function model_link (state) {
         const icon_c = state.push('icon_close', 'span', -1)
 
 
-        const anchor_t = state.push('text', '', 0)
-        anchor_t.content = ' ' + state.env.models[item_link.groups.model_type][item_link.groups.model_id].title
+        const text_o = state.push('text_open', 'span', 1)
+        text_o.attrPush([
+          'class', 'text'
+        ])
+          const text_content = state.push('text', '', 0)
+          text_content.content = state.env.models[item_link.groups.model_type][item_link.groups.model_id].title + ','
+        const text_c = state.push('text_close', 'span', -1)
 
 
         const item_o = state.push('item_open', 'span', 1)
           item_o.attrPush(["class", "sub-script metadata"])
 
           const item_t = state.push('text', '', 0)
-          item_t.content = ', ' + String( item_link.groups.model_type ) + ' '
+          item_t.content = String( item_link.groups.model_type ) + ' '
 
         const item_c = state.push('item_close', 'span', -1)
 

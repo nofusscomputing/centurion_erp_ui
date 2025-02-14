@@ -11,6 +11,7 @@ const TextField = ({
     value = null,
     onChange = null,
     onKeyUp = null,
+    disabled = false
 }) => {
 
     if( value === null ) {
@@ -23,12 +24,13 @@ const TextField = ({
             id={id}
             key={id}
             name={id}
+            disabled = {disabled}
             onChange={onChange}
             onKeyUp={onKeyUp}
             placeholder={helptext}
             required={required}
             type={type}
-            value={value}
+            value={value ? value : ""}
         />
     )
 
@@ -56,6 +58,7 @@ const TextField = ({
                 id={id}
                 key={id}
                 name={id}
+                disabled = {disabled}
                 onChange={onChange}
                 onKeyUp={onKeyUp}
                 // placeholder={helptext}

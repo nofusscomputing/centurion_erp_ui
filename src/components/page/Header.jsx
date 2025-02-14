@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import IconLoader from "../IconLoader";
 import Slider from "../form/Slider";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../../hooks/UserContext";
 
 
 
@@ -12,15 +13,31 @@ const Header = ({
 
     let [dark_theme, setThemeDark] = useState(false)
 
+    const user = useContext(UserContext)
 
-    // useEffect(() => { // AutoMagic set based off of user preferences
-    //     window.matchMedia('(prefers-color-scheme: dark)').matches ? setThemeDark(true) : setThemeDark(false)
+    useEffect(() => { // AutoMagic set based off of user preferences
 
-    //     document.documentElement.setAttribute(
-    //         'data-theme',
-    //         window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    //     )
-    // })
+        if( Number(user.settings.browser_mode) === 2 ) {
+
+            document.documentElement.setAttribute(
+                'data-theme',
+                'dark'
+            )
+            setThemeDark(true)
+
+        } else if( Number(user.browser_mode) === 3 ) {
+
+            document.documentElement.setAttribute(
+                'data-theme',
+                'light'
+            )
+            setThemeDark(false)
+
+        }
+
+    }, [
+        user.settings.browser_mode
+    ])
     
 
     return (
