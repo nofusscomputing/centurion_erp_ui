@@ -35,7 +35,7 @@ const md = markdownIt({
 
     },
     html: false,
-    breaks: true,
+    breaks: false,
 })
 
     .use( require( 'markdown-it-admon' ) )
