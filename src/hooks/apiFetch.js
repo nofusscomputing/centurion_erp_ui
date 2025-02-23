@@ -66,9 +66,12 @@ export async function apiFetch(
 
         request_data['headers']['Content-Type'] = 'application/json'
 
-        data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
+        if( data_body ) {
 
-        request_data['body'] = JSON.stringify(data_body)
+            data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
+
+            request_data['body'] = JSON.stringify(data_body)
+        }
 
     }
 
