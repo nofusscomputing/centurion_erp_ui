@@ -74,7 +74,7 @@ const Navbar = ({
                     const paths = String(location.pathname).split('/')
 
                     return(
-                        <div className="group">
+                        <div key={'menu-' + module.name} className="group">
                             <div id={module.name+'-'+index} className="menu" onClick={()=> setNavMenu(
                                 (module.name.toLowerCase() === nav_menu ? null : module.name.toLowerCase())
                             )}>
