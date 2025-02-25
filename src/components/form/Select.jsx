@@ -65,14 +65,14 @@ const Select = ({
 
                             }
 
-                        } else {
-
-                            if( Number(choice.value) === Number(value) ) {
+                        } else if( Number(choice.value) === Number(value) ) {
 
                                 selected = ( choice.value === value )
-    
-                            }
 
+
+                        } else if( typeof(value) === 'string' && value === choice.value ) {
+
+                            selected = choice.value
                         }
 
                     }
