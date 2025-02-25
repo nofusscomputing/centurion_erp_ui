@@ -74,12 +74,10 @@ const ModelForm = () => {
                             initial_form_data[field_key] = page_data[field_key]
 
                         }
-
-                    } else if( 'initial' in metadata.fields[field_key] ) {
-                         initial_form_data[field_key] = metadata.fields[field_key].initial
-                    }else {
-                        initial_form_data[field_key] = ''
                     }
+
+                } else if( 'initial' in metadata.fields[field_key] ) {
+                        initial_form_data[field_key] = metadata.fields[field_key].initial
                 }
 
             })
