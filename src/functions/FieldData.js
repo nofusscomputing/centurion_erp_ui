@@ -112,6 +112,9 @@ export default function FieldData({
 
                         break;
 
+                    } else if( typeof(data_field) === 'string' && data_field === choice.value ) {
+
+                        field_data = choice.value
                     }
 
                 }
