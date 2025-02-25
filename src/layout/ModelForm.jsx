@@ -312,6 +312,7 @@ const ModelForm = () => {
                                                 id = {field_key}
                                                 error_text = {form_error && form_error[field_key]}
                                                 field_data={metadata.fields[field_key]}
+                                                initial = {metadata.fields[field_key]?.initial ? metadata.fields[field_key].initial : null }
                                                 value={value}
                                                 onChange={handleChange}
                                             />)
