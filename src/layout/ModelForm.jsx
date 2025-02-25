@@ -276,6 +276,7 @@ const ModelForm = () => {
                                             error_text = {form_error && form_error[field_key]}
                                             required   = {metadata.fields[field_key].required}
                                             type = {'datetime-local'}
+                                            initial = {metadata.fields[field_key]?.initial ? metadata.fields[field_key].initial : null }
                                             value={value}
                                             onChange={handleChange}
                                         />)
