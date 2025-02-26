@@ -20,7 +20,34 @@ const Header = ({
 
     useEffect(() => { // AutoMagic set based off of user preferences
 
-        if( Number(user.settings.browser_mode) === 2 ) {
+
+        if( Number(user.settings.browser_mode) === 1 ) {
+
+            if (window.matchMedia) {
+
+                if( window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+
+                    document.documentElement.setAttribute(
+                        'data-theme',
+                        'dark'
+                    )
+
+                    setThemeDark(true)
+
+                }else if( window.matchMedia('(prefers-color-scheme: light)').matches ) {
+
+                    document.documentElement.setAttribute(
+                        'data-theme',
+                        'light'
+                    )
+
+                    setThemeDark(false)
+
+                }
+            }
+            
+
+        } if( Number(user.settings.browser_mode) === 2 ) {
 
             document.documentElement.setAttribute(
                 'data-theme',
