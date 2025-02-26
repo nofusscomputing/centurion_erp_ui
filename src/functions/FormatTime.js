@@ -42,7 +42,7 @@ export function FormatTime({
             MMMM: this.toLocaleString('default', { month: 'long'  }),
             MMM: this.toLocaleString('default',  { month: 'short' }),
             MM: (this.getMonth() + 1).toString().padStart(2, '0'),
-            M: this.getMonth() + 1,
+            // M: this.getMonth() + 1,
             HH: this.getHours().toString().padStart(2, '0'), // military
             H: this.getHours().toString(), // military
             hh: (this.getHours() % 12).toString().padStart(2, '0'),
