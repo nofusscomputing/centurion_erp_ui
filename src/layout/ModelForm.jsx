@@ -187,7 +187,10 @@ const ModelForm = () => {
 
                     setFormPost(true)
 
-                    if ( response.ok ) {
+                    if(
+                        response.ok
+                        || response.status === 204
+                    ) {
 
                         navigate(metadata.urls.back ?
                             String(metadata.urls.back).split('api/v2')[1]
