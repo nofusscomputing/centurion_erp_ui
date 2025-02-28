@@ -1,3 +1,40 @@
+## 0.6.0 (2025-02-28)
+
+### feat
+
+- **node**: install jest as dev dep
+- **node**: Setup jest testing
+- **node**: update react 18.3.1 -> 19.0.0
+- **component**: Automagic set light/dark mode if user sets auto
+- **layour**: Populate initial value for textfield field on ModelForm
+- **layour**: Populate initial value for textfield multi field on ModelForm
+- **layour**: Populate initial value for datetime-local field on ModelForm
+- **component**: Add support for an initial value for textfield
+- **component**: Add User Menu for logged in users
+- **component**: Initial Menu component
+- Add Logout endpoint
+
+### Fixes
+
+- **component**: Add support for `-action_delete-` table column
+- **layout**: On successful delete redirect
+- **function**: REmove format option `M` due to attempts to format month letter
+- **function**: Ensure if choice fields value is string it is populated
+- **layout**: Ensure ModelForm does populate initial from meta if supplied
+- **component**: don't render line breaks as they are designed to be collapsed
+- **hook**: If no body is supplied for apifetch, dont attempt to fetch csrf token
+- **hook**: dont attempt to fetch user data unless settings url is HTTP/200
+- **function**: Correct maths for conviersion of seconds to h:m:s
+
+### Refactoring
+
+- **layout**: update history to use new path
+
+### Tests
+
+- **function**: FormatTime checks
+- **function**: initial FormatTime tests
+
 ## 0.5.0 (2025-02-14)
 
 ### feat
