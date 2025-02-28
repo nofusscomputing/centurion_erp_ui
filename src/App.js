@@ -30,6 +30,23 @@ const Login = () => {
     );
 }
 
+const Logout = () => {
+
+    const logout = apiFetch(
+        window.env.API_URL + '/auth/logout/',
+        null,
+        'POST',
+        null,
+        false
+    )
+
+    window.location.replace( window.env.API_URL + '/auth/login');
+
+    return(
+        <section>logout</section>
+    )
+}
+
 
 
 function App() {
@@ -48,15 +65,9 @@ function App() {
                         Redirects
                     ******************************************************** */}
 
-                    <Route path='/login' element={<Login />}/>
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/logout' element = {<Logout />} />
 
-                    {/* ********************************************************
-                        History View
-                    ******************************************************** */}
-
-                    <Route path="/core/:model/:pk/history"
-                        element={<History />}
-                    />
 
                     {/* ********************************************************
                         Settings View
@@ -68,6 +79,14 @@ function App() {
                     />
 
                     < Route path=":module">
+
+                        {/* ********************************************************
+                            History View
+                        ******************************************************** */}
+
+                        <Route path=":model/:pk/history"
+                            element={<History />}
+                        />
 
                         {/* ********************************************************
                             Form View

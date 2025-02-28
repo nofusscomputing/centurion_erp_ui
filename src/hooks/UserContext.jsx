@@ -35,27 +35,29 @@ export const UserProvider = ({children}) => {
             null,
             false
         )
-    
-        const usr_settings = await apiFetch(
-            settings_url.api_page_data.user_settings.split('api/v2')[1],
-            null,
-            'GET',
-            null,
-            false
-        )
 
-        setUserSettings(usr_settings.api_page_data)
+        if( settings_url.status === 200 ) {
 
-        const usr = await apiFetch(
-            '/base/user/' + String(usr_settings.api_page_data.user),
-            null,
-            'GET',
-            null,
-            false
-        )
+            const usr_settings = await apiFetch(
+                settings_url.api_page_data.user_settings.split('api/v2')[1],
+                null,
+                'GET',
+                null,
+                false
+            )
 
-        setUser(usr.api_page_data)
-    
+            setUserSettings(usr_settings.api_page_data)
+
+            const usr = await apiFetch(
+                '/base/user/' + String(usr_settings.api_page_data.user),
+                null,
+                'GET',
+                null,
+                false
+            )
+
+            setUser(usr.api_page_data)
+        }
     }
 
     useEffect(() => {

@@ -3,6 +3,9 @@ import IconLoader from "../IconLoader";
 import Slider from "../form/Slider";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../hooks/UserContext";
+import Menu from "../form/Menu";
+
+import person_72dp from "../../images/person_72dp.png"
 
 
 
@@ -17,7 +20,34 @@ const Header = ({
 
     useEffect(() => { // AutoMagic set based off of user preferences
 
-        if( Number(user.settings.browser_mode) === 2 ) {
+
+        if( Number(user.settings.browser_mode) === 1 ) {
+
+            if (window.matchMedia) {
+
+                if( window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+
+                    document.documentElement.setAttribute(
+                        'data-theme',
+                        'dark'
+                    )
+
+                    setThemeDark(true)
+
+                }else if( window.matchMedia('(prefers-color-scheme: light)').matches ) {
+
+                    document.documentElement.setAttribute(
+                        'data-theme',
+                        'light'
+                    )
+
+                    setThemeDark(false)
+
+                }
+            }
+            
+
+        } if( Number(user.settings.browser_mode) === 2 ) {
 
             document.documentElement.setAttribute(
                 'data-theme',
@@ -38,7 +68,46 @@ const Header = ({
     }, [
         user.settings.browser_mode
     ])
-    
+
+    const userAvatar = () => {
+
+        return(
+            <img 
+                alt = "avatar"
+                className = "avatar"
+                src = {person_72dp}
+                style={{
+                    cursor: "Pointer",
+                }}
+                title={user.user.display_name}
+            />
+        )
+    }
+
+
+    const user_menu = () => {
+
+        return (
+            (user && user.user.display_name && user.settings._urls) && 
+            <>
+                <Menu
+                    element = {userAvatar()}
+                    style_menu = {{
+                        marginTop: '25px',
+                    }}
+                    style_dropdown_menu = {{
+                        marginTop: "40px",
+                    }}
+                    width = "150px"
+                >
+                    <Link to={String(user.settings._urls._self).split('api/v2')[1]}>Settings</Link>
+                    <Link to={'logout'}>Log out</Link>
+                </Menu>
+            </>
+
+        )
+    }
+
 
     return (
         <header>
@@ -54,19 +123,7 @@ const Header = ({
             </div>
             <h1><Link to='/'>Centurion ERP</Link></h1>
             <div className="right">
-                <Slider
-                    onChange={(e) => {
-
-                        setThemeDark(e.target.checked ? true : false )
-
-                        document.documentElement.setAttribute(
-                            'data-theme',
-                            e.target.checked ? 'dark' : 'light'
-                        )
-
-                    }}
-                    value = { dark_theme }
-                />
+                {user_menu()}
             </div>
         </header>
     );
