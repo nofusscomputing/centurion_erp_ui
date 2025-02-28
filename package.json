@@ -42,11 +42,15 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.5.2",
+    "babel-jest": "^29.7.0",
     "babel-preset-react-app": "^10.0.1",
     "create-react-app": "^5.0.1",
+    "jest": "^27.5.1",
     "json-server": "^0.17.4",
     "react-scripts": "^5.0.1",
     "react-test-renderer": "^19.0.0"
