@@ -74,12 +74,10 @@ const ModelForm = () => {
                             initial_form_data[field_key] = page_data[field_key]
 
                         }
-
-                    } else if( 'initial' in metadata.fields[field_key] ) {
-                         initial_form_data[field_key] = metadata.fields[field_key].initial
-                    }else {
-                        initial_form_data[field_key] = ''
                     }
+
+                } else if( 'initial' in metadata.fields[field_key] ) {
+                        initial_form_data[field_key] = metadata.fields[field_key].initial
                 }
 
             })
@@ -189,7 +187,10 @@ const ModelForm = () => {
 
                     setFormPost(true)
 
-                    if ( response.ok ) {
+                    if(
+                        response.ok
+                        || response.status === 204
+                    ) {
 
                         navigate(metadata.urls.back ?
                             String(metadata.urls.back).split('api/v2')[1]
@@ -278,6 +279,7 @@ const ModelForm = () => {
                                             error_text = {form_error && form_error[field_key]}
                                             required   = {metadata.fields[field_key].required}
                                             type = {'datetime-local'}
+                                            initial = {metadata.fields[field_key]?.initial ? metadata.fields[field_key].initial : null }
                                             value={value}
                                             onChange={handleChange}
                                         />)
@@ -313,6 +315,7 @@ const ModelForm = () => {
                                                 id = {field_key}
                                                 error_text = {form_error && form_error[field_key]}
                                                 field_data={metadata.fields[field_key]}
+                                                initial = {metadata.fields[field_key]?.initial ? metadata.fields[field_key].initial : null }
                                                 value={value}
                                                 onChange={handleChange}
                                             />)
@@ -325,6 +328,7 @@ const ModelForm = () => {
                                                 helptext   = {metadata.fields[field_key].help_text}
                                                 error_text = {form_error && form_error[field_key]}
                                                 required   = {metadata.fields[field_key].required}
+                                                initial = {metadata.fields[field_key]?.initial ? metadata.fields[field_key].initial : null }
                                                 value={value}
                                                 onChange={handleChange}
                                             />)

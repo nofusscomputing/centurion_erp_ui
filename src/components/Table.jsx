@@ -6,6 +6,7 @@ import TextField from "./form/Textfield";
 import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
 import urlBuilder from "../hooks/urlBuilder";
+import Button from "./form/Button";
 
 
 /**
@@ -232,15 +233,24 @@ const Table = ({
 
                                 }
 
-                                if( key in metadata.fields ) {
+                                if(
+                                    key in metadata.fields
+                                    || String(key).startsWith('-action_')
+                                ) {
 
                                     if( typeof(key) === 'string' ) {
 
 
-                                        if (metadata.table_fields[key] === 'nbsp') {
+                                        if (key === 'nbsp') {
 
                                             return (
                                                 <th>&nbsp;</th>
+                                            )
+
+                                        } else if ( key === '-action_delete-' ) {
+
+                                            return (
+                                                <th key={key}>&nbsp;</th>
                                             )
 
                                         } else {
@@ -278,17 +288,34 @@ const Table = ({
                                         {
                                             metadata.table_fields.map(key => {
 
-                                                if (key in metadata.fields) {
+                                                if (
+                                                    key in metadata.fields
+                                                    || String(key).startsWith('-action_')
+                                                ) {
 
                                                     if( typeof(key) === 'string' ) {
 
-                                                        if (metadata.table_fields[key] === 'nbsp') {
+                                                        if (key === 'nbsp') {
 
                                                             return (
                                                                 <td>&nbsp;</td>
                                                             )
 
-                                                        } else {
+                                                        } else if (key === '-action_delete-') {
+
+                                                            return (
+                                                                <td>
+                                                                    <Link to={document.location.pathname + '/token/'+ data.id + '/delete'}>
+                                                                        <Button
+                                                                            id = {data.id}
+                                                                            button_text = 'Delete'
+                                                                            type="button"
+                                                                        />
+                                                                    </Link>
+                                                                </td>
+                                                            )
+
+                                                        }else {
 
                                                             let autolink = false
 

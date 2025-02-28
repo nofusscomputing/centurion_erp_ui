@@ -5,6 +5,7 @@ const TextField = ({
     fieldset = true,
     helptext = null,
     id = null,
+    initial = null,
     label = null,
     required = false,
     type = 'text',
@@ -14,8 +15,15 @@ const TextField = ({
     disabled = false
 }) => {
 
+
     if( value === null ) {
         value = ''
+    }
+
+    if( initial ) {
+
+        value = initial
+
     }
 
     let field = (

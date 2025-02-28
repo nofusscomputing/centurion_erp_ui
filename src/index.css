@@ -982,52 +982,45 @@ div.submit-dropdown-button div.button {
 
 }
 
-div.submit-dropdown-button div.dropdown-button {
-  height: 30px;
-  margin: 0px;
-  margin-left: 1px;
-  padding: 0px;
-}
 
-div.submit-dropdown-button div.button svg {
-  display: inline-flex;
-  height: 30px;
-  margin: 0px;
-  padding: 0px;
-  width: 30px;
-}
-
-.dropdown-content {
+div.menu .dropdown-menu { /* Default, Hide menu. */
   display: none;
-  position: absolute;
-  background-color: var(--background-colour-active);
-  margin-top: 30px;
-  min-width: 140px;
-  width: auto;
-  z-index: 1;
 }
 
-
-.dropdown-menu-entry {
-  background-color: var(--background-colour-active);
-  border: none;
-  color: var(--text-colour);
-  margin: 1px;
-  padding: 5px 16px;
-  text-decoration: none;
+div.menu .dropdown-menu.show {
   display: block;
-  font-size: 12pt;
-  width: 100%;
 }
 
-.dropdown-content p:hover, .dropdown-menu-entry:hover {
+
+div.menu .dropdown-menu-items a,
+div.menu .dropdown-menu-items div,
+div.menu .dropdown-menu-items span {
+  background-color: var(--background-colour-active);
+  margin: 0.1rem 0;
+  padding: 0.1rem;
+  color: var(--text-colour);
+  line-height: 2rem;
+}
+
+div.menu .dropdown-menu-items a:hover,
+div.menu .dropdown-menu-items div:hover,
+div.menu .dropdown-menu-items span:hover {
   background-color: var(--background-colour-navbar-hover);
-  color: var(--text-colour-button);
+  border-left: 3px solid var(--border-colour-navbar-active);
+  color: var(--text-colour-navbar);
 }
 
-.show {
-  display:block;
+
+img.avatar {
+  align-self:flex-end;
+  background-color: #7e7e7e36;
+  border: none;
+  border-radius: 50%;
+  padding: 3px;
+  height: 32px;
+  width: 32px;
 }
+
 
 footer {
   background-color: var(--background-colour-active);
@@ -1338,6 +1331,54 @@ fixme
 ################################################################### */
 
 
+
+
+div.submit-dropdown-button div.dropdown-button {
+  height: 30px;
+  margin: 0px;
+  margin-left: 1px;
+  padding: 0px;
+}
+
+div.submit-dropdown-button div.button svg {
+  display: inline-flex;
+  height: 30px;
+  margin: 0px;
+  padding: 0px;
+  width: 30px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--background-colour-active);
+  margin-top: 30px;
+  min-width: 140px;
+  width: auto;
+  z-index: 1;
+}
+
+
+.dropdown-menu-entry {
+  background-color: var(--background-colour-active);
+  border: none;
+  color: var(--text-colour);
+  margin: 1px;
+  padding: 5px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 12pt;
+  width: 100%;
+}
+
+.dropdown-content p:hover, .dropdown-menu-entry:hover {
+  background-color: var(--background-colour-navbar-hover);
+  color: var(--text-colour-button);
+}
+
+.show {
+  display:block;
+}
 
 
 
