@@ -29,7 +29,7 @@ const Select = ({
                 required={field_data.required}
                 className="common-field"
                 onChange={onChange}
-                multiple = {field_data.relationship_type == 'ManyToMany' ? true : false}
+                multiple = {field_data.relationship_type === 'ManyToMany' ? true : false}
                 disabled = {field_data.read_only}
             >
                 { field_data.relationship_type !== 'ManyToMany' &&
@@ -45,11 +45,11 @@ const Select = ({
 
                             for(let item of value ) {
 
-                                if( typeof(item) == 'object' ) {
+                                if( typeof(item) === 'object' ) {
 
                                     if( choice.value === item.id ) {
 
-                                        selected = ( choice.value == item.id )
+                                        selected = ( choice.value === item.id )
             
                                     }
     
@@ -57,7 +57,7 @@ const Select = ({
 
                                     if( choice.value === Number(item) ) {
 
-                                        selected = ( choice.value == Number(item) )
+                                        selected = ( choice.value === Number(item) )
             
                                     }
         

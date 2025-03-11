@@ -77,7 +77,13 @@ const ModelForm = () => {
                     }
 
                 } else if( 'initial' in metadata.fields[field_key] ) {
+
+                    if(
+                        metadata.fields[field_key]['initial'] !== '[]'
+                        && metadata.fields[field_key]['initial'] !== ''
+                    ) {
                         initial_form_data[field_key] = metadata.fields[field_key].initial
+                    }
                 }
 
             })
@@ -163,11 +169,11 @@ const ModelForm = () => {
         <section>
             {form_error && form_error['non_field_errors'] &&
                 <div>
-                    <ul>
+                    <ul key="non-field-errors">
                     {form_error['non_field_errors'].map( (err) => {
                         
                         return (
-                            <li><span className="error-text">{err}</span></li>
+                            <li key={'error'}><span className="error-text">{err}</span></li>
                         )
                     })}
                     </ul>
