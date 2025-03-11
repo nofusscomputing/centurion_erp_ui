@@ -56,6 +56,7 @@ import SwaggerDcoumentation from "./icons/SwaggerDcoumentation";
 import Git from "./icons/Git";
 import CircleIcon from "./icons/Circle";
 import CopyIcon from "./icons/Copy";
+import CodeIcon from "./icons/code";
 
 
 const icon_components = {
@@ -67,6 +68,7 @@ const icon_components = {
     assistance: AssistanceIcon,
     circle: CircleIcon,
     cluster: ClusterIcon,
+    code: CodeIcon,
     config_group: ConfigManagementIcon,
     config_management: ConfigManagementIcon,
     copy: CopyIcon,
@@ -74,6 +76,7 @@ const icon_components = {
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
+    devops: CodeIcon,
     documentation: Documentation,
     reply: ReplyIcon,
     delete: DeleteIcon,
