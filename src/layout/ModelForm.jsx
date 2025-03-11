@@ -81,6 +81,7 @@ const ModelForm = () => {
                     if(
                         metadata.fields[field_key]['initial'] !== '[]'
                         && metadata.fields[field_key]['initial'] !== ''
+                        && page_data[field_key] === null
                     ) {
                         initial_form_data[field_key] = metadata.fields[field_key].initial
                     }

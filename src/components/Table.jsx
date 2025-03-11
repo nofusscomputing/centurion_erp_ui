@@ -305,7 +305,7 @@ const Table = ({
 
                                                             return (
                                                                 <td>
-                                                                    <Link to={document.location.pathname + '/token/'+ data.id + '/delete'}>
+                                                                    <Link to={String(data._urls._self).split('api/v2')[1] + '/delete'}>
                                                                         <Button
                                                                             id = {data.id}
                                                                             button_text = 'Delete'
