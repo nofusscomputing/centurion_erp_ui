@@ -138,8 +138,8 @@ describe('From UTC', () => {
         expect(FormatTime({
             time: '2025-02-27T00:00:00+00:00',
             iso: false,
-            tz: 'America/Los_Angeles'
-        })).toBe('16:00 26 Feb 2025');
+            tz: 'US/Arizona'
+        })).toBe('17:00 26 Feb 2025');
     
     });
 
@@ -223,8 +223,8 @@ describe('Opposite Timezones', () => {
         expect(FormatTime({
             time: '2025-02-27T00:00:00+09:30',
             iso: false,
-            tz: 'America/Los_Angeles'
-        })).toBe('06:30 26 Feb 2025');
+            tz: 'US/Arizona'
+        })).toBe('07:30 26 Feb 2025');
 
     });
 
