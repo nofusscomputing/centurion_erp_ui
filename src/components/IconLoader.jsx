@@ -58,6 +58,7 @@ import CircleIcon from "./icons/Circle";
 import CopyIcon from "./icons/Copy";
 import CodeIcon from "./icons/code";
 import FeatureFlag from "./icons/feature_flag";
+import GitHub from "./icons/GitHub";
 
 
 const icon_components = {
@@ -85,6 +86,7 @@ const icon_components = {
     edit: EditIcon,
     feature_flag: FeatureFlag,
     git: Git,
+    github: GitHub,
     help: HelpIcon,
     history: HistoryIcon,
     information: InformationIcon,
