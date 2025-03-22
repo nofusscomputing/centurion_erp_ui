@@ -103,6 +103,7 @@ function App() {
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
                             <Route path=":common_model/:model/:pk/edit" element={null} />
+                            <Route path="git_repository/:model/:pk/edit" element={null} />
 
                             <Route path=":model/add" element={null} />
                             <Route path=":model/:pk/delete" element={null} />
@@ -136,6 +137,9 @@ function App() {
                         {/* ********************************************************
                             Detail View
                         ******************************************************** */}
+
+                        <Route path="git_repository/:model/:pk" element={<Detail
+                            />} loader = {pagedLoader} />
 
                         <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
                             />} loader = {pagedLoader} />
