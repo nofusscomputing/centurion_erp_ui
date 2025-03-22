@@ -59,6 +59,7 @@ import CopyIcon from "./icons/Copy";
 import CodeIcon from "./icons/code";
 import FeatureFlag from "./icons/feature_flag";
 import GitHub from "./icons/GitHub";
+import GitLab from "./icons/GitLab";
 
 
 const icon_components = {
@@ -87,6 +88,7 @@ const icon_components = {
     feature_flag: FeatureFlag,
     git: Git,
     github: GitHub,
+    gitlab: GitLab,
     help: HelpIcon,
     history: HistoryIcon,
     information: InformationIcon,
@@ -104,6 +106,7 @@ const icon_components = {
     project: ProjectIcon,
     service: ServiceIcon,
     software: SoftwareIcon,
+    software_version: SoftwareIcon,
     settings: SettingsIcon,
     swagger_docs: SwaggerDcoumentation,
     task: TaskIcon,
