@@ -60,6 +60,7 @@ import CodeIcon from "./icons/code";
 import FeatureFlag from "./icons/feature_flag";
 import GitHub from "./icons/GitHub";
 import GitLab from "./icons/GitLab";
+import ITOps from "./icons/itops";
 
 
 const icon_components = {
@@ -95,6 +96,7 @@ const icon_components = {
     kb: InformationIcon,
     itam: ItamIcon,
     itim: ITIMIcon,
+    itops: ITOps,
     link: LinkIcon,
     menu: MenuIcon,
     navdown: NavDownIcon,
