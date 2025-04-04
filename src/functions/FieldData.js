@@ -210,7 +210,7 @@ export default function FieldData({
                     } else if( typeof( field_name ) === 'object' && autolink ) {
 
                         field_data = (
-                            <Link to={String(data['_urls'][data_field.key]).split(API_SPLIT)[1]}>{data_field}</Link>
+                            <Link to={String(data['_urls'][field_name.key]).split(API_SPLIT)[1]}>{data_field}</Link>
                         )
 
                     } else if( typeof (data_field) === 'list' ) {
