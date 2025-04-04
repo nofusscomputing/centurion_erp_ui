@@ -28,6 +28,8 @@ const Table = ({
     loader_data = null
 }) => {
 
+    const API_SPLIT = String('api/v2')
+
     const [loaded, setPageLoaded] = useState(false)
 
     const [metadata, setMetaData] = useState(null);
@@ -212,7 +214,7 @@ const Table = ({
         <>
         { metadata &&
             <div>
-                { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
+                { metadata.allowed_methods.includes('POST') && (<Link to={String(data_url_path).split(API_SPLIT)[1] + "/add"}><button className="common-field form">Add</button></Link>)}
                     <table>
                         <thead>
                             <tr>
