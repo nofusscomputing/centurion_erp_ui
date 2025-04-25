@@ -36,7 +36,15 @@ const TicketComment = ({
 
     try {
 
-        comment_type = String(metadata.fields.comment_type.choices[Number(comment_data.comment_type)-1].display_name).toLowerCase()
+        if( isNaN(comment_data.comment_type) ) {
+
+            comment_type = comment_data.comment_type
+
+        }else {
+
+            comment_type = String(metadata.fields.comment_type.choices[Number(comment_data.comment_type)-1].display_name).toLowerCase()
+
+        }
 
     }catch( e ) {
 

@@ -32,11 +32,27 @@ const TicketCommentForm = ({
 
     const formId = useId();
 
+    let comment_type = ''
+
+    let edit_form_data = {
+        // 'comment_type': 'comment'
+    }
+
+    let is_task_comment = false
+
+    let is_solution_comment = false
+
+    let is_notification_comment = false
+
+    const [form_data, setFormData] = useState(edit_form_data)
+
+    const [task_comment, setTaskComment] = useState( is_task_comment )
+
     const user = useContext(UserContext)
 
     if( String(post_url).includes('?') ) {
         console.log('url has qs')
-        post_url = String(post_url).split('?')[0]
+        post_url = String(post_url).split('?')[0].replace('/comment', '')
     }
 
     let HTTP_METHOD = 'POST'
@@ -45,12 +61,13 @@ const TicketCommentForm = ({
 
         post_url = comment_data['_urls']['_self']
         HTTP_METHOD = 'PATCH'
+    } else {
+
+        post_url = post_url.replace('/comment', '/' + form_data['comment_type'])
     }
 
     let comment_class = 'comment-type-default comment-form'
 
-
-    let edit_form_data = {}
 
     if( comment_data && is_edit ) {
 
@@ -59,26 +76,34 @@ const TicketCommentForm = ({
 
 
     const comment_types = metadata.fields['comment_type'].choices
-    let comment_type = ''
+    
 
     console.log(`menu entry click value ${comment_type}`)
 
     for( let meta_comment_type of comment_types) {
 
-        if( Number(comment_data['comment_type']) === Number(meta_comment_type.value) ) {
+        if(
+            Number(comment_data['comment_type']) === Number(meta_comment_type.value)
+            || Number(form_data['comment_type']) === Number(meta_comment_type.value)
+        ) {
+
             comment_type = String(meta_comment_type.display_name).toLowerCase()
+
+        } else if(
+            comment_data['comment_type'] === meta_comment_type.value
+            || form_data['comment_type'] === meta_comment_type.value
+        ) {
+
+            comment_type = String(meta_comment_type.display_name).toLowerCase()
+
+        }else {
+
+            comment_type = String('comment')
         }
 
     }
 
-
     comment_type = String(comment_type).toLowerCase()
-
-    let is_task_comment = false
-
-    let is_solution_comment = false
-
-    let is_notification_comment = false
 
 
     console.log(`menu entry is ${comment_type}`)
@@ -98,10 +123,6 @@ const TicketCommentForm = ({
     }
 
 
-
-    const [task_comment, setTaskComment] = useState( is_task_comment )
-
-    const [form_data, setFormData] = useState(edit_form_data)
 
     const handleChange = (e) => {
 
@@ -361,15 +382,17 @@ const TicketCommentForm = ({
                             for( let comment_type of comment_types) {
 
                                 if( Number(menu_value) === Number(comment_type.value) ) {
+
                                     menu_entry = String(comment_type.display_name).toLowerCase()
+
+                                } else if( menu_value === comment_type.value ) {
+
+                                    menu_entry = String(comment_type.display_name).toLowerCase()
+
                                 }
 
                             }
 
-                            menu_entry = String(menu_entry).toLowerCase()
-                    
-                            console.log(`menu entry click was ${menu_entry}`)
-                    
                             if( menu_entry === 'comment' ) {
                     
                                 setTaskComment(false)
