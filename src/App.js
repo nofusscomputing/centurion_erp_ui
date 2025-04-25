@@ -23,13 +23,14 @@ import { UserProvider } from './hooks/UserContext';
 
 const Login = () => {
 
-    window.location.replace( window.env.API_URL + '/auth/login');
+    if (!window.env) {
+        return <div>Loading...</div>; // Wait until `window.env` is defined
+      }
+    
+      window.location.replace(window.env.API_URL + '/auth/login');
+      return <section>redirecting...</section>;
 
-    return (
-        <section>redirect</section>
-    );
-}
-
+  };
 const Logout = () => {
 
     const logout = apiFetch(
@@ -47,6 +48,13 @@ const Logout = () => {
     )
 }
 
+function DefaultFallback() {
+    return (
+        <section>
+            <div style={{ textAlign: 'center', height: '100px'}}>Loading...</div>
+        </section>
+    );
+  }
 
 
 function App() {
@@ -59,6 +67,7 @@ function App() {
                 <Route path="/"
                     element={<MainLayout />}
                     errorElement={<ErrorPage />}
+                    HydrateFallback={DefaultFallback}
                 >
 
                     {/* ********************************************************
