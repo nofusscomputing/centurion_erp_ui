@@ -49,7 +49,7 @@ export default function FieldData({
 
     }
 
-    if( data_field ) {
+    if( data_field != null ) {
 
         let field_type = null
 
