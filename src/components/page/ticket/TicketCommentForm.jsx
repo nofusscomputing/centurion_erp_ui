@@ -1,5 +1,6 @@
 import {
     useContext,
+    useEffect,
     useId,
     useState 
 } from "react"
@@ -32,7 +33,7 @@ const TicketCommentForm = ({
 
     const formId = useId();
 
-    let comment_type = ''
+    const[ comment_type, setCommentType ] = useState('')
 
     let edit_form_data = {
         // 'comment_type': 'comment'
@@ -75,52 +76,55 @@ const TicketCommentForm = ({
     }
 
 
-    const comment_types = metadata.fields['comment_type'].choices
+    useEffect(() => {
+
+
+        console.log(`menu entry click value ${comment_type}`)
     
-
-    console.log(`menu entry click value ${comment_type}`)
-
-    for( let meta_comment_type of comment_types) {
-
-        if(
-            Number(comment_data['comment_type']) === Number(meta_comment_type.value)
-            || Number(form_data['comment_type']) === Number(meta_comment_type.value)
-        ) {
-
-            comment_type = String(meta_comment_type.display_name).toLowerCase()
-
-        } else if(
-            comment_data['comment_type'] === meta_comment_type.value
-            || form_data['comment_type'] === meta_comment_type.value
-        ) {
-
-            comment_type = String(meta_comment_type.display_name).toLowerCase()
-
-        }else {
-
-            comment_type = String('comment')
+        for( let meta_comment_type of metadata.fields['comment_type'].choices) {
+    
+            if(
+                Number(comment_data['comment_type']) === Number(meta_comment_type.value)
+                || Number(form_data['comment_type']) === Number(meta_comment_type.value)
+            ) {
+    
+                setCommentType(String(meta_comment_type.display_name).toLowerCase())
+    
+            } else if(
+                comment_data['comment_type'] === meta_comment_type.value
+                || form_data['comment_type'] === meta_comment_type.value
+            ) {
+    
+                setCommentType(String(meta_comment_type.display_name).toLowerCase())
+    
+            }else {
+    
+                setCommentType(String('comment'))
+            }
+    
         }
+    
+        console.log(`menu entry is ${comment_type}`)
+    
+        if( comment_type === 'task' ) {
+    
+            is_task_comment = true
+    
+        }else if( comment_type === 'solution' ) {
+    
+            is_solution_comment = true
+    
+        }else if( comment_type === 'notification' ) {
+    
+            is_notification_comment = true
+    
+        }
+    
+    }, [
+        metadata
+    ])
 
-    }
 
-    comment_type = String(comment_type).toLowerCase()
-
-
-    console.log(`menu entry is ${comment_type}`)
-
-    if( comment_type === 'task' ) {
-
-        is_task_comment = true
-
-    }else if( comment_type === 'solution' ) {
-
-        is_solution_comment = true
-
-    }else if( comment_type === 'notification' ) {
-
-        is_notification_comment = true
-
-    }
 
 
 
@@ -138,12 +142,13 @@ const TicketCommentForm = ({
 
         if( ! form_data.comment_type && ! is_edit ) {
 
-            for( let comment_type of metadata.fields['comment_type'].choices) {
+            for( let comment_type_choice of metadata.fields['comment_type'].choices) {
 
-                if( 'comment' === String(comment_type.display_name).toLowerCase() ) {
-                    setFormData((prevState) => ({ ...prevState, ['comment_type']: comment_type.value }))
+                if( comment_type === String(comment_type_choice.value).toLowerCase() ) {
+
+                    setFormData((prevState) => ({ ...prevState, ['comment_type']: comment_type_choice.value }))
+
                 }
-
             }
         }
 
