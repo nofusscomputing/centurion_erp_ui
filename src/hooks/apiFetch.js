@@ -43,10 +43,6 @@ export async function apiFetch(
 
         }
 
-    } else {
-
-        url_path = '/'
-
     }
 
     url_path = String(url_path).replace('/add', '').replace('/delete', '').replace('/edit', '')
