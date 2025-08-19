@@ -123,6 +123,9 @@ function App() {
                             <Route path=":model/:pk/delete" element={null} />
                             <Route path=":model/:pk/edit" element={null} />
 
+                            <Route path=":user/token/add" element={null} />
+                            <Route path=":user/token/:pk/delete" element={null} />
+
                         </Route>
 
                         {/* ********************************************************

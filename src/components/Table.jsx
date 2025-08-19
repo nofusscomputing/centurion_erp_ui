@@ -5,7 +5,6 @@ import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
 import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
-import urlBuilder from "../hooks/urlBuilder";
 import Button from "./form/Button";
 
 
@@ -48,20 +47,10 @@ const Table = ({
 
     const params = useParams();
 
-    const url_builder = urlBuilder(
-        params
-    )
-
     if( ! String(data_url_path).startsWith('/') ) {
         data_url_path = '/' + data_url_path
     }
 
-
-    if( String(window.location.pathname).includes('/ticket/') ) {
-        
-        data_url_path = '/' + url_builder.params.module + '/ticket/' + url_builder.params.model
-
-    }
 
     useEffect(() => {
 

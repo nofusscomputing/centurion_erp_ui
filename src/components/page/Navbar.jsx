@@ -1,9 +1,7 @@
 import { Link, redirect, useLocation, useNavigate, useParams } from "react-router";
 import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
-import { ResponseException } from "../../classes/Exceptions";
 import { apiFetch } from "../../hooks/apiFetch";
-import urlBuilder from "../../hooks/urlBuilder";
 
 
 
@@ -19,10 +17,6 @@ const Navbar = ({
     const [ nav_menu, setNavMenu ] = useState(null);
 
     const location = useLocation();
-
-    const url_builder = urlBuilder(
-        params
-    )
 
     const navigate = useNavigate();
 
