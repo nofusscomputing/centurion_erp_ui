@@ -23,13 +23,14 @@ import { UserProvider } from './hooks/UserContext';
 
 const Login = () => {
 
-    window.location.replace( window.env.API_URL + '/auth/login');
+    if (!window.env) {
+        return <div>Loading...</div>; // Wait until `window.env` is defined
+      }
+    
+      window.location.replace(window.env.API_URL + '/auth/login');
+      return <section>redirecting...</section>;
 
-    return (
-        <section>redirect</section>
-    );
-}
-
+  };
 const Logout = () => {
 
     const logout = apiFetch(
@@ -47,6 +48,13 @@ const Logout = () => {
     )
 }
 
+function DefaultFallback() {
+    return (
+        <section>
+            <div style={{ textAlign: 'center', height: '100px'}}>Loading...</div>
+        </section>
+    );
+  }
 
 
 function App() {
@@ -59,6 +67,7 @@ function App() {
                 <Route path="/"
                     element={<MainLayout />}
                     errorElement={<ErrorPage />}
+                    HydrateFallback={DefaultFallback}
                 >
 
                     {/* ********************************************************
@@ -103,16 +112,28 @@ function App() {
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
                             <Route path=":common_model/:model/:pk/edit" element={null} />
+                            <Route path="git_repository/:model/add" element={null} />
+                            <Route path="git_repository/:model/:pk/edit" element={null} />
+
+                            <Route path="entity/:model/add" element={null} />
+                            <Route path="entity/:model/:pk/delete" element={null} />
+                            <Route path="entity/:model/:pk/edit" element={null} />
 
                             <Route path=":model/add" element={null} />
                             <Route path=":model/:pk/delete" element={null} />
                             <Route path=":model/:pk/edit" element={null} />
+
+                            <Route path=":user/token/add" element={null} />
+                            <Route path=":user/token/:pk/delete" element={null} />
 
                         </Route>
 
                         {/* ********************************************************
                             List View
                         ******************************************************** */}
+
+                        <Route path="entity/:model" element={<List
+                        />} loader = {pagedLoader} />
 
                         <Route path="ticket/:model" element={<List
                         />} loader = {pagedLoader} />
@@ -136,6 +157,12 @@ function App() {
                         {/* ********************************************************
                             Detail View
                         ******************************************************** */}
+
+                        <Route path="entity/:model/:pk" element={<Detail
+                            />} loader = {pagedLoader} />
+
+                        <Route path="git_repository/:model/:pk" element={<Detail
+                            />} loader = {pagedLoader} />
 
                         <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
                             />} loader = {pagedLoader} />

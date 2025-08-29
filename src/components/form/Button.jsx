@@ -59,7 +59,15 @@ const Button = ({
 
     const handleMenuClick = (e) => {
         e.currentTarget.parentElement.classList.toggle("show")
-        MenuClickCallback(Number(e.target.value))
+
+        if( isNaN( e.target.value ) ){
+
+            MenuClickCallback(String(e.target.value))
+
+        } else {
+            MenuClickCallback(Number(e.target.value))
+
+        }
     }
 
     const buttonId = useId();

@@ -157,10 +157,7 @@ const DetailSection = ({
 
                     <Link 
                         to={
-                            metadata.urls.return_url ?
-                            String(metadata.urls.return_url).split('api/v2')[1] + '/edit'
-                            : String(metadata.urls.self).split('api/v2')[1] + '/edit'
-
+                            String(metadata.urls.self).split('api/v2')[1] + '/edit'
                         }
                         style={{
                             width: 'fit-content'

@@ -176,7 +176,7 @@ const Detail = () => {
                                             onChange = {(e) => {
                                                 setNotesForm((prevState) => ({ 
                                                     ...prevState,
-                                                    content: e.target.value,
+                                                    body: e.target.value,
                                                     // organization: page_data['organization'].id,
                                                     // device: page_data.id
                                                 }

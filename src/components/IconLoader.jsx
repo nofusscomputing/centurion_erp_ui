@@ -56,6 +56,14 @@ import SwaggerDcoumentation from "./icons/SwaggerDcoumentation";
 import Git from "./icons/Git";
 import CircleIcon from "./icons/Circle";
 import CopyIcon from "./icons/Copy";
+import CodeIcon from "./icons/code";
+import FeatureFlag from "./icons/feature_flag";
+import GitHub from "./icons/GitHub";
+import GitLab from "./icons/GitLab";
+import ITOps from "./icons/itops";
+import Tenant from "./icons/Tenant";
+import Role from "./icons/Role";
+import User from "./icons/User";
 
 
 const icon_components = {
@@ -67,6 +75,7 @@ const icon_components = {
     assistance: AssistanceIcon,
     circle: CircleIcon,
     cluster: ClusterIcon,
+    code: CodeIcon,
     config_group: ConfigManagementIcon,
     config_management: ConfigManagementIcon,
     copy: CopyIcon,
@@ -74,18 +83,23 @@ const icon_components = {
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
+    devops: CodeIcon,
     documentation: Documentation,
     reply: ReplyIcon,
     delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
+    feature_flag: FeatureFlag,
     git: Git,
+    github: GitHub,
+    gitlab: GitLab,
     help: HelpIcon,
     history: HistoryIcon,
     information: InformationIcon,
     kb: InformationIcon,
     itam: ItamIcon,
     itim: ITIMIcon,
+    itops: ITOps,
     link: LinkIcon,
     menu: MenuIcon,
     navdown: NavDownIcon,
@@ -95,11 +109,14 @@ const icon_components = {
     operating_system: OperatingSystem,
     organization: OrganizationIcon,
     project: ProjectIcon,
+    role: Role,
     service: ServiceIcon,
     software: SoftwareIcon,
+    software_version: SoftwareIcon,
     settings: SettingsIcon,
     swagger_docs: SwaggerDcoumentation,
     task: TaskIcon,
+    tenant: Tenant,
     ticket_change: TicketChange,
     ticket_incident: TicketIncident,
     ticket_problem: TicketProblem,
@@ -119,6 +136,7 @@ const icon_components = {
     ticket_status_pending: StatusPendingIcon,
     ticket_status_solved: StatusSolvedIcon,
     ticket_status_testing: StatusTestingIcon,
+    user: User,
     webhook: Webhook,
     
 };

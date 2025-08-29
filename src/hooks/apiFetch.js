@@ -26,7 +26,7 @@ export async function apiFetch(
 
         console.debug(`url_path for function apiFetch was a full url, [${url_path}], normalizing...`)
 
-        url_path = String(url_path).replace(String(window.env.API_URL).trim(), '')
+        url_path = String(url_path).replace(String(window.env.API_URL).trim(), '').replace('//', '/')
 
         console.debug(`normailized to [${url_path}]`)
 
@@ -42,10 +42,6 @@ export async function apiFetch(
             url_path = '/' + url_path
 
         }
-
-    } else {
-
-        url_path = '/'
 
     }
 
