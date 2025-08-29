@@ -1,3 +1,49 @@
+## 0.7.0 (2025-08-29)
+
+### feat
+
+- **icon**: Add user icon
+- **icon**: Add Tenant and role icon
+- **node**: update packages
+- Add URL routes for entities
+- **base**: Add git_repository route
+- **component**: Add GitLab icon
+- **component**: Add GitHub icon
+- **function**: Add support for table field to be specified as link
+- **component**: Add feature flag icon
+- **component**: Add code icon
+
+### Fixes
+
+- Add route for user token path add and delete
+- **function**: Ensure values of `false` and `0` (zero) do display
+- **layout**: Add support for choices to be string type
+- **routes**: Add default HydrationFallback
+- **function**: field autolink is optional
+- **layout**: dont raise exception and crash page render
+- **layout**: use the back link instead of self for the form cancel button
+- **hoook**: Remove double `//` from url when conducting apiFetch
+- **function**: Ensure the actual key is fetched for building linked field
+- **component**: Add ITOps Icon
+- **layout**: Use meta return_url when posting a form
+- **layout**: dont populate form field with initial value if field already has value within model form
+- **layout**: dont populate form field with initial value if empty within model form
+
+### Refactoring
+
+- **hook**: Dont add trailing slant to url
+- **component**: Update notes form field content -> body
+- **component**: Update notes field content -> body
+- **component**: Use URL path for active page detection for navigation
+- **component**: Update comment type detection for comment form
+- **component**: use url._self for detail Add link
+- **component**: use url._self for detail edit link
+- **layout**: use url._self for list data url
+
+### Tests
+
+- **function**: FormatTime dont use TZ that observe daylight savings
+
 ## 0.6.0 (2025-02-28)
 
 ### feat
