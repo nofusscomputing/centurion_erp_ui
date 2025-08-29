@@ -61,6 +61,8 @@ import FeatureFlag from "./icons/feature_flag";
 import GitHub from "./icons/GitHub";
 import GitLab from "./icons/GitLab";
 import ITOps from "./icons/itops";
+import Tenant from "./icons/Tenant";
+import Role from "./icons/Role";
 
 
 const icon_components = {
@@ -106,12 +108,14 @@ const icon_components = {
     operating_system: OperatingSystem,
     organization: OrganizationIcon,
     project: ProjectIcon,
+    role: Role,
     service: ServiceIcon,
     software: SoftwareIcon,
     software_version: SoftwareIcon,
     settings: SettingsIcon,
     swagger_docs: SwaggerDcoumentation,
     task: TaskIcon,
+    tenant: Tenant,
     ticket_change: TicketChange,
     ticket_incident: TicketIncident,
     ticket_problem: TicketProblem,
