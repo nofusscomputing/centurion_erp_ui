@@ -43,14 +43,23 @@ export default function FieldData({
     let field_data = '';
 
     let data_field = field_lookup(field_name, data)
+    if( typeof(field_name) === 'object' ) {
 
-    if( data_field ) {
+        data_field = field_lookup(field_name.field, data)
+
+    }
+
+    if( data_field != null ) {
 
         let field_type = null
 
         if( field_name in metadata.fields ) {
 
             field_type = metadata.fields[field_name].type
+
+        } else if( typeof(field_name) === 'object' ) {
+
+            field_type = metadata.fields[field_name.field].type
 
         }
 
@@ -150,9 +159,9 @@ export default function FieldData({
             case 'Relationship':
             case 'Serializer':
 
-                if( metadata.fields[field_name].relationship_type === 'ManyToMany' ) {
+                if( metadata.fields[field_name]?.relationship_type === 'ManyToMany' ) {
 
-                    if( typeof (data_field) === 'object' ) {
+                    if( typeof(data_field) === 'object' ) {
 
                         field_data = (
 
@@ -184,7 +193,7 @@ export default function FieldData({
 
                         field_data = '-'
 
-                    } else if( typeof (data_field ) === 'object' ) {
+                    } else if( typeof( data_field ) === 'object' ) {
 
                         if( 'url' in data_field ) {
 
@@ -197,6 +206,12 @@ export default function FieldData({
                             field_data = data_field.display_name
 
                         }
+
+                    } else if( typeof( field_name ) === 'object' && autolink ) {
+
+                        field_data = (
+                            <Link to={String(data['_urls'][field_name.key]).split(API_SPLIT)[1]}>{data_field}</Link>
+                        )
 
                     } else if( typeof (data_field) === 'list' ) {
 
@@ -251,9 +266,10 @@ export default function FieldData({
                         '_urls' in data
                         && (
                             autolink
-                            && Boolean(metadata.fields[field_name].autolink)
+                            && Boolean(metadata.fields[field_name]?.autolink)
                         )
                     )
+                    || autolink
                 ) {
 
                     field_data = (

@@ -1,9 +1,7 @@
 import { Link, redirect, useLocation, useNavigate, useParams } from "react-router";
 import IconLoader from "../IconLoader";
 import { useEffect, useState } from "react";
-import { ResponseException } from "../../classes/Exceptions";
 import { apiFetch } from "../../hooks/apiFetch";
-import urlBuilder from "../../hooks/urlBuilder";
 
 
 
@@ -18,13 +16,7 @@ const Navbar = ({
 
     const [ nav_menu, setNavMenu ] = useState(null);
 
-    const [ nav_page, setNavPage ] = useState(null);
-
     const location = useLocation();
-
-    const url_builder = urlBuilder(
-        params
-    )
 
     const navigate = useNavigate();
 
@@ -53,14 +45,26 @@ const Navbar = ({
 
     useEffect(() => {
 
+        if( navigation ) {
 
-        setNavMenu(url_builder.params.module);
+            for(let menu of navigation) {
 
-        setNavPage(String(url_builder.params.module + '-' + url_builder.params.model))
+                for(let page of menu.pages) {
+
+                    if( String(location.pathname).startsWith( page.link ) ) {
+
+                        setNavMenu(menu.name);
+
+                    }
+
+                }
+
+            }
+        }
 
     }, [
-        url_builder.params.module,
-        url_builder.params.model,
+        location.pathname,
+        navigation,
     ])
 
 
@@ -113,7 +117,7 @@ const Navbar = ({
 
                                     return(
                                         <Link to={ page.link }><div
-                                            className={nav_page === module.name.toLowerCase()+'-'+page.name.toLowerCase() ? 'page active' : 'page'}
+                                            className={String(location.pathname).startsWith( page.link ) ? 'page active' : 'page'}
                                         >
                                             <span className="icon">
                                             { 'icon' in page ? 

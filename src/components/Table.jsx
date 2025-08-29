@@ -5,7 +5,6 @@ import FieldData from "../functions/FieldData";
 import TextField from "./form/Textfield";
 import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
-import urlBuilder from "../hooks/urlBuilder";
 import Button from "./form/Button";
 
 
@@ -28,6 +27,8 @@ const Table = ({
     loader_data = null
 }) => {
 
+    const API_SPLIT = String('api/v2')
+
     const [loaded, setPageLoaded] = useState(false)
 
     const [metadata, setMetaData] = useState(null);
@@ -46,20 +47,10 @@ const Table = ({
 
     const params = useParams();
 
-    const url_builder = urlBuilder(
-        params
-    )
-
     if( ! String(data_url_path).startsWith('/') ) {
         data_url_path = '/' + data_url_path
     }
 
-
-    if( String(window.location.pathname).includes('/ticket/') ) {
-        
-        data_url_path = '/' + url_builder.params.module + '/ticket/' + url_builder.params.model
-
-    }
 
     useEffect(() => {
 
@@ -212,7 +203,7 @@ const Table = ({
         <>
         { metadata &&
             <div>
-                { metadata.allowed_methods.includes('POST') && (<Link to={data_url_path + "/add"}><button className="common-field form">Add</button></Link>)}
+                { metadata.allowed_methods.includes('POST') && (<Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}><button className="common-field form">Add</button></Link>)}
                     <table>
                         <thead>
                             <tr>
@@ -224,7 +215,10 @@ const Table = ({
 
                                     for( let field of metadata.table_fields ) {
 
-                                        if( typeof(field) === 'string' ) {
+                                        if(
+                                            typeof(field) === 'string'
+                                            || typeof(field) === 'object'
+                                        ) {
 
                                             table_columns_count += 1
 
@@ -259,16 +253,30 @@ const Table = ({
                                                 <th key={key}>{metadata.fields[key].label}</th>  
                                             )
                                         }
-                                    } 
-                                } else if( typeof(key) === 'object' ) {
-
-                                    for( let sub_key of key ) {
-
-                                        collapsable_fields.push(sub_key)
-
                                     }
 
-                                    console.log(`collapsable fields ${JSON.stringify(key)}`)
+                                } else if( typeof(key) === 'object' ) {
+
+                                    if(
+                                        typeof(key) === 'object'
+                                        && key.field
+                                    ) {
+
+                                        return (
+                                            <th key={key}>{metadata.fields[key.field].label}</th>
+                                        )
+
+                                    } else {
+
+                                        for( let sub_key of key ) {
+
+                                            collapsable_fields.push(sub_key)
+
+                                        }
+
+                                        console.log(`collapsable fields ${JSON.stringify(key)}`)
+
+                                    }
 
                                 }
 
@@ -291,6 +299,7 @@ const Table = ({
                                                 if (
                                                     key in metadata.fields
                                                     || String(key).startsWith('-action_')
+                                                    || String(key?.type) === 'link'
                                                 ) {
 
                                                     if( typeof(key) === 'string' ) {
@@ -305,7 +314,7 @@ const Table = ({
 
                                                             return (
                                                                 <td>
-                                                                    <Link to={document.location.pathname + '/token/'+ data.id + '/delete'}>
+                                                                    <Link to={String(data._urls._self).split('api/v2')[1] + '/delete'}>
                                                                         <Button
                                                                             id = {data.id}
                                                                             button_text = 'Delete'
@@ -339,6 +348,23 @@ const Table = ({
                                                             )
 
                                                         }
+                                                    } else if( typeof(key) === 'object' ) {
+
+                                                        if( String(key.type) === 'link' ) {
+
+                                                            return (
+                                                                <td>
+                                                                    <FieldData
+                                                                        metadata={metadata}
+                                                                        field_name={key}
+                                                                        data={data}
+                                                                        autolink = {true}
+                                                                    />
+                                                                </td>
+                                                            )
+    
+                                                        }
+
                                                     }
                                                 }
 

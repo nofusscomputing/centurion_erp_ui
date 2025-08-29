@@ -38,7 +38,7 @@ const ModelNote = ({
 
                 <div className="comment-body">
                     <RenderMarkdown>
-                        {note_data['content']}
+                        {note_data['body']}
                     </RenderMarkdown>
                 </div>
 

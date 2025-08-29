@@ -77,7 +77,14 @@ const ModelForm = () => {
                     }
 
                 } else if( 'initial' in metadata.fields[field_key] ) {
+
+                    if(
+                        metadata.fields[field_key]['initial'] !== '[]'
+                        && metadata.fields[field_key]['initial'] !== ''
+                        && page_data[field_key] === null
+                    ) {
                         initial_form_data[field_key] = metadata.fields[field_key].initial
+                    }
                 }
 
             })
@@ -163,11 +170,11 @@ const ModelForm = () => {
         <section>
             {form_error && form_error['non_field_errors'] &&
                 <div>
-                    <ul>
+                    <ul key="non-field-errors">
                     {form_error['non_field_errors'].map( (err) => {
                         
                         return (
-                            <li><span className="error-text">{err}</span></li>
+                            <li key={'error'}><span className="error-text">{err}</span></li>
                         )
                     })}
                     </ul>
@@ -192,8 +199,8 @@ const ModelForm = () => {
                         || response.status === 204
                     ) {
 
-                        navigate(metadata.urls.back ?
-                            String(metadata.urls.back).split('api/v2')[1]
+                        navigate(metadata.urls.return_url ?
+                            String(metadata.urls.return_url).split('api/v2')[1]
                             : String(metadata.urls.self).split('api/v2')[1])
 
                     } else {
@@ -356,7 +363,7 @@ const ModelForm = () => {
                             <Link to={
                                 metadata.urls.return_url ?
                                 String(metadata.urls.return_url).split('api/v2')[1]
-                                : String(metadata.urls.self).split('api/v2')[1]
+                                : String(metadata.urls.back).split('api/v2')[1]
 
                             }><button type="button" className="form common-field inverse">Cancel</button></Link>
                         </div>
