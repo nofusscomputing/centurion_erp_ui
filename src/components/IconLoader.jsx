@@ -63,6 +63,7 @@ import GitLab from "./icons/GitLab";
 import ITOps from "./icons/itops";
 import Tenant from "./icons/Tenant";
 import Role from "./icons/Role";
+import User from "./icons/User";
 
 
 const icon_components = {
@@ -135,6 +136,7 @@ const icon_components = {
     ticket_status_pending: StatusPendingIcon,
     ticket_status_solved: StatusSolvedIcon,
     ticket_status_testing: StatusTestingIcon,
+    user: User,
     webhook: Webhook,
     
 };
