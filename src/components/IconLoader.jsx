@@ -64,6 +64,7 @@ import ITOps from "./icons/itops";
 import Tenant from "./icons/Tenant";
 import Role from "./icons/Role";
 import User from "./icons/User";
+import DirectoryIcon from "./icons/Directory";
 
 
 const icon_components = {
@@ -84,6 +85,7 @@ const icon_components = {
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
     devops: CodeIcon,
+    directory: DirectoryIcon,
     documentation: Documentation,
     reply: ReplyIcon,
     delete: DeleteIcon,
