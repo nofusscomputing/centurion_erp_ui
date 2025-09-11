@@ -194,9 +194,7 @@ const Table = ({
 
     return (
         <>
-        { loaded &&
-        <>
-        { metadata &&
+        { loaded && (metadata && table_data) &&
             <div>
                 { metadata.allowed_methods.includes('POST') && (<Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}><button className="common-field form">Add</button></Link>)}
                     <table>
@@ -495,8 +493,6 @@ const Table = ({
                     </div>
                 }
             </div>
-        }
-        </>
         }
         </>
     );
