@@ -29,7 +29,7 @@ const Table = ({
 
     const API_SPLIT = String('api/v2')
 
-    const [loaded, setPageLoaded] = useState(false)
+    const [loaded, setPageLoaded] = useState(loader_data ?  true : false)
 
     const [metadata, setMetaData] = useState(null);
 
@@ -54,7 +54,6 @@ const Table = ({
 
     useEffect(() => {
 
-        setPageLoaded(false)
         setMetaData(loader_metadata)
         setTableData(loader_data)
         setPageNumberValue(1)
@@ -84,7 +83,6 @@ const Table = ({
             }
         }
 
-        setPageLoaded(true)
 
     }, [
         // loader_metadata,
@@ -93,8 +91,6 @@ const Table = ({
 
 
     useEffect(() =>{
-
-        setPageLoaded(false)
 
         let url = null
 
@@ -108,59 +104,58 @@ const Table = ({
 
         }
 
-        apiFetch( url )
-            .then((result) => {
+        if( loaded === false || page !== 0 ) {
+            apiFetch( url )
+                .then((result) => {
 
+                    if( result.status == 200 ) {
 
-                if( result.status == 200 ) {
+                        if( result.api_metadata !== null ) {
 
-                    if( result.api_metadata !== null ) {
+                            setMetaData(result.api_metadata)
+        
+                        }
+        
+                        setTableData(result.api_page_data)
 
-                        setMetaData(result.api_metadata)
-    
+                        if( Array(result.api_metadata.table_fields).length < 2 ) {
+
+                            console.error("Missing Table Fields")
+
+                        }
+
+                        if( SetContentHeaderIcon ) {
+
+                            SetContentHeaderIcon(
+                                <>
+                                    {result.api_metadata['documentation'] &&
+                                        <Link to={result.api_metadata['documentation']} target="_new">
+                                            <IconLoader
+                                                name='help'
+                                            />
+                                        </Link>
+                                    }
+                                </>
+                            )
+                        }
+
+                        if( callback ) {
+
+                            callback(result.api_metadata.name)
+
+                        }
+
+                        if( page !== 0 ) {
+                            
+                            setPageNumberValue(page)
+
+                        }
+
+                        setPageLoaded(true)
                     }
-    
-                    setTableData(result.api_page_data)
-
-                    if( Array(result.api_metadata.table_fields).length < 2 ) {
-
-                        console.error("Missing Table Fields")
-
-                    }
-
-                    if( SetContentHeaderIcon ) {
-
-                        SetContentHeaderIcon(
-                            <>
-                                {result.api_metadata['documentation'] &&
-                                    <Link to={result.api_metadata['documentation']} target="_new">
-                                        <IconLoader
-                                            name='help'
-                                        />
-                                    </Link>
-                                }
-                            </>
-                        )
-                    }
-
-                    if( callback ) {
-
-                        callback(result.api_metadata.name)
-
-                    }
-
-                    if( page !== 0 ) {
-                        
-                        setPageNumberValue(page)
-
-                    }
-
-                    setPageLoaded(true)
-
                 }
-
-            })
-
+            )
+        }
     }, [
         page,
     ]);
