@@ -145,6 +145,7 @@ const Detail = () => {
                     if( tab.name.toLowerCase() === 'notes' ) {
 
                         return(
+                            (notes && note_metadata) &&
                             <div className="model-notes">
 
                                 <div className="model-notes-comment">
@@ -192,7 +193,7 @@ const Detail = () => {
                                 </div>
 
                                 <div className="notes">
-                                {(notes && note_metadata) &&
+                                {
                                     notes.results.map((note) => {
                                     return (<ModelNote
                                             note_data={note}
