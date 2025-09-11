@@ -109,12 +109,11 @@ const Detail = () => {
 
     }, [
         update_notes,
-        page_data
     ])
 
 
     return (
-        page_data &&
+        metadata && page_data &&
         <>
         <ContentHeader
             content_heading={content_heading}
@@ -134,7 +133,7 @@ const Detail = () => {
             )}
         >
 
-            { metadata && metadata.layout.map(( tab, index ) => {
+            { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
 
                 if( active_tab === tab.name.toLowerCase()
                     || (
