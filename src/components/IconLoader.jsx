@@ -65,6 +65,7 @@ import Tenant from "./icons/Tenant";
 import Role from "./icons/Role";
 import User from "./icons/User";
 import DirectoryIcon from "./icons/Directory";
+import Employee from "./icons/Employee";
 
 
 const icon_components = {
@@ -91,6 +92,7 @@ const icon_components = {
     delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
+    employee: Employee,
     feature_flag: FeatureFlag,
     git: Git,
     github: GitHub,
