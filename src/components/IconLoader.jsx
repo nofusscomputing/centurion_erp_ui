@@ -66,6 +66,7 @@ import Role from "./icons/Role";
 import User from "./icons/User";
 import DirectoryIcon from "./icons/Directory";
 import Employee from "./icons/Employee";
+import HumanResources from "./icons/HumanResources";
 
 
 const icon_components = {
@@ -99,6 +100,7 @@ const icon_components = {
     gitlab: GitLab,
     help: HelpIcon,
     history: HistoryIcon,
+    human_resources: HumanResources,
     information: InformationIcon,
     kb: InformationIcon,
     itam: ItamIcon,
