@@ -66,6 +66,7 @@ import Role from "./icons/Role";
 import User from "./icons/User";
 import DirectoryIcon from "./icons/Directory";
 import Employee from "./icons/Employee";
+import Customer from "./icons/Customer";
 import HumanResources from "./icons/HumanResources";
 
 
@@ -82,6 +83,7 @@ const icon_components = {
     config_group: ConfigManagementIcon,
     config_management: ConfigManagementIcon,
     copy: CopyIcon,
+    customer: Customer,
     device_status_bad: InventoryStatusBadIcon,
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
