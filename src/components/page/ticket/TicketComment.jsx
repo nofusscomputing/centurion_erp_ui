@@ -371,7 +371,7 @@ const TicketComment = ({
 
             </Section>
             }
-            { threads &&
+            { threads?.results[0]?.parent &&
             <div
                 className="replies"
                 style={{
