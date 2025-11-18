@@ -122,14 +122,12 @@ const RelatedTickets = ({
                         >
                             {related_name}
                         </span>
-                        <span
-                            className="text"
-                        >
-                            <FieldData
-                                metadata={metadata}
-                                field_name='display_name'
-                                data={related_ticket}
-                            />
+
+                        <FieldData
+                            metadata={metadata}
+                            field_name='display_name'
+                            data={related_ticket}
+                        />
                         </span>
                     </div>
                     </div>

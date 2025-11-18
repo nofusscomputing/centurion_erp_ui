@@ -118,6 +118,10 @@ div.ticket section.related-tickets .item:hover {
   filter: brightness(60%);
 }
 
+div.ticket section.related-tickets div.items div.item div {
+  height: 24px;
+}
+
 div.ticket section.related-tickets .icon svg {
   align-self: center;
 }
