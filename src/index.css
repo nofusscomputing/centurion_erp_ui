@@ -551,6 +551,7 @@ svg.history {
 }
 
 svg.delete {
+  cursor: pointer;
   fill: #ff0000;
 }
 
