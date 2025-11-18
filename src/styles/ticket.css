@@ -114,8 +114,10 @@ div.ticket section.related-tickets .items {
   justify-content: space-between;
 }
 
-div.ticket section.related-tickets .item:hover {
-  filter: brightness(60%);
+div.ticket section.related-tickets .item:hover,
+div.ticket section.linked-items .item:hover {
+  filter: brightness(90%);
+  background:#ffffff;
 }
 
 div.ticket section.related-tickets div.items div.item div {
