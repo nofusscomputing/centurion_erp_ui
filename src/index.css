@@ -645,6 +645,7 @@ span.badge span.badge-text {
   height: fit-content;
   margin: 2px 2px;
   padding: 0 3px 0 2px;
+  white-space: nowrap;
 }
 
 a.badge-link {
