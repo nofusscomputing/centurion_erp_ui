@@ -67,6 +67,12 @@ const Ticket = ({
     )
 
 
+    useEffect(() => {
+
+        document.title = `${metadata.name}`
+
+    }, [ metadata ])
+
     useEffect( ()=> {
 
         setNewTicket(url_params.params.action === 'add' ? true : false)
