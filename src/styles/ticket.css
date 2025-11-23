@@ -102,6 +102,14 @@ div.ticket .sidebar .metadata fieldset label select {
 }
 
 
+div.ticket section.description,
+div.ticket section.related-tickets,
+div.ticket section.linked-items {
+    flex-grow: 0;
+}
+
+
+
 div.ticket section h3.related-tickets,
 div.ticket section h3.linked-items {
   background-color: var(--contrasting-colour);
