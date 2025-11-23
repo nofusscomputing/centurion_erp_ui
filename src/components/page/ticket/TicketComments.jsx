@@ -97,7 +97,7 @@ const TicketComments = ({
                         >
                             <TicketComment
                                 comment_data={comments.comments[key]}
-                                post_url = {comments_url}
+                                post_url = {comments.comments[key]['_urls']['_self']}
                                 metadata={comment_metadata}
                                 ticket_id={ticket_id}
                                 edit_callback = {setRelaod}

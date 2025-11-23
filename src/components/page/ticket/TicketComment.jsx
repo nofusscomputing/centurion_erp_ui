@@ -103,17 +103,15 @@ const TicketComment = ({
         </div>
     )
 
-    const [threads_url, setThreadsURL] = useState(comment_data._urls.threads ? String(comment_data._urls.threads).split('api/v2')[1] : null)
-
 
     const [ threads, setThreads ] = useState(null)
     const [ reload, setRelaod ] = useState(false)
 
     useEffect(() => {
 
-        if( threads_url ) {
+        if( comment_page_data ) {
             apiFetch(
-                threads_url + '?page[size]=500',
+                `${post_url + '/threads?page[size]=500'}`,
                 (data) => {
                     setThreads(data)
                 },
@@ -122,9 +120,9 @@ const TicketComment = ({
                 false
             )
 
-            setRelaod(false)
+            setReload(false)
         }
-    },[ reload, threads_url ])
+    },[ reload ])
 
 
     if( comment_type === 'action' ) {
@@ -426,7 +424,6 @@ const TicketComment = ({
                             commentCallback={() => {
                                 setRelaod(true)
 
-                                setThreadsURL(post_url + '/' + comment_data['id'] + '/threads')
                             }}
                         />
                     </li>
