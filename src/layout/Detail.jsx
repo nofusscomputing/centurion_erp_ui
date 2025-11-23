@@ -41,6 +41,14 @@ const Detail = () => {
     const [ notes_form, setNotesForm ] = useState({})
     const [ note_metadata, setNoteMetadata ] = useState(null)
 
+
+    useEffect(() => {
+
+        document.title = `${metadata.name}`
+
+    }, [ metadata ])
+
+
     useEffect(() => {
 
         setActiveTab(null)
