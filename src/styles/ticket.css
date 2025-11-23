@@ -70,12 +70,13 @@ div.ticket section.sidebar {
 div.ticket section.sidebar h3 {
   background-color: chocolate;
   display: flow-root;
+  margin: 0;
 }
 
 div.ticket section.sidebar .metadata {
-  overflow-x:hidden;
+  overflow-x: hidden;
   overflow-y: auto;
-  height: calc(100vh - 154px - 30px - 30px);
+  height: calc(100vh - 154px - 30px - 30px - 10px);
   scrollbar-width: thin;
 
 }
