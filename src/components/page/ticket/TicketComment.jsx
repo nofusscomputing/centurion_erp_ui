@@ -130,6 +130,32 @@ const TicketComment = ({
     },[ reload ])
 
 
+
+    useEffect(() => {
+
+        if( ! comment_metadata ) {
+            apiFetch(
+                post_url,
+                null,
+                'OPTIONS'
+            )
+                .then((result) => {
+
+                    if( result.status == 200 ) {
+
+                        if( result.api_metadata !== null ) {
+
+                            setCommentMetadata(result.api_metadata)
+        
+                        }
+                    }
+                })
+        }
+
+    }, [])
+
+
+
     if( comment_type === 'action' ) {
 
         return(
