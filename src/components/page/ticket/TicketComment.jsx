@@ -292,28 +292,14 @@ const TicketComment = ({
                         </span>
                     </fieldset>}
 
-                    {comment_page_data.responsible_user &&
+                    {comment_page_data.assignee &&
                     <fieldset className={comment_class}>
-                        <label>Responsible User</label>
+                        <label>{comment_metadata.fields['assignee'].label}</label>
                         <span className="text">
                             <FieldData
                                 metadata={comment_metadata}
-                                field_name='responsible_user'
+                                field_name='assignee'
                                 data={comment_page_data}
-                            />
-                        </span>
-                    </fieldset>}
-
-                    {comment_page_data.responsible_team &&
-                    <fieldset className={comment_class}>
-                        <label>
-                            Responsible Team
-                        </label>
-                        <span className="text">
-                            <FieldData
-                                metadata={metadata}
-                                field_name='responsible_team'
-                                data={comment_data}
                             />
                         </span>
                     </fieldset>}

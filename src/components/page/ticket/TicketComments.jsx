@@ -153,7 +153,7 @@ const TicketComments = ({
                     >
                         <TicketCommentForm
                             metadata={comment_metadata}
-                            post_url = {comments_url}
+                            post_url = {comments_url.replace('/comment', '') }
                             ticket_id={ticket_id}
                             commentCallback={() => {
                                 setRelaod(reload ? false : true )
