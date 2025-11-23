@@ -22,7 +22,7 @@ export async function apiFetch(
 
     console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
 
-    console.debug(`apiFetch was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
+    console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
 
     if( String(url_path).includes(String(window.env.API_URL).trim()) ) {    // normalise passed URLs
 

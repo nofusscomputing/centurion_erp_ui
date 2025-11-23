@@ -103,18 +103,11 @@ const Ticket = ({
 
 
     useEffect(() => {
-        for(let ticket_type_entry of metadata.fields['ticket_type'].choices ) {
 
-            if( Number(ticket_type_entry.value) === Number(page_data['ticket_type']) ) {
+        let ticket_type_entry = String(page_data['ticket_type']).toLowerCase()
+        ticket_type_entry = ticket_type_entry.replace(' ', '-').replace('_', '-')
 
-                ticket_type_entry = String(ticket_type_entry.display_name).toLowerCase()
-                ticket_type_entry = ticket_type_entry.replace(' ', '-')
-
-                SetTicketType(ticket_type_entry)
-
-            }
-
-        }
+        SetTicketType(ticket_type_entry)
 
     }, [
         metadata.fields,
@@ -289,14 +282,14 @@ const Ticket = ({
                 { ! new_ticket &&
 
                 <RelatedTickets
-                    data_url={String(page_data?._urls?.related_tickets).split('api/v2')[1]}
+                    data_url={String(page_data?._urls?.ticket_dependencies).split('api/v2')[1]}
                     ticket_id={page_data?.id}
                 />}
 
                 { ! new_ticket &&
 
                 <LinkedItems
-                    data_url={String(page_data?._urls?.linked_items).split('api/v2')[1]}
+                    data_url={String(page_data?._urls?.linked_models).split('api/v2')[1]}
                 />}
 
                 { comment_metadata &&
@@ -350,19 +343,29 @@ const Ticket = ({
                         onFieldChange={onFieldChange}
                     />}
 
+                    { 'assigned_to' in metadata.fields &&
+                    <InlineField
+                        data={ticket_data}
+                        field_name='assigned_to'
+                        metadata={metadata}
+                        onFieldChange={onFieldChange}
+                    />}
+
+                    { 'assigned_users' in metadata.fields &&
                     <InlineField
                         data={ticket_data}
                         field_name='assigned_users'
                         metadata={metadata}
                         onFieldChange={onFieldChange}
-                    />
+                    />}
 
+                    { 'assigned_teams' in metadata.fields &&
                     <InlineField
                         data={ticket_data}
                         field_name='assigned_teams'
                         metadata={metadata}
                         onFieldChange={onFieldChange}
-                    />
+                    />}
 
                     <InlineField
                         data={ticket_data}
@@ -396,12 +399,21 @@ const Ticket = ({
                         onFieldChange={onFieldChange}
                     />
 
+                    { ! new_ticket && 'duration' in metadata.fields &&
                     <fieldset>
                         <label>Duration</label>
                         <span className="text">
                             {secondsToTime(page_data['duration'])}
                         </span>
-                    </fieldset>
+                    </fieldset>}
+
+                    { ! new_ticket && 'ticket_duration' in metadata.fields &&
+                    <fieldset>
+                        <label>Duration</label>
+                        <span className="text">
+                            {secondsToTime(page_data['ticket_duration'])}
+                        </span>
+                    </fieldset>}
 
                     <InlineField
                         data={ticket_data}
@@ -424,12 +436,21 @@ const Ticket = ({
                         onFieldChange={onFieldChange}
                     />
 
+                    { ! new_ticket && 'estimate' in metadata.fields &&
                     <fieldset>
                         <label>Estimate</label>
                         <span className="text">
                             {secondsToTime(page_data['estimate'])}
                         </span>
-                    </fieldset>
+                    </fieldset>}
+
+                    { ! new_ticket && 'ticket_estimation' in metadata.fields &&
+                    <fieldset>
+                        <label>Estimate</label>
+                        <span className="text">
+                            {secondsToTime(page_data['ticket_estimation'])}
+                        </span>
+                    </fieldset>}
 
                     <InlineField
                         data={ticket_data}
@@ -459,19 +480,29 @@ const Ticket = ({
                         onFieldChange={onFieldChange}
                     />
 
+                    { 'subscribed_to' in metadata.fields &&
+                    <InlineField
+                        data={ticket_data}
+                        field_name='subscribed_to'
+                        metadata={metadata}
+                        onFieldChange={onFieldChange}
+                    />}
+
+                    { 'subscribed_users' in metadata.fields &&
                     <InlineField
                         data={ticket_data}
                         field_name='subscribed_users'
                         metadata={metadata}
                         onFieldChange={onFieldChange}
-                    />
+                    />}
 
+                    { 'subscribed_teams' in metadata.fields &&
                     <InlineField
                         data={ticket_data}
                         field_name='subscribed_teams'
                         metadata={metadata}
                         onFieldChange={onFieldChange}
-                    />
+                    />}
 
                     <fieldset>
                         <label>Roadmap(s)</label>
