@@ -15,6 +15,12 @@ const List = () => {
 
     const {metadata, page_data} = useLoaderData();
 
+    useEffect(() => {
+
+        document.title = `${metadata.name}`
+
+    }, [ metadata ])
+
     return (
         <>
         <ContentHeader
