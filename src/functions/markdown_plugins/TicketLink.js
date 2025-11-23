@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import IconLoader from "../../components/IconLoader";
 
 
-const UNESCAPE_RE = /(?<markdown>#(?<model_id>\d+))/g
+export const MARKDOWN_TICKET_LINK_UNESCAPE_RE = /(?<markdown>#(?<model_id>\d+))/g
 
 
 
@@ -18,7 +18,7 @@ function ticket_link (state, silent) {
 
   let begining = state.pos
 
-  const re = new RegExp(UNESCAPE_RE);
+  const re = new RegExp(MARKDOWN_TICKET_LINK_UNESCAPE_RE);
 
   const fields = [ ...String(state.src).matchAll(re) ]
 

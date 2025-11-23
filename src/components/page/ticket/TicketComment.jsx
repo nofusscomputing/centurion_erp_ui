@@ -26,6 +26,12 @@ const TicketComment = ({
         post_url = String(post_url).split('?')[0]
     }
 
+    const [ comment_metadata, setCommentMetadata ] = useState( metadata )
+
+    const [ comment_page_data, setCommentPageData ] = useState( comment_data )
+
+    const [ reload, setReload ] = useState(false)
+
     let comment_header = ' wrote'
 
     let comment_class = 'comment comment-type-default'
@@ -36,19 +42,19 @@ const TicketComment = ({
 
     try {
 
-        if( isNaN(comment_data.comment_type) ) {
+        if( isNaN(comment_page_data.comment_type) ) {
 
-            comment_type = comment_data.comment_type
+            comment_type = comment_page_data.comment_type
 
         }else {
 
-            comment_type = String(metadata.fields.comment_type.choices[Number(comment_data.comment_type)-1].display_name).toLowerCase()
+            comment_type = String(comment_metadata.fields.comment_type.choices[Number(comment_page_data.comment_type)-1].display_name).toLowerCase()
 
         }
 
     }catch( e ) {
 
-        console.log('error: ' + comment_data.id )
+        console.error('error: ' + comment_page_data.id )
 
     }
 
@@ -80,24 +86,24 @@ const TicketComment = ({
     const comment_header_text_updated = (<span className="sub-script">Updated </span>)
 
     const comment_header_text = (
-        metadata && comment_data &&
+        comment_metadata && comment_page_data &&
         <div className="text">
             <FieldData
-                metadata={metadata}
+                metadata={comment_metadata}
                 field_name='user'
-                data={comment_data}
+                data={comment_page_data}
             />
             <span className="sub-script">{comment_header} on </span>
             <FieldData
-                metadata={metadata}
+                metadata={comment_metadata}
                 field_name='created'
-                data={comment_data}
+                data={comment_page_data}
             />
             {comment_updated && <span>{comment_header_text_updated}
                 <FieldData
-                    metadata={metadata}
+                    metadata={comment_metadata}
                     field_name='modified'
-                    data={comment_data}
+                    data={comment_page_data}
                 />
             </span>}
         </div>
@@ -105,7 +111,6 @@ const TicketComment = ({
 
 
     const [ threads, setThreads ] = useState(null)
-    const [ reload, setRelaod ] = useState(false)
 
     useEffect(() => {
 
@@ -128,26 +133,27 @@ const TicketComment = ({
     if( comment_type === 'action' ) {
 
         return(
-            <div id={'comment-' + comment_data['id']} key={'comment-' + comment_data['id']}>
+            comment_metadata &&
+            <div id={'comment-' + comment_page_data['id']} key={'comment-' + comment_page_data['id']}>
                 <span style={{display: 'inline-block'}}>
                     <FieldData
-                        metadata={metadata}
+                        metadata={comment_metadata}
                         field_name='user'
-                        data={comment_data}
+                        data={comment_page_data}
                     />
                 </span>&nbsp;
                 <span className="markdown" style={{display: 'inline-block'}}>
                     <FieldData
-                        metadata={metadata}
+                        metadata={comment_metadata}
                         field_name='body'
-                        data={comment_data}
+                        data={comment_page_data}
                     />
                 </span>&nbsp;
                 <span className="sub-script" style={{color: '#777', display: 'inline-block'}}>
                     <FieldData
-                        metadata={metadata}
+                        metadata={comment_metadata}
                         field_name='created'
-                        data={comment_data}
+                        data={comment_page_data}
                     />
                 </span>
             </div>
@@ -155,8 +161,9 @@ const TicketComment = ({
     }
 
     const header_icons = (
-        <div id={'comment-icons-' + comment_data['id']} className="icons">
-            {comment_data['parent'] == null &&
+        comment_page_data &&
+        <div id={'comment-icons-' + comment_page_data['id']} className="icons">
+            {comment_page_data['parent'] == null &&
              <span style={{
                 cursor: 'pointer'
                 }} onClick={(e) => {
@@ -197,24 +204,27 @@ const TicketComment = ({
     }
 
     return (
-        metadata &&
+        (comment_metadata && comment_page_data) &&
         <div
             className={discussion_class}
-            id={'comment-' + comment_data['id']}
-            key={'comment-' + comment_data['id']}
+            id={'comment-' + comment_page_data['id']}
+            key={'comment-' + comment_page_data['id']}
             style={style}
         >
             { editing &&
             <TicketCommentForm
-                comment_data={comment_data}
-                metadata={metadata}
+                comment_data={comment_page_data}
+                metadata={comment_metadata}
                 post_url = {post_url}
                 ticket_id={ticket_id}
                 is_edit = {true}
                 cancelbuttonOnSubmit={(e) => {
                     setIsEditing(false)
                 }}
-                commentCallback={() => {
+                commentCallback={(response) => {
+
+                    setCommentPageData(response.api_page_data);
+
                     setIsEditing(false)
                     edit_callback( callback_value ? false : true )
                 }}
@@ -232,43 +242,43 @@ const TicketComment = ({
 
                 <div className="comment row">
 
-                    { comment_data.source &&
+                    { comment_page_data.source &&
                     <fieldset className={comment_class}>
                         <label>Source</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='source'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
 
-                    {comment_data.status &&
+                    {comment_page_data.status &&
                     <fieldset className={comment_class}>
                         <label>Status</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='status'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
 
-                    {comment_data.responsible_user &&
+                    {comment_page_data.responsible_user &&
                     <fieldset className={comment_class}>
                         <label>Responsible User</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='responsible_user'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
 
-                    {comment_data.responsible_team &&
+                    {comment_page_data.responsible_team &&
                     <fieldset className={comment_class}>
                         <label>
                             Responsible Team
@@ -282,14 +292,14 @@ const TicketComment = ({
                         </span>
                     </fieldset>}
 
-                    { comment_data.category &&
+                    { comment_page_data.category &&
                     <fieldset className={comment_class}>
                         <label>Category</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='category'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
@@ -300,9 +310,9 @@ const TicketComment = ({
 
                 <div className="markdown">
                     <FieldData
-                        metadata={metadata}
+                        metadata={comment_metadata}
                         field_name='body'
-                        data={comment_data}
+                        data={comment_page_data}
                     />
                 </div>
 
@@ -310,50 +320,50 @@ const TicketComment = ({
 
                 <div className="comment row">
 
-                    { comment_data.planned_start_date &&
+                    { comment_page_data.planned_start_date &&
                     <fieldset className={comment_class}>
                         <label>Planned Start</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='planned_start_date'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
 
-                    { comment_data.planned_finish_date &&
+                    { comment_page_data.planned_finish_date &&
                     <fieldset className={comment_class}>
                         <label>Planned Finish</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='planned_finish_date'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
 
-                    { comment_data.real_start_date &&
+                    { comment_page_data.real_start_date &&
                     <fieldset className={comment_class}>
                         <label>Actual Start</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='real_start_date'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
 
-                    { comment_data.real_finish_date &&
+                    { comment_page_data.real_finish_date &&
                     <fieldset className={comment_class}>
                         <label>Actual Finish</label>
                         <span className="text">
                             <FieldData
-                                metadata={metadata}
+                                metadata={comment_metadata}
                                 field_name='real_finish_date'
-                                data={comment_data}
+                                data={comment_page_data}
                             />
                         </span>
                     </fieldset>}
@@ -361,7 +371,7 @@ const TicketComment = ({
                     <fieldset className={comment_class}>
                         <label>Duration</label>
                         <span className="text">
-                            {secondsToTime(comment_data['duration'])}
+                            {secondsToTime(comment_page_data['duration'])}
                         </span>
                     </fieldset>
 
@@ -405,24 +415,25 @@ const TicketComment = ({
                         <TicketComment
                             comment_data={comment}
                             discussion = {true}
-                            metadata = {metadata}
+                            metadata = {comment_metadata}
                             edit_callback = {() => {
-                                setRelaod(true)
+                                setReload(true)
                             }}
                         />
                     </li>
                     ))}
                     <li
                         className="replies"
-                        key={'comment-reply-form-' + comment_data.id}
+                        key={'comment-reply-form-' + comment_page_data.id}
                     >
                         <TicketCommentForm
-                            metadata={metadata}
-                            post_url = {post_url + '/' + comment_data['id'] + '/threads'}
+                            metadata={comment_metadata}
+                            post_url = {`${post_url}/threads`}
                             ticket_id={ticket_id}
-                            parent_id = {comment_data['id'] ? comment_data['id'] : threads.results[0].parent}
-                            commentCallback={() => {
-                                setRelaod(true)
+                            parent_id = {comment_page_data['id'] ? comment_page_data['id'] : threads.results[0].parent}
+                            commentCallback={(response) => {
+
+                                setCommentPageData(response.api_page_data);
 
                             }}
                         />
