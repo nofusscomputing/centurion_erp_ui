@@ -31,6 +31,7 @@ const Section = ({
                 ...style,
                 display: 'flex',
                 flexDirection: 'column',
+                flexGrow: 0,
             }}
         >
             {titleBar}
