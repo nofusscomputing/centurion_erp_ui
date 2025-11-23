@@ -210,7 +210,9 @@ const TicketCommentForm = ({
                         post_url,
                         setFormError,
                         HTTP_METHOD,
-                        processed_form_data
+                        processed_form_data,
+                        false,
+                        true
                     )
 
                     if(

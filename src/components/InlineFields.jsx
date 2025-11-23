@@ -360,10 +360,11 @@ export const InlineFieldAction = async ({ request, params }) => {
 
     const update = await apiFetch(
         document.location.pathname,
-
         null,
         request.method,
-        form_data
+        form_data,
+        false,
+        false
     )
         .then(data => {
 
