@@ -73,7 +73,7 @@ const RelatedTickets = ({
 
                 let from = true
 
-                let this_id = related_ticket['to_ticket_id']
+                let this_id = related_ticket['dependent_ticket']
 
                 let related_name = ''
 
@@ -85,10 +85,10 @@ const RelatedTickets = ({
 
                 }
 
-                if( Number(related_ticket['to_ticket_id']['id']) === Number(ticket_id) ) {
+                if( Number(related_ticket['dependent_ticket']['id']) === Number(ticket_id) ) {
 
                     from = false
-                    this_id = related_ticket['from_ticket_id']
+                    this_id = related_ticket['ticket']
 
                     if( related_name === 'blocked by' ) {
 
