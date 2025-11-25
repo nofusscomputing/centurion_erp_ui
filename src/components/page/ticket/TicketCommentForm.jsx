@@ -43,8 +43,8 @@ const TicketCommentForm = ({
         the view serializer.
     */
     const [form_data, setFormData] = useState({
-        ['comment_type']: comment_type}
-    )
+        ['comment_type']: comment_type
+    })
 
     const user = useContext(UserContext)
 
@@ -167,9 +167,11 @@ const TicketCommentForm = ({
                         e.target.reset();
 
                         // Reset the form
-                        setFormData({});
-                        setCommentType('comment')
                         setCommentMetadata(metadata)
+                        setCommentType('comment')
+                        setFormData({
+                            ['comment_type']: 'comment'
+                        });
                     }
 
                 }}

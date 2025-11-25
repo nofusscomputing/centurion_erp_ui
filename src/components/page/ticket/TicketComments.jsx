@@ -13,7 +13,8 @@ import { MARKDOWN_TICKET_LINK_UNESCAPE_RE } from "../../../functions/markdown_pl
 const TicketComments = ({
     comment_metadata,
     ticket_id,
-    comments_url
+    comments_url,
+    parent_comment = null,
 }) => {
 
     const [comments, setComments] = useState({
@@ -67,7 +68,11 @@ const TicketComments = ({
         do_fetch();
 
 
-    }, [reload, comments_url])
+    }, [
+        comments.fetch_url,
+        comments_url,
+        reload,
+    ])
 
 
     return (
@@ -100,7 +105,7 @@ const TicketComments = ({
                                 :
                                     comments.comments[key]['_urls']['_self'];
                 
-                            if( url == comment_metadata.urls.self ) {
+                            if( url === comment_metadata.urls.self ) {
                                 needs_metadata = false
                 
                             }
@@ -143,6 +148,8 @@ const TicketComments = ({
                                 ticket_id={ticket_id}
                                 edit_callback = {setRelaod}
                                 callback_value = {reload}
+                                comments_url = {comments_url}
+                                parent_comment={parent_comment}
                             />
                         </li>
                     )
@@ -153,7 +160,8 @@ const TicketComments = ({
                     >
                         <TicketCommentForm
                             metadata={comment_metadata}
-                            post_url = {comments_url.replace('/comment', '') }
+                            post_url = {comment_metadata.urls.self.replace('/comment', '') }
+                            parent_id={parent_comment}
                             ticket_id={ticket_id}
                             commentCallback={() => {
                                 setRelaod(reload ? false : true )

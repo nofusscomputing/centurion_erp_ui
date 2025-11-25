@@ -8,17 +8,18 @@ import IconLoader from "../../IconLoader"
 import { secondsToTime } from "../../../layout/Ticket"
 import Section from "../../Section"
 import TicketCommentForm from "./TicketCommentForm"
+import TicketComments from "./TicketComments"
 
 
 
 const TicketComment = ({
-    discussion = false,
     comment_data = {},
     metadata = null,
     ticket_id = null,
     post_url,
     edit_callback = null,
-    callback_value = null
+    callback_value = null,
+    parent_comment = null,
 }) => {
 
     if( String(post_url).includes('?') ) {
@@ -30,7 +31,7 @@ const TicketComment = ({
 
     const [ comment_page_data, setCommentPageData ] = useState( comment_data )
 
-    const [ reload, setReload ] = useState(false)
+    const [ start_thread, setStartThread ] = useState( false )
 
     let comment_header = ' wrote'
 
@@ -114,9 +115,9 @@ const TicketComment = ({
 
     useEffect(() => {
 
-        if( comment_page_data ) {
+        if( comment_page_data._urls.threads && ! parent_comment) {
             apiFetch(
-                `${post_url + '/threads?page[size]=500'}`,
+                `${comment_page_data._urls.threads}?page[size]=500`,
                 (data) => {
                     setThreads(data)
                 },
@@ -124,10 +125,11 @@ const TicketComment = ({
                 undefined,
                 false
             )
-
-            setReload(false)
         }
-    },[ reload ])
+    },[
+        comment_page_data._urls.threads,
+        parent_comment,
+    ])
 
 
 
@@ -141,7 +143,7 @@ const TicketComment = ({
             )
                 .then((result) => {
 
-                    if( result.status == 200 ) {
+                    if( result.status === 200 ) {
 
                         if( result.api_metadata !== null ) {
 
@@ -193,9 +195,9 @@ const TicketComment = ({
              <span style={{
                 cursor: 'pointer'
                 }} onClick={(e) => {
-                    setThreads( {
-                        results: []
-                    } )
+                    if(threads.results.length === 0) {
+                        setStartThread( (start_thread ? false : true) )
+                    }
             }}>
                 <IconLoader
                 name={'reply'}
@@ -242,6 +244,7 @@ const TicketComment = ({
                 comment_data={comment_page_data}
                 metadata={comment_metadata}
                 post_url = {post_url}
+                parent_id={parent_comment}
                 ticket_id={ticket_id}
                 is_edit = {true}
                 cancelbuttonOnSubmit={(e) => {
@@ -265,7 +268,6 @@ const TicketComment = ({
                     </h4>
                 )}
             >
-
                 <div className="comment row">
 
                     { comment_page_data.source &&
@@ -391,7 +393,8 @@ const TicketComment = ({
 
             </Section>
             }
-            { threads?.results[0]?.parent &&
+
+            { ((threads ? (threads.results.length > 0) : false) || start_thread ) &&
             <div
                 className="replies"
                 style={{
@@ -411,46 +414,12 @@ const TicketComment = ({
                         width = '20px'
                     />
                 </h3>
-                <ul
-                    className="replies"
-                    style={{
-                        paddingLeft: '1.6rem'
-                    }}
-                >
-                    { threads.results &&
-                    threads.results.map((comment, index) => (
-                    <li
-                        className="replies"
-                        id={comment.id}
-                        key={'comment-reply-' + comment.id}
-                    >
-                        <TicketComment
-                            comment_data={comment}
-                            discussion = {true}
-                            metadata = {comment_metadata}
-                            edit_callback = {() => {
-                                setReload(true)
-                            }}
-                        />
-                    </li>
-                    ))}
-                    <li
-                        className="replies"
-                        key={'comment-reply-form-' + comment_page_data.id}
-                    >
-                        <TicketCommentForm
-                            metadata={comment_metadata}
-                            post_url = {`${post_url}/threads`}
-                            ticket_id={ticket_id}
-                            parent_id = {comment_page_data['id'] ? comment_page_data['id'] : threads.results[0].parent}
-                            commentCallback={(response) => {
-
-                                setCommentPageData(response.api_page_data);
-
-                            }}
-                        />
-                    </li>
-                </ul>
+                <TicketComments
+                    comment_metadata = {metadata}
+                    comments_url = {comment_page_data._urls.threads}
+                    ticket_id = {ticket_id}
+                    parent_comment={comment_page_data.id}
+                />
             </div>}
         </div>
     );
