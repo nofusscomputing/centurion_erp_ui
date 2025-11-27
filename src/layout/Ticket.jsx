@@ -297,6 +297,7 @@ const Ticket = ({
                 <TicketComments
                     comment_metadata = {comment_metadata}
                     comments_url = {String(page_data?._urls?.comments).split('api/v2')[1] + ''}
+                    new_comment_url = {String(page_data?._urls?.comments).split('api/v2')[1] + ''}
                     ticket_id = {page_data['id']}
                 />}
 

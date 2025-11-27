@@ -20,6 +20,7 @@ const TicketComment = ({
     edit_callback = null,
     callback_value = null,
     parent_comment = null,
+    new_comment_url = null,
 }) => {
 
     if( String(post_url).includes('?') ) {
@@ -111,33 +112,13 @@ const TicketComment = ({
     )
 
 
-    const [ threads, setThreads ] = useState(null)
-
-    useEffect(() => {
-
-        if( comment_page_data._urls.threads && ! parent_comment) {
-            apiFetch(
-                `${comment_page_data._urls.threads}?page[size]=500`,
-                (data) => {
-                    setThreads(data)
-                },
-                undefined,
-                undefined,
-                false
-            )
-        }
-    },[
-        comment_page_data._urls.threads,
-        parent_comment,
-    ])
-
-
 
     useEffect(() => {
 
         if( ! comment_metadata ) {
+
             apiFetch(
-                post_url,
+                comment_page_data._urls._self,
                 null,
                 'OPTIONS'
             )
@@ -195,9 +176,9 @@ const TicketComment = ({
              <span style={{
                 cursor: 'pointer'
                 }} onClick={(e) => {
-                    if(threads.results.length === 0) {
-                        setStartThread( (start_thread ? false : true) )
-                    }
+                    // if(threads.results.length === 0) {
+                    setStartThread( (start_thread ? false : true) )
+                    // }
             }}>
                 <IconLoader
                 name={'reply'}
@@ -394,7 +375,7 @@ const TicketComment = ({
             </Section>
             }
 
-            { ((threads ? (threads.results.length > 0) : false) || start_thread ) &&
+            { (comment_page_data._urls?.threads || start_thread ) &&
             <div
                 className="replies"
                 style={{
@@ -414,11 +395,18 @@ const TicketComment = ({
                         width = '20px'
                     />
                 </h3>
+                { console.log(`Thread Start`) }
                 <TicketComments
-                    comment_metadata = {metadata}
-                    comments_url = {comment_page_data._urls.threads}
+                    comment_metadata = {null}
+                    comments_url = {
+                        comment_page_data._urls?.threads ? 
+                            comment_page_data._urls.threads
+                        :
+                            `${comment_page_data._urls._self.replace(`/${comment_page_data.comment_type}/${comment_page_data.id}`, `/comment/${comment_page_data.id}`)}/threads`
+                    }
                     ticket_id = {ticket_id}
-                    parent_comment={comment_page_data.id}
+                    parent_comment = {comment_page_data.id}
+                    new_comment_url = {new_comment_url}
                 />
             </div>}
         </div>

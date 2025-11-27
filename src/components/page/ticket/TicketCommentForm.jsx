@@ -54,10 +54,10 @@ const TicketCommentForm = ({
  
     useEffect(() => {
 
-        if( ! is_edit ) {
+        if( ! is_edit && ! comment_metadata ) {
 
             apiFetch(
-                `${post_url}/${comment_type}`
+                comment_data?.id ? comment_data._urls._self : post_url.replace('/comment',`/${comment_type}`)
             )
                 .then((result) => {
 
@@ -146,7 +146,7 @@ const TicketCommentForm = ({
                     }
 
                     const response = await apiFetch(
-                        is_edit ? post_url : `${post_url}/${comment_type}`,
+                        is_edit ? comment_data._urls._self : post_url.replace('/comment',`/${comment_type}`),
                         setFormError,
                         is_edit ? 'PATCH' : 'POST',
                         processed_form_data,
@@ -309,7 +309,7 @@ const TicketCommentForm = ({
                         button_text="Comment"
                     />}
 
-                    { ! is_edit &&
+                    { ! is_edit && comment_metadata &&
                     <Button
                         button_text="Comment"
                         menu_entries={comment_metadata.fields['comment_type'].choices}
@@ -338,6 +338,8 @@ const TicketCommentForm = ({
                             setCommentType(menu_value)
 
                             setFormData((prevState) => ({ ...prevState, ['comment_type']: menu_value }))
+
+                            setCommentMetadata(null)
 
                         } }
                     />}

@@ -14,8 +14,11 @@ const TicketComments = ({
     comment_metadata,
     ticket_id,
     comments_url,
+    new_comment_url = null,
     parent_comment = null,
 }) => {
+
+    const [ metadata, setCommentMetadata ] = useState( comment_metadata )
 
     const [comments, setComments] = useState({
         fetch_url: comments_url,
@@ -69,14 +72,39 @@ const TicketComments = ({
 
 
     }, [
-        comments.fetch_url,
         comments_url,
         reload,
     ])
 
+    useEffect(() => {
+
+        if( ! metadata ) {
+
+            apiFetch(
+                comments_url,
+                null,
+                'OPTIONS'
+            )
+                .then((result) => {
+
+                    if( result.status === 200 ) {
+
+                        if( result.api_metadata !== null ) {
+
+                            setCommentMetadata(result.api_metadata)
+        
+                        }
+                    }
+                })
+        }
+
+    }, [
+        comments_url,
+    ])
+
 
     return (
-        (comments && comment_metadata) &&
+        (comments && metadata) &&
         <div
             className="comments"
             id={ticktCommentsId}
@@ -105,7 +133,7 @@ const TicketComments = ({
                                 :
                                     comments.comments[key]['_urls']['_self'];
                 
-                            if( url === comment_metadata.urls.self ) {
+                            if( url === metadata.urls.self ) {
                                 needs_metadata = false
                 
                             }
@@ -144,23 +172,24 @@ const TicketComments = ({
                             <TicketComment
                                 comment_data={comments.comments[key]}
                                 post_url = {comments.comments[key]['_urls']['_self']}
-                                metadata={need_metadata() ? null : comment_metadata}
+                                metadata={need_metadata() ? null : metadata}
                                 ticket_id={ticket_id}
                                 edit_callback = {setRelaod}
                                 callback_value = {reload}
                                 comments_url = {comments_url}
-                                parent_comment={parent_comment}
+                                parent_comment = {parent_comment}
+                                new_comment_url = {new_comment_url}
                             />
                         </li>
                     )
                 })}
-                {comment_metadata &&
+                {metadata &&
                     <li
                         key={'ticket-comment-reply-form'}
                     >
                         <TicketCommentForm
-                            metadata={comment_metadata}
-                            post_url = {comment_metadata.urls.self.replace('/comment', '') }
+                            metadata={metadata}
+                            post_url = {new_comment_url}
                             parent_id={parent_comment}
                             ticket_id={ticket_id}
                             commentCallback={() => {
