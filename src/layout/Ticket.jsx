@@ -121,15 +121,21 @@ const Ticket = ({
 
             if( page_data['_urls']['comments'] ) {
 
-                apiFetch(
-                    page_data['_urls']['comments'],
-                    (data) =>{
+                async function do_fetch() {
 
-                        setCommentMetaData(data)
+                    await apiFetch(
+                        page_data['_urls']['comments'],
+                        (data) =>{
 
-                    },
-                    'OPTIONS'
-                )
+                            setCommentMetaData(data)
+
+                        },
+                        'OPTIONS'
+                    )
+                };
+
+                do_fetch();
+
             }
         }
 

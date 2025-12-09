@@ -117,23 +117,29 @@ const TicketComment = ({
 
         if( ! comment_metadata ) {
 
-            apiFetch(
-                comment_page_data._urls._self,
-                null,
-                'OPTIONS'
-            )
-                .then((result) => {
+            async function do_fetch() {
 
-                    if( result.status === 200 ) {
+                await apiFetch(
+                    comment_page_data._urls._self,
+                    null,
+                    'OPTIONS'
+                )
+                    .then((result) => {
 
-                        if( result.api_metadata !== null ) {
+                        if( result.status === 200 ) {
 
-                            setCommentMetadata(result.api_metadata)
-        
+                            if( result.api_metadata !== null ) {
+
+                                setCommentMetadata(result.api_metadata)
+            
+                            }
                         }
-                    }
-                })
-        }
+                    })
+            }
+
+            do_fetch()
+
+        };
 
     }, [])
 
