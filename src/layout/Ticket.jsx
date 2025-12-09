@@ -375,10 +375,11 @@ const Ticket = ({
                         onFieldChange={onFieldChange}
                     />
 
+                    { false &&
                     <fieldset>
                         <label>Labels</label>
                         <span className="text">val</span>
-                    </fieldset>
+                    </fieldset>}
 
                     <InlineField
                         data={ticket_data}
