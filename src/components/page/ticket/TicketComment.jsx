@@ -119,8 +119,19 @@ const TicketComment = ({
 
             async function do_fetch() {
 
+                let url = String(comment_page_data._urls._self)
+
+                let url_tail = `/${comment_page_data['id']}`
+
+                if( url.endsWith( url_tail ) ) {    // Remove the object id from end of URL
+
+                    url = url.substr(0, url.length - url_tail.length)
+                }
+
+
+
                 await apiFetch(
-                    comment_page_data._urls._self,
+                    url,
                     null,
                     'OPTIONS'
                 )

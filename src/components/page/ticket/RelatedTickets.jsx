@@ -102,8 +102,6 @@ const RelatedTickets = ({
 
                 }
 
-                related_ticket['display_name'] = '#' + String(this_id.id)
-
                 return(
                     <div style={{
                         display: 'inline-block'

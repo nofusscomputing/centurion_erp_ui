@@ -219,7 +219,7 @@ const TicketCommentForm = ({
                         id='body'
                         class_name='fieldset-tester'
                         onChange={handleChange}
-                        value={form_data.body ? form_data.body : comment_data['body']}
+                        value={form_data.body ? form_data.body : comment_metadata.fields['body'].type === 'Markdown'? comment_data['body']?.markdown : comment_data['body']}
                     />
 
                 <hr />
