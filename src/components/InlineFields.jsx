@@ -143,6 +143,7 @@ const InlineField = ({
                     field_data={metadata.fields[sanitized_field_name]}
                     field_only={true}
                     onChange={onChange}
+                    disabled = {metadata.fields[sanitized_field_name].read_only}
                 />)
 
                 case 'DateTime':
