@@ -178,7 +178,10 @@ const InlineField = ({
     const return_field = (
         <label id={fieldsetLabelId}>
             {metadata.fields[field_name].label}
-            { ! metadata.fields[sanitized_field_name].read_only && data &&
+            { (
+                ! metadata.fields[sanitized_field_name].read_only
+                && ! metadata.fields[sanitized_field_name].write_only
+            ) && data &&
             <span
                 id={'edit-field-' + field_name}
                 onClick={handleEditClick}
