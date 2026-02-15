@@ -192,6 +192,7 @@ const Detail = () => {
 
                                                 console.log(`model note form ${JSON.stringify(notes_form)}`)
                                             }}
+                                            value={notes_form?.body}
                                         />
                                         <Button
                                             button_align = 'right'
