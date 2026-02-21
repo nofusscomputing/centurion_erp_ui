@@ -42,8 +42,8 @@ div.ticket section.sidebar h3.ticket-type-problem {
   background-color: var(--background-colour-ticket-type-problem);
 }
 
-div.ticket h3.description.ticket-type-project-task,
-div.ticket section.sidebar h3.ticket-type-project-task {
+div.ticket h3.description.ticket-type-projecttask,
+div.ticket section.sidebar h3.ticket-type-projecttask {
   background-color: var(--background-colour-ticket-type-project-task);
 }
 
