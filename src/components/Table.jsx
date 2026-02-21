@@ -17,6 +17,7 @@ import Button from "./form/Button";
  * @param {{String, Function}} param0 Object for table
  * @param data_url_path url where the data will be fetched
  * @param callback function that will be passed value `data.name`
+ * @param add_button_filter List of kecys to filter the dynamic add button
  * @returns 
  */
 const Table = ({
@@ -24,7 +25,8 @@ const Table = ({
     callback = null,
     SetContentHeaderIcon = null,
     loader_metadata = null,
-    loader_data = null
+    loader_data = null,
+    add_button_filter = []
 }) => {
 
     const API_SPLIT = String('api/v2')
@@ -191,12 +193,42 @@ const Table = ({
 
     };
 
+    const AddButton = () => {
+
+        if(
+            metadata?.urls?.sub_models != null
+            && add_button_filter.length > 0
+        ) {
+
+            return Object.keys(metadata.urls.sub_models).map((model_name) => {
+
+                if( add_button_filter.includes(model_name) ) {            
+                    return (
+                        <Link to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"}>
+                            <button className="common-field form">Add {model_name}</button>
+                        </Link>
+                    )
+                }else{
+                    return
+                }
+            })
+
+        } else {
+
+            return (
+                <Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}>
+                    <button className="common-field form">Add</button>
+                </Link>
+            )
+        }
+    }
+
 
     return (
         <>
         { loaded && (metadata && table_data) &&
             <div>
-                { metadata.allowed_methods.includes('POST') && (<Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}><button className="common-field form">Add</button></Link>)}
+                { metadata.allowed_methods.includes('POST') && AddButton() }
                     <table>
                         <thead>
                             <tr>

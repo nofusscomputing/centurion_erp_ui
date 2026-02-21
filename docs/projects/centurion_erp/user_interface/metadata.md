@@ -38,6 +38,10 @@ The `urls` key is used by the UI for navigation. This object will be rendered as
 
     This URL is mandatory and **must** be provided on ALL views.
 
+- `sub_models`
+
+    This object is used to dynamically create Add buttons within a list view.
+
 - `return_url`
 
     This URL if provided, is the URL used as the cancel url for a UI view. This key is optional and if it's not supplied, the `self` URL is to be used.
