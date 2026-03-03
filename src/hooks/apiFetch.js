@@ -7,6 +7,7 @@ import { getCookie } from "./getCookie";
  * @param {Function} callback The callback function for the collected data
  * @param {String} http_method The HTTP method to use
  * @param {Boolean} metadata Make an HTTP/OPTIONS request to collect metadata
+ * @param {Boolean} patch Temp: stop gap until refactor to propper POST -> REsponse as data instead of additional HTTP/GET
  * @returns {Object} for patch/post/put request, the response object is returned
  * @returns {Object} for get request an object is returned {api_metadata, api_page_data, response}
  */
@@ -16,11 +17,12 @@ export async function apiFetch(
     http_method = 'GET',
     data_body = null,
     metadata = true,
+    patch = true
 ) {
 
     console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
 
-    console.debug(`apiFetch was passed URL: [${url_path}]`)
+    console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
 
     if( String(url_path).includes(String(window.env.API_URL).trim()) ) {    // normalise passed URLs
 
@@ -93,8 +95,9 @@ export async function apiFetch(
         });
 
     if(
-        http_method === 'GET'
-        && metadata
+        // http_method === 'GET'
+        // && metadata
+        metadata
     ) {
 
         const api_metadata_response = await fetch(window.env.API_URL + url_path,
@@ -150,9 +153,12 @@ export async function apiFetch(
     console.debug(`apiFetch finished for URL: [${url_path}]`)
 
     if(
-        http_method === 'PATCH'
-        || http_method === 'POST'
-        ||http_method === 'PUT'
+        (
+            http_method === 'PATCH'
+            || http_method === 'POST'
+            ||http_method === 'PUT'
+        )
+        && ! patch
     ) {
         return api_data_response
     }

@@ -41,6 +41,14 @@ const Detail = () => {
     const [ notes_form, setNotesForm ] = useState({})
     const [ note_metadata, setNoteMetadata ] = useState(null)
 
+
+    useEffect(() => {
+
+        document.title = `${metadata.name}`
+
+    }, [ metadata ])
+
+
     useEffect(() => {
 
         setActiveTab(null)
@@ -109,12 +117,11 @@ const Detail = () => {
 
     }, [
         update_notes,
-        page_data
     ])
 
 
     return (
-        page_data &&
+        metadata && page_data &&
         <>
         <ContentHeader
             content_heading={content_heading}
@@ -134,7 +141,7 @@ const Detail = () => {
             )}
         >
 
-            { metadata && metadata.layout.map(( tab, index ) => {
+            { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
 
                 if( active_tab === tab.name.toLowerCase()
                     || (
@@ -146,6 +153,7 @@ const Detail = () => {
                     if( tab.name.toLowerCase() === 'notes' ) {
 
                         return(
+                            (notes && note_metadata) &&
                             <div className="model-notes">
 
                                 <div className="model-notes-comment">
@@ -184,6 +192,7 @@ const Detail = () => {
 
                                                 console.log(`model note form ${JSON.stringify(notes_form)}`)
                                             }}
+                                            value={notes_form?.body}
                                         />
                                         <Button
                                             button_align = 'right'
@@ -193,7 +202,7 @@ const Detail = () => {
                                 </div>
 
                                 <div className="notes">
-                                {(notes && note_metadata) &&
+                                {
                                     notes.results.map((note) => {
                                     return (<ModelNote
                                             note_data={note}

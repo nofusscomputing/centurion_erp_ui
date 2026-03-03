@@ -30,14 +30,13 @@ const Menu = ({
     const dropDownMenuId = useId();
     const dropDownMenuItemsId = useId();
 
-    const dropDownMenu = document.getElementById(dropDownMenuId)
-
     document.onclick = (e) => {
         handleMenuClose(e)
       }
 
 
       const handleMenuClose = (e) => {
+        const dropDownMenu = document.getElementById(dropDownMenuId)
 
         e.stopPropagation()
 
@@ -46,6 +45,7 @@ const Menu = ({
 
 
     const handleMenuToggle = (e) => {
+        const dropDownMenu = document.getElementById(dropDownMenuId)
 
         e.stopPropagation()
 

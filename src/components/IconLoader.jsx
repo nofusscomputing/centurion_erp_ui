@@ -64,6 +64,10 @@ import ITOps from "./icons/itops";
 import Tenant from "./icons/Tenant";
 import Role from "./icons/Role";
 import User from "./icons/User";
+import DirectoryIcon from "./icons/Directory";
+import Employee from "./icons/Employee";
+import Customer from "./icons/Customer";
+import HumanResources from "./icons/HumanResources";
 
 
 const icon_components = {
@@ -79,22 +83,26 @@ const icon_components = {
     config_group: ConfigManagementIcon,
     config_management: ConfigManagementIcon,
     copy: CopyIcon,
+    customer: Customer,
     device_status_bad: InventoryStatusBadIcon,
     device_status_ok: InventoryStatusOkIcon,
     device_status_unk: InventoryStatusUknIcon,
     device_status_warn: InventoryStatusWarnIcon,
     devops: CodeIcon,
+    directory: DirectoryIcon,
     documentation: Documentation,
     reply: ReplyIcon,
     delete: DeleteIcon,
     device: DeviceIcon,
     edit: EditIcon,
+    employee: Employee,
     feature_flag: FeatureFlag,
     git: Git,
     github: GitHub,
     gitlab: GitLab,
     help: HelpIcon,
     history: HistoryIcon,
+    human_resources: HumanResources,
     information: InformationIcon,
     kb: InformationIcon,
     itam: ItamIcon,

@@ -104,8 +104,9 @@ const TextArea = ({
                 }
 
             }}
-    
-            >{value}</textarea>
+            
+            value={value}
+            ></textarea>
         </>
     )
 

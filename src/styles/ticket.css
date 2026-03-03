@@ -42,8 +42,8 @@ div.ticket section.sidebar h3.ticket-type-problem {
   background-color: var(--background-colour-ticket-type-problem);
 }
 
-div.ticket h3.description.ticket-type-project-task,
-div.ticket section.sidebar h3.ticket-type-project-task {
+div.ticket h3.description.ticket-type-projecttask,
+div.ticket section.sidebar h3.ticket-type-projecttask {
   background-color: var(--background-colour-ticket-type-project-task);
 }
 
@@ -70,12 +70,13 @@ div.ticket section.sidebar {
 div.ticket section.sidebar h3 {
   background-color: chocolate;
   display: flow-root;
+  margin: 0;
 }
 
 div.ticket section.sidebar .metadata {
-  overflow-x:hidden;
+  overflow-x: hidden;
   overflow-y: auto;
-  height: calc(100vh - 154px - 30px - 30px);
+  height: calc(100vh - 154px - 30px - 30px - 10px);
   scrollbar-width: thin;
 
 }
@@ -101,6 +102,14 @@ div.ticket .sidebar .metadata fieldset label select {
 }
 
 
+div.ticket section.description,
+div.ticket section.related-tickets,
+div.ticket section.linked-items {
+    flex-grow: 0;
+}
+
+
+
 div.ticket section h3.related-tickets,
 div.ticket section h3.linked-items {
   background-color: var(--contrasting-colour);
@@ -114,8 +123,14 @@ div.ticket section.related-tickets .items {
   justify-content: space-between;
 }
 
-div.ticket section.related-tickets .item:hover {
-  filter: brightness(60%);
+div.ticket section.related-tickets .item:hover,
+div.ticket section.linked-items .item:hover {
+  filter: brightness(90%);
+  background:#ffffff;
+}
+
+div.ticket section.related-tickets div.items div.item div {
+  height: 24px;
 }
 
 div.ticket section.related-tickets .icon svg {

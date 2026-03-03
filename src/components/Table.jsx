@@ -17,6 +17,7 @@ import Button from "./form/Button";
  * @param {{String, Function}} param0 Object for table
  * @param data_url_path url where the data will be fetched
  * @param callback function that will be passed value `data.name`
+ * @param add_button_filter List of kecys to filter the dynamic add button
  * @returns 
  */
 const Table = ({
@@ -24,12 +25,13 @@ const Table = ({
     callback = null,
     SetContentHeaderIcon = null,
     loader_metadata = null,
-    loader_data = null
+    loader_data = null,
+    add_button_filter = []
 }) => {
 
     const API_SPLIT = String('api/v2')
 
-    const [loaded, setPageLoaded] = useState(false)
+    const [loaded, setPageLoaded] = useState(loader_data ?  true : false)
 
     const [metadata, setMetaData] = useState(null);
 
@@ -54,7 +56,6 @@ const Table = ({
 
     useEffect(() => {
 
-        setPageLoaded(false)
         setMetaData(loader_metadata)
         setTableData(loader_data)
         setPageNumberValue(1)
@@ -84,7 +85,6 @@ const Table = ({
             }
         }
 
-        setPageLoaded(true)
 
     }, [
         // loader_metadata,
@@ -93,8 +93,6 @@ const Table = ({
 
 
     useEffect(() =>{
-
-        setPageLoaded(false)
 
         let url = null
 
@@ -108,59 +106,58 @@ const Table = ({
 
         }
 
-        apiFetch( url )
-            .then((result) => {
+        if( loaded === false || page !== 0 ) {
+            apiFetch( url )
+                .then((result) => {
 
+                    if( result.status == 200 ) {
 
-                if( result.status == 200 ) {
+                        if( result.api_metadata !== null ) {
 
-                    if( result.api_metadata !== null ) {
+                            setMetaData(result.api_metadata)
+        
+                        }
+        
+                        setTableData(result.api_page_data)
 
-                        setMetaData(result.api_metadata)
-    
+                        if( Array(result.api_metadata.table_fields).length < 2 ) {
+
+                            console.error("Missing Table Fields")
+
+                        }
+
+                        if( SetContentHeaderIcon ) {
+
+                            SetContentHeaderIcon(
+                                <>
+                                    {result.api_metadata['documentation'] &&
+                                        <Link to={result.api_metadata['documentation']} target="_new">
+                                            <IconLoader
+                                                name='help'
+                                            />
+                                        </Link>
+                                    }
+                                </>
+                            )
+                        }
+
+                        if( callback ) {
+
+                            callback(result.api_metadata.name)
+
+                        }
+
+                        if( page !== 0 ) {
+                            
+                            setPageNumberValue(page)
+
+                        }
+
+                        setPageLoaded(true)
                     }
-    
-                    setTableData(result.api_page_data)
-
-                    if( Array(result.api_metadata.table_fields).length < 2 ) {
-
-                        console.error("Missing Table Fields")
-
-                    }
-
-                    if( SetContentHeaderIcon ) {
-
-                        SetContentHeaderIcon(
-                            <>
-                                {result.api_metadata['documentation'] &&
-                                    <Link to={result.api_metadata['documentation']} target="_new">
-                                        <IconLoader
-                                            name='help'
-                                        />
-                                    </Link>
-                                }
-                            </>
-                        )
-                    }
-
-                    if( callback ) {
-
-                        callback(result.api_metadata.name)
-
-                    }
-
-                    if( page !== 0 ) {
-                        
-                        setPageNumberValue(page)
-
-                    }
-
-                    setPageLoaded(true)
-
                 }
-
-            })
-
+            )
+        }
     }, [
         page,
     ]);
@@ -196,14 +193,42 @@ const Table = ({
 
     };
 
+    const AddButton = () => {
+
+        if(
+            metadata?.urls?.sub_models != null
+            && add_button_filter.length > 0
+        ) {
+
+            return Object.keys(metadata.urls.sub_models).map((model_name) => {
+
+                if( add_button_filter.includes(model_name) ) {            
+                    return (
+                        <Link to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"}>
+                            <button className="common-field form">Add {model_name}</button>
+                        </Link>
+                    )
+                }else{
+                    return
+                }
+            })
+
+        } else {
+
+            return (
+                <Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}>
+                    <button className="common-field form">Add</button>
+                </Link>
+            )
+        }
+    }
+
 
     return (
         <>
-        { loaded &&
-        <>
-        { metadata &&
+        { loaded && (metadata && table_data) &&
             <div>
-                { metadata.allowed_methods.includes('POST') && (<Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}><button className="common-field form">Add</button></Link>)}
+                { metadata.allowed_methods.includes('POST') && AddButton() }
                     <table>
                         <thead>
                             <tr>
@@ -500,8 +525,6 @@ const Table = ({
                     </div>
                 }
             </div>
-        }
-        </>
         }
         </>
     );
