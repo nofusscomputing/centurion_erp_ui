@@ -1,3 +1,50 @@
+## 0.8.0 (2026-03-03)
+
+### feat
+
+- **page**: Add dynamic Add button to detail Table view
+- **components**: Update Markdown field to fetch render data from field
+- **components**: make ticket object requests async
+- **component**: When loading a ticket comment that has no metdata, fetch it.
+- **layout**: When loading ticket comments, check comment type to load metadata
+- **layout**: set ticket layout document title to metadata.name
+- **layout**: set list layout document title to metadata.name
+- **layout**: set detail layout document title to metadata.name
+- **base**: update dep js-yaml 4.1.0 -> 4.1.1
+- **component**: Add Delete Icon so users can remove objects linked to tickets
+- **base**: For the delete icon, set cursor to pointer to denote link
+- **component**: Add Delete Icon so users can remove dependent tickets
+- **component**: Add icon Customer
+- **component**: Add icon Human Resources
+- **component**: Add icon Employee
+- **icon**: Add directory icon
+
+### Fixes
+
+- **style**: Project Task header color
+- Enable input for model notes form
+- **component**: dont show select field if its read-only
+- **style**: Dont wrap text inside a badge
+- **component**: Correctly set ticket sections that should not grow
+- **component**: use value attr instead of children
+- **component**: Correct row vertical alignment for dependent tickets
+- **component**: dont show reply box unless the comment is a thread
+- **component**: when handling menu click, get element within handler
+- **component**: Dont begin to render tables until data available
+- **component**: when loading table, dont fetch data if loader data passed
+- **layout**: dont begin rendering detail notes tab unless ob notes tab
+- **layout**: dont begin rendering detail page until data is available
+
+### Refactoring
+
+- **component**: support editing new markdown field datatype
+- **component**: Dont fetch comments in comment component
+- use same code for ticket comment threads
+- **component**: Update RelatedTicket
+- **layout**: Update Ticket
+- **component**: Update TicketCommentForm and TicketComment
+- **component**: use a tickets urls._self
+
 ## 0.7.0 (2025-08-29)
 
 ### feat
