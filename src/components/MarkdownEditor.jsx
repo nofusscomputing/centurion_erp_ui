@@ -114,7 +114,7 @@ const MarkdownEditor = ({
                     id = {field_name}
                     fieldset = {false}
                     field_data = {metadata.fields[field_name]}
-                    value = {form_data[field_name]}
+                    value = {form_data[field_name]?.markdown ? form_data[field_name].markdown : form_data[field_name]}
                     onChange = {handleChange}
                     onSubmit={(e) => {
                         handleSave(e)
@@ -128,8 +128,8 @@ const MarkdownEditor = ({
                 { ! editing &&
                     <>
                     <div className="markdown">
-                        <RenderMarkdown full_width={true} env={metadata.fields[field_name].render ?? {}}>
-                            {form_data[field_name]}
+                        <RenderMarkdown full_width={true} env={data[field_name].render ?? {}}>
+                            {form_data[field_name]?.markdown ? form_data[field_name].markdown : form_data[field_name]}
                         </RenderMarkdown>
                     </div>
                     </>

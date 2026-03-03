@@ -5,6 +5,7 @@ import FieldData from "../../../functions/FieldData";
 import { apiFetch } from "../../../hooks/apiFetch";
 
 import Section from "../../Section";
+import IconLoader from "../../IconLoader";
 
 
 
@@ -14,6 +15,7 @@ const LinkedItems = ({
 
     const [ page_data, setPageData ] = useState(null)
     const [ metadata, setMetaData ] = useState(null)
+    const [ refresh, setRefresh ] = useState(false)
 
     useEffect(() => {
 
@@ -29,8 +31,26 @@ const LinkedItems = ({
             undefined,
             undefined,
         )
-    }, [ data_url ])
+    }, [ data_url, refresh ])
 
+
+    const handleDeleteLinkedItem = (e) => {
+
+        let url = `${data_url}/${e.currentTarget.id}`
+
+        console.log(`Removing Linked Item ${url}`)
+
+        apiFetch(
+            url,
+            null,
+            'DELETE',
+            null,
+            false
+        )
+
+        setRefresh( refresh ? false : true )
+
+    }
 
     return (
         <Section
@@ -66,7 +86,10 @@ const LinkedItems = ({
                         <div
                             className="item" key={linked_item['id']+'-linked_item'}
                             style={{
+                                display: 'flex',
                                 margin: '0 .5rem',
+                                width: 'fit-content',
+                                height: 'var(--line-height-common)',
                             }}
                         >
 
@@ -75,6 +98,23 @@ const LinkedItems = ({
                                 field_name='display_name'
                                 data={linked_item}
                             />
+                            <span
+                                className={"icon"}
+                                style={{
+                                    justifyContent: 'flex-end',
+                                    marginRight: '.5rem',
+                                    width: '50px',
+                                }}
+                            >
+                                <span
+                                    id={linked_item['id']}
+                                    onClick={handleDeleteLinkedItem}
+                                >
+                                    <IconLoader
+                                        name='delete'
+                                    />
+                                </span>
+                            </span>
 
                         </div>
                     )

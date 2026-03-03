@@ -16,6 +16,7 @@ const RelatedTickets = ({
 
     const [ page_data, setPageData ] = useState(null)
     const [ metadata, setMetaData ] = useState(null)
+    const [ refresh, setRefresh ] = useState(false)
 
     useEffect(() => {
 
@@ -29,8 +30,23 @@ const RelatedTickets = ({
 
             }
         )
-    },[ data_url ])
+    },[ data_url, refresh ])
 
+    const handleDeleteRelatedTicket = (e) => {
+
+        let url = `${data_url}/${e.currentTarget.id}`
+
+        console.log(`Removing Dependent ticket ${url}`)
+
+        apiFetch(
+            url,
+            null,
+            'DELETE'
+        )
+
+        setRefresh( refresh ? false : true )
+
+    }
 
     return (
         <Section
@@ -57,7 +73,7 @@ const RelatedTickets = ({
 
                 let from = true
 
-                let this_id = related_ticket['to_ticket_id']
+                let this_id = related_ticket['dependent_ticket']
 
                 let related_name = ''
 
@@ -69,10 +85,10 @@ const RelatedTickets = ({
 
                 }
 
-                if( Number(related_ticket['to_ticket_id']['id']) === Number(ticket_id) ) {
+                if( Number(related_ticket['dependent_ticket']['id']) === Number(ticket_id) ) {
 
                     from = false
-                    this_id = related_ticket['from_ticket_id']
+                    this_id = related_ticket['ticket']
 
                     if( related_name === 'blocked by' ) {
 
@@ -85,8 +101,6 @@ const RelatedTickets = ({
                     }
 
                 }
-
-                related_ticket['display_name'] = '#' + String(this_id.id)
 
                 return(
                     <div style={{
@@ -122,14 +136,28 @@ const RelatedTickets = ({
                         >
                             {related_name}
                         </span>
+
+                        <FieldData
+                            metadata={metadata}
+                            field_name='display_name'
+                            data={related_ticket}
+                        />
                         <span
-                            className="text"
+                            className={"icon"}
+                            style={{
+                                justifyContent: 'flex-end',
+                                marginRight: '.5rem',
+                                width: '50px',
+                            }}
                         >
-                            <FieldData
-                                metadata={metadata}
-                                field_name='display_name'
-                                data={related_ticket}
-                            />
+                            <span
+                                id={related_ticket['id']}
+                                onClick={handleDeleteRelatedTicket}
+                            >
+                                <IconLoader
+                                    name='delete'
+                                />
+                            </span>
                         </span>
                     </div>
                     </div>

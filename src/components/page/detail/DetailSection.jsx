@@ -63,6 +63,7 @@ const DetailSection = ({
             column = (
                 <Table
                     data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
+                    add_button_filter = {layout?.sub_models ? layout.sub_models : []}
                 />
             )
         } else {

@@ -143,6 +143,7 @@ const InlineField = ({
                     field_data={metadata.fields[sanitized_field_name]}
                     field_only={true}
                     onChange={onChange}
+                    disabled = {metadata.fields[sanitized_field_name].read_only}
                 />)
 
                 case 'DateTime':
@@ -177,7 +178,10 @@ const InlineField = ({
     const return_field = (
         <label id={fieldsetLabelId}>
             {metadata.fields[field_name].label}
-            { ! metadata.fields[sanitized_field_name].read_only && data &&
+            { (
+                ! metadata.fields[sanitized_field_name].read_only
+                && ! metadata.fields[sanitized_field_name].write_only
+            ) && data &&
             <span
                 id={'edit-field-' + field_name}
                 onClick={handleEditClick}
@@ -360,10 +364,11 @@ export const InlineFieldAction = async ({ request, params }) => {
 
     const update = await apiFetch(
         document.location.pathname,
-
         null,
         request.method,
-        form_data
+        form_data,
+        false,
+        false
     )
         .then(data => {
 

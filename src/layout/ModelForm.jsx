@@ -309,7 +309,7 @@ const ModelForm = () => {
                                             id = {field_key}
                                             error_text = {form_error && form_error[field_key]}
                                             field_data={metadata.fields[field_key]}
-                                            value={value}
+                                            value={typeof(value)==='object' ? value?.markdown : value}
                                             onChange={handleChange}
                                         />)
 
