@@ -40,6 +40,40 @@ jobs:
     uses: nofusscomputing/action_mkdocs/.github/workflows/reusable_mkdocs.yaml@development
 
 
+  react:
+    name: React SPA
+    runs-on: ubuntu-latest
+    steps:
+
+
+      - uses: actions/checkout@v4
+
+
+      - name: Run Trivy vulnerability scanner against package-lock.json
+        uses: aquasecurity/trivy-action@97e0b3872f55f89b95b2f65b3dbab56962816478    # 0.34.2
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: false
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          scan-ref: package-lock.json
+          exit-code: 0
+
+
+      - name: Upload scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+
+      - name: Upload scan results sarif Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-scan-results-package-lock.json-sarif
+          path: trivy-results.sarif
+
+
 
   gitlab-mirror:
     if: ${{ github.repository == 'nofusscomputing/centurion_erp_ui' }}
