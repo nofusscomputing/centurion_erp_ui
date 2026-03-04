@@ -6,7 +6,6 @@ import IconLoader from "../../IconLoader";
 
 const NavTabs = ({
     tabs = [],
-    back_url,
     active_tab = null,
     setActiveTab = null
 }) => {
@@ -15,16 +14,6 @@ const NavTabs = ({
 
     return (
         <div className="nav-tabs">
-            <div className="nav-tabs-tab back">
-                <div>
-                    <span className="nav-tabs-icon">
-                        <IconLoader name='navdoubleleft' />
-                    </span>
-                    <span className="nav-tabs-text">
-                        <Link to={back_url}>Back to index</Link>
-                    </span>
-                </div>
-            </div>
             { tabs.map((tab, index) => {
                 return(
                     <div

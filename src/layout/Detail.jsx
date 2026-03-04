@@ -17,10 +17,10 @@ import Button from "../components/form/Button";
 import ContentHeader from "../components/page/ContentHeader";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
-import NavTabs from "../components/page/detail/Navtabs";
 import DetailSection from "../components/page/detail/DetailSection";
 import TextArea from "../components/form/Textarea";
 import Section from "../components/Section";
+import NavTabs from "../components/page/detail/Navtabs";
 
 
 
@@ -126,16 +126,17 @@ const Detail = () => {
         <ContentHeader
             content_heading={content_heading}
             content_header_icon={content_header_icon}
+            back_url = {metadata.urls.back ?
+                String(metadata.urls.back).split('api/v2')[1]
+                : '/' + params.module + '/' + params.model
+            }
+            back_name = {metadata.name}
         />
         <Section
             className="detail"
             titleBar={(
                 <NavTabs
                 active_tab={active_tab}
-                back_url = {metadata.urls.back ?
-                    String(metadata.urls.back).split('api/v2')[1]
-                    : '/' + params.module + '/' + params.model
-                }
                 setActiveTab={setActiveTab}
                 tabs={metadata.layout} />
             )}
@@ -185,8 +186,6 @@ const Detail = () => {
                                                 setNotesForm((prevState) => ({ 
                                                     ...prevState,
                                                     body: e.target.value,
-                                                    // organization: page_data['organization'].id,
-                                                    // device: page_data.id
                                                 }
                                                 ))
 
