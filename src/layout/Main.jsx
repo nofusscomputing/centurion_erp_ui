@@ -1,3 +1,4 @@
+import { PageSection } from "@patternfly/react-core";
 import { Outlet } from "react-router";
 
 
@@ -5,12 +6,12 @@ import { Outlet } from "react-router";
 const MainLayout = () => {
 
     return (
-        <div className="content" style={{
-            display: "flex",
-            flexDirection: "column"
-        }}>
+        <PageSection
+            aria-labelledby="page-content"
+            isFilled={true}
+        >
             <Outlet />
-        </div>
+        </PageSection>
     );
 }
 
