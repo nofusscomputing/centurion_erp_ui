@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
+
 import { useLoaderData, useParams } from "react-router"
 
+import { PageSection } from "@patternfly/react-core";
+
+
 import Table from "../components/Table"
-import { useEffect, useState } from "react";
 import ContentHeader from "../components/page/ContentHeader";
 
 
@@ -28,7 +32,10 @@ const List = () => {
             content_header_icon={content_header_icon}
         />
         { metadata &&
-        <section>
+        <PageSection
+            aria-labelledby="page-content"
+            isFilled={true}
+        >
             <div className="content">
                 <Table
                     callback={setContentHeading}
@@ -38,7 +45,7 @@ const List = () => {
                     loader_data = {page_data}
                 />
             </div>
-        </section>}
+        </PageSection>}
         </>
     );
 }
