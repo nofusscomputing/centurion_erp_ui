@@ -1,131 +1,246 @@
-import { Link } from "react-router";
-import IconLoader from "../IconLoader";
-import Slider from "../form/Slider";
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../../hooks/UserContext";
-import Menu from "../form/Menu";
+import { useState } from "react";
 
-import person_72dp from "../../images/person_72dp.png"
+import {
+    Avatar,
+    Button,
+    ButtonVariant,
+    Divider,
+    Dropdown,
+    DropdownGroup,
+    DropdownItem,
+    DropdownList,
+    Masthead,
+    MastheadBrand,
+    MastheadContent,
+    MastheadLogo,
+    MastheadMain,
+    MastheadToggle,
+    MenuToggle,
+    // NotificationBadge,
+    // NotificationBadgeVariant,
+    PageToggleButton,
+    Toolbar,
+    ToolbarContent,
+    ToolbarGroup,
+    ToolbarItem
+} from "@patternfly/react-core";
+
+
+import CogIcon from '@patternfly/react-icons/dist/esm/icons/cog-icon';
+import EllipsisVIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
+import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
+import imgAvatar from '@patternfly/react-core/src/components/assets/avatarImg.svg';
+import QuestionCircleIcon from '@patternfly/react-icons/dist/esm/icons/question-circle-icon';
+
+import MoonIcon from '@patternfly/react-icons/dist/esm/icons/moon-icon'
+import SunIcon from '@patternfly/react-icons/dist/esm/icons/sun-icon'
 
 
 
+
+
+
+/** Page Header
+ *
+ * @param {boolean} isSidebarOpen Is the sidebar open or closed.
+ * @param {function} onSidebarToggle Callback to run when the sidbar toggle is press.
+ * @returns 
+ */
 const Header = ({
-    nav_visible,
-    setNavVisible
+    isSidebarOpen,
+    onSidebarToggle
 }) => {
 
-    let [dark_theme, setThemeDark] = useState(false)
 
-    const user = useContext(UserContext)
+    const [isKebabDropdownOpen, setIsKebabDropdownOpen] = useState(false);
 
-    useEffect(() => { // AutoMagic set based off of user preferences
+    const [isFullKebabDropdownOpen, setIsFullKebabDropdownOpen] = useState(false);
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-        if( Number(user.settings.browser_mode) === 1 ) {
+    const onKebabDropdownSelect = () => {
+        setIsKebabDropdownOpen(false);
+    };
 
-            if (window.matchMedia) {
+    const onFullKebabDropdownSelect = () => {
+        setIsFullKebabDropdownOpen(false);
+    };
 
-                if( window.matchMedia('(prefers-color-scheme: dark)').matches ) {
-
-                    document.documentElement.setAttribute(
-                        'data-theme',
-                        'dark'
-                    )
-
-                    setThemeDark(true)
-
-                }else if( window.matchMedia('(prefers-color-scheme: light)').matches ) {
-
-                    document.documentElement.setAttribute(
-                        'data-theme',
-                        'light'
-                    )
-
-                    setThemeDark(false)
-
-                }
-            }
-            
-
-        } if( Number(user.settings.browser_mode) === 2 ) {
-
-            document.documentElement.setAttribute(
-                'data-theme',
-                'dark'
-            )
-            setThemeDark(true)
-
-        } else if( Number(user.browser_mode) === 3 ) {
-
-            document.documentElement.setAttribute(
-                'data-theme',
-                'light'
-            )
-            setThemeDark(false)
-
-        }
-
-    }, [
-        user.settings.browser_mode
-    ])
-
-    const userAvatar = () => {
-
-        return(
-            <img 
-                alt = "avatar"
-                className = "avatar"
-                src = {person_72dp}
-                style={{
-                    cursor: "Pointer",
-                }}
-                title={user.user.display_name}
-            />
-        )
-    }
+    const onDropdownSelect = () => {
+        setIsDropdownOpen(false);
+    };
 
 
-    const user_menu = () => {
+    const onKebabDropdownToggle = () => {
+        setIsKebabDropdownOpen(!isKebabDropdownOpen);
+    };
 
-        return (
-            (user && user.user.display_name && user.settings._urls) && 
-            <>
-                <Menu
-                    element = {userAvatar()}
-                    style_menu = {{
-                        marginTop: '25px',
+    const onFullKebabDropdownToggle = () => {
+        setIsFullKebabDropdownOpen(!isFullKebabDropdownOpen);
+    };
+
+    const onDropdownToggle = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+
+
+  const kebabDropdownItems = (
+        <>
+        <DropdownItem>
+            <CogIcon /> Settings
+        </DropdownItem>
+        <DropdownItem>
+            <HelpIcon /> Help
+        </DropdownItem>
+        </>
+    );
+
+    const userDropdownItems = (
+        <>
+        <DropdownItem key="group 2 profile">My profile</DropdownItem>
+        <DropdownItem key="group 2 user">User management</DropdownItem>
+        <DropdownItem key="group 2 logout">Logout</DropdownItem>
+        </>
+    );
+
+
+    const headerToolbar = (
+        <Toolbar id="toolbar" isStatic>
+            <ToolbarContent>
+                <ToolbarGroup
+                    variant="action-group-plain"
+                    align={{
+                        default: 'alignEnd'
                     }}
-                    style_dropdown_menu = {{
-                        marginTop: "40px",
+                    gap={{
+                        default: 'gapNone',
+                        md: 'gapMd'
                     }}
-                    width = "150px"
                 >
-                    <Link to={String(user.settings._urls._self).split('api/v2')[1]}>Settings</Link>
-                    <Link to={'logout'}>Log out</Link>
-                </Menu>
-            </>
+                    {/* <ToolbarItem>
+                        <NotificationBadge aria-label="Notifications" variant={NotificationBadgeVariant.read} onClick={() => {}} />
+                    </ToolbarItem> */}
+                    <ToolbarGroup
+                        variant="action-group-plain"
+                        visibility={{
+                            default: 'hidden',
+                            lg: 'visible'
+                        }}
+                    >
+                        <ToolbarItem>
+                            <Button aria-label="Settings" isSettings variant="plain" />
+                        </ToolbarItem>
+                        <ToolbarItem>
+                            <Button aria-label="Help" variant={ButtonVariant.plain} icon={<QuestionCircleIcon />} />
+                        </ToolbarItem>
 
-        )
-    }
+                    </ToolbarGroup>
+                    {/* <ToolbarItem>
+                        <ThemeSelector id="ws-example-theme-select" />
+                    </ToolbarItem> */}
+                    <ToolbarItem
+                        visibility={{
+                            default: 'hidden',
+                            md: 'visible',
+                            lg: 'hidden'
+                        }}
+                    >
+                        <Dropdown
+                            isOpen={isKebabDropdownOpen}
+                            onSelect={onKebabDropdownSelect}
+                            onOpenChange={isOpen => setIsKebabDropdownOpen(isOpen)}
+                            popperProps={{
+                                position: 'right'
+                            }}
+                            toggle={toggleRef => <MenuToggle
+                                ref={toggleRef}
+                                onClick={onKebabDropdownToggle}
+                                isExpanded={isKebabDropdownOpen}
+                                variant="plain"
+                                aria-label="Settings and help"
+                                icon={<EllipsisVIcon />}
+                            />}
+                        >
+                        <DropdownList>{kebabDropdownItems}</DropdownList>
+                        </Dropdown>
+                    </ToolbarItem>
+                    <ToolbarItem
+                        visibility={{
+                            md: 'hidden'
+                        }}
+                    >
+                        <Dropdown
+                            isOpen={isFullKebabDropdownOpen}
+                            onSelect={onFullKebabDropdownSelect}
+                            onOpenChange={isOpen => setIsFullKebabDropdownOpen(isOpen)}
+                            popperProps={{
+                                position: 'right'
+                            }}
+                            toggle={toggleRef => <MenuToggle
+                                ref={toggleRef}
+                                onClick={onFullKebabDropdownToggle}
+                                isExpanded={isFullKebabDropdownOpen}
+                                variant="plain"
+                                aria-label="Toolbar menu"
+                                icon={<EllipsisVIcon />}
+                            />}
+                        >
+                        <DropdownGroup key="group 2" aria-label="User actions">
+                            <DropdownList>{userDropdownItems}</DropdownList>
+                        </DropdownGroup>
+                        <Divider />
+                        <DropdownList>{kebabDropdownItems}</DropdownList>
+                        </Dropdown>
+                    </ToolbarItem>
+                </ToolbarGroup>
+                <ToolbarItem visibility={{
+                    default: 'hidden',
+                    md: 'visible'
+                }}>
+                    <Dropdown
+                        isOpen={isDropdownOpen}
+                        onSelect={onDropdownSelect}
+                        onOpenChange={isOpen => setIsDropdownOpen(isOpen)}
+                        popperProps={{
+                            position: 'right'
+                        }}
+                        toggle={toggleRef => <MenuToggle
+                                ref={toggleRef}
+                                onClick={onDropdownToggle}
+                                isExpanded={isDropdownOpen}
+                                icon={<Avatar src={imgAvatar} alt="" size="sm" />}
+                            >
+                                Ned Username
+                            </MenuToggle>
+                        }
+                    >
+                        <DropdownList>{userDropdownItems}</DropdownList>
+                    </Dropdown>
+                </ToolbarItem>
+            </ToolbarContent>
+        </Toolbar>
+    );
 
 
     return (
-        <header>
-            <div
-                className="icon"
-                onClick={() => setNavVisible(!nav_visible)}
-            >
-                <IconLoader
-                    name='menu'
-                    width='25px'
-                    height='25px'
-                />
-            </div>
-            <h1><Link to='/'>Centurion ERP</Link></h1>
-            <div className="right">
-                {user_menu()}
-            </div>
-        </header>
+        <Masthead>
+            <MastheadMain>
+                <MastheadToggle>
+                    <PageToggleButton
+                        isHamburgerButton
+                        aria-label="Global navigation"
+                        isSidebarOpen={isSidebarOpen}
+                        onSidebarToggle={onSidebarToggle}
+                        id="fill-nav-toggle"
+                    />
+                </MastheadToggle>
+                <h1>
+                    <Link to='/'>Centurion ERP</Link>
+                </h1>
+            </MastheadMain>
+            <MastheadContent>{headerToolbar}</MastheadContent>
+        </Masthead>
     );
 }
 
