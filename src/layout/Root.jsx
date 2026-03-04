@@ -1,54 +1,43 @@
-import { useId, useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router";
+
+
+import {
+    Page,
+} from '@patternfly/react-core';
+import '../../node_modules/@patternfly/patternfly/patternfly.css'
+
 
 import Header from "../components/page/Header";
 import Navbar from "../components/page/Navbar";
 import Footer from "../components/page/Footer";
 
 
+const RootLayout = () => {
 
-const RootLayout = ({
-    menu_entries,
-}) => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-    const [api_version_data, setAPIVersionData] = useState(null)
+    const onSidebarToggle = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
 
-    const [nav_visible, setNavVisible] = useState(true)
-
-    const mainId = useId();
-    const viewPortId = useId();
 
     return (
-        <div>
-            <Header
-                nav_visible={nav_visible}
-                setNavVisible={setNavVisible}
-            />
-            <div id={viewPortId} className="view-port">
-                <Navbar
-                    menu_entries={menu_entries}
-                    nav_visible={nav_visible}
-                    api_version_callback={(data) => {
-
-                        setAPIVersionData(data)
-
-                    }}
-                />
-
-                <main id={mainId} style={{
-                    backgroundColor: 'var(--background-colour-inactive)',
-                    width: "100%"
-                }}>
-
-                    <Outlet />
-
-                    <Footer
-                        api_version_data = {api_version_data}
-                    />
-
-                </main>
-            </div>
-        </div>
+        <Page
+            isManagedSidebar
+            isContentFilled
+            masthead={<Header
+                isSidebarOpen = {isSidebarOpen}
+                onSidebarToggle = {onSidebarToggle}
+            />}
+            sidebar={<Navbar
+                isSidebarOpen = {isSidebarOpen}
+            />}
+        >
+            <Outlet />
+            
+            <Footer />
+        </Page>
     );
 }
 
