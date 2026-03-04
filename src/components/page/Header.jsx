@@ -19,6 +19,7 @@ import {
     // NotificationBadge,
     // NotificationBadgeVariant,
     PageToggleButton,
+    Title,
     Toolbar,
     ToolbarContent,
     ToolbarGroup,
@@ -235,9 +236,7 @@ const Header = ({
                         id="fill-nav-toggle"
                     />
                 </MastheadToggle>
-                <h1>
-                    <Link to='/'>Centurion ERP</Link>
-                </h1>
+                <Title headingLevel="h1"><Link style={{textDecoration: "none"}} to='/'>Centurion ERP</Link></Title>
             </MastheadMain>
             <MastheadContent>{headerToolbar}</MastheadContent>
         </Masthead>
