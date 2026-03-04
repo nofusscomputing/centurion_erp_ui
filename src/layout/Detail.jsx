@@ -9,6 +9,13 @@ import {
     useParams
 } from "react-router";
 
+import {
+    PageSection,
+    Tab,
+    Tabs,
+    TabTitleText
+} from "@patternfly/react-core";
+
 import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
@@ -19,14 +26,10 @@ import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
 import DetailSection from "../components/page/detail/DetailSection";
 import TextArea from "../components/form/Textarea";
-import Section from "../components/Section";
-import NavTabs from "../components/page/detail/Navtabs";
 
 
 
 const Detail = () => {
-
-    const [active_tab, setActiveTab] = useState(null)
 
     const [ content_heading, setContentHeading ] = useState(null)
     const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
@@ -50,8 +53,6 @@ const Detail = () => {
 
 
     useEffect(() => {
-
-        setActiveTab(null)
 
         if( 'name' in page_data ) {
 
@@ -120,6 +121,14 @@ const Detail = () => {
     ])
 
 
+    const [activeTabKey, setActiveTabKey] = useState(0);
+
+    const [isBox, setIsBox] = useState(false);
+
+    const handleTabClick = (event, tabIndex) => {
+        setActiveTabKey(tabIndex);
+    };
+
     return (
         metadata && page_data &&
         <>
@@ -132,50 +141,53 @@ const Detail = () => {
             }
             back_name = {metadata.name}
         />
-        <Section
-            className="detail"
-            titleBar={(
-                <NavTabs
-                active_tab={active_tab}
-                setActiveTab={setActiveTab}
-                tabs={metadata.layout} />
-            )}
-        >
 
+        <PageSection
+            aria-labelledby="page-content"
+            isFilled={true}
+        >
+            <Tabs
+                activeKey={activeTabKey}
+                onSelect={handleTabClick}
+                usePageInsets={true}
+                isBox={isBox}
+                aria-label="Tabs in the page insets example"
+                role="region"
+            >
             { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
 
-                if( active_tab === tab.name.toLowerCase()
-                    || (
-                        active_tab === null
-                        && index === 0
-                    )
+                let page_content = null;
+
+                if(
+                    activeTabKey === index
+                    || index === 0
                 ) {
 
                     if( tab.name.toLowerCase() === 'notes' ) {
 
-                        return(
+                        page_content = (
                             (notes && note_metadata) &&
                             <div className="model-notes">
 
                                 <div className="model-notes-comment">
 
                                     <form onSubmit={async (e) => {
-                                        e.preventDefault()
+                                        e.preventDefault();
 
                                         const response = await apiFetch(
                                             String(page_data['_urls']['notes']).split('api/v2')[1],
                                             null,
                                             'POST',
                                             notes_form
-                                        )
+                                        );
 
                                         if( response.status === 201 ) {
 
-                                            setNotesForm({})
+                                            setNotesForm({});
 
-                                            setUpdateNotes( update_notes ? false : true )
+                                            setUpdateNotes( update_notes ? false : true );
 
-                                            e.target.reset()
+                                            e.target.reset();
                                         }
 
                                     }}>
@@ -206,7 +218,7 @@ const Detail = () => {
                                     return (<ModelNote
                                             note_data={note}
                                             metadata = {note_metadata}
-                                        />)
+                                        />);
                                     })}
                                 </div>
                             </div>
@@ -214,11 +226,11 @@ const Detail = () => {
 
                     } else {
 
-                        return( tab.sections.map(( section, section_index ) => {
+                        page_content = tab.sections.map(( section, section_index ) => {
 
                             if( section_index !== 0 ) {
                                 
-                                return(
+                                return (
                                     <div>
 
                                         <hr />
@@ -231,10 +243,10 @@ const Detail = () => {
                                             tab = {tab}
                                         />
                                     </div>
-                                )
+                                );
                             }
 
-                            return(
+                            return (
                                 <DetailSection
                                     index = { section_index }
                                     layout = {section}
@@ -242,12 +254,20 @@ const Detail = () => {
                                     metadata = { metadata }
                                     tab = {tab}
                                 />
-                            )
-                        }))
+                            );
+                        })
                     }
                 }
+
+
+                return (
+                    <Tab eventKey={index} title={<TabTitleText>{tab.name}</TabTitleText>} aria-label="Page insets example content users">
+                        {page_content}
+                    </Tab>
+                );
             })}
-        </Section>
+            </Tabs>
+        </PageSection>
         </>
      );
 }

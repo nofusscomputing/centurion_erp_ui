@@ -2,15 +2,20 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router";
 
+import {
+    Title
+} from "@patternfly/react-core";
+
+
 import nunjucks from 'nunjucks'
 
 import { apiFetch } from "../../../hooks/apiFetch";
 import Badge from "../../Badge";
+import Button from "../../form/Button";
 import DoubleColumn from "./DoubleColumn";
 import IconLoader from "../../IconLoader";
 import SingleColumn from "./SingleColumn";
 import Table from "../../Table"
-import Button from "../../form/Button";
 
 
 
@@ -24,7 +29,6 @@ const DetailSection = ({
 
     const [external_links, setExternalLinks] = useState({})
 
-    
     let column
 
 
@@ -102,51 +106,35 @@ const DetailSection = ({
 
                 <div className="section">
 
-                    <h3
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                        }}
-                    >
-                        <span
-                            className="text"
-                            style={{
-                                flexGrow: '1'
-                            }}
-                        >
+                    <Title headingLevel="h3">{'name' in layout ? layout.name : index === 0 ? tab.name : ''}</Title>
 
-                            {'name' in layout ? layout.name : index === 0 ? tab.name : ''}
+                    {Object.keys(external_links).length > 0 &&
 
-                        </span>
+                            (index === 0 && String(tab.name).toLowerCase() == 'details') &&
+                            <span
+                                className="external-links"
+                                style={{
+                                    alignSelf: 'flex-start',
+                                    fontWeight: 'normal',
+                                }}
+                            >
 
-                        {Object.keys(external_links).length > 0 &&
+                                {external_links.results.map((external_link) => (
+                                <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
 
-                                (index === 0 && String(tab.name).toLowerCase() == 'details') &&
-                                <span
-                                    className="external-links"
-                                    style={{
-                                        alignSelf: 'flex-start',
-                                        fontWeight: 'normal',
-                                    }}
-                                >
+                                    <Badge
+                                        background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
+                                        message = {external_link.button_text ? external_link.button_text : external_link.name}
+                                    >
 
-                                    {external_links.results.map((external_link) => (
-                                    <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
+                                        <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
 
-                                        <Badge
-                                            background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
-                                            message = {external_link.button_text ? external_link.button_text : external_link.name}
-                                        >
+                                    </Badge>
 
-                                            <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
+                                </Link>))}
 
-                                        </Badge>
-
-                                    </Link>))}
-
-                                </span>
-                        }
-                    </h3>
+                            </span>
+                    }
 
                     {column}
 
