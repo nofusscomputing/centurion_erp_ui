@@ -9,6 +9,8 @@ import {
 } from "@patternfly/react-core";
 
 import { apiFetch } from "../../hooks/apiFetch";
+import IconLoader from '../IconLoader';
+
 
 
 /** Site Page Navigation
@@ -114,7 +116,19 @@ const Navbar = ({
 
                             return (
                                 <NavExpandable
-                                    title={module.display_name}
+                                    title={(
+                                        <>
+                                            {'icon' in module ? 
+                                            <IconLoader
+                                                name = {String(module.icon)}
+                                            />
+                                            : 
+                                            <IconLoader
+                                                name = {String(module.name)}
+                                            />}
+                                            {module.display_name}
+                                        </>
+                                    )}
                                     groupId={`navigation-${module.name}-${index}`}
                                     isActive={activeGroup === groupId}
                                     isExpanded={activeGroup === groupId}
@@ -130,8 +144,18 @@ const Navbar = ({
                                                 itemId={`${groupId}_${page.name}-${page_index}`}
                                                 key={`${groupId}_${page.name}-${page_index}`}
                                                 isActive={activeItem === `${groupId}_${page.name}-${page_index}`}
+                                                icon = { 'icon' in page ? 
+                                                    <IconLoader
+                                                        name = {String(page.icon)}
+                                                    />
+                                                    : 
+                                                    <IconLoader
+                                                        name = {String(page.name)}
+                                                    />
+                                                }
+                                                component={(props) => <Link {...props} to={page.link}/>}
                                             >
-                                                <Link to={page.link}>{page.display_name}</Link>
+                                                {page.display_name}
                                             </NavItem>
                                         );
                                     })}
