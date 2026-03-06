@@ -34,7 +34,7 @@ const Login = () => {
 const Logout = () => {
 
     const logout = apiFetch(
-        window.env.API_URL + '/auth/logout/',
+        window.env.API_URL + '/auth/logout',
         null,
         'POST',
         null,
