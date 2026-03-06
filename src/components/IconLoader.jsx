@@ -149,6 +149,153 @@ const icon_components = {
     
 };
 
+
+import {
+    useLayoutEffect,
+    useState
+} from 'react';
+
+import { Icon } from "@patternfly/react-core";
+
+const svgCache = new Map();
+
+const svgFetchCache = new Map();
+
+
+/** Fetch and Cache SVG image
+ * 
+ * Fetch an SVG from a URL and cache it.
+ * 
+ * @param {str} src URL to the SVG to fetch 
+ * @returns Request SVG Document
+ */
+const loadSvg = async (src) => {
+
+    if (svgCache.has(src)) {
+
+        return svgCache.get(src);
+
+    }
+
+
+    if (!svgFetchCache.has(src)) {
+
+        svgFetchCache.set(
+
+            src,
+
+            fetch(src, { cache: "default" })
+
+                .then(r => r.text())
+
+                .then(svgText => {
+
+                    const parser = new DOMParser();
+
+                    const doc = parser.parseFromString(svgText, "image/svg+xml");
+
+                    const svg = doc.querySelector("svg");
+
+                    svgCache.set(src, svg);
+
+                    svgFetchCache.delete(src);
+
+                    return svg;
+
+                })
+        );
+    }
+
+    return svgFetchCache.get(src);
+
+};
+
+
+
+/** Dynamically load SVG
+ * 
+ * Loads SVG from URL and updates the XML attributes before loading into DOM.
+ * 
+ * @param {Sring} src Imported SVG Object or URL.
+ * 
+ * The Following parameters are optional:
+ * @param {Sring} className Additional CSS class names to apply to the SVG.
+ * @param {Sring} fill HTML fill colour for the SVG.
+ * @param {Sring} height Height of the SVG icon.
+ * @param {Sring} size Display size of Icon. see iconSize -> https://www.patternfly.org/components/icon/#props
+ * @param {Sring} width Width of the SVG icon.
+ * @returns SVG with attributes updated from params.
+ */
+const SvgIcon = ({ src, ...kwargs }) => {
+
+    const {
+        fill = 'currentColor',
+        width = 'auto',
+        height = 'auto',
+        className = null,
+        size = null,
+        id = null,
+        ...props 
+    } = kwargs;
+
+
+    const [svg, setSvg] = useState(null);
+
+    useLayoutEffect(() => {
+
+        let mounted = true;
+
+        loadSvg(src).then((baseSvg) => {
+
+            if (!mounted) {
+
+                return;
+
+            }
+
+            const classNames = ['pf-v6-svg'];
+
+            const cloned_svg = baseSvg.cloneNode(true);
+
+
+            if (className) {
+                classNames.push(className);
+            }
+
+
+            cloned_svg.setAttribute("className", classNames.join(' '));
+
+            if (fill) cloned_svg.setAttribute("fill", fill);
+
+
+            if (height) cloned_svg.setAttribute("height", height);
+
+
+            cloned_svg.setAttribute("role", "img");
+
+            if (width) cloned_svg.setAttribute("width", width);
+
+
+            setSvg(cloned_svg)
+
+
+            return () => {
+
+                mounted = false;
+
+            };
+
+        });
+
+    }, [src]);
+
+    return (
+        <Icon size={size}>
+            {svg && <span ref={el => el?.appendChild(svg)} />}
+        </Icon>
+    );
+
+}
 const IconLoader = ({
     fill = '#FFF',
     name = null,
