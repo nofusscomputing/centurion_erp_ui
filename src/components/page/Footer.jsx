@@ -1,5 +1,12 @@
+
 import { useEffect, useState } from "react";
+
+import { PageSection } from "@patternfly/react-core";
+
+
 import IconLoader from "../IconLoader";
+
+
 
 const Footer = ({
     api_version_data
@@ -9,9 +16,9 @@ const Footer = ({
 
     useEffect(() => {
 
-        if( api_version_data ) {
+        let api_version = 'API release: '
 
-            let api_version = 'API release: '
+        if( api_version_data ) {
 
             if( api_version_data.version ) {
 
@@ -35,9 +42,11 @@ const Footer = ({
 
             }
 
-            SetAPIVersion(api_version)
-
+        } else {
+            api_version = `${api_version} unknown`
         }
+
+        SetAPIVersion(api_version)
 
 
     },[
@@ -73,16 +82,45 @@ const Footer = ({
 
 
     return (
-        <footer>
-            <div className="column left footer-icons">
-                <a href="https://nofusscomputing.com/projects/centurion_erp/" target="_blank"><IconLoader name = 'documentation' /></a>
-                <a href="/api/v2" target="_blank"><IconLoader name = 'webhook' /></a>
-                <a href="/api/v2/docs" target="_blank"><IconLoader name = 'swagger_docs' /></a>
-                <a href="https://github.com/nofusscomputing/centurion_erp" target="_blank"><IconLoader name = 'git' /></a>
-            </div>
-            <div className="column center">Centurion ERP brought to you by <a href="https://nofusscomputing.com" target="new">No Fuss Computing</a></div>
-            <div className="column right">{api_version}<br />{ui_version}</div>
-        </footer>
+        <PageSection
+            aria-labelledby="page-footer"
+            isFilled={false}
+            variant="secondary"
+        >
+            <footer
+                style={{
+                    display: "flex",
+                }}
+            >
+                <div
+                    className="column left footer-icons"
+                    style={{
+                        width: "33%"
+                    }}
+                >
+                    <a href="https://nofusscomputing.com/projects/centurion_erp/" target="_blank"><IconLoader name = 'documentation' class_name="pf-t--global--icon--color--regular" /></a>
+                    <a href={window.env.API_URL} target="_blank"><IconLoader name = 'webhook' /></a>
+                    <a href={`${window.env.API_URL}/docs`} target="_blank"><IconLoader name = 'swagger_docs' class_name="pf-t--global--icon--color--regular" /></a>
+                    <a href="https://github.com/nofusscomputing/centurion_erp" target="_blank"><IconLoader name = 'git' class_name="pf-t--global--icon--color--regular" /></a>
+                </div>
+                <div
+                    className="column center"
+                    style={{
+                        width: "33%"
+                    }}
+                >
+                    Centurion ERP brought to you by <a href="https://nofusscomputing.com" target="new">No Fuss Computing</a></div>
+                <div
+                    className="column right"
+                    style={{
+                        textAlign: "right",
+                        width: "33%"
+                    }}
+                >
+                    {api_version}<br />{ui_version}
+                </div>
+            </footer>
+        </PageSection>
      );
 }
  

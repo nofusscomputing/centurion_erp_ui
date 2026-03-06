@@ -1,20 +1,28 @@
-import { Link, redirect, useLocation, useNavigate, useParams } from "react-router";
-import IconLoader from "../IconLoader";
-import { useEffect, useState } from "react";
+
+import {useEffect, useState} from 'react';
+import { Link, useLocation, useNavigate } from "react-router";
+
+import {
+    Nav, NavExpandable, NavItem, NavList,
+    PageSidebar,
+    PageSidebarBody
+} from "@patternfly/react-core";
+
 import { apiFetch } from "../../hooks/apiFetch";
+import IconLoader from '../IconLoader';
 
 
 
+/** Site Page Navigation
+ * 
+ * @param {boolean} isSidebarOpen Is the sidebar open?
+ * @returns 
+ */
 const Navbar = ({
-    nav_visible,
-    api_version_callback
+   isSidebarOpen
 }) => {
 
-    const params = useParams();
-
-    const [ navigation, SetNavigationEntries ] = useState(null)
-
-    const [ nav_menu, setNavMenu ] = useState(null);
+    const [ navigation, SetNavigationEntries ] = useState([])
 
     const location = useLocation();
 
@@ -22,42 +30,61 @@ const Navbar = ({
 
     useEffect(() => {
 
-        let response = apiFetch(
-            '',
-            (data) => {
+        if( navigation.length === 0 ) {
 
-                SetNavigationEntries(data.navigation)
+            let response = apiFetch(
+                '',
+                (data) => {
 
-                api_version_callback(data.version)
+                    SetNavigationEntries(data.navigation)
 
-            },
-            'OPTIONS'
-        )
+                    // api_version_callback(data.version)
 
-            .then(response => {
+                },
+                'OPTIONS'
+            )
 
-                if( response.status === 401 ) {
-                    navigate('/login')
-                }
-            })
+                .then(response => {
 
+                    if( response.status === 401 ) {
+                        navigate('/login')
+                    }
+                })
+        }
     },[])
+
+
+
+    const [activeGroup, setActiveGroup] = useState(null);
+
+    const [activeItem, setActiveItem] = useState(null);
+
 
     useEffect(() => {
 
         if( navigation ) {
 
+            let index = 0;
             for(let menu of navigation) {
+
+                let page_index = 0;
 
                 for(let page of menu.pages) {
 
                     if( String(location.pathname).startsWith( page.link ) ) {
 
-                        setNavMenu(menu.name);
+                        const groupID = `navigation-${menu.name}-${index}`
+                        const ItemID = `${groupID}_${page.name}-${page_index}`
+
+                        setActiveGroup(groupID);
+                        setActiveItem(ItemID);
 
                     }
 
+                    page_index ++;
                 }
+
+                index ++;
 
             }
         }
@@ -68,83 +95,78 @@ const Navbar = ({
     ])
 
 
-    if( nav_visible ) {
-        
-        return (
-            <div id="navigation" key={'navigation'} className="nav">
-            <nav>
-                {navigation != null && navigation.map((module, index) =>{
+    const onSelect = (_event, result) => {
+        setActiveGroup(result.groupId);
+        setActiveItem(result.itemId);
+    };
 
-                    const paths = String(location.pathname).split('/')
+    const onToggle = (_event, result) => {
+        console.debug(`Group ${result.groupId} expanded? ${result.isExpanded}`);
+    };
 
-                    return(
-                        <div key={'menu-' + module.name} className="group">
-                            <div id={module.name+'-'+index} className="menu" onClick={()=> setNavMenu(
-                                (module.name.toLowerCase() === nav_menu ? null : module.name.toLowerCase())
-                            )}>
 
-                                <span className="icon">
-                                    { 'icon' in module ? 
-                                        <IconLoader
-                                            name = {String(module.icon)}
-                                        />
-                                        : 
-                                        <IconLoader
-                                            name = {String(module.name)}
-                                        />
-                                    }
-                                </span>
-                                <span className="text">{module.display_name}</span>
-                                <span className="menu-icon">{
-                                    nav_menu === module.name ?
-                                    <IconLoader
-                                        name='navdown'
-                                        height = '25px'
-                                        width = '25px'
-                                    />
-                                    :
-                                    <IconLoader
-                                        name='navright'
-                                        height = '25px'
-                                        width = '25px'
-                                    />
-                                }</span>
-                            </div>
-                            {nav_menu === module.name &&
-                            
-                                <div id={module.module+'-'+index} className="sub-menu">
-                                {module.pages.map((page) => {
+    return (
+        <PageSidebar isSidebarOpen={isSidebarOpen} id="fill-sidebar">
+            <PageSidebarBody>
+                <Nav onSelect={onSelect} onToggle={onToggle} aria-label="Expandable global">
+                    <NavList>
+                        {navigation && navigation.map((module, index) => {
 
-                                    return(
-                                        <Link to={ page.link }><div
-                                            className={String(location.pathname).startsWith( page.link ) ? 'page active' : 'page'}
-                                        >
-                                            <span className="icon">
-                                            { 'icon' in page ? 
-                                                <IconLoader
-                                                    name = {String(page.icon)}
-                                                />
-                                                : 
-                                                <IconLoader
-                                                    name = {String(page.name)}
-                                                />
-                                            }
-                                            </span>
-                                            <span className="text">
-                                                { page.display_name }
-                                            </span>
-                                        </div></Link>
-                                    )
-                                })}
-                                </div>
-                            }
-                        </div>
-                    )
-                })}
-            </nav>
-            </div>
-        );
-    }
+                            const groupId = `navigation-${module.name}-${index}`
+
+                            return (
+                                <NavExpandable
+                                    title={(
+                                        <>
+                                            {'icon' in module ? 
+                                            <IconLoader
+                                                name = {String(module.icon)}
+                                            />
+                                            : 
+                                            <IconLoader
+                                                name = {String(module.name)}
+                                            />}
+                                            {module.display_name}
+                                        </>
+                                    )}
+                                    groupId={`navigation-${module.name}-${index}`}
+                                    isActive={activeGroup === groupId}
+                                    isExpanded={activeGroup === groupId}
+                                    key={`navigation-${module.name}-${index}`}
+                                >
+                                    {module.pages.map((page, page_index) => {
+
+                                        return (
+
+                                            <NavItem
+                                                id={`${groupId}_${page.name}`}
+                                                groupId={groupId}
+                                                itemId={`${groupId}_${page.name}-${page_index}`}
+                                                key={`${groupId}_${page.name}-${page_index}`}
+                                                isActive={activeItem === `${groupId}_${page.name}-${page_index}`}
+                                                icon = { 'icon' in page ? 
+                                                    <IconLoader
+                                                        name = {String(page.icon)}
+                                                    />
+                                                    : 
+                                                    <IconLoader
+                                                        name = {String(page.name)}
+                                                    />
+                                                }
+                                                component={(props) => <Link {...props} to={page.link}/>}
+                                            >
+                                                {page.display_name}
+                                            </NavItem>
+                                        );
+                                    })}
+                                </NavExpandable>
+                            )
+                        })}
+                    </NavList>
+                </Nav>
+            </PageSidebarBody>
+        </PageSidebar>
+    );
 }
  
 export default Navbar;

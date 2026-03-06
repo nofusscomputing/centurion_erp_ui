@@ -6,7 +6,6 @@ import {
 } from 'react-router'
 
 
-import './index.css'
 import Detail from "./layout/Detail";
 import ErrorPage from "./layout/Error";
 import List from "./layout/List";
@@ -34,7 +33,7 @@ const Login = () => {
 const Logout = () => {
 
     const logout = apiFetch(
-        window.env.API_URL + '/auth/logout/',
+        window.env.API_URL + '/auth/logout',
         null,
         'POST',
         null,

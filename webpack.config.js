@@ -11,11 +11,13 @@ module.exports = (env, argv) => {
   const isDevelopment = argv.mode !== 'production';
 
     return {
-        entry: path.resolve(__dirname, 'src', 'index.js'),
+        entry: {
+            bundle: path.resolve(__dirname, 'src', 'index.js'),
+        },
 
         output: {
             path: path.resolve(__dirname, 'build'),
-            filename: isDevelopment ? 'assets/js/bundle.js' : 'assets/js/[name].[contenthash].js',
+            filename: isDevelopment ? '[name].js' : 'assets/js/[name].[contenthash].js',
             publicPath: '/',
             clean: true,
         },
@@ -53,10 +55,17 @@ module.exports = (env, argv) => {
                     ]
                 },
                 {
-                    test: /\.(png|jpe?g|gif)$/i,
+                    test: /\.(png|jpe?g|gif|svg)$/i,
                     type: 'asset/resource',
                     generator: {
                         filename: 'assets/images/[name].[contenthash][ext]'
+                    }
+                },
+                {
+                    test: /\.(ttf|woff2)$/i,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/fonts/[name].[contenthash][ext]'
                     }
                 }
             ]

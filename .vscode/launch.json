@@ -10,11 +10,12 @@
             "request": "launch",
             "name": "React",
             "url": "http://127.0.0.1:3000/",
-            "webRoot": "${workspaceFolder}/src",
+            "webRoot": "${workspaceFolder}",
             "trace": true,
             "runtimeArgs": [
                 "--enable-chrome-browser-cloud-management"
-            ]
+            ],
+            "sourceMaps": true
         }
     ]
 }
