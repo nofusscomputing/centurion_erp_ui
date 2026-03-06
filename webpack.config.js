@@ -17,7 +17,7 @@ module.exports = (env, argv) => {
 
         output: {
             path: path.resolve(__dirname, 'build'),
-            filename: isDevelopment ? 'assets/js/[name].js' : 'assets/js/[name].[contenthash].js',
+            filename: isDevelopment ? '[name].js' : 'assets/js/[name].[contenthash].js',
             publicPath: '/',
             clean: true,
         },
