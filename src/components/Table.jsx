@@ -20,7 +20,7 @@ import Button from "./form/Button";
  * @param add_button_filter List of kecys to filter the dynamic add button
  * @returns 
  */
-const Table = ({
+const DisplayTable = ({
     data_url_path,
     callback = null,
     SetContentHeaderIcon = null,
@@ -229,7 +229,7 @@ const Table = ({
         { loaded && (metadata && table_data) &&
             <div>
                 { metadata.allowed_methods.includes('POST') && AddButton() }
-                    <table>
+                    <Table>
                         <thead>
                             <tr>
                             {metadata.table_fields.map((key, index) => {
@@ -311,7 +311,7 @@ const Table = ({
                             }
                             </tr>
                         </thead>
-                        <tbody>
+                        <Tbody>
 
                             {table_data && table_data.results.map((data) => {
 
@@ -446,8 +446,8 @@ const Table = ({
                                 </>
                             );
                         })}
-                        </tbody>
-                    </table>
+                        </Tbody>
+                    </Table>
                 {table_data && 
                     <div style={{
                         'display': 'flexbox',
@@ -530,7 +530,7 @@ const Table = ({
     );
 }
  
-export default Table;
+export default DisplayTable;
 
 
 function getPageNumber(link) {

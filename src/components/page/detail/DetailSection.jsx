@@ -15,7 +15,7 @@ import Button from "../../form/Button";
 import DoubleColumn from "./DoubleColumn";
 import IconLoader from "../../IconLoader";
 import SingleColumn from "./SingleColumn";
-import Table from "../../Table"
+import DisplayTable from "../../Table"
 
 
 
@@ -65,7 +65,7 @@ const DetailSection = ({
         if( layout.field in data._urls ) {
 
             column = (
-                <Table
+                <DisplayTable
                     data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
                     add_button_filter = {layout?.sub_models ? layout.sub_models : []}
                 />

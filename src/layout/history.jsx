@@ -1,6 +1,6 @@
 import { useParams } from "react-router"
 
-import Table from "../components/Table"
+import DisplayTable from "../components/Table"
 import urlBuilder from "../hooks/urlBuilder";
 import { useState } from "react";
 import ContentHeader from "../components/page/ContentHeader";
@@ -26,7 +26,7 @@ const History = () => {
         />
         <section>
             <div className="content">
-                <Table
+                <DisplayTable
                     callback={setContentHeading}
                     data_url_path={url_builder.params.module + '/' + url_builder.params.model + '/' + url_builder.params.pk + '/history'}
                 />
