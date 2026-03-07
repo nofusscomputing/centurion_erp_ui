@@ -1,11 +1,25 @@
-import { useEffect, useId, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
+
+import { Link } from "react-router";
+
+import {
+    Pagination,
+    PaginationVariant,
+    Toolbar,
+    ToolbarContent,
+    ToolbarItem
+} from "@patternfly/react-core";
+
+import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
 
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
-import TextField from "./form/Textfield";
-import { Link, useParams } from "react-router";
 import IconLoader from "./IconLoader";
 import Button from "./form/Button";
+
 
 
 /**
@@ -35,19 +49,16 @@ const DisplayTable = ({
 
     const [metadata, setMetaData] = useState(null);
 
-    const [page_number_value, setPageNumberValue] = useState(1);
+    const [pageNumber, setPageNumber] = useState(1);
 
-    const [page, setPage] = useState(0);
+    const [perPageNumber, setPerPage] = useState(10);
+
 
     const [table_data, setTableData] = useState(null);
 
     let collapsable_fields = []
 
     let table_columns_count = 0;
-
-    const pagefieldId = useId();
-
-    const params = useParams();
 
     if( ! String(data_url_path).startsWith('/') ) {
         data_url_path = '/' + data_url_path
@@ -58,8 +69,6 @@ const DisplayTable = ({
 
         setMetaData(loader_metadata)
         setTableData(loader_data)
-        setPageNumberValue(1)
-        setPage(0)
 
         if( SetContentHeaderIcon ) {
 
@@ -87,18 +96,17 @@ const DisplayTable = ({
 
 
     }, [
-        // loader_metadata,
         loader_data
     ])
 
 
-    useEffect(() =>{
+    useEffect(() =>{    // Fetch the table data if the page number has changed.
 
         let url = null
 
-        if( page !== 0 ) {
+        if( pageNumber !== 1) {
 
-            url = data_url_path + '?page%5Bnumber%5D=' + String( page );
+            url = data_url_path + '?page%5Bnumber%5D=' + String( pageNumber );
 
         }else{
 
@@ -106,7 +114,7 @@ const DisplayTable = ({
 
         }
 
-        if( loaded === false || page !== 0 ) {
+        if( loaded === false || table_data?.meta.page !== pageNumber ) {
             apiFetch( url )
                 .then((result) => {
 
@@ -147,51 +155,15 @@ const DisplayTable = ({
 
                         }
 
-                        if( page !== 0 ) {
-                            
-                            setPageNumberValue(page)
-
-                        }
-
                         setPageLoaded(true)
                     }
                 }
             )
         }
     }, [
-        page,
+        pageNumber,
     ]);
 
-
-    const updatePageField = ( event ) => {
-
-        setPageNumberValue(event.target.value)
-
-    };
-
-    const submitPageField = ( event ) => {
-
-        if( event.key === 'Enter' ) {
-
-                if( page_number_value <= 0 ) {
-
-                    setPage(1)
-                    setPageNumberValue(1)
-
-                } else if( page_number_value <= table_data.meta.pagination.pages ) {
-
-                    setPage(page_number_value)
-
-                } else if( page_number_value > table_data.meta.pagination.pages ) {
-
-                    setPage(table_data.meta.pagination.pages)
-                    setPageNumberValue(table_data.meta.pagination.pages)
-
-                }
-
-        }
-
-    };
 
     const AddButton = () => {
 
@@ -224,14 +196,51 @@ const DisplayTable = ({
     }
 
 
+
+    const PaginationBottom = () => {
+
+        const onSetPage = (_event, newPage) => {
+            setPageNumber(newPage)
+        };
+
+        const onPerPageSelect = (_event, newPerPage, newPage) => {
+            setPerPage(newPerPage)
+        };
+
+        return (
+            <Pagination
+                itemCount={table_data.meta.pagination.count}
+                widgetId="bottom-pagination"
+                perPage={perPageNumber}
+                page={pageNumber}
+                variant={PaginationVariant.bottom}
+                onSetPage={onSetPage}
+                onPerPageSelect={onPerPageSelect} />
+        );
+    };
+
+
+
+    const toolbar = (
+        <Toolbar id="search-input-filter-toolbar">
+            <ToolbarContent>
+                <ToolbarItem>
+                    { metadata && metadata.allowed_methods.includes('POST') && <AddButton /> }
+                </ToolbarItem>
+            </ToolbarContent>
+        </Toolbar>
+    );
+
+
     return (
         <>
         { loaded && (metadata && table_data) &&
             <div>
-                { metadata.allowed_methods.includes('POST') && AddButton() }
+                
+                {toolbar}
                     <Table>
-                        <thead>
-                            <tr>
+                        <Thead>
+                            <Tr>
                             {metadata.table_fields.map((key, index) => {
 
                                 collapsable_fields = []
@@ -249,7 +258,6 @@ const DisplayTable = ({
 
                                         }
                                     }
-
                                 }
 
                                 if(
@@ -263,19 +271,19 @@ const DisplayTable = ({
                                         if (key === 'nbsp') {
 
                                             return (
-                                                <th>&nbsp;</th>
+                                                <Th>&nbsp;</Th>
                                             )
 
                                         } else if ( key === '-action_delete-' ) {
 
                                             return (
-                                                <th key={key}>&nbsp;</th>
+                                                <Th key={key}>&nbsp;</Th>
                                             )
 
                                         } else {
 
                                             return (
-                                                <th key={key}>{metadata.fields[key].label}</th>  
+                                                <Th key={key}>{metadata.fields[key].label}</Th>  
                                             )
                                         }
                                     }
@@ -288,7 +296,7 @@ const DisplayTable = ({
                                     ) {
 
                                         return (
-                                            <th key={key}>{metadata.fields[key.field].label}</th>
+                                            <Th key={key}>{metadata.fields[key.field].label}</Th>
                                         )
 
                                     } else {
@@ -307,17 +315,17 @@ const DisplayTable = ({
 
                             })}
                             { table_columns_count > 0 &&
-                                <td>&nbsp;</td>
+                                <Td>&nbsp;</Td>
                             }
-                            </tr>
-                        </thead>
+                            </Tr>
+                        </Thead>
                         <Tbody>
 
                             {table_data && table_data.results.map((data) => {
 
                             return (
                                 <>
-                                    <tr key={data.id}>
+                                    <Tr key={data.id}>
                                         {
                                             metadata.table_fields.map(key => {
 
@@ -332,13 +340,13 @@ const DisplayTable = ({
                                                         if (key === 'nbsp') {
 
                                                             return (
-                                                                <td>&nbsp;</td>
+                                                                <Td>&nbsp;</Td>
                                                             )
 
                                                         } else if (key === '-action_delete-') {
 
                                                             return (
-                                                                <td>
+                                                                <Td>
                                                                     <Link to={String(data._urls._self).split('api/v2')[1] + '/delete'}>
                                                                         <Button
                                                                             id = {data.id}
@@ -346,7 +354,7 @@ const DisplayTable = ({
                                                                             type="button"
                                                                         />
                                                                     </Link>
-                                                                </td>
+                                                                </Td>
                                                             )
 
                                                         }else {
@@ -362,14 +370,14 @@ const DisplayTable = ({
                                                             }
 
                                                             return (
-                                                                <td>
+                                                                <Td>
                                                                     <FieldData
                                                                         metadata={metadata}
                                                                         field_name={key}
                                                                         data={data}
                                                                         autolink = {autolink}
                                                                     />
-                                                                </td>
+                                                                </Td>
                                                             )
 
                                                         }
@@ -378,14 +386,14 @@ const DisplayTable = ({
                                                         if( String(key.type) === 'link' ) {
 
                                                             return (
-                                                                <td>
+                                                                <Td>
                                                                     <FieldData
                                                                         metadata={metadata}
                                                                         field_name={key}
                                                                         data={data}
                                                                         autolink = {true}
                                                                     />
-                                                                </td>
+                                                                </Td>
                                                             )
     
                                                         }
@@ -396,7 +404,7 @@ const DisplayTable = ({
                                             })
                                         }
                                         { collapsable_fields.length > 0 &&
-                                            <td
+                                            <Td
                                                 onClick={(e) => {
                                                     let a = e
                                                     document.getElementById('expandable-' + data.id).classList.toggle("hide-expandable-row")
@@ -406,16 +414,16 @@ const DisplayTable = ({
                                                     name='navdown'
                                                     fill='#ccc'
                                                 />
-                                            </td>
+                                            </Td>
                                         }
 
-                                    </tr>
+                                    </Tr>
                                     {collapsable_fields.length > 0 &&
-                                        <tr
+                                        <Tr
                                             key={data.id + 'collapsible'}
                                             className='collapsible-row' 
                                         >
-                                            <td colspan={(metadata.table_fields.length)}>
+                                            <Td colspan={(metadata.table_fields.length)}>
                                                 <div
                                                     className="hide-expandable-row"
                                                     id={'expandable-' + data.id} 
@@ -440,90 +448,15 @@ const DisplayTable = ({
                                                     )
                                                 })}
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </Td>
+                                        </Tr>
                                     }
                                 </>
                             );
                         })}
                         </Tbody>
                     </Table>
-                {table_data && 
-                    <div style={{
-                        'display': 'flexbox',
-                        'height': '60px',
-                        'margin': '0px',
-                        'padding': '0px',
-                        'textAlign': 'center',
-                        'verticalAlign': 'middle'
-                    }}>
-                        <p className="table-pagination">
-
-                            <span className="table-pagination-button" onClick={() => {
-
-                                const url = table_data.links.prev
-
-                                if( url ) {
-
-                                    setPage(getPageNumber(url))
-
-                                }
-
-                            }}>&lt;&lt;</span>
-
-                            <span className="table-pagination-button" onClick={() => {
-
-                                const url = table_data.links.first
-
-                                if( url ) {
-
-                                    setPage(getPageNumber(url))
-
-                                }
-
-                            }}>First</span>
-
-                            <span className="table-pagination-text">
-                                Page
-                                <TextField
-                                    fieldset = {false}
-                                    id={pagefieldId}
-                                    onChange={updatePageField}
-                                    type = "number"
-                                    onKeyUp = {submitPageField}
-                                    required = {true}
-                                    value={page_number_value}
-                                />
-                                of {table_data.meta.pagination.pages}
-                            </span>
-
-                            <span className="table-pagination-button"onClick={() => {
-
-                                const url = table_data.links.last
-
-                                if( url ) {
-
-                                    setPage(getPageNumber(url))
-
-                                }
-
-                            }}>Last</span>
-
-                            <span className="table-pagination-button" onClick={() => {
-
-                            const url = table_data.links.next
-
-                                if( url ) {
-
-                                    setPage(getPageNumber(url))
-
-                                }
-
-                            }}>&gt;&gt;</span>
-
-                        </p>
-                    </div>
-                }
+                {table_data && <PaginationBottom />}
             </div>
         }
         </>
