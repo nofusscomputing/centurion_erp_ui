@@ -67,7 +67,21 @@ module.exports = (env, argv) => {
                     generator: {
                         filename: 'assets/fonts/[name].[contenthash][ext]'
                     }
-                }
+                },
+
+                /**
+                 * Customize .svg
+                 * 
+                 * Note: must be after any other rules that may match.
+                 */
+
+                {    // src/images/icons
+                    test: /\/icons\/[a-zA-Z]+\.svg$/i,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/images/icons/[name].[contenthash][ext]'
+                    }
+                },
             ]
         },
 
