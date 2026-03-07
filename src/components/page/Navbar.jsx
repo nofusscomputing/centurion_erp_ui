@@ -153,7 +153,7 @@ const Navbar = ({
                                                         name = {String(page.name)}
                                                     />
                                                 }
-                                                component={(props) => <Link {...props} to={page.link}/>}
+                                                component={(props) => <Link children={props.children.filter(v => v !== null && v !== undefined)} className={props.className} to={page.link}/>}
                                             >
                                                 {page.display_name}
                                             </NavItem>
