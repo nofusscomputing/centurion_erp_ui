@@ -118,14 +118,10 @@ const Navbar = ({
                                 <NavExpandable
                                     title={(
                                         <>
-                                            {'icon' in module ? 
                                             <IconLoader
-                                                name = {String(module.icon)}
+                                                name = {'icon' in module ? String(module.icon) : String(module.name)}
+                                                size = "lg"
                                             />
-                                            : 
-                                            <IconLoader
-                                                name = {String(module.name)}
-                                            />}
                                             {module.display_name}
                                         </>
                                     )}
@@ -144,13 +140,11 @@ const Navbar = ({
                                                 itemId={`${groupId}_${page.name}-${page_index}`}
                                                 key={`${groupId}_${page.name}-${page_index}`}
                                                 isActive={activeItem === `${groupId}_${page.name}-${page_index}`}
-                                                icon = { 'icon' in page ? 
+                                                icon={
                                                     <IconLoader
-                                                        name = {String(page.icon)}
-                                                    />
-                                                    : 
-                                                    <IconLoader
-                                                        name = {String(page.name)}
+                                                        id={`${groupId}_${page.name}`}
+                                                        name = {'icon' in page ? String(page.icon) : String(page.name)}
+                                                        size = "lg"
                                                     />
                                                 }
                                                 component={(props) => <Link children={props.children.filter(v => v !== null && v !== undefined)} className={props.className} to={page.link}/>}
