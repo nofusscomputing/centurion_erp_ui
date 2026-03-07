@@ -79,12 +79,6 @@ import GitLabIconColour from "../images/icons/brands/GitLabIconColour.svg";
 
 
 
-import NavDownIcon from "./icons/NavDownIcon";
-import NavRightIcon from "./icons/NavRightIcon";
-import NavDoubleLeftIcon from "./icons/NavDoubleLeftIcon";
-
-
-
 const icon_components = {
     access: AccessIcon,
     action_add: ActionAddIcon,
@@ -159,12 +153,6 @@ const icon_components = {
     user: UserIcon,
     webhook: Webhook,
 
-
-
-
-    navdown: NavDownIcon,
-    navdoubleleft: NavDoubleLeftIcon,
-    navright: NavRightIcon,
 };
 
 
