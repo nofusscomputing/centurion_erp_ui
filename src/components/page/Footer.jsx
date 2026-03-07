@@ -98,10 +98,10 @@ const Footer = ({
                         width: "33%"
                     }}
                 >
-                    <a href="https://nofusscomputing.com/projects/centurion_erp/" target="_blank"><IconLoader name = 'documentation' class_name="pf-t--global--icon--color--regular" /></a>
-                    <a href={window.env.API_URL} target="_blank"><IconLoader name = 'webhook' /></a>
-                    <a href={`${window.env.API_URL}/docs`} target="_blank"><IconLoader name = 'swagger_docs' class_name="pf-t--global--icon--color--regular" /></a>
-                    <a href="https://github.com/nofusscomputing/centurion_erp" target="_blank"><IconLoader name = 'git' class_name="pf-t--global--icon--color--regular" /></a>
+                    <a href="https://nofusscomputing.com/projects/centurion_erp/" target="_blank"><IconLoader size="xl" name = 'documentation' /></a>
+                    <a href={window.env.API_URL} target="_blank"><IconLoader name = 'webhook' size="xl"/></a>
+                    <a href={`${window.env.API_URL}/docs`} target="_blank"><IconLoader size="xl" name = 'swagger_docs' /></a>
+                    <a href="https://github.com/nofusscomputing/centurion_erp" target="_blank"><IconLoader name = 'git' size="xl" /></a>
                 </div>
                 <div
                     className="column center"
