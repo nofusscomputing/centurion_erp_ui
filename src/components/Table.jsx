@@ -78,6 +78,8 @@ const DisplayTable = ({
                         <Link to={loader_metadata['documentation']} target="_new">
                             <IconLoader
                                 name='help'
+                                size="xl"
+                                inline={false}
                             />
                         </Link>
                     }
