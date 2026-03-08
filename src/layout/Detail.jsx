@@ -10,6 +10,14 @@ import {
 } from "react-router";
 
 import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    Divider,
+    Flex,
+    FlexItem,
+    PageGroup,
     PageSection,
     Tab,
     Tabs,
@@ -20,7 +28,6 @@ import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
 
-import Button from "../components/form/Button";
 import ContentHeader from "../components/page/ContentHeader";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
@@ -73,6 +80,7 @@ const Detail = () => {
                     <Link to={metadata['documentation']} target="_new">
                         <IconLoader
                             name='help'
+                            size="xl"
                         />
                     </Link>
                 }
@@ -80,6 +88,7 @@ const Detail = () => {
                     <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
                         <IconLoader
                             name='history'
+                            size="xl"
                         />
                     </Link>
                 }
@@ -87,6 +96,7 @@ const Detail = () => {
                     <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
                         <IconLoader
                             name='delete'
+                            size="xl"
                         />
                     </Link>
                 }
@@ -123,152 +133,152 @@ const Detail = () => {
 
     const [activeTabKey, setActiveTabKey] = useState(0);
 
-    const [isBox, setIsBox] = useState(false);
-
     const handleTabClick = (event, tabIndex) => {
         setActiveTabKey(tabIndex);
     };
 
     return (
         metadata && page_data &&
-        <>
-        <ContentHeader
-            content_heading={content_heading}
-            content_header_icon={content_header_icon}
-            back_url = {metadata.urls.back ?
-                String(metadata.urls.back).split('api/v2')[1]
-                : '/' + params.module + '/' + params.model
-            }
-            back_name = {metadata.name}
-        />
-
-        <PageSection
-            aria-labelledby="page-content"
-            isFilled={true}
-        >
-            <Tabs
-                activeKey={activeTabKey}
-                onSelect={handleTabClick}
-                usePageInsets={true}
-                isBox={isBox}
-                aria-label="Tabs in the page insets example"
-                role="region"
-            >
-            { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
-
-                let page_content = null;
-
-                if(
-                    activeTabKey === index
-                    || index === 0
-                ) {
-
-                    if( tab.name.toLowerCase() === 'notes' ) {
-
-                        page_content = (
-                            (notes && note_metadata) &&
-                            <div className="model-notes">
-
-                                <div className="model-notes-comment">
-
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault();
-
-                                        const response = await apiFetch(
-                                            String(page_data['_urls']['notes']).split('api/v2')[1],
-                                            null,
-                                            'POST',
-                                            notes_form
-                                        );
-
-                                        if( response.status === 201 ) {
-
-                                            setNotesForm({});
-
-                                            setUpdateNotes( update_notes ? false : true );
-
-                                            e.target.reset();
-                                        }
-
-                                    }}>
-                                        <TextArea 
-                                            id = 'model-note'
-                                            required = {true}
-                                            onChange = {(e) => {
-                                                setNotesForm((prevState) => ({ 
-                                                    ...prevState,
-                                                    body: e.target.value,
-                                                }
-                                                ))
-
-                                                console.log(`model note form ${JSON.stringify(notes_form)}`)
-                                            }}
-                                            value={notes_form?.body}
-                                        />
-                                        <Button
-                                            button_align = 'right'
-                                            button_text = 'Create Note'
-                                        />
-                                    </form>
-                                </div>
-
-                                <div className="notes">
-                                {
-                                    notes.results.map((note) => {
-                                    return (<ModelNote
-                                            note_data={note}
-                                            metadata = {note_metadata}
-                                        />);
-                                    })}
-                                </div>
-                            </div>
-                        )
-
-                    } else {
-
-                        page_content = tab.sections.map(( section, section_index ) => {
-
-                            if( section_index !== 0 ) {
-                                
-                                return (
-                                    <div>
-
-                                        <hr />
-
-                                        <DetailSection
-                                            index = { section_index }
-                                            layout = {section}
-                                            data = { page_data }
-                                            metadata = { metadata }
-                                            tab = {tab}
-                                        />
-                                    </div>
-                                );
-                            }
-
-                            return (
-                                <DetailSection
-                                    index = { section_index }
-                                    layout = {section}
-                                    data = { page_data }
-                                    metadata = { metadata }
-                                    tab = {tab}
-                                />
-                            );
-                        })
-                    }
+        <PageGroup>
+            <ContentHeader
+                content_heading={content_heading}
+                content_header_icon={content_header_icon}
+                back_url = {metadata.urls.back ?
+                    String(metadata.urls.back).split('api/v2')[1]
+                    : '/' + params.module + '/' + params.model
                 }
+                back_name = {metadata.name}
+            />
+
+            <PageSection
+                aria-labelledby="page-content"
+                isFilled={true}
+            >
+                <Tabs
+                    activeKey={activeTabKey}
+                    onSelect={handleTabClick}
+                    usePageInsets={true}
+                    isBox={false}
+                    aria-label="Tabs in the page insets example"
+                    role="region"
+                >
+                { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
+
+                    let page_content = null;
+
+                    if(
+                        activeTabKey === index
+                        || index === 0
+                    ) {
+
+                        if( tab.name.toLowerCase() === 'notes' ) {
+
+                            page_content = (
+                                (notes && note_metadata) &&
+                                <>
+
+                                    <FlexItem>
+
+                                        <Card isPlain>
+
+                                            <form onSubmit={async (e) => {
+                                                e.preventDefault();
+
+                                                const response = await apiFetch(
+                                                    String(page_data['_urls']['notes']).split('api/v2')[1],
+                                                    null,
+                                                    'POST',
+                                                    notes_form
+                                                );
+
+                                                if( response.status === 201 ) {
+
+                                                    setNotesForm({});
+
+                                                    setUpdateNotes( update_notes ? false : true );
+
+                                                    e.target.reset();
+                                                }
+
+                                            }}>
+                                            <CardBody>
+                                                <TextArea 
+                                                    id = 'model-note'
+                                                    required = {true}
+                                                    onChange = {(e) => {
+                                                        setNotesForm((prevState) => ({ 
+                                                            ...prevState,
+                                                            body: e.target.value,
+                                                        }
+                                                        ))
+
+                                                        console.log(`model note form ${JSON.stringify(notes_form)}`)
+                                                    }}
+                                                    value={notes_form?.body}
+                                                />
+                                            </CardBody>
+                                            <CardFooter>
+                                                {/* <Button
+                                                    button_align = 'right'
+                                                    button_text = 'Create Note'
+                                                /> */}
+                                                <Button variant="primary">Create Note</Button>
+                                            </CardFooter>
+                                            </form>
+                                        </Card>
+                                    </FlexItem>
+
+                                    <FlexItem><Divider /></FlexItem>
+
+                                    {notes.results.map((note) => {
+                                        return (
+                                            <>
+                                                <FlexItem>
+                                                    <ModelNote
+                                                        note_data={note}
+                                                        metadata = {note_metadata}
+                                                    />
+                                                </FlexItem>
+                                                <Divider />
+                                            </>
+                                        );
+                                    })}
+                                </>
+                            )
+
+                        } else {
+
+                            page_content = tab.sections.map(( section, section_index ) => {
+
+                                return (
+                                    <>
+                                        {section_index !== 0 && <Divider />}
+
+                                        <FlexItem>
+                                            <DetailSection
+                                                index = { section_index }
+                                                layout = {section}
+                                                data = { page_data }
+                                                metadata = { metadata }
+                                                name = {tab.name}
+                                            />
+                                        </FlexItem>
+                                    </>
+                                );
+                            })
+                        }
+                    }
 
 
-                return (
-                    <Tab eventKey={index} title={<TabTitleText>{tab.name}</TabTitleText>} aria-label="Page insets example content users">
-                        {page_content}
-                    </Tab>
-                );
-            })}
-            </Tabs>
-        </PageSection>
-        </>
+                    return (
+                        <Tab eventKey={index} title={<TabTitleText>{tab.name}</TabTitleText>} aria-label="Page insets example content users">
+                            <Flex direction={{ default: 'column' }}>{page_content}</Flex>
+                        </Tab>
+                    );
+                })}
+                </Tabs>
+            </PageSection>
+        </PageGroup>
      );
 }
  

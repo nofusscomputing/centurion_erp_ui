@@ -1,6 +1,6 @@
 import { useParams } from "react-router"
 
-import DisplayTable from "../components/Table"
+import DisplayTable from "../components/DisplayTable"
 import urlBuilder from "../hooks/urlBuilder";
 import { useState } from "react";
 import ContentHeader from "../components/page/ContentHeader";

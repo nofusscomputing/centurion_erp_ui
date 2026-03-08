@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 import { useLoaderData, useParams } from "react-router"
 
-import { PageSection } from "@patternfly/react-core";
+import { Card, CardBody, CardHeader, PageGroup, PageSection } from "@patternfly/react-core";
 
 
-import DisplayTable from "../components/Table"
+import DisplayTable from "../components/DisplayTable"
 import ContentHeader from "../components/page/ContentHeader";
 
 
@@ -26,27 +26,29 @@ const List = () => {
     }, [ metadata ])
 
     return (
-        <>
-        <ContentHeader
-            content_heading={content_heading}
-            content_header_icon={content_header_icon}
-        />
-        { metadata &&
-        <PageSection
-            aria-labelledby="page-content"
-            isFilled={true}
-        >
-            <div className="content">
-                <DisplayTable
-                    callback={setContentHeading}
-                    data_url_path={metadata.urls.self}
-                    SetContentHeaderIcon = {SetContentHeaderIcon}
-                    loader_metadata = {metadata}
-                    loader_data = {page_data}
-                />
-            </div>
-        </PageSection>}
-        </>
+        <PageGroup>
+            <ContentHeader
+                content_heading={content_heading}
+                content_header_icon={content_header_icon}
+            />
+            { metadata &&
+            <PageSection
+                aria-labelledby="page-content"
+                isFilled={true}
+            >
+                <Card isPlain>
+                    <CardBody>
+                        <DisplayTable
+                            callback={setContentHeading}
+                            data_url_path={metadata.urls.self}
+                            SetContentHeaderIcon = {SetContentHeaderIcon}
+                            loader_metadata = {metadata}
+                            loader_data = {page_data}
+                        />
+                    </CardBody>
+                </Card>
+            </PageSection>}
+        </PageGroup>
     );
 }
 

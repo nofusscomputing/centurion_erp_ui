@@ -1,6 +1,6 @@
 import Badge from "../components/Badge";
 import IconLoader from "../components/IconLoader";
-import DisplayTable from "../components/Table";
+import DisplayTable from "../components/DisplayTable";
 import ContentHeader from "../components/page/ContentHeader";
 
 const Testing = () => {

@@ -1,5 +1,7 @@
 import { Outlet } from "react-router";
 
+import "../styles/main.css"
+
 
 
 const MainLayout = () => {

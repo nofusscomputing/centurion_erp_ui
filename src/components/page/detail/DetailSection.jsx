@@ -1,9 +1,20 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
 
 import { Link } from "react-router";
 
 import {
-    Title
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    DescriptionList,
+    Flex,
+    FlexItem,
 } from "@patternfly/react-core";
 
 
@@ -11,70 +22,117 @@ import nunjucks from 'nunjucks'
 
 import { apiFetch } from "../../../hooks/apiFetch";
 import Badge from "../../Badge";
-import Button from "../../form/Button";
-import DoubleColumn from "./DoubleColumn";
 import IconLoader from "../../IconLoader";
-import SingleColumn from "./SingleColumn";
-import DisplayTable from "../../Table"
+import DisplayTable from "../../DisplayTable"
+import DisplayFields from "../../DisplayFields";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 
-
+/** DetailView Section
+ * 
+ * Builds a tab section for DetailView.
+ * 
+ * @param {Object} layout Section layout.
+ * @param {Object} data Section data.
+ * @param {Object} metadata API Metadata.
+ * @param {Object} name Tab name
+ * 
+ * @returns Card Component ready to be placed.
+ */
 const DetailSection = ({
     layout,
     data,
     metadata,
-    tab,
+    name,
     index = null,
 }) => {
 
     const [external_links, setExternalLinks] = useState({})
 
-    let column
+    const isMobile = useIsMobile()
+
+    let cardData
+
+    const ModelFields = ({children}) => (
+        <DescriptionList
+            autoFitMinModifier={{default:"140px"}}
+            columnModifier={{
+                default: '1Col'
+            }}
+            aria-label="Model fields"
+            horizontalTermWidthModifier={{default:"140px"}}
+            isAutoFit
+            isHorizontal={!isMobile}
+            isInlineGrid
+        >
+            {children}
+        </DescriptionList>
+    )
 
 
-    let textarea_fields = [
-        'json',
-        'markdown'
-    ]
 
     if( layout.layout === 'double' ) {
 
-        column = (
-            <DoubleColumn
-                data={data}
-                metadata={metadata}
-                left={layout.left}
-                right={layout.right}
-                textarea_fields = {textarea_fields}
-            />
+        cardData = (
+            <Flex direction={{ default: 'row' }} >
+                <FlexItem flex={{ default: 'flex_1' }} >
+                    <Card isPlain>
+                        <CardBody>
+                            <ModelFields>
+                                    <DisplayFields
+                                        data={data}
+                                        fields={layout.left}
+                                        metadata={metadata}
+                                    />
+                            </ModelFields>
+                        </CardBody>
+                    </Card>
+                </FlexItem>
+
+                 <FlexItem flex={{ default: 'flex_1' }} >
+                    <Card isPlain>
+                        <CardBody>
+                            <ModelFields>
+                                    <DisplayFields
+                                        data={data}
+                                        fields={layout.right}
+                                        metadata={metadata}
+                                    />
+                            </ModelFields>
+                        </CardBody>
+                    </Card>
+                </FlexItem>
+            </Flex>
         )
 
     } else if( layout.layout === 'single' ) {
 
-        column = (
-            <SingleColumn
-                data={data}
-                metadata={metadata}
-                fields={layout.fields}
-                textarea_fields = {textarea_fields}
-            />
+        cardData = (
+            <ModelFields>
+                <DisplayFields
+                    data={data}
+                    metadata={metadata}
+                    fields={layout.fields}
+                />
+            </ModelFields>
         )
 
     } else if( layout.layout === 'table' ) {
 
         if( layout.field in data._urls ) {
 
-            column = (
+            cardData = (
                 <DisplayTable
                     data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
                     add_button_filter = {layout?.sub_models ? layout.sub_models : []}
                 />
             )
         } else {
-            column = 'column data missing'
+            cardData = 'column data missing'
         }
 
     }
+
 
     useEffect(() => {
 
@@ -100,67 +158,58 @@ const DetailSection = ({
     context[String(metadata.name).toLowerCase()] = data
 
     return (
-        <div>
+        <Card
+            grow={{ default: 'grow' }}
+            isPlain
+        >
 
-            <div className="content">
+            <CardHeader
+                actions={{
+                    actions: (Object.keys(external_links).length > 0 &&
 
-                <div className="section">
+                        (index === 0 && String(name).toLowerCase() == 'details') &&
 
-                    <Title headingLevel="h3">{'name' in layout ? layout.name : index === 0 ? tab.name : ''}</Title>
+                            external_links.results.map((external_link) => (
+                            <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
 
-                    {Object.keys(external_links).length > 0 &&
+                                <Badge
+                                    background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
+                                    message = {external_link.button_text ? external_link.button_text : external_link.name}
+                                >
 
-                            (index === 0 && String(tab.name).toLowerCase() == 'details') &&
-                            <span
-                                className="external-links"
-                                style={{
-                                    alignSelf: 'flex-start',
-                                    fontWeight: 'normal',
-                                }}
-                            >
+                                    <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
 
-                                {external_links.results.map((external_link) => (
-                                <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
+                                </Badge>
 
-                                    <Badge
-                                        background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
-                                        message = {external_link.button_text ? external_link.button_text : external_link.name}
-                                    >
+                            </Link>))
 
-                                        <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
+                    ), 
+                    hasNoOffset: false
+                }}
+            >
 
-                                    </Badge>
+                <CardTitle>{'name' in layout ? layout.name : index === 0 ? name : ''}</CardTitle>
 
-                                </Link>))}
+            </CardHeader>
 
-                            </span>
-                    }
+            <CardBody>{cardData}</CardBody>
 
-                    {column}
+                {(
+                    index === 0
+                    && String(name).toLowerCase() == 'details'
+                    && metadata.allowed_methods.includes('PUT')
+                ) &&
 
-                    {(
-                        index === 0
-                        && String(tab.name).toLowerCase() == 'details'
-                        && metadata.allowed_methods.includes('PUT')
-                    ) &&
-
-                    <Link 
-                        to={
-                            String(metadata.urls.self).split('api/v2')[1] + '/edit'
-                        }
-                        style={{
-                            width: 'fit-content'
-                        }}
+                <CardFooter>
+                    <Button
+                        variant="primary"
+                        component={(props) => <Link {...props} to={String(metadata.urls.self).split('api/v2')[1] + '/edit'} />}
                     >
-
-                        <Button
-                            button_text = "Edit"
-                        />
-
-                    </Link>}
-                </div>
-            </div>
-        </div>
+                        Edit
+                    </Button>
+                </CardFooter>
+                }
+        </Card>
     );
 }
 
