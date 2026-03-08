@@ -10,6 +10,7 @@ import {
 } from "react-router";
 
 import {
+    Button,
     Card,
     CardBody,
     CardFooter,
@@ -27,7 +28,6 @@ import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
 
-import Button from "../components/form/Button";
 import ContentHeader from "../components/page/ContentHeader";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
@@ -218,10 +218,11 @@ const Detail = () => {
                                                 />
                                             </CardBody>
                                             <CardFooter>
-                                                <Button
+                                                {/* <Button
                                                     button_align = 'right'
                                                     button_text = 'Create Note'
-                                                />
+                                                /> */}
+                                                <Button variant="primary">Create Note</Button>
                                             </CardFooter>
                                             </form>
                                         </Card>
