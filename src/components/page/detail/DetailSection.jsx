@@ -13,7 +13,8 @@ import {
     CardHeader,
     CardTitle,
     DescriptionList,
-    DescriptionListGroup,
+    Flex,
+    FlexItem,
 } from "@patternfly/react-core";
 
 
@@ -54,12 +55,14 @@ const DetailSection = ({
 
     const ModelFields = ({children}) => (
         <DescriptionList
-            isHorizontal={!isMobile}
+            autoFitMinModifier={{default:"140px"}}
             columnModifier={{
-                default: (!isMobile && layout.layout === 'double' ? '2Col' : '1Col')
+                default: '1Col'
             }}
-            aria-label="Two-column horizontal"
-            horizontalTermWidthModifier={{default:"150px"}}
+            aria-label="Model fields"
+            horizontalTermWidthModifier={{default:"140px"}}
+            isAutoFit
+            isHorizontal={!isMobile}
             isInlineGrid
         >
             {children}
@@ -71,22 +74,35 @@ const DetailSection = ({
     if( layout.layout === 'double' ) {
 
         cardData = (
-            <ModelFields>
-                <DescriptionListGroup>
-                <DisplayFields
-                    data={data}
-                    metadata={metadata}
-                    fields={layout.left}
-                />
-                </DescriptionListGroup>
-                <DescriptionListGroup>
-                <DisplayFields
-                    data={data}
-                    metadata={metadata}
-                    fields={layout.right}
-                />
-                </DescriptionListGroup>
-            </ModelFields>
+            <Flex direction={{ default: 'row' }} >
+                <FlexItem flex={{ default: 'flex_1' }} >
+                    <Card isPlain>
+                        <CardBody>
+                            <ModelFields>
+                                    <DisplayFields
+                                        data={data}
+                                        fields={layout.left}
+                                        metadata={metadata}
+                                    />
+                            </ModelFields>
+                        </CardBody>
+                    </Card>
+                </FlexItem>
+
+                 <FlexItem flex={{ default: 'flex_1' }} >
+                    <Card isPlain>
+                        <CardBody>
+                            <ModelFields>
+                                    <DisplayFields
+                                        data={data}
+                                        fields={layout.right}
+                                        metadata={metadata}
+                                    />
+                            </ModelFields>
+                        </CardBody>
+                    </Card>
+                </FlexItem>
+            </Flex>
         )
 
     } else if( layout.layout === 'single' ) {
@@ -142,7 +158,10 @@ const DetailSection = ({
     context[String(metadata.name).toLowerCase()] = data
 
     return (
-        <Card isPlain>
+        <Card
+            grow={{ default: 'grow' }}
+            isPlain
+        >
 
             <CardHeader
                 actions={{

@@ -1,5 +1,6 @@
 import {
     DescriptionListDescription,
+    DescriptionListGroup,
     DescriptionListTerm
 } from "@patternfly/react-core";
 
@@ -55,7 +56,7 @@ const DisplayFields = ({
             } else {
 
                 return(
-                    <>
+                    <DescriptionListGroup>
                         <DescriptionListTerm>{metadata.fields[field]?.label}</DescriptionListTerm>
                         <DescriptionListDescription>
                             <FieldData
@@ -65,7 +66,7 @@ const DisplayFields = ({
                                 data={data}
                             />
                         </DescriptionListDescription>
-                    </>
+                    </DescriptionListGroup>
                 )
 
             }
