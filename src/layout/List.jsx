@@ -5,7 +5,7 @@ import { useLoaderData, useParams } from "react-router"
 import { PageSection } from "@patternfly/react-core";
 
 
-import Table from "../components/Table"
+import DisplayTable from "../components/Table"
 import ContentHeader from "../components/page/ContentHeader";
 
 
@@ -37,7 +37,7 @@ const List = () => {
             isFilled={true}
         >
             <div className="content">
-                <Table
+                <DisplayTable
                     callback={setContentHeading}
                     data_url_path={metadata.urls.self}
                     SetContentHeaderIcon = {SetContentHeaderIcon}

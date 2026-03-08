@@ -76,10 +76,10 @@ module.exports = (env, argv) => {
                  */
 
                 {    // src/images/icons
-                    test: /\/icons\/[a-zA-Z]+\.svg$/i,
+                    test: /\/(icons|icons\/[a-zA-Z]+)\/[a-zA-Z]+\.svg$/i,
                     type: 'asset/resource',
                     generator: {
-                        filename: 'assets/images/icons/[name].[contenthash][ext]'
+                        filename: 'assets/icons/[name].[contenthash][ext]'
                     }
                 },
             ]
