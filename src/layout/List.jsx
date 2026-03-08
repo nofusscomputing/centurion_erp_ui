@@ -5,7 +5,7 @@ import { useLoaderData, useParams } from "react-router"
 import { Card, CardBody, CardHeader, PageGroup, PageSection } from "@patternfly/react-core";
 
 
-import DisplayTable from "../components/Table"
+import DisplayTable from "../components/DisplayTable"
 import ContentHeader from "../components/page/ContentHeader";
 
 

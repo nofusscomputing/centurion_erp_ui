@@ -22,7 +22,7 @@ import nunjucks from 'nunjucks'
 import { apiFetch } from "../../../hooks/apiFetch";
 import Badge from "../../Badge";
 import IconLoader from "../../IconLoader";
-import DisplayTable from "../../Table"
+import DisplayTable from "../../DisplayTable"
 import DisplayFields from "../../DisplayFields";
 import { useIsMobile } from "../../../hooks/useIsMobile";
 
