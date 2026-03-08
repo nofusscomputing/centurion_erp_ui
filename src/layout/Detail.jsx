@@ -260,7 +260,7 @@ const Detail = () => {
                                                 layout = {section}
                                                 data = { page_data }
                                                 metadata = { metadata }
-                                                tab = {tab}
+                                                name = {tab.name}
                                             />
                                         </FlexItem>
                                     </>
