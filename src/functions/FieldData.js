@@ -40,7 +40,7 @@ export default function FieldData({
         return null;
     }
 
-    let field_data = '';
+    let field_data = '-';
 
     let data_field = field_lookup(field_name, data)
     if( typeof(field_name) === 'object' ) {
@@ -240,6 +240,42 @@ export default function FieldData({
                         {markdown}
                     </RenderMarkdown>
                 )
+
+                // const clipboardCopyFunc = (event, text) => {
+                //     navigator.clipboard.writeText(text.toString());
+                // };
+
+                // const [copied, setCopied] = useState(false);
+
+                // const onClick = (event, text) => {
+                //     clipboardCopyFunc(event, text);
+                //     setCopied(true);
+                // };
+
+                // const code = JSON.stringify(data_field, null, 4)
+
+                // field_data = (
+                //     <CodeBlock
+                //         actions={
+                //             <CodeBlockAction>
+                //                 <ClipboardCopyButton
+                //                     id="basic-copy-button"
+                //                     textId="code-content"
+                //                     aria-label="Copy to clipboard basic example code block"
+                //                     onClick={e => onClick(e, code)}
+                //                     exitDelay={copied ? 1500 : 600}
+                //                     maxWidth="110px"
+                //                     variant="plain"
+                //                     onTooltipHidden={() => setCopied(false)}
+                //                     >
+                //                 {copied ? 'Successfully copied to clipboard!' : 'Copy to clipboard'}
+                //                 </ClipboardCopyButton>
+                //             </CodeBlockAction>
+                //         }
+                //     >
+                //         <CodeBlockCode>{code}</CodeBlockCode>
+                //     </CodeBlock>
+                // )
 
                 break;
 
