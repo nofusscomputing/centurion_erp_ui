@@ -175,7 +175,6 @@ const Detail = () => {
 
                             page_content = (
                                 (notes && note_metadata) &&
-                                // <Flex direction={{ default: 'column' }}>
                                 <>
 
                                     <FlexItem>
@@ -243,7 +242,6 @@ const Detail = () => {
                                             </>
                                         );
                                     })}
-                                {/* </Flex> */}
                                 </>
                             )
 
@@ -253,7 +251,6 @@ const Detail = () => {
 
                                 return (
                                     <>
-                                    {/* <Flex direction={{ default: 'column' }}> */}
                                         {section_index !== 0 && <Divider />}
 
                                         <FlexItem>
@@ -265,7 +262,6 @@ const Detail = () => {
                                                 tab = {tab}
                                             />
                                         </FlexItem>
-                                    {/* </Flex> */}
                                     </>
                                 );
                             })
