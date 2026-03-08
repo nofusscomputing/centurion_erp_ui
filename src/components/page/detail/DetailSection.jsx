@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 import {
-    Title
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@patternfly/react-core";
 
 
@@ -100,67 +104,62 @@ const DetailSection = ({
     context[String(metadata.name).toLowerCase()] = data
 
     return (
-        <div>
+        <Card isPlain>
 
-            <div className="content">
+            <CardHeader
+                actions={{
+                    actions: (Object.keys(external_links).length > 0 &&
 
-                <div className="section">
+                        (index === 0 && String(tab.name).toLowerCase() == 'details') &&
 
-                    <Title headingLevel="h3">{'name' in layout ? layout.name : index === 0 ? tab.name : ''}</Title>
+                            external_links.results.map((external_link) => (
+                            <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
 
-                    {Object.keys(external_links).length > 0 &&
+                                <Badge
+                                    background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
+                                    message = {external_link.button_text ? external_link.button_text : external_link.name}
+                                >
 
-                            (index === 0 && String(tab.name).toLowerCase() == 'details') &&
-                            <span
-                                className="external-links"
-                                style={{
-                                    alignSelf: 'flex-start',
-                                    fontWeight: 'normal',
-                                }}
-                            >
+                                    <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
 
-                                {external_links.results.map((external_link) => (
-                                <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
+                                </Badge>
 
-                                    <Badge
-                                        background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
-                                        message = {external_link.button_text ? external_link.button_text : external_link.name}
-                                    >
+                            </Link>))
 
-                                        <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
+                    ), 
+                    hasNoOffset: false
+                }}
+            >
 
-                                    </Badge>
+                <CardTitle>{'name' in layout ? layout.name : index === 0 ? tab.name : ''}</CardTitle>
 
-                                </Link>))}
+            </CardHeader>
 
-                            </span>
+            <CardBody>{column}</CardBody>
+
+            <CardFooter>
+                {(
+                    index === 0
+                    && String(tab.name).toLowerCase() == 'details'
+                    && metadata.allowed_methods.includes('PUT')
+                ) &&
+
+                <Link 
+                    to={
+                        String(metadata.urls.self).split('api/v2')[1] + '/edit'
                     }
+                    style={{
+                        width: 'fit-content'
+                    }}
+                >
 
-                    {column}
+                    <Button
+                        button_text = "Edit"
+                    />
 
-                    {(
-                        index === 0
-                        && String(tab.name).toLowerCase() == 'details'
-                        && metadata.allowed_methods.includes('PUT')
-                    ) &&
-
-                    <Link 
-                        to={
-                            String(metadata.urls.self).split('api/v2')[1] + '/edit'
-                        }
-                        style={{
-                            width: 'fit-content'
-                        }}
-                    >
-
-                        <Button
-                            button_text = "Edit"
-                        />
-
-                    </Link>}
-                </div>
-            </div>
-        </div>
+                </Link>}
+            </CardFooter>
+        </Card>
     );
 }
 

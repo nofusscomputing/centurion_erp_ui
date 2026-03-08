@@ -1,3 +1,8 @@
+import {
+    Flex,
+    FlexItem
+} from "@patternfly/react-core";
+
 import FieldData from "../../../functions/FieldData";
 
 
@@ -12,17 +17,14 @@ const DoubleColumn = ({
 
 
     return (
-
-        <div
-            className="double"
-            style={{
-                display: 'flex',
-                flexFlow: 'row wrap',
-                justifyContent: 'center',
-            }}
+        <Flex
+            direction={{ default: 'row' }}
+            justifyContent={{ default: 'justifyContentCenter' }}
+            flexWrap={{ default: 'wrap' }}
+            
         >
 
-            <div className="column">
+            <FlexItem>
 
                 {left.map((field) => {
                 if( field in metadata.fields ) {
@@ -73,9 +75,9 @@ const DoubleColumn = ({
                     )
                 }
             })}
-            </div>
+            </FlexItem>
 
-            <div className="column">
+            <FlexItem>
             {right.map((field) => {
 
                 if( field in metadata.fields ) {
@@ -124,8 +126,8 @@ const DoubleColumn = ({
                     )
                 }
             })}
-            </div>
-        </div>
+            </FlexItem>
+        </Flex>
     );
 }
 
