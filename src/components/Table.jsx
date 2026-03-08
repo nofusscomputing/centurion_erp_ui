@@ -32,7 +32,7 @@ import Button from "./form/Button";
  * @param data_url_path url where the data will be fetched
  * @param callback function that will be passed value `data.name`
  * @param add_button_filter List of kecys to filter the dynamic add button
- * @returns 
+ * @returns Component ready to be placed on a card.
  */
 const DisplayTable = ({
     data_url_path,
