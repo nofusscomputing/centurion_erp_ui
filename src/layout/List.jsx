@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 
 import { useLoaderData, useParams } from "react-router"
 
-import { Card, CardBody, CardHeader, PageGroup, PageSection } from "@patternfly/react-core";
+import {
+    Card,
+    CardBody,
+    PageGroup,
+    PageSection
+} from "@patternfly/react-core";
 
-
-import DisplayTable from "../components/DisplayTable"
 import ContentHeader from "../components/page/ContentHeader";
+import DisplayTable from "../components/DisplayTable"
 
 
 
