@@ -6,6 +6,7 @@ import {
 import { Link } from "react-router";
 
 import {
+    Button,
     Pagination,
     PaginationVariant,
     Toolbar,
@@ -26,7 +27,7 @@ import {
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import IconLoader from "./IconLoader";
-import Button from "./form/Button";
+
 
 
 
@@ -189,9 +190,12 @@ const DisplayTable = ({
                 if( add_button_filter.includes(model_name) ) {            
 
                     return (
-                        <Link to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"}>
-                            <button className="common-field form">Add {model_name}</button>
-                        </Link>
+                        <Button
+                            variant="primary"
+                            component={(props) => <Link {...props} to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"} />}
+                        >
+                            Add {model_name}
+                        </Button>
                     );
 
                 }else{
@@ -204,9 +208,12 @@ const DisplayTable = ({
         } else {
 
             return (
-                <Link to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"}>
-                    <button className="common-field form">Add</button>
-                </Link>
+                    <Button
+                        variant="primary"
+                        component={(props) => <Link {...props} to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"} />}
+                    >
+                        Add
+                    </Button>
             );
         }
     }
@@ -409,13 +416,12 @@ const DisplayTable = ({
 
                                                     return (
                                                         <Td dataLabel={key}>
-                                                            <Link to={String(data._urls._self).split('api/v2')[1] + '/delete'}>
-                                                                <Button
-                                                                    button_text = 'Delete'
-                                                                    id = {data.id}
-                                                                    type="button"
-                                                                />
-                                                            </Link>
+                                                            <Button
+                                                                variant="primary"
+                                                                component={(props) => <Link {...props} to={String(data._urls._self).split('api/v2')[1] + '/delete'} />}
+                                                            >
+                                                                Delete
+                                                            </Button>
                                                         </Td>
                                                     );
 
