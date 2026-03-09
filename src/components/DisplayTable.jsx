@@ -526,26 +526,3 @@ const DisplayTable = ({
 }
  
 export default DisplayTable;
-
-
-function getPageNumber(link) {
-
-    if( ! link ) {
-        return 0
-    }
-
-    const qs = String(link).split('?');
-
-    for(let i=0; i<qs.length; i++ ) {
-
-        let param = String(qs[i]).split('=');
-
-        if( String(param[0]) === 'page%5Bnumber%5D' ) {
-
-            return Number(param[1]);
-
-        }
-    }
-
-    return 0
-}
