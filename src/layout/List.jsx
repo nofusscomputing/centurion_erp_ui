@@ -1,12 +1,24 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
 
-import { useLoaderData, useParams } from "react-router"
+import {
+    Link,
+    useLoaderData,
+    useParams
+} from "react-router"
 
-import { Card, CardBody, CardHeader, PageGroup, PageSection } from "@patternfly/react-core";
+import {
+    Card,
+    CardBody,
+    PageGroup,
+    PageSection
+} from "@patternfly/react-core";
 
-
-import DisplayTable from "../components/DisplayTable"
 import ContentHeader from "../components/page/ContentHeader";
+import DisplayTable from "../components/DisplayTable"
+import IconLoader from "../components/IconLoader";
 
 
 
@@ -22,6 +34,23 @@ const List = () => {
     useEffect(() => {
 
         document.title = `${metadata.name}`
+        setContentHeading(metadata.name)
+
+
+        SetContentHeaderIcon(
+            <>
+                {metadata['documentation'] &&
+                    <Link to={metadata['documentation']} target="_new">
+                        <IconLoader
+                            name='help'
+                            size="xl"
+                            inline={false}
+                        />
+                    </Link>
+                }
+            </>
+        );
+
 
     }, [ metadata ])
 
@@ -39,9 +68,7 @@ const List = () => {
                 <Card isPlain>
                     <CardBody>
                         <DisplayTable
-                            callback={setContentHeading}
                             data_url_path={metadata.urls.self}
-                            SetContentHeaderIcon = {SetContentHeaderIcon}
                             loader_metadata = {metadata}
                             loader_data = {page_data}
                         />
