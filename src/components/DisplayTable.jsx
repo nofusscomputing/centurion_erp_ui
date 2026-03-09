@@ -41,15 +41,22 @@ import IconLoader from "./IconLoader";
  * @param data_url_path url where the data will be fetched
  * @param callback function that will be passed value `data.name`
  * @param add_button_filter List of kecys to filter the dynamic add button
+ * 
+ * @param {bool} isNested Is the table being created being nested in expandable row
+ * 
  * @returns Component ready to be placed on a card.
  */
 const DisplayTable = ({
-    data_url_path,
     callback = null,
     SetContentHeaderIcon = null,
-    loader_metadata = null,
-    loader_data = null,
-    add_button_filter = []
+    add_button_filter = [],
+    /**
+     * Refactor: required Fields below
+     */
+    data_url_path,
+    isNested = false,
+    loader_data = null,    // todo: rename tableData
+    loader_metadata = null,    // todo: rename tableMetadata
 }) => {
 
     const API_SPLIT = String('api/v2')
@@ -127,7 +134,10 @@ const DisplayTable = ({
 
         }
 
-        if( loaded === false || table_data?.meta.page !== pageNumber ) {
+        if(
+            (loaded === false || table_data?.meta.page !== pageNumber)
+            && !isNested
+        ) {
             apiFetch( url )
                 .then((result) => {
 
@@ -222,6 +232,10 @@ const DisplayTable = ({
 
     const PaginationBottom = () => {
 
+        if( isNested ) {
+            return
+        }
+
         const onSetPage = (_event, newPage) => {
             setPageNumber(newPage);
         };
@@ -280,88 +294,90 @@ const DisplayTable = ({
     const [isExampleCompact, setIsExampleCompact] = useState(true);
 
 
+    const tableHeaderColumns = metadata?.table_fields.map((key, index) => {
+
+        collapsable_fields = []
+
+        if( table_columns_count === 0 ) {
+
+            for( let field of metadata.table_fields ) {
+
+                if(
+                    typeof(field) === 'string'
+                    || typeof(field) === 'object'
+                ) {
+
+                    table_columns_count += 1;
+
+                }
+            }
+        }
+
+        if(
+            key in metadata.fields
+            || String(key).startsWith('-action_')
+        ) {
+
+            if( typeof(key) === 'string' ) {
+
+                if (key === 'nbsp') {
+
+                    return (
+                        <Th>&nbsp;</Th>
+                    );
+
+                } else if ( key === '-action_delete-' ) {
+
+                    return (
+                        <Th key={key}>&nbsp;</Th>
+                    );
+
+                } else {
+
+                    return (
+                        <Th key={key}>{metadata.fields[key].label}</Th>  
+                    );
+                }
+            }
+
+        } else if( typeof(key) === 'object' ) {
+
+            if(
+                typeof(key) === 'object'
+                && key.field
+            ) {
+
+                return (
+                    <Th key={key}>{metadata.fields[key.field].label}</Th>
+                );
+
+            } else {
+
+                for( let sub_key of key ) {
+
+                    collapsable_fields.push(sub_key);
+
+                }
+            }
+        }
+    });
 
 
     return (
         <>
         { loaded && (metadata && table_data) &&
             <div>
-                
-                {toolbar}
+
+                {!isNested && toolbar}
                     <Table
                         isExpandable
                         hasAnimations
+                        variant={isNested ? 'compact' : null}
                     >
                         <Thead>
                             <Tr>
-                            <Th screenReaderText="Row expansion" />
-                            {metadata.table_fields.map((key, index) => {
-
-                                collapsable_fields = []
-
-                                if( table_columns_count === 0 ) {
-
-                                    for( let field of metadata.table_fields ) {
-
-                                        if(
-                                            typeof(field) === 'string'
-                                            || typeof(field) === 'object'
-                                        ) {
-
-                                            table_columns_count += 1;
-
-                                        }
-                                    }
-                                }
-
-                                if(
-                                    key in metadata.fields
-                                    || String(key).startsWith('-action_')
-                                ) {
-
-                                    if( typeof(key) === 'string' ) {
-
-                                        if (key === 'nbsp') {
-
-                                            return (
-                                                <Th>&nbsp;</Th>
-                                            );
-
-                                        } else if ( key === '-action_delete-' ) {
-
-                                            return (
-                                                <Th key={key}>&nbsp;</Th>
-                                            );
-
-                                        } else {
-
-                                            return (
-                                                <Th key={key}>{metadata.fields[key].label}</Th>  
-                                            );
-                                        }
-                                    }
-
-                                } else if( typeof(key) === 'object' ) {
-
-                                    if(
-                                        typeof(key) === 'object'
-                                        && key.field
-                                    ) {
-
-                                        return (
-                                            <Th key={key}>{metadata.fields[key.field].label}</Th>
-                                        );
-
-                                    } else {
-
-                                        for( let sub_key of key ) {
-
-                                            collapsable_fields.push(sub_key);
-
-                                        }
-                                    }
-                                }
-                            })}
+                            {collapsable_fields.length > 0 && <Th screenReaderText="Row expansion" />}
+                            {tableHeaderColumns}
                             { table_columns_count > 0 &&
                                 <Th>&nbsp;</Th>
                             }
@@ -475,27 +491,25 @@ const DisplayTable = ({
                                 <Tr isExpanded={isTableRowExpanded(rowId)}>
                                     <Td colSpan={(metadata.table_fields.length)}>
                                         <ExpandableRowContent>
-                                            <div  key={'expandable-' + data.id} >
-                                            {collapsable_fields.map((collapsable_field,) => {
-                                                return (
-                                                    <div
-                                                        key={'dual-column-' + collapsable_field + '-' + data.id}
-                                                    >
-                                                        <span style={{
-                                                            display: 'block',
-                                                            fontWeight: 'bold',
-                                                            textAlign: 'center',
-                                                            width: '100%'
-                                                        }}>{collapsable_field}</span>
-                                                        <FieldData
-                                                            metadata={metadata}
-                                                            field_name={collapsable_field}
-                                                            data={data}
-                                                        />
-                                                    </div>
-                                                );
-                                            })}
-                                            </div>
+                                            <DisplayTable
+                                                isNested={true}
+                                                loader_data={Object({
+                                                    "results": [ data ],
+                                                    "meta": {
+                                                        "pagination": {
+                                                            "page": 1,
+                                                            "pages": 1,
+                                                            "count": 1
+                                                        }
+                                                    }
+                                                })}
+                                                loader_metadata={
+                                                    Object({
+                                                        ...metadata,
+                                                        "table_fields": collapsable_fields,
+                                                    })
+                                                }
+                                            />
                                         </ExpandableRowContent>
                                     </Td>
                                 </Tr>
