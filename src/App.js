@@ -107,17 +107,12 @@ function App() {
 
                             <Route path=":common_model/:common_pk/:sub_model/:sub_model_pk/:model/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/:pk/delete" element={null} />
-                            <Route path=":common_model/:common_pk/:model/:pk/edit" element={null} />
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
-                            <Route path=":common_model/:model/:pk/edit" element={null} />
-                            <Route path="git_repository/:model/:pk/edit" element={null} />
 
                             <Route path="entity/:model/:pk/delete" element={null} />
-                            <Route path="entity/:model/:pk/edit" element={null} />
 
                             <Route path=":model/:pk/delete" element={null} />
-                            <Route path=":model/:pk/edit" element={null} />
 
                             <Route path=":user/token/:pk/delete" element={null} />
 
@@ -153,32 +148,22 @@ function App() {
                             Detail View
                         ******************************************************** */}
 
-                        <Route path="entity/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
-
-                        <Route path="git_repository/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
-
-                        <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
-
-                        <Route path=":model/:pk" element={<Detail
-                            />}  loader = {pagedLoader} />
-
-
-                        <Route element={<Detail/>} 
+                        <Route element={<Detail/>}
                             loader = {pagedLoader}
                         >
 
-                            {/* ********************************************************
-                                Detail View Add new object
-                            ******************************************************** */}
+                            <Route path="entity/:model/add" />
+                            <Route path="entity/:model/:pk" />
 
                             <Route path="git_repository/:model/add" />
-                            <Route path="entity/:model/add" />
-                            <Route path=":user/token/add" />
+                            <Route path="git_repository/:model/:pk"  />
+
+                            <Route path=":common_model/:common_pk/:model/:pk"  />
 
                             <Route path=":model/add" />
+                            <Route path=":model/:pk" />
+
+                            <Route path=":user/token/add" />
 
                         </Route>
                     </Route>
