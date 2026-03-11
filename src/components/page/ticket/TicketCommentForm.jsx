@@ -312,10 +312,10 @@ const TicketCommentForm = ({
                     { ! is_edit && comment_metadata &&
                     <Button
                         button_text="Comment"
-                        menu_entries={comment_metadata.fields['comment_type'].choices}
+                        menu_entries={comment_metadata.fields['comment_type']?.choices}
                         MenuClickCallback={(menu_value) => {
 
-                            const comment_types = comment_metadata.fields['comment_type'].choices
+                            const comment_types = comment_metadata.fields['comment_type']?.choices
                             let menu_entry = ''
 
                             console.log(`menu entry click value ${menu_value}`)
