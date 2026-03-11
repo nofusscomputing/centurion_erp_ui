@@ -166,7 +166,11 @@ const FormField = ({
 
                         const options = { "component": [] }
 
-                        if( Number(fieldData) == Number(choice.value) ) {
+                        if(
+                            ( typeof(choice.value) === 'number' && Number(fieldData) == choice.value )
+                            ||
+                            ( typeof(choice.value) === 'string' && String(fieldData) == choice.value )
+                        ) {
 
                             selectedOption = choice.value;
 

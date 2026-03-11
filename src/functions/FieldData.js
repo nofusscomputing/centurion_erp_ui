@@ -129,11 +129,23 @@ export default function FieldData({
 
                         field_data = String(choice.display_name)
 
+                        if( ! withFormatting ) {
+
+                            return Number(data_field);
+
+                        }
+
                         break;
 
                     } else if( typeof(data_field) === 'string' && data_field === choice.value ) {
 
                         field_data = choice.value
+                        if( ! withFormatting ) {
+
+                            return String(choice.value);
+
+                        }
+
                     }
 
                 }
