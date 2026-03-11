@@ -168,6 +168,9 @@ const DisplayFields = ({
     layout = null,
     metadata,
 }) => {
+
+    const actionData = useActionData();
+
     const [ data, setformData ] = useState(existingFormData);
 
     const [ formState, setFormState ] = useState({});
@@ -181,6 +184,32 @@ const DisplayFields = ({
     const [ isLoading, setIsLoading ] = useState(true);
 
     const user = useContext(UserContext);
+
+    useEffect(() => {
+
+        if(actionData?.body && actionData?.ok) {
+
+            setformData(actionData?.body);
+
+            delete actionData.body;
+        }
+    }, [actionData])
+
+
+    useEffect(() => {
+
+        setIsEdit(() => {
+            if(
+                String(location.pathname).endsWith('/add')
+            ) {
+                return true;
+            }
+
+            return false;
+        })
+
+    }, [location.pathname])
+
 
     let cardData;
 
@@ -298,6 +327,9 @@ const DisplayFields = ({
 
                 {cardData}
 
+                <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(metadata)} />
+                <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
             </Form>
             </>
             }
@@ -308,3 +340,169 @@ const DisplayFields = ({
 }
 
 export default DisplayFields;
+
+/**
+ * @function APISubmitAction
+ *
+ * @description
+ * React Router route `action` handler used to submit form data to a backend
+ * endpoint (typically a Django REST Framework API). The function processes
+ * submitted `FormData`, extracts the serialized `formState`, and constructs
+ * a payload object suitable for API submission.
+ *
+ * This action expects the form submission to include a field named
+ * `formState` containing a JSON serialized object representing the
+ * client-side form state.
+ *
+ * The action also reads other standard form fields such as `tz`
+ * (timezone) and merges them with the parsed `formState`.
+ *
+ * @param {Object} params
+ * @param {Request} params.request
+ * HTTP request object provided by React Router containing the submitted
+ * `FormData`.
+ *
+ * @returns {Promise<Response|Object|null>}
+ * Returns the result of the backend submission or null depending on the
+ * implementation of the calling code.
+ *
+ * @throws {Error}
+ * Throws if the `formState` field is missing or cannot be parsed as JSON.
+ *
+ * @example
+ * Form submission must include a serialized form state:
+ *
+ * <Form method={method}>
+ *   <input type="hidden" name="formState" value={JSON.stringify(formState)} />
+ *   <input type="hidden" name="metadata" value={JSON.stringify(metadata)} />
+ *   <input type="hidden" name="tz" value={timezone} />
+ * </Form>
+ *
+ * @example
+ * Basic usage inside a React Router route definition:
+ *
+ * {
+ *   path: "/:module/:id",
+ *   action: APISubmitAction
+ * }
+ */
+export async function APISubmitAction({ request }) {
+
+
+    if( ! String(request.url).endsWith(document.location.pathname) ) {    // as request does not contain the path, check doc path
+
+        throw Error(`InlineFieldAction URL ${request.url} does not match ${document.location.pathname}`);
+    }
+
+    const data = await request.formData();
+
+    const metadata = JSON.parse(data.get('metadata'));
+
+    if( !metadata ) {
+
+        throw new Error('metadata field must be provided in the submitted form');
+
+    }
+
+    const formState = JSON.parse(data.get('formState'));
+
+    if( !formState ) {
+
+        throw new Error('formState field must be provided in the submitted form');
+
+    }
+
+    const timezone = data.get('tz');
+
+    if( !timezone ) {
+
+        throw new Error('metadata field must be provided in the submitted form');
+
+    }
+
+    let form_data = {}
+
+    for (const [fieldName, fieldValue] of Object.entries(formState)) {
+
+        if( ['metadata', 'tz'].includes( fieldName ) ) {
+
+            continue;
+        }
+
+        console.debug(`InlineFieldAction=${fieldName} ${fieldValue}`);
+
+        if( ! metadata.fields.hasOwnProperty(fieldName) ) {    // field not part of request
+
+            continue;
+        }
+
+        let value = '';
+
+        switch( String(metadata.fields[fieldName].type).toLowerCase() ) {
+
+
+            case 'datetime':    // Convert to the users timezone
+
+                value = FormatTime({
+                    time: String(fieldValue),
+                    iso: true,
+                    tz: timezone
+                });
+
+                break;
+
+            default:
+
+                value = fieldValue;
+
+                break;
+
+        }
+
+        if( value !== '' && value !== 0 ){
+
+            form_data = {
+                ...form_data,
+                [fieldName]: value
+            }
+
+        }
+
+        console.debug(`InlineFieldAction (json apend): ${JSON.stringify(form_data)}`);
+
+    }
+
+    console.debug(`InlineFieldAction (json): ${JSON.stringify(form_data)}`);
+
+
+    let actionReturn = {
+        ok: false,
+        body: null
+    }
+
+    const update = await apiFetch(
+        document.location.pathname,
+        null,
+        request.method,
+        form_data,
+        false,
+        false
+    )
+        .then(async (response) => {
+
+            actionReturn.ok = response.ok;
+
+            if( response.ok ) {
+
+                actionReturn.body = await response.clone().json();
+
+            }
+
+
+            return response;
+
+        });
+
+    return actionReturn;
+
+}
