@@ -257,6 +257,32 @@ const DisplayFields = ({
                     </Column>
                 </FlexItem>
             </Flex>
+            </>
+        );
+
+    } else if( layout.layout === 'single' ) {
+
+        cardData = (
+            <Column
+                isEdit = {isEdit}
+                isMobile={isMobile}
+            >
+                <Fields
+                    errorState={actionData}
+                    fields={layout.fields}
+                    formState={formState}
+                    isEdit={isEdit}
+                    objectData={data}
+                    objectMetadata={metadata}
+                    onChange={setFormState}
+                />
+            </Column>
+        );
+
+    }
+
+    const actionGroup = (
+
             <ActionGroup
                 style={
                     isEdit ?
@@ -295,34 +321,11 @@ const DisplayFields = ({
                     {isEdit ? "Cancel" : "Edit"}
                 </Button>
             </ActionGroup>
-            </>
-        );
+    )
 
-    } else if( layout.layout === 'single' ) {
+    if( isEdit ) {
 
         cardData = (
-            <Column
-                isEdit = {isEdit}
-                isMobile={isMobile}
-            >
-                <Fields
-                    errorState={actionData}
-                    fields={layout.fields}
-                    formState={formState}
-                    isEdit={isEdit}
-                    objectData={data}
-                    objectMetadata={metadata}
-                    onChange={setFormState}
-                />
-            </Column>
-        );
-
-    }
-
-    return (
-        <>
-            {isEdit &&
-            <>
             <Form
                 id="random"
                 method={String(location.pathname).endsWith('/add') ? "POST" : "PATCH"}
@@ -331,38 +334,55 @@ const DisplayFields = ({
                     setIsLoading(true)
                 }}
             >
+                {actionData?.errors &&
+                <AlertGroup>
+                    <Alert
+                        variant="danger"
+                        isInline
+                        title="The following field(s) have errors:"
+                        timeout={false}
+                    >
+                        <List>
+                        {Object.entries(actionData.errors).map(([fieldKey, fieldErrors]) => {
 
-            {actionData?.errors && <AlertGroup>
-            <Alert
-                variant="danger"
-                isInline
-                title="The following field(s) have errors:"
-                timeout={false}
-            >
-                <List>
-                {Object.entries(actionData.errors).map(([fieldKey, fieldErrors]) => {
+                            return (<ListItem>{metadata.fields[fieldKey].label}</ListItem>);
 
-                    return (<ListItem>{metadata.fields[fieldKey].label}</ListItem>);
-                })}
-                </List>
-            </Alert>
-            </AlertGroup>}
+                        })}
+                        </List>
+                    </Alert>
+                </AlertGroup>
+                }
 
                 {cardData}
+                {actionGroup}
 
                 <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
                 <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(metadata)} />
                 <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
+
             </Form>
-            </>
+        );
+
+    }
+
+
+    return (
+        <>
+            {cardData}
+
+            { !isEdit &&
+                actionGroup
             }
-            { !isEdit && <> {cardData} </> }
         </>
     );
 
 }
 
+
+
 export default DisplayFields;
+
+
 
 /**
  * @function APISubmitAction
