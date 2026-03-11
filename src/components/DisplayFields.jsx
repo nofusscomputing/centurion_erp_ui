@@ -36,6 +36,7 @@ import UserContext from "../hooks/UserContext";
 
 
 const Fields = ({
+    errorState,
     fields,
     formState,
     isEdit,
@@ -95,6 +96,7 @@ const Fields = ({
              */
             return (
                 <FormField
+                    errorState={errorState}
                     fieldName = {field}
                     formState = {formState}
                     isEdit = {isEdit}
@@ -192,6 +194,7 @@ const DisplayFields = ({
             setformData(actionData?.body);
 
             delete actionData.body;
+            delete actionData.errors;
         }
     }, [actionData])
 
@@ -200,6 +203,8 @@ const DisplayFields = ({
 
         setIsEdit(() => {
             if(
+                actionData?.errors
+                ||
                 String(location.pathname).endsWith('/add')
             ) {
                 return true;
@@ -208,7 +213,7 @@ const DisplayFields = ({
             return false;
         })
 
-    }, [location.pathname])
+    }, [actionData, location.pathname])
 
 
     let cardData;
@@ -224,6 +229,7 @@ const DisplayFields = ({
                         isMobile={isMobile}
                     >
                         <Fields
+                            errorState={actionData}
                             fields={layout.left}
                             formState={formState}
                             isEdit={isEdit}
@@ -240,6 +246,7 @@ const DisplayFields = ({
                         isMobile={isMobile}
                     >
                         <Fields
+                            errorState={actionData}
                             fields={layout.right}
                             formState={formState}
                             isEdit={isEdit}
@@ -299,6 +306,7 @@ const DisplayFields = ({
                 isMobile={isMobile}
             >
                 <Fields
+                    errorState={actionData}
                     fields={layout.fields}
                     formState={formState}
                     isEdit={isEdit}
@@ -324,6 +332,21 @@ const DisplayFields = ({
                 }}
             >
 
+            {actionData?.errors && <AlertGroup>
+            <Alert
+                variant="danger"
+                isInline
+                title="The following field(s) have errors:"
+                timeout={false}
+            >
+                <List>
+                {Object.entries(actionData.errors).map(([fieldKey, fieldErrors]) => {
+
+                    return (<ListItem>{metadata.fields[fieldKey].label}</ListItem>);
+                })}
+                </List>
+            </Alert>
+            </AlertGroup>}
 
                 {cardData}
 
@@ -476,6 +499,7 @@ export async function APISubmitAction({ request }) {
 
 
     let actionReturn = {
+        // errors: {},    // Don't include this key by default. its existance denotes an error has occured.
         ok: false,
         body: null
     }
@@ -495,6 +519,10 @@ export async function APISubmitAction({ request }) {
             if( response.ok ) {
 
                 actionReturn.body = await response.clone().json();
+
+            } else {
+
+                actionReturn.errors = await response.clone().json();
 
             }
 
