@@ -111,18 +111,14 @@ function App() {
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
                             <Route path=":common_model/:model/:pk/edit" element={null} />
-                            <Route path="git_repository/:model/add" element={null} />
                             <Route path="git_repository/:model/:pk/edit" element={null} />
 
-                            <Route path="entity/:model/add" element={null} />
                             <Route path="entity/:model/:pk/delete" element={null} />
                             <Route path="entity/:model/:pk/edit" element={null} />
 
-                            <Route path=":model/add" element={null} />
                             <Route path=":model/:pk/delete" element={null} />
                             <Route path=":model/:pk/edit" element={null} />
 
-                            <Route path=":user/token/add" element={null} />
                             <Route path=":user/token/:pk/delete" element={null} />
 
                         </Route>
@@ -169,6 +165,22 @@ function App() {
                         <Route path=":model/:pk" element={<Detail
                             />}  loader = {pagedLoader} />
 
+
+                        <Route element={<Detail/>} 
+                            loader = {pagedLoader}
+                        >
+
+                            {/* ********************************************************
+                                Detail View Add new object
+                            ******************************************************** */}
+
+                            <Route path="git_repository/:model/add" />
+                            <Route path="entity/:model/add" />
+                            <Route path=":user/token/add" />
+
+                            <Route path=":model/add" />
+
+                        </Route>
                     </Route>
                 </Route>
             </Route>
