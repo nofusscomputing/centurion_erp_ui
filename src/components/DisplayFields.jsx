@@ -302,7 +302,7 @@ const DisplayFields = ({
 
         cardData = (
             <Column
-                isEdit = {true}
+                isEdit = {isEdit}
                 isMobile={isMobile}
             >
                 <Fields
