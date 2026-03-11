@@ -30,7 +30,11 @@ export default function FieldData({
     metadata,
     field_name,
     data = null,
-    autolink = false
+    autolink = false,
+    /**
+     * Post PatternFly refactor
+     */
+    withFormatting = true,    // will this be required post refactor????
 })  {
 
     const user = useContext(UserContext)
@@ -40,7 +44,7 @@ export default function FieldData({
         return null;
     }
 
-    let field_data = '-';
+    let field_data = withFormatting ? '-' : null;
 
     let data_field = field_lookup(field_name, data)
     if( typeof(field_name) === 'object' ) {
@@ -99,6 +103,12 @@ export default function FieldData({
 
             case 'Boolean':
 
+                if( ! withFormatting ) {
+
+                    return Boolean(data_field);
+
+                }
+
                 if( Boolean(data_field) ) {
 
                     field_data = 'Yes'
@@ -119,11 +129,23 @@ export default function FieldData({
 
                         field_data = String(choice.display_name)
 
+                        if( ! withFormatting ) {
+
+                            return Number(data_field);
+
+                        }
+
                         break;
 
                     } else if( typeof(data_field) === 'string' && data_field === choice.value ) {
 
                         field_data = choice.value
+                        if( ! withFormatting ) {
+
+                            return String(choice.value);
+
+                        }
+
                     }
 
                 }
@@ -131,6 +153,14 @@ export default function FieldData({
                 break;
 
             case 'DateTime':
+
+                if( ! withFormatting ) {
+                    return String(FormatTime({
+                        time: String(data_field),
+                        iso: true,
+                        tz: user.settings.timezone
+                    })).replace('Z', '')
+                }
 
                 field_data = FormatTime({
                     time: String(data_field),
@@ -169,6 +199,10 @@ export default function FieldData({
 
                                 if( field.hasOwnProperty('url') ) {
 
+                                    if( ! withFormatting ) {
+                                        return field.id
+                                    }
+
                                     return (
                                         <>
                                         <Link to={field.url}>{field.display_name}</Link>&nbsp;,
@@ -176,6 +210,10 @@ export default function FieldData({
                                     );
 
                                 } else {
+
+                                    if( ! withFormatting ) {
+                                        return field.value
+                                    }
 
                                     return (
                                         <>
@@ -197,11 +235,19 @@ export default function FieldData({
 
                         if( 'url' in data_field ) {
 
+                                if( ! withFormatting ) {
+                                    return data_field.id
+                                }
+
                             field_data = (
                                 <Link to={String(data_field.url).split(API_SPLIT)[1]}>{data_field.display_name}</Link>
                             )
 
                         } else {
+
+                                if( ! withFormatting ) {
+                                    return data_field.id
+                                }
 
                             field_data = data_field.display_name
 
@@ -227,6 +273,10 @@ export default function FieldData({
                 break;
 
             case 'JSON':
+
+                if( ! withFormatting ) {
+                    return JSON.stringify(data_field, null, 4);
+                }
 
                 let markdown = "``` json"
                     + "\r\n\r\n"
@@ -280,6 +330,10 @@ export default function FieldData({
                 break;
 
             case 'Markdown':
+
+            if( ! withFormatting ) {
+                return data_field.markdown;
+            }
 
                 field_data = (
                     <RenderMarkdown env={data_field.render ?? {}}>

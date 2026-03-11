@@ -6,6 +6,7 @@ import {
 import {
     Link,
     useLoaderData,
+    useLocation,
     useParams
 } from "react-router";
 
@@ -40,6 +41,8 @@ const Detail = () => {
 
     const [ content_heading, setContentHeading ] = useState(null)
     const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+
+    const location = useLocation();
 
     const {metadata, page_data} = useLoaderData();
 
@@ -84,7 +87,7 @@ const Detail = () => {
                         />
                     </Link>
                 }
-                {page_data['_urls']['history'] &&
+                {(!'results' in page_data || '_urls' in page_data) && page_data['_urls']['history'] &&
                     <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
                         <IconLoader
                             name='history'
@@ -109,6 +112,10 @@ const Detail = () => {
 
 
     useEffect(() => {
+
+        if( 'results' in page_data ) {
+            return
+        }
 
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
@@ -167,6 +174,18 @@ const Detail = () => {
                     let page_content = null;
 
                     if(
+                        String(location.pathname).endsWith('/add')
+                        && index != 0
+                    ) {
+                        return;
+                    } else if(
+                        String(location.pathname).endsWith('/add')
+                        && index == 0
+                    ){
+                        tab.name = 'Create New'
+                    }
+
+                    if(
                         activeTabKey === index
                         || index === 0
                     ) {
@@ -218,10 +237,6 @@ const Detail = () => {
                                                 />
                                             </CardBody>
                                             <CardFooter>
-                                                {/* <Button
-                                                    button_align = 'right'
-                                                    button_text = 'Create Note'
-                                                /> */}
                                                 <Button variant="primary">Create Note</Button>
                                             </CardFooter>
                                             </form>
@@ -250,6 +265,13 @@ const Detail = () => {
 
                             page_content = tab.sections.map(( section, section_index ) => {
 
+                                if(
+                                    String(location.pathname).endsWith('/add')
+                                    && section_index !== 0
+                                ) {
+                                    return;
+                                }
+
                                 return (
                                     <>
                                         {section_index !== 0 && <Divider />}
@@ -265,6 +287,7 @@ const Detail = () => {
                                         </FlexItem>
                                     </>
                                 );
+                                
                             })
                         }
                     }

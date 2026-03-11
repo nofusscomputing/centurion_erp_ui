@@ -19,6 +19,7 @@ import { apiFetch } from "./hooks/apiFetch";
 import { InlineFieldAction } from "./components/InlineFields";
 import MainLayout from "./layout/Main";
 import { UserProvider } from './hooks/UserContext';
+import { APISubmitAction } from './components/DisplayFields';
 
 const Login = () => {
 
@@ -107,23 +108,15 @@ function App() {
 
                             <Route path=":common_model/:common_pk/:sub_model/:sub_model_pk/:model/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/:pk/delete" element={null} />
-                            <Route path=":common_model/:common_pk/:model/:pk/edit" element={null} />
                             <Route path=":common_model/:common_pk/project_task/add" element={null} />
                             <Route path=":common_model/:common_pk/:model/add" element={null} />
-                            <Route path=":common_model/:model/:pk/edit" element={null} />
-                            <Route path="git_repository/:model/add" element={null} />
-                            <Route path="git_repository/:model/:pk/edit" element={null} />
 
-                            <Route path="entity/:model/add" element={null} />
                             <Route path="entity/:model/:pk/delete" element={null} />
-                            <Route path="entity/:model/:pk/edit" element={null} />
 
-                            <Route path=":model/add" element={null} />
                             <Route path=":model/:pk/delete" element={null} />
-                            <Route path=":model/:pk/edit" element={null} />
 
-                            <Route path=":user/token/add" element={null} />
                             <Route path=":user/token/:pk/delete" element={null} />
+                            <Route path="user_settings/:pk/edit" element={null} />
 
                         </Route>
 
@@ -157,18 +150,42 @@ function App() {
                             Detail View
                         ******************************************************** */}
 
-                        <Route path="entity/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
+                            <Route path="entity/:model/add" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
+                            <Route path="entity/:model/:pk" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
 
-                        <Route path="git_repository/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
+                            <Route path="git_repository/:model/add" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
+                            <Route path="git_repository/:model/:pk" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
 
-                        <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
+                            <Route path=":common_model/:common_pk/:model/:pk" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
 
-                        <Route path=":model/:pk" element={<Detail
-                            />}  loader = {pagedLoader} />
+                            <Route path=":model/add" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
+                            <Route path=":model/:pk" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
 
+                            <Route path=":user/token/add" element={<Detail/>} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
                     </Route>
                 </Route>
             </Route>

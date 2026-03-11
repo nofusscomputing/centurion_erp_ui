@@ -3,18 +3,16 @@ import {
     useState
 } from "react";
 
-import { Link } from "react-router";
+import {
+    Link,
+    useLocation
+} from "react-router";
 
 import {
-    Button,
     Card,
     CardBody,
-    CardFooter,
     CardHeader,
     CardTitle,
-    DescriptionList,
-    Flex,
-    FlexItem,
 } from "@patternfly/react-core";
 
 
@@ -22,10 +20,9 @@ import nunjucks from 'nunjucks'
 
 import { apiFetch } from "../../../hooks/apiFetch";
 import Badge from "../../Badge";
-import IconLoader from "../../IconLoader";
-import DisplayTable from "../../DisplayTable"
 import DisplayFields from "../../DisplayFields";
-import { useIsMobile } from "../../../hooks/useIsMobile";
+import DisplayTable from "../../DisplayTable"
+import IconLoader from "../../IconLoader";
 
 
 /** DetailView Section
@@ -49,75 +46,11 @@ const DetailSection = ({
 
     const [external_links, setExternalLinks] = useState({})
 
-    const isMobile = useIsMobile()
+    const location = useLocation();
 
     let cardData
 
-    const ModelFields = ({children}) => (
-        <DescriptionList
-            autoFitMinModifier={{default:"140px"}}
-            columnModifier={{
-                default: '1Col'
-            }}
-            aria-label="Model fields"
-            horizontalTermWidthModifier={{default:"140px"}}
-            isAutoFit
-            isHorizontal={!isMobile}
-            isInlineGrid
-        >
-            {children}
-        </DescriptionList>
-    )
-
-
-
-    if( layout.layout === 'double' ) {
-
-        cardData = (
-            <Flex direction={{ default: 'row' }} >
-                <FlexItem flex={{ default: 'flex_1' }} >
-                    <Card isPlain>
-                        <CardBody>
-                            <ModelFields>
-                                    <DisplayFields
-                                        data={data}
-                                        fields={layout.left}
-                                        metadata={metadata}
-                                    />
-                            </ModelFields>
-                        </CardBody>
-                    </Card>
-                </FlexItem>
-
-                 <FlexItem flex={{ default: 'flex_1' }} >
-                    <Card isPlain>
-                        <CardBody>
-                            <ModelFields>
-                                    <DisplayFields
-                                        data={data}
-                                        fields={layout.right}
-                                        metadata={metadata}
-                                    />
-                            </ModelFields>
-                        </CardBody>
-                    </Card>
-                </FlexItem>
-            </Flex>
-        )
-
-    } else if( layout.layout === 'single' ) {
-
-        cardData = (
-            <ModelFields>
-                <DisplayFields
-                    data={data}
-                    metadata={metadata}
-                    fields={layout.fields}
-                />
-            </ModelFields>
-        )
-
-    } else if( layout.layout === 'table' ) {
+    if( layout.layout === 'table' ) {
 
         if( layout.field in data._urls ) {
 
@@ -131,12 +64,21 @@ const DetailSection = ({
             cardData = 'column data missing'
         }
 
+    } else {
+
+        cardData = (
+            <DisplayFields
+                existingFormData = {data}
+                layout = {layout}
+                metadata = {metadata}
+            />
+        )
     }
 
 
     useEffect(() => {
 
-        if( index === 0 ) {
+        if( index === 0 && !String(location.pathname).endsWith('/add')) {
 
             if( 'external_links' in data._urls ) {
 
@@ -153,16 +95,17 @@ const DetailSection = ({
 
     },[])
 
+
     let context = {}
 
     context[String(metadata.name).toLowerCase()] = data
+
 
     return (
         <Card
             grow={{ default: 'grow' }}
             isPlain
         >
-
             <CardHeader
                 actions={{
                     actions: (Object.keys(external_links).length > 0 &&
@@ -194,21 +137,6 @@ const DetailSection = ({
 
             <CardBody>{cardData}</CardBody>
 
-                {(
-                    index === 0
-                    && String(name).toLowerCase() == 'details'
-                    && metadata.allowed_methods.includes('PUT')
-                ) &&
-
-                <CardFooter>
-                    <Button
-                        variant="primary"
-                        component={(props) => <Link {...props} to={String(metadata.urls.self).split('api/v2')[1] + '/edit'} />}
-                    >
-                        Edit
-                    </Button>
-                </CardFooter>
-                }
         </Card>
     );
 }
