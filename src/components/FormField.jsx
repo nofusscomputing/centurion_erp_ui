@@ -43,6 +43,7 @@ import FieldData from "../functions/FieldData";
  * @param errorState Any found errors.
  * @param fieldName name of the field. This is the name of the key within the API object.
  * @param formState State of any edits within the form.
+ * @param isCreate Is new field data being added
  * @param isEdit Is the field being edited.
  * @param objectData object as received from API.
  * @param objectMetadata object metadata as received from API.
@@ -55,6 +56,7 @@ const FormField = ({
     fieldName,
     formState,
     isEdit = false,
+    isCreate = false,
     objectData,
     objectMetadata,
     onChange = null,
@@ -69,6 +71,16 @@ const FormField = ({
         ||
         isEdit && Boolean(objectMetadata.fields[fieldName].write_only)
     );
+
+    if( isCreate && readOnly ) { // Don't show a read-only field.
+        return;
+    }
+
+    if( !formState ) {
+
+        throw Error("field formState is required to render a form field.")
+
+    }
 
 
     const handleFieldChange = (_event, field) => {
@@ -276,7 +288,7 @@ const FormField = ({
             fieldId = "simple-form-name-01"
         >
 
-            {fetchFormField()}
+            {((!isCreate && readOnly) || (isCreate && !readOnly)) && fetchFormField()}
 
             <FormHelperText>
             <HelperText>
