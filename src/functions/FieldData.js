@@ -75,25 +75,21 @@ export default function FieldData({
 
                 if( data_field.url ) {
                     field_data = (
-                        <Link className="badge-link" to={String(data['_urls'][data_field.url]).split('api/v2')[1]+'/edit'}>
-                            <Badge
-                                icon_style = {data_field.icon.style}
-                                message = {data_field.text}
-                                text_style = {data_field.text_style}
-                            >
-                                <IconLoader name={data_field.icon.name} fill={null} height='15px' width='15px'/>
-                            </Badge>
-                        </Link>
+                        <Badge
+                            icon={data_field.icon.name}
+                            to={String(data['_urls'][data_field.url]).split('api/v2')[1]+'/edit'}
+                        >
+                            {data_field.text}
+                        </Badge>
                     )
                 } else {
 
                     field_data = (
                         <Badge
-                            icon_style = {data_field.icon.style}
-                            message = {data_field.text}
-                            text_style = {data_field.text_style}
+                            icon={data_field.icon.name}
+                            classNameSuffix={String(data_field.icon.style).replace(' ', '-')}
                         >
-                            <IconLoader name={data_field.icon.name} fill={null} height='15px' width='15px'/>
+                            {data_field.text}
                         </Badge>
                     )
 

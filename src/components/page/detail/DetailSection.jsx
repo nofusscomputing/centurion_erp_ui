@@ -4,7 +4,6 @@ import {
 } from "react";
 
 import {
-    Link,
     useLocation
 } from "react-router";
 
@@ -22,7 +21,7 @@ import { apiFetch } from "../../../hooks/apiFetch";
 import Badge from "../../Badge";
 import DisplayFields from "../../DisplayFields";
 import DisplayTable from "../../DisplayTable"
-import IconLoader from "../../IconLoader";
+
 
 
 /** DetailView Section
@@ -113,18 +112,17 @@ const DetailSection = ({
                         (index === 0 && String(name).toLowerCase() == 'details') &&
 
                             external_links.results.map((external_link) => (
-                            <Link to={nunjucks.renderString(external_link.display_name, context)} target="_blank">
+                            <>
 
                                 <Badge
-                                    background = {external_link.colour ? external_link.colour : 'var(--contrasting-colour)'}
-                                    message = {external_link.button_text ? external_link.button_text : external_link.name}
+                                    background = {external_link.colour ? external_link.colour : null}
+                                    to = {nunjucks.renderString(external_link.display_name, context)}
+                                    target="_blank"
                                 >
-
-                                    <IconLoader name={'link'} fill="var(--background-colour-active)" height='15px' width='15px'/>
-
+                                    {external_link.button_text ? external_link.button_text : external_link.name}
                                 </Badge>
-
-                            </Link>))
+                            </>
+                            ))
 
                     ), 
                     hasNoOffset: false
