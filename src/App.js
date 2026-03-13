@@ -118,6 +118,10 @@ function App() {
                             <Route path=":user/token/:pk/delete" element={null} />
                             <Route path="user_settings/:pk/edit" element={null} />
 
+                            <Route path=":user/token/add" element={null}
+                                // loader = {pagedLoader}
+                                // action={APISubmitAction} shouldRevalidate={() => false}
+                            />
                         </Route>
 
                         {/* ********************************************************
@@ -182,10 +186,6 @@ function App() {
                                 action={APISubmitAction} shouldRevalidate={() => false}
                             />
 
-                            <Route path=":user/token/add" element={<Detail/>} 
-                                loader = {pagedLoader}
-                                action={APISubmitAction} shouldRevalidate={() => false}
-                            />
                     </Route>
                 </Route>
             </Route>
