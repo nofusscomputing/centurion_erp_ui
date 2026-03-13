@@ -3,7 +3,9 @@ import {
     useState
 } from "react";
 
-import { Link } from "react-router";
+import {
+    Link,
+} from "react-router";
 
 import {
     Button,
@@ -25,6 +27,7 @@ import {
 } from "@patternfly/react-table";
 
 import { apiFetch } from "../hooks/apiFetch";
+import Dialog from "../layout/Dialog";
 import FieldData from "../functions/FieldData";
 import IconLoader from "./IconLoader";
 
@@ -63,12 +66,15 @@ const DisplayTable = ({
 
     const [loaded, setPageLoaded] = useState(loader_data ?  true : false)
 
+    const [ isCreate, setIsCreate ] = useState(false);
+
     const [metadata, setMetaData] = useState(null);
 
     const [pageNumber, setPageNumber] = useState(1);
 
     const [perPageNumber, setPerPage] = useState(10);
 
+    const [ reload, setReload ] = useState(false)
 
     const [table_data, setTableData] = useState(null);
 
@@ -135,8 +141,13 @@ const DisplayTable = ({
         }
 
         if(
-            (loaded === false || table_data?.meta.page !== pageNumber)
-            && !isNested
+            // (
+            //     (loaded === false || table_data?.meta.page !== pageNumber )
+            //     && !isNested
+            // )
+            loaded === false
+            || table_data?.meta.page !== pageNumber
+            || reload
         ) {
             apiFetch( url )
                 .then((result) => {
@@ -179,53 +190,89 @@ const DisplayTable = ({
                         }
 
                         setPageLoaded(true);
+                        setReload(false)
                     }
                 }
             )
         }
     }, [
         pageNumber,
+        reload
     ]);
 
 
     const AddButton = () => {
 
-        if(
-            metadata?.urls?.sub_models != null
-            && add_button_filter.length > 0
-        ) {
+        /**
+         * Refactor: todo: Currently this if block is required so that new objects can be added from list view.
+         *      it does prevent inline table add from working. however the list view will need to be adjusted.
+         */
+        // if(
+        //     metadata?.urls?.sub_models != null
+        //     && add_button_filter.length > 0
+        // ) {
 
-            return Object.keys(metadata.urls.sub_models).map((model_name) => {
+        //     return Object.keys(metadata.urls.sub_models).map((model_name) => {
 
-                if( add_button_filter.includes(model_name) ) {            
+        //         if( add_button_filter.includes(model_name) ) {            
 
-                    return (
-                        <Button
-                            variant="primary"
-                            component={(props) => <Link {...props} to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"} />}
-                        >
-                            Add {model_name}
-                        </Button>
-                    );
+        //             return (
+        //                 <Button
+        //                     variant="primary"
+        //                     component={(props) => <Link {...props} to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"} />}
+        //                 >
+        //                     Add {model_name}
+        //                 </Button>
+        //             );
 
-                }else{
+        //         }else{
 
-                    return;
+        //             return;
 
-                }
-            });
+        //         }
+        //     });
 
-        } else {
+        // } else {
 
-            return (
-                    <Button
-                        variant="primary"
-                        component={(props) => <Link {...props} to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"} />}
-                    >
-                        Add
-                    </Button>
-            );
-        }
+        //     return (
+        //             <Button
+        //                 variant="primary"
+        //                 component={(props) => <Link {...props} to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"} />}
+        //             >
+        //                 Add
+        //             </Button>
+        //     );
+        // }
+
+        
+        /**
+         * Keep: This return is for inline Adding
+         */
+        return (
+            <>
+            {metadata &&
+
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        setIsCreate(true)
+                    }}
+                >
+                    {isCreate ? "Cancel" : "Add"}
+                </Button>
+
+            }
+            </>
+        );
+
+
+
+
+    }
+
+    const handleDialogOnClose = (_event) => {
+        setReload(true);
+        setIsCreate(false);
     }
 
 
@@ -382,6 +429,14 @@ const DisplayTable = ({
                             }
                             </Tr>
                         </Thead>
+
+                        {isCreate &&
+                            <Dialog
+                                handleOnClose={handleDialogOnClose}
+                                isCreate = {isCreate}
+                                objectMetadata={metadata}
+                            />
+                        }
 
                         {table_data && table_data.results.map((data, rowIndex) => {
 
