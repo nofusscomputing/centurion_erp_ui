@@ -36,7 +36,7 @@ const Header = ({
                         id="fill-nav-toggle"
                     />
                 </MastheadToggle>
-                <Title headingLevel="h1">
+                <Title headingLevel="h1" className="nfc-text-no-wrap">
                     <Link style={{textDecoration: "none"}} to='/'>Centurion ERP</Link>
                 </Title>
             </MastheadMain>

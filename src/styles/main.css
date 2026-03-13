@@ -22,3 +22,8 @@
         border-top: solid 1px #aaa;
     }
 }
+
+.nfc-text-no-wrap {
+    word-break: unset;
+    white-space: nowrap;
+}
