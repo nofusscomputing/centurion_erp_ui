@@ -291,7 +291,6 @@ const DisplayTable = ({
 
     const isTableRowExpanded = (tableRowId) => expandedTableRowNames.includes(tableRowId);
 
-    const [isExampleCompact, setIsExampleCompact] = useState(true);
 
 
     const tableHeaderColumns = metadata?.table_fields.map((key, index) => {
@@ -486,10 +485,11 @@ const DisplayTable = ({
                                             }
                                         }
                                     })}
+                                    <Td></Td>
                                 </Tr>
                                 {collapsable_fields.length > 0 &&
                                 <Tr isExpanded={isTableRowExpanded(rowId)}>
-                                    <Td colSpan={(metadata.table_fields.length)}>
+                                    <Td colSpan={(metadata.table_fields.length+1)}>
                                         <ExpandableRowContent>
                                             <DisplayTable
                                                 isNested={true}
