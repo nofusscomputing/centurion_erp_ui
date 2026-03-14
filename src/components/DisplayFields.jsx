@@ -198,7 +198,9 @@ const DisplayFields = ({
     const handleOnClose = (_event) => {
 
         if( _event === true ) {
-            onClose(true);
+            if( onClose ) {
+                onClose(true);
+            }
         }
     };
 
