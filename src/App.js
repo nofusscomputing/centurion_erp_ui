@@ -48,9 +48,9 @@ const Logout = () => {
 
 function DefaultFallback() {
     return (
-        <section>
-            <div style={{ textAlign: 'center', height: '100px'}}>Loading...</div>
-        </section>
+        <PageSection isFilled>
+            <Content>Loading</Content>
+        </PageSection>
     );
   }
 

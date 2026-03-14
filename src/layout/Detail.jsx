@@ -7,7 +7,7 @@ import {
     Link,
     useLoaderData,
     useLocation,
-    useParams
+    useOutletContext,
 } from "react-router";
 
 import {
@@ -29,7 +29,6 @@ import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
 
-import ContentHeader from "../components/page/ContentHeader";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
 import DetailSection from "../components/page/detail/DetailSection";
@@ -39,8 +38,9 @@ import TextArea from "../components/form/Textarea";
 
 const Detail = () => {
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext()
 
     const location = useLocation();
 
@@ -66,18 +66,20 @@ const Detail = () => {
 
         if( 'name' in page_data ) {
 
-            setContentHeading(page_data['name']);
+            setPageHeading(page_data['name']);
 
         }else if( 'title' in page_data ) {
 
-            setContentHeading(page_data['title']);
+            setPageHeading(page_data['title']);
 
         }else{
-            setContentHeading(metadata['name']);
+            setPageHeading(metadata['name']);
         }
 
+        setPageDescription(null)
 
-        SetContentHeaderIcon(
+
+        setPageHeaderIcons(
             <>
                 { ('documentation' in metadata) &&
                     <Link to={metadata['documentation']} target="_new">

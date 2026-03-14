@@ -1,11 +1,13 @@
-import { Link } from "react-router";
+/**
+ * 
+ * 
+ * Depreciated. in favour of Root containing rhe header logic
+ *  
+ * 
+ */
 
 import {
-    Breadcrumb,
-    BreadcrumbHeading,
-    BreadcrumbItem,
     Divider,
-    PageBreadcrumb,
     PageSection,
     Title
 } from "@patternfly/react-core";
@@ -20,20 +22,9 @@ const ContentHeader = ({
 }) => {
 
 
-    const BreadcrumbWithHeading = () => {
-    
-        return (
-            <Breadcrumb>
-                <BreadcrumbItem><Link to={back_url}>{back_name}</Link></BreadcrumbItem>
-                <BreadcrumbHeading to="#">{content_heading}</BreadcrumbHeading>
-            </Breadcrumb>
-        );
-    }
-
 
     return (
         <>
-        {back_url && <PageBreadcrumb><BreadcrumbWithHeading /></PageBreadcrumb>}
         <PageSection
             aria-labelledby="content-header"
             isCenterAligned = {true}
