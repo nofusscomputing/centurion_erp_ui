@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useParams } from "react-router"
+import { useLoaderData, useParams } from "react-router"
 
 import {
     PageGroup,
@@ -16,6 +16,8 @@ import urlBuilder from "../hooks/urlBuilder";
 const History = () => {
 
     const [ content_heading, setContentHeading ] = useState(null);
+
+    const {metadata, page_data} = useLoaderData();
 
     const params = useParams();
 
@@ -35,6 +37,8 @@ const History = () => {
                 <DisplayTable
                     callback={setContentHeading}
                     data_url_path={url_builder.params.module + '/' + url_builder.params.model + '/' + url_builder.params.pk + '/history'}
+                    loader_data={page_data}
+                    loader_metadata={metadata}
                 />
             </PageSection>
         </PageGroup>
