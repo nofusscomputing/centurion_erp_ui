@@ -333,14 +333,14 @@ export default function urlBuilder(
         )
     ) {
 
-        throw Error(`params are incorrect: ${JSON.stringify( {
-            'action': action,
-            'module': module,
-            'model': model,
-            'pk': pk,
-            'common_model': common_model,
-            'common_pk': common_pk,
-        } )}`)
+        // throw Error(`params are incorrect: ${JSON.stringify( {
+        //     'action': action,
+        //     'module': module,
+        //     'model': model,
+        //     'pk': pk,
+        //     'common_model': common_model,
+        //     'common_pk': common_pk,
+        // } )}`)
     }
 
     if(
@@ -348,14 +348,14 @@ export default function urlBuilder(
         && action
     ) {
 
-        throw Error(`params are incorrect: ${JSON.stringify( {
-            'action': action,
-            'module': module,
-            'model': model,
-            'pk': pk,
-            'common_model': common_model,
-            'common_pk': common_pk,
-        } )}`)
+        // throw Error(`params are incorrect: ${JSON.stringify( {
+        //     'action': action,
+        //     'module': module,
+        //     'model': model,
+        //     'pk': pk,
+        //     'common_model': common_model,
+        //     'common_pk': common_pk,
+        // } )}`)
     }
 
 
