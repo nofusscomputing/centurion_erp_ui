@@ -35,10 +35,11 @@ import UserContext from "../hooks/UserContext";
 
 
 
-const Fields = ({
+export const Fields = ({
     errorState,
     fields,
     formState,
+    isCreate = false,
     isEdit,
     objectData,
     objectMetadata,
@@ -94,18 +95,23 @@ const Fields = ({
              *     Pure Form Group
              * 
              */
-            return (
-                <FormField
-                    errorState={errorState}
-                    fieldName = {field}
-                    formState = {formState}
-                    isEdit = {isEdit}
-                    objectData = {objectData}
-                    objectMetadata = {objectMetadata}
-                    onChange = {onChange}
-                />
-            );
 
+            if(field in objectMetadata.fields ) {
+                return (
+                    <FormField
+                        errorState={errorState}
+                        fieldName = {field}
+                        formState = {formState}
+                        isCreate = {isCreate}
+                        isEdit = {isEdit}
+                        objectData = {objectData}
+                        objectMetadata = {objectMetadata}
+                        onChange = {onChange}
+                    />
+                );
+            } else {
+                return;
+            }
         }
     })
 }
@@ -167,8 +173,10 @@ const Column = ({isEdit, isMobile, children}) => {
  */
 const DisplayFields = ({
     existingFormData = null,
+    isCreate,
     layout = null,
     metadata,
+    onClose = null,
 }) => {
 
     const actionData = useActionData();
@@ -187,14 +195,31 @@ const DisplayFields = ({
 
     const user = useContext(UserContext);
 
+    const handleOnClose = (_event) => {
+
+        if( _event === true ) {
+            onClose(true);
+        }
+    };
+
     useEffect(() => {
 
         if(actionData?.body && actionData?.ok) {
 
             setformData(actionData?.body);
 
-            delete actionData.body;
-            delete actionData.errors;
+            if( isCreate && isLoading ) {
+
+                delete actionData.body;
+                delete actionData.errors;
+                delete actionData.ok;
+
+                if( onClose ) {
+                    onClose(true)
+                }
+
+            }
+
         }
     }, [actionData])
 
@@ -206,6 +231,8 @@ const DisplayFields = ({
                 actionData?.errors
                 ||
                 String(location.pathname).endsWith('/add')
+                ||
+                isCreate
             ) {
                 return true;
             }
@@ -232,6 +259,7 @@ const DisplayFields = ({
                             errorState={actionData}
                             fields={layout.left}
                             formState={formState}
+                            isCreate={isCreate}
                             isEdit={isEdit}
                             objectData={data}
                             objectMetadata={metadata}
@@ -249,6 +277,7 @@ const DisplayFields = ({
                             errorState={actionData}
                             fields={layout.right}
                             formState={formState}
+                            isCreate={isCreate}
                             isEdit={isEdit}
                             objectData={data}
                             objectMetadata={metadata}
@@ -271,6 +300,7 @@ const DisplayFields = ({
                     errorState={actionData}
                     fields={layout.fields}
                     formState={formState}
+                    isCreate={isCreate}
                     isEdit={isEdit}
                     objectData={data}
                     objectMetadata={metadata}
@@ -308,6 +338,7 @@ const DisplayFields = ({
                         if( _event.target.textContent == 'Cancel' ) {
 
                             setFormState({})
+                            handleOnClose(true)
 
                         }
 
@@ -328,7 +359,7 @@ const DisplayFields = ({
         cardData = (
             <Form
                 id="random"
-                method={String(location.pathname).endsWith('/add') ? "POST" : "PATCH"}
+                method={(String(location.pathname).endsWith('/add') || isCreate) ? "POST" : "PATCH"}
                 className = "pf-v6-c-form pf-m-horizontal"
                 onSubmit={(_event) => {
                     setIsLoading(true)
@@ -525,7 +556,8 @@ export async function APISubmitAction({ request }) {
     }
 
     const update = await apiFetch(
-        document.location.pathname,
+        // document.location.pathname,
+        metadata.urls.self,
         null,
         request.method,
         form_data,
