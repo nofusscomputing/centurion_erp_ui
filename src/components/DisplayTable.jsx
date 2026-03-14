@@ -146,7 +146,7 @@ const DisplayTable = ({
             //     && !isNested
             // )
             loaded === false
-            || table_data?.meta.page !== pageNumber
+            || table_data.meta.pagination.page !== pageNumber
             || reload
         ) {
             apiFetch( url )
