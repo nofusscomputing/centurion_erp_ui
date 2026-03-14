@@ -69,7 +69,7 @@ const DisplayTable = ({
 
     const [ isCreate, setIsCreate ] = useState(false);
 
-    const [metadata, setMetaData] = useState(null);
+    const [metadata, setMetaData] = useState(loader_metadata ? loader_metadata : null);
 
     const [pageNumber, setPageNumber] = useState(1);
 
@@ -79,7 +79,7 @@ const DisplayTable = ({
 
     const [ reload, setReload ] = useState(false)
 
-    const [table_data, setTableData] = useState(null);
+    const [table_data, setTableData] = useState(loader_data ? loader_data : null);
 
     let collapsable_fields = [];
 
@@ -93,9 +93,6 @@ const DisplayTable = ({
 
 
     useEffect(() => {
-
-        setMetaData(loader_metadata);
-        setTableData(loader_data);
 
         if( SetContentHeaderIcon ) {
 
