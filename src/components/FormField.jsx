@@ -215,13 +215,19 @@ const FormField = ({
                     </FormSelect>
                 );
 
+            case 'Date':
             case 'DateTime':
             case 'GenericField':    // 'UUID':    // todo: fix centurion field type
             case 'String':
 
                 let inputFieldType = "text";
 
-                if( dataFieldType === 'DateTime' ) {
+                if( dataFieldType === 'Date' ) {
+
+                    if( !readOnly ) {
+                        inputFieldType = "date"
+                    }
+                } else if( dataFieldType === 'DateTime' ) {
 
                     if( !readOnly ) {
                         inputFieldType = "datetime-local"
