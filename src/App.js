@@ -5,6 +5,10 @@ import {
     createRoutesFromElements,
 } from 'react-router'
 
+import {
+    Content,
+    PageSection
+} from '@patternfly/react-core';
 
 import Detail from "./layout/Detail";
 import ErrorPage from "./layout/Error";
