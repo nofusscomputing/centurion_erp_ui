@@ -217,6 +217,7 @@ const FormField = ({
 
             case 'Date':
             case 'DateTime':
+            case 'Email':
             case 'GenericField':    // 'UUID':    // todo: fix centurion field type
             case 'String':
 
@@ -232,6 +233,12 @@ const FormField = ({
                     if( !readOnly ) {
                         inputFieldType = "datetime-local"
                     }
+                } else if( dataFieldType === 'Email' ) {
+
+                    if( !readOnly ) {
+                        inputFieldType = "email"
+                    }
+                }
                 }
 
 
