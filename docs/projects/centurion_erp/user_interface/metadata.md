@@ -106,9 +106,9 @@ The `urls` key is used by the UI for actions within a view. The expected structu
 
 | Field | Type | When<br>Required | When<br>Optional | Description  |
 |:---|:---:|:---:|:---:|:---|
-| `self` | string | always | - | The url to itself. This should match the same url you used to request the metadata. It's also the same URL as will be made to request data, albiet by make a `GET` HTTP request. |
+| `self` | string | always | - | The url to itself. This should match the same url you used to request the metadata. It's also the same URL as will be made to request data, albeit by make a `GET` HTTP request. |
 | `back` | string | ?? | ?? | This URL is used for by the interface as the URL for a back operation. |
-| `sub_models` | object | ListView if multiple object tyes can be created. | Always | Denotes multiple endpoints for creating differnt types of the same object. |
+| `sub_models` | object | ListView if multiple object tyes can be created. | Always | Denotes multiple endpoints for creating different types of the same object. |
 | `return_url` | string | ?? | ?? | This URL if provided, is the URL used as the cancel url for a UI view. This key is optional and if it's not supplied, the `self` URL is to be used. |
 
 
