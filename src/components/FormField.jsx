@@ -153,7 +153,7 @@ const FormField = ({
                 })
         )
 
-        let updatedFieldData = fieldData;
+        let updatedFieldData = (isCreate ?objectMetadata.fields[fieldName].initial : fieldData);
 
         switch( dataFieldType ) {
 
