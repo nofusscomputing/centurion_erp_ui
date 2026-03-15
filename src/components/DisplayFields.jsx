@@ -293,6 +293,14 @@ const DisplayFields = ({
 
     } else if( layout.layout === 'single' ) {
 
+        let columnFields = layout.fields
+
+        if( isCreate) {
+            columnFields = Object.entries(metadata.fields).map(([fieldName, meta]) => {
+                return fieldName;
+            });
+        }
+
         cardData = (
             <Column
                 isEdit = {isEdit}
@@ -300,7 +308,7 @@ const DisplayFields = ({
             >
                 <Fields
                     errorState={actionData}
-                    fields={layout.fields}
+                    fields={columnFields}
                     formState={formState}
                     isCreate={isCreate}
                     isEdit={isEdit}
