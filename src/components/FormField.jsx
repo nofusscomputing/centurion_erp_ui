@@ -219,6 +219,7 @@ const FormField = ({
             case 'DateTime':
             case 'Email':
             case 'GenericField':    // 'UUID':    // todo: fix centurion field type
+            case 'Integer':
             case 'String':
 
                 let inputFieldType = "text";
@@ -238,7 +239,11 @@ const FormField = ({
                     if( !readOnly ) {
                         inputFieldType = "email"
                     }
-                }
+                } else if( dataFieldType === 'Integer' ) {
+
+                    if( !readOnly ) {
+                        inputFieldType = "number"
+                    }
                 }
 
 
@@ -278,6 +283,10 @@ const FormField = ({
                 );
 
             default:
+
+            if( isCreate || isEdit) {
+                console.warn(`Unable to return the form field for ${fieldName} as field type ${dataFieldType} does not exist.`)
+            }
 
                 if( fieldData?.render ) {
                     return fieldData;
