@@ -66,13 +66,14 @@ const FormField = ({
 
     const isRequired = Boolean(objectMetadata.fields[fieldName].required);
 
-    const readOnly = (
-        Boolean(objectMetadata.fields[fieldName].read_only)
-        ||
-        isEdit && Boolean(objectMetadata.fields[fieldName].write_only)
-    );
+    const readOnly = Boolean(objectMetadata.fields[fieldName].read_only)
 
-    if( isCreate && readOnly ) { // Don't show a read-only field.
+    const writeOnly = Boolean(objectMetadata.fields[fieldName].write_only);
+
+    if(
+        (isCreate && ((readOnly && !writeOnly) ))
+        || (isEdit && readOnly)
+    ) { // Don't show a read-only field.
         return;
     }
 
@@ -288,7 +289,7 @@ const FormField = ({
             fieldId = "simple-form-name-01"
         >
 
-            {((!isCreate && readOnly) || (isCreate && !readOnly)) && fetchFormField()}
+            {fetchFormField()}
 
             <FormHelperText>
             <HelperText>
