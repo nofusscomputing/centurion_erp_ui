@@ -134,7 +134,17 @@ const FormField = ({
 
     const fetchFormField = () => {
 
-        const dataFieldType = objectMetadata.fields[fieldName].type;
+        let dataFieldType = objectMetadata.fields[fieldName].type;
+
+        switch(objectMetadata.fields[fieldName].relationship_type) {
+
+            case "ManyToMany":
+
+                dataFieldType = objectMetadata.fields[fieldName].relationship_type
+
+                break;
+        }
+
 
         const fieldData = (
             fieldName in formState ?
