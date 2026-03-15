@@ -4,10 +4,10 @@ import {
     Link,
     useLoaderData,
     useNavigate,
+    useOutletContext,
     useParams
 } from "react-router";
 
-import ContentHeader from "../components/page/ContentHeader";
 import Select from "../components/form/Select";
 import Slider from "../components/form/Slider";
 import TextArea from "../components/form/Textarea";
@@ -20,8 +20,12 @@ import urlBuilder from "../hooks/urlBuilder";
 
 const ModelForm = () => {
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext();
+
+    setPageDescription(null);
+    setPageHeaderIcons(null);
 
     const params = useParams();
 
@@ -104,11 +108,11 @@ const ModelForm = () => {
 
         if( 'name' in metadata ) {
 
-            setContentHeading(metadata['name']);
+            setPageHeading(metadata['name']);
 
         }else if( 'title' in metadata ) {
 
-            setContentHeading(metadata['title']);
+            setPageHeading(metadata['title']);
 
         }
 
@@ -171,10 +175,6 @@ const ModelForm = () => {
 
     return((page_data || ! edit ) && metadata &&
         <>
-        <ContentHeader
-            content_heading={content_heading}
-            content_header_icon={content_header_icon}
-        />
         <section>
             {form_error && form_error['non_field_errors'] &&
                 <div>

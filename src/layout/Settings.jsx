@@ -1,28 +1,34 @@
-import { Link, useLoaderData, useParams } from "react-router"
-import { useEffect, useState } from "react";
 
-import { apiFetch } from "../hooks/apiFetch";
+import {
+    useEffect,
+} from "react";
+
+import {
+    Link,
+    useLoaderData,
+    useOutletContext,
+} from "react-router"
+
 import Card from "../components/page/Card";
 import IconLoader from "../components/IconLoader";
-import ContentHeader from "../components/page/ContentHeader";
 
 
 
 const Settings = () => {
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
-
-    const params = useParams();
-    
-
     const {metadata, page_data} = useLoaderData();
+
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext()
+
 
     useEffect(() => {
 
-        setContentHeading('Settings')
+        setPageHeading('Settings')
+        setPageDescription(metadata.description)
 
-        SetContentHeaderIcon(
+        setPageHeaderIcons(
             <>
                 {metadata['documentation'] &&
                     <Link to={metadata['documentation']} target="_new">
@@ -39,10 +45,6 @@ const Settings = () => {
 
     return (
         <>
-        <ContentHeader
-            content_heading={content_heading}
-            content_header_icon={content_header_icon}
-        />
         <div className="cards">
 
             {metadata &&

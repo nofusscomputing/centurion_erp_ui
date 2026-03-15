@@ -1,22 +1,19 @@
 import {
     useEffect,
-    useState
 } from "react";
 
 import {
     Link,
     useLoaderData,
-    useParams
+    useOutletContext,
 } from "react-router"
 
 import {
     Card,
     CardBody,
-    PageGroup,
     PageSection
 } from "@patternfly/react-core";
 
-import ContentHeader from "../components/page/ContentHeader";
 import DisplayTable from "../components/DisplayTable"
 import IconLoader from "../components/IconLoader";
 
@@ -24,20 +21,19 @@ import IconLoader from "../components/IconLoader";
 
 const List = () => {
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
-
-    const params = useParams();
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext()
 
     const {metadata, page_data} = useLoaderData();
 
     useEffect(() => {
 
-        document.title = `${metadata.name}`
-        setContentHeading(metadata.name)
+        setPageHeading(metadata.name)
+        setPageDescription(metadata.description)
 
 
-        SetContentHeaderIcon(
+        setPageHeaderIcons(
             <>
                 {metadata['documentation'] &&
                     <Link to={metadata['documentation']} target="_new">
@@ -54,12 +50,9 @@ const List = () => {
 
     }, [ metadata ])
 
+
     return (
-        <PageGroup>
-            <ContentHeader
-                content_heading={content_heading}
-                content_header_icon={content_header_icon}
-            />
+        <>
             { metadata &&
             <PageSection
                 aria-labelledby="page-content"
@@ -75,7 +68,7 @@ const List = () => {
                     </CardBody>
                 </Card>
             </PageSection>}
-        </PageGroup>
+        </>
     );
 }
 

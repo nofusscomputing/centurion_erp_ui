@@ -66,13 +66,14 @@ const FormField = ({
 
     const isRequired = Boolean(objectMetadata.fields[fieldName].required);
 
-    const readOnly = (
-        Boolean(objectMetadata.fields[fieldName].read_only)
-        ||
-        isEdit && Boolean(objectMetadata.fields[fieldName].write_only)
-    );
+    const readOnly = Boolean(objectMetadata.fields[fieldName].read_only)
 
-    if( isCreate && readOnly ) { // Don't show a read-only field.
+    const writeOnly = Boolean(objectMetadata.fields[fieldName].write_only);
+
+    if(
+        (isCreate && ((readOnly && !writeOnly) ))
+        || (isEdit && readOnly)
+    ) { // Don't show a read-only field.
         return;
     }
 
@@ -133,7 +134,17 @@ const FormField = ({
 
     const fetchFormField = () => {
 
-        const dataFieldType = objectMetadata.fields[fieldName].type;
+        let dataFieldType = objectMetadata.fields[fieldName].type;
+
+        switch(objectMetadata.fields[fieldName].relationship_type) {
+
+            case "ManyToMany":
+
+                dataFieldType = objectMetadata.fields[fieldName].relationship_type
+
+                break;
+        }
+
 
         const fieldData = (
             fieldName in formState ?
@@ -152,7 +163,7 @@ const FormField = ({
                 })
         )
 
-        let updatedFieldData = fieldData;
+        let updatedFieldData = (isCreate ?objectMetadata.fields[fieldName].initial : fieldData);
 
         switch( dataFieldType ) {
 
@@ -214,16 +225,34 @@ const FormField = ({
                     </FormSelect>
                 );
 
+            case 'Date':
             case 'DateTime':
+            case 'Email':
             case 'GenericField':    // 'UUID':    // todo: fix centurion field type
+            case 'Integer':
             case 'String':
 
                 let inputFieldType = "text";
 
-                if( dataFieldType === 'DateTime' ) {
+                if( dataFieldType === 'Date' ) {
+
+                    if( !readOnly ) {
+                        inputFieldType = "date"
+                    }
+                } else if( dataFieldType === 'DateTime' ) {
 
                     if( !readOnly ) {
                         inputFieldType = "datetime-local"
+                    }
+                } else if( dataFieldType === 'Email' ) {
+
+                    if( !readOnly ) {
+                        inputFieldType = "email"
+                    }
+                } else if( dataFieldType === 'Integer' ) {
+
+                    if( !readOnly ) {
+                        inputFieldType = "number"
                     }
                 }
 
@@ -265,6 +294,10 @@ const FormField = ({
 
             default:
 
+            if( isCreate || isEdit) {
+                console.warn(`Unable to return the form field for ${fieldName} as field type ${dataFieldType} does not exist.`)
+            }
+
                 if( fieldData?.render ) {
                     return fieldData;
                 }
@@ -288,7 +321,7 @@ const FormField = ({
             fieldId = "simple-form-name-01"
         >
 
-            {((!isCreate && readOnly) || (isCreate && !readOnly)) && fetchFormField()}
+            {fetchFormField()}
 
             <FormHelperText>
             <HelperText>

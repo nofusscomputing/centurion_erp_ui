@@ -1,5 +1,7 @@
 import {
+    createRef,
     useEffect,
+    useMemo,
     useState
 } from "react";
 
@@ -7,7 +9,7 @@ import {
     Link,
     useLoaderData,
     useLocation,
-    useParams
+    useOutletContext,
 } from "react-router";
 
 import {
@@ -18,9 +20,9 @@ import {
     Divider,
     Flex,
     FlexItem,
-    PageGroup,
     PageSection,
     Tab,
+    TabContent,
     Tabs,
     TabTitleText
 } from "@patternfly/react-core";
@@ -29,7 +31,6 @@ import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
 
-import ContentHeader from "../components/page/ContentHeader";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
 import DetailSection from "../components/page/detail/DetailSection";
@@ -39,14 +40,13 @@ import TextArea from "../components/form/Textarea";
 
 const Detail = () => {
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext()
 
     const location = useLocation();
 
     const {metadata, page_data} = useLoaderData();
-
-    const params = useParams();
 
 
     const [ notes, setNotes ] = useState(null)
@@ -66,18 +66,20 @@ const Detail = () => {
 
         if( 'name' in page_data ) {
 
-            setContentHeading(page_data['name']);
+            setPageHeading(page_data['name']);
 
         }else if( 'title' in page_data ) {
 
-            setContentHeading(page_data['title']);
+            setPageHeading(page_data['title']);
 
         }else{
-            setContentHeading(metadata['name']);
+            setPageHeading(metadata['name']);
         }
 
+        setPageDescription(null)
 
-        SetContentHeaderIcon(
+
+        setPageHeaderIcons(
             <>
                 { ('documentation' in metadata) &&
                     <Link to={metadata['documentation']} target="_new">
@@ -144,165 +146,178 @@ const Detail = () => {
         setActiveTabKey(tabIndex);
     };
 
-    return (
-        metadata && page_data &&
-        <PageGroup>
-            <ContentHeader
-                content_heading={content_heading}
-                content_header_icon={content_header_icon}
-                back_url = {metadata.urls.back ?
-                    String(metadata.urls.back).split('api/v2')[1]
-                    : '/' + params.module + '/' + params.model
-                }
-                back_name = {metadata.name}
-            />
 
+    const tabDetails = useMemo(() => {
+
+        return metadata.layout.map(tab => ({
+            name: tab.name,
+            ref: createRef()
+        }));
+
+    }, [metadata.layout])
+
+
+    return (
+        <>
             <PageSection
-                aria-labelledby="page-content"
-                isFilled={true}
+                className="pf-m-sticky-top"
+                type="tabs"
             >
                 <Tabs
                     activeKey={activeTabKey}
                     onSelect={handleTabClick}
-                    usePageInsets={true}
-                    isBox={false}
-                    aria-label="Tabs in the page insets example"
+                    aria-label="page-tabs"
                     role="region"
                 >
-                { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
 
-                    let page_content = null;
+                    {tabDetails && tabDetails.map(( tab, index ) => {
 
-                    if(
-                        String(location.pathname).endsWith('/add')
-                        && index != 0
-                    ) {
-                        return;
-                    } else if(
-                        String(location.pathname).endsWith('/add')
-                        && index == 0
-                    ){
-                        tab.name = 'Create New'
-                    }
+                        return (
+                            <Tab
+                                key={index}
+                                eventKey={index}
+                                title={<TabTitleText>{tab.name}</TabTitleText>}
+                                tabContentId={`tab${index}`}
+                                tabContentRef={tab.ref} 
+                            />
+                        );
 
-                    if(
-                        activeTabKey === index
-                        || index === 0
-                    ) {
-
-                        if( tab.name.toLowerCase() === 'notes' ) {
-
-                            page_content = (
-                                (notes && note_metadata) &&
-                                <>
-
-                                    <FlexItem>
-
-                                        <Card isPlain>
-
-                                            <form onSubmit={async (e) => {
-                                                e.preventDefault();
-
-                                                const response = await apiFetch(
-                                                    String(page_data['_urls']['notes']).split('api/v2')[1],
-                                                    null,
-                                                    'POST',
-                                                    notes_form
-                                                );
-
-                                                if( response.status === 201 ) {
-
-                                                    setNotesForm({});
-
-                                                    setUpdateNotes( update_notes ? false : true );
-
-                                                    e.target.reset();
-                                                }
-
-                                            }}>
-                                            <CardBody>
-                                                <TextArea 
-                                                    id = 'model-note'
-                                                    required = {true}
-                                                    onChange = {(e) => {
-                                                        setNotesForm((prevState) => ({ 
-                                                            ...prevState,
-                                                            body: e.target.value,
-                                                        }
-                                                        ))
-
-                                                        console.log(`model note form ${JSON.stringify(notes_form)}`)
-                                                    }}
-                                                    value={notes_form?.body}
-                                                />
-                                            </CardBody>
-                                            <CardFooter>
-                                                <Button variant="primary">Create Note</Button>
-                                            </CardFooter>
-                                            </form>
-                                        </Card>
-                                    </FlexItem>
-
-                                    <FlexItem><Divider /></FlexItem>
-
-                                    {notes.results.map((note) => {
-                                        return (
-                                            <>
-                                                <FlexItem>
-                                                    <ModelNote
-                                                        note_data={note}
-                                                        metadata = {note_metadata}
-                                                    />
-                                                </FlexItem>
-                                                <Divider />
-                                            </>
-                                        );
-                                    })}
-                                </>
-                            )
-
-                        } else {
-
-                            page_content = tab.sections.map(( section, section_index ) => {
-
-                                if(
-                                    String(location.pathname).endsWith('/add')
-                                    && section_index !== 0
-                                ) {
-                                    return;
-                                }
-
-                                return (
-                                    <>
-                                        {section_index !== 0 && <Divider />}
-
-                                        <FlexItem>
-                                            <DetailSection
-                                                index = { section_index }
-                                                layout = {section}
-                                                data = { page_data }
-                                                metadata = { metadata }
-                                                name = {tab.name}
-                                            />
-                                        </FlexItem>
-                                    </>
-                                );
-                                
-                            })
-                        }
-                    }
-
-
-                    return (
-                        <Tab eventKey={index} title={<TabTitleText>{tab.name}</TabTitleText>} aria-label="Page insets example content users">
-                            <Flex direction={{ default: 'column' }}>{page_content}</Flex>
-                        </Tab>
-                    );
-                })}
+                    })}
                 </Tabs>
             </PageSection>
-        </PageGroup>
-     );
+
+            <PageSection
+                isFilled={true}
+            >
+
+                {tabDetails && tabDetails.map((tab, index) => {
+
+                    let metadataTab = metadata.layout[index]
+
+                    let page_content
+
+                    if( tab.name.toLowerCase() === 'notes' ) {
+
+                        page_content = (
+                            (notes && note_metadata) &&
+                            <>
+
+                                <FlexItem>
+
+                                    <Card isPlain>
+
+                                        <form onSubmit={async (e) => {
+                                            e.preventDefault();
+
+                                            const response = await apiFetch(
+                                                String(page_data['_urls']['notes']).split('api/v2')[1],
+                                                null,
+                                                'POST',
+                                                notes_form
+                                            );
+
+                                            if( response.status === 201 ) {
+
+                                                setNotesForm({});
+
+                                                setUpdateNotes( update_notes ? false : true );
+
+                                                e.target.reset();
+                                            }
+
+                                        }}>
+                                        <CardBody>
+                                            <TextArea 
+                                                id = 'model-note'
+                                                required = {true}
+                                                onChange = {(e) => {
+                                                    setNotesForm((prevState) => ({ 
+                                                        ...prevState,
+                                                        body: e.target.value,
+                                                    }
+                                                    ))
+
+                                                    console.log(`model note form ${JSON.stringify(notes_form)}`)
+                                                }}
+                                                value={notes_form?.body}
+                                            />
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button variant="primary">Create Note</Button>
+                                        </CardFooter>
+                                        </form>
+                                    </Card>
+                                </FlexItem>
+
+                                <FlexItem><Divider /></FlexItem>
+
+                                {notes.results.map((note) => {
+                                    return (
+                                        <>
+                                            <FlexItem>
+                                                <ModelNote
+                                                    note_data={note}
+                                                    metadata = {note_metadata}
+                                                />
+                                            </FlexItem>
+                                            <Divider />
+                                        </>
+                                    );
+                                })}
+                            </>
+                        )
+
+                    } else {
+
+                        page_content = metadataTab.sections.map(( section, section_index ) => {
+
+                            if(
+                                String(location.pathname).endsWith('/add')
+                                && section_index !== 0
+                            ) {
+                                return;
+                            }
+
+                            return (
+                                <>
+                                    {section_index !== 0 && <Divider />}
+
+                                    <FlexItem>
+                                        <DetailSection
+                                            index = { section_index }
+                                            layout = {section}
+                                            data = { page_data }
+                                            metadata = { metadata }
+                                            name = {tab.name}
+                                        />
+                                    </FlexItem>
+                                </>
+                            );
+                            
+                        })
+                    }
+
+                    return (
+                        <TabContent
+                            eventKey={index}
+                            key={index}
+                            id={`tab${index}`}
+                            ref={tab.ref}
+                            aria-label={`tab ${index}`}
+                            hidden={activeTabKey!=index}
+                        >
+
+                            {activeTabKey == index && page_content}
+
+                        </TabContent>
+                    );
+
+    `           `})}
+
+            </PageSection>
+        </>
+    );
+
 }
  
 export default Detail;

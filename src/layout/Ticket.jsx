@@ -1,9 +1,8 @@
 import { useEffect, useId, useState } from "react";
-import { Form, useLoaderData, useParams } from "react-router";
+import { Form, useLoaderData, useOutletContext, useParams } from "react-router";
 
 import '../styles/ticket.css'
 
-import ContentHeader from "../components/page/ContentHeader";
 import InlineField from "../components/InlineFields";
 import LinkedItems from "../components/page/ticket/LinkedItems";
 import MarkdownEditor from "../components/MarkdownEditor";
@@ -43,8 +42,12 @@ const Ticket = ({
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext();
+
+    setPageDescription(null);
+    setPageHeaderIcons(null);
 
     const [ editing_description, setEditingDescription ] = useState( false )
 
@@ -88,10 +91,10 @@ const Ticket = ({
 
             setTicketData(page_data)
 
-            setContentHeading(page_data['title'])
+            setPageHeading(page_data['title'])
 
         }else{
-            setContentHeading('New ' + metadata.name)
+            setPageHeading('New ' + metadata.name)
         }
 
         setTicketMetaData(metadata)
@@ -196,10 +199,6 @@ const Ticket = ({
         ticket_metadata && (
         <>
 
-        <ContentHeader
-            content_heading={content_heading}
-            content_header_icon={content_header_icon}
-        />
         <div id={'ticket-' + ticketElementId()} className="ticket">
 
             <div className="contents">

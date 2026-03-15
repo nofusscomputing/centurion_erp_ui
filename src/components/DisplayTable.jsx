@@ -5,6 +5,7 @@ import {
 
 import {
     Link,
+    useParams,
 } from "react-router";
 
 import {
@@ -68,15 +69,17 @@ const DisplayTable = ({
 
     const [ isCreate, setIsCreate ] = useState(false);
 
-    const [metadata, setMetaData] = useState(null);
+    const [metadata, setMetaData] = useState(loader_metadata ? loader_metadata : null);
 
     const [pageNumber, setPageNumber] = useState(1);
+
+    const params = useParams();
 
     const [perPageNumber, setPerPage] = useState(10);
 
     const [ reload, setReload ] = useState(false)
 
-    const [table_data, setTableData] = useState(null);
+    const [table_data, setTableData] = useState(loader_data ? loader_data : null);
 
     let collapsable_fields = [];
 
@@ -90,9 +93,6 @@ const DisplayTable = ({
 
 
     useEffect(() => {
-
-        setMetaData(loader_metadata);
-        setTableData(loader_data);
 
         if( SetContentHeaderIcon ) {
 
@@ -146,7 +146,7 @@ const DisplayTable = ({
             //     && !isNested
             // )
             loaded === false
-            || table_data?.meta.page !== pageNumber
+            || table_data.meta.pagination.page !== pageNumber
             || reload
         ) {
             apiFetch( url )
@@ -203,69 +203,70 @@ const DisplayTable = ({
 
     const AddButton = () => {
 
+
+        if( 'pk' in params ) {
         /**
-         * Refactor: todo: Currently this if block is required so that new objects can be added from list view.
-         *      it does prevent inline table add from working. however the list view will need to be adjusted.
+         * If the model has the pk param then inline editing should be enabled.
          */
-        // if(
-        //     metadata?.urls?.sub_models != null
-        //     && add_button_filter.length > 0
-        // ) {
 
-        //     return Object.keys(metadata.urls.sub_models).map((model_name) => {
+            return (
+                <>
+                {metadata &&
 
-        //         if( add_button_filter.includes(model_name) ) {            
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            setIsCreate(true)
+                        }}
+                    >
+                        {isCreate ? "Cancel" : "Add"}
+                    </Button>
 
-        //             return (
-        //                 <Button
-        //                     variant="primary"
-        //                     component={(props) => <Link {...props} to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"} />}
-        //                 >
-        //                     Add {model_name}
-        //                 </Button>
-        //             );
+                }
+                </>
+            );
 
-        //         }else{
-
-        //             return;
-
-        //         }
-        //     });
-
-        // } else {
-
-        //     return (
-        //             <Button
-        //                 variant="primary"
-        //                 component={(props) => <Link {...props} to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"} />}
-        //             >
-        //                 Add
-        //             </Button>
-        //     );
-        // }
-
+        } else {
         
-        /**
-         * Keep: This return is for inline Adding
-         */
-        return (
-            <>
-            {metadata &&
 
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        setIsCreate(true)
-                    }}
-                >
-                    {isCreate ? "Cancel" : "Add"}
-                </Button>
+            if(
+                metadata?.urls?.sub_models != null
+                && add_button_filter.length > 0
+            ) {
 
+                return Object.keys(metadata.urls.sub_models).map((model_name) => {
+
+                    if( add_button_filter.includes(model_name) ) {            
+
+                        return (
+                            <Button
+                                variant="primary"
+                                component={(props) => <Link {...props} to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"} />}
+                            >
+                                Add {model_name}
+                            </Button>
+                        );
+
+                    }else{
+
+                        return;
+
+                    }
+                });
+
+            } else {
+
+                return (
+                        <Button
+                            variant="primary"
+                            component={(props) => <Link {...props} to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"} />}
+                        >
+                            Add
+                        </Button>
+                );
             }
-            </>
-        );
 
-
+        }
 
 
     }
