@@ -8,7 +8,7 @@ import {
     Form,
     Link,
     useActionData,
-    useLocation
+    useLocation,
 } from "react-router";
 
 import {
@@ -251,8 +251,12 @@ const DisplayFields = ({
 
         cardData = (
             <>
-            <Flex direction={{ default: 'row' }} >
-                <FlexItem flex={{ default: 'flex_1' }} >
+            <Flex
+                gap={{ default: 'gap'}}
+            >
+                <FlexItem
+                    grow={{ default: 'grow'}}
+                >
                     <Column
                         isEdit = {isEdit}
                         isMobile={isMobile}
@@ -270,7 +274,9 @@ const DisplayFields = ({
                     </Column>
                 </FlexItem>
 
-                 <FlexItem flex={{ default: 'flex_1' }} >
+                 <FlexItem
+                    grow={{ default: 'grow'}}
+                 >
                     <Column
                         isEdit = {isEdit}
                         isMobile={isMobile}

@@ -39,7 +39,7 @@ const ErrorPage = () => {
                 <h2>Error</h2>
                 <p></p>
                 <h3>Message</h3>
-                <p>{error.message}</p>
+                <p>{error.message? error.message : error.data}</p>
                 <h3>Trace</h3>
                 <pre style={{
                     width: '50%'
