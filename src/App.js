@@ -220,7 +220,9 @@ function App() {
                             />
 
 
-                            <Route path=":pk">
+                            <Route path=":pk"
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            >
 
 
                                 <Route index element={<Detail />} 
@@ -248,7 +250,9 @@ function App() {
                                         loader = {pagedLoader} />
 
                                     <Route path=":sub_model_pk" element={<Ticket />}
-                                        loader = {pagedLoader} action={InlineFieldAction} />
+                                        loader = {pagedLoader} 
+                                        action={InlineFieldAction} shouldRevalidate={() => false}
+                                    />
 
                                 </Route>
 
