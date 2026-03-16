@@ -20,17 +20,17 @@ export async function apiFetch(
     patch = true
 ) {
 
-    console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
+    // console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
 
-    console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
+    // console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
 
     if( String(url_path).includes(String(window.env.API_URL).trim()) ) {    // normalise passed URLs
 
-        console.debug(`url_path for function apiFetch was a full url, [${url_path}], normalizing...`)
+        // console.debug(`url_path for function apiFetch was a full url, [${url_path}], normalizing...`)
 
         url_path = String(url_path).replace(String(window.env.API_URL).trim(), '').replace('//', '/')
 
-        console.debug(`normailized to [${url_path}]`)
+        // console.debug(`normailized to [${url_path}]`)
 
     }
 
@@ -49,7 +49,7 @@ export async function apiFetch(
 
     url_path = String(url_path).replace('/add', '').replace('/delete', '').replace('/edit', '')
 
-    console.debug(`apiFetch url_path is: ${url_path}`)
+    // console.debug(`apiFetch url_path is: ${url_path}`)
 
 
     let request_data = {
@@ -144,7 +144,7 @@ export async function apiFetch(
     }
 
 
-    console.debug(`apiFetch finished for URL: [${url_path}]`)
+    // console.debug(`apiFetch finished for URL: [${url_path}]`)
 
     if(
         (
