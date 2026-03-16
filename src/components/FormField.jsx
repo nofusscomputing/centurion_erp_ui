@@ -18,6 +18,7 @@ import {
 } from "@patternfly/react-core";
 
 import FieldData from "../functions/FieldData";
+import DualFieldSelector from "./form/DualFieldSelector";
 
 
 
@@ -291,6 +292,20 @@ const FormField = ({
                         value = {updatedFieldData}
                     />
                 );
+
+            case "ManyToMany":
+
+                return (
+                    <DualFieldSelector
+                        name = {fieldName}
+                        isCreate = {isCreate}
+                        isEdit = {isEdit}
+                        onChange = {handleFieldChange}
+                        pageData = {objectData}
+                        pageMetadata = {objectMetadata}
+                    />
+                );
+
 
             default:
 

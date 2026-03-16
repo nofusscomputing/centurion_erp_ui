@@ -8,7 +8,7 @@ import {
     Form,
     Link,
     useActionData,
-    useLocation
+    useLocation,
 } from "react-router";
 
 import {
@@ -251,8 +251,12 @@ const DisplayFields = ({
 
         cardData = (
             <>
-            <Flex direction={{ default: 'row' }} >
-                <FlexItem flex={{ default: 'flex_1' }} >
+            <Flex
+                gap={{ default: 'gap'}}
+            >
+                <FlexItem
+                    grow={{ default: 'grow'}}
+                >
                     <Column
                         isEdit = {isEdit}
                         isMobile={isMobile}
@@ -270,7 +274,9 @@ const DisplayFields = ({
                     </Column>
                 </FlexItem>
 
-                 <FlexItem flex={{ default: 'flex_1' }} >
+                 <FlexItem
+                    grow={{ default: 'grow'}}
+                 >
                     <Column
                         isEdit = {isEdit}
                         isMobile={isMobile}
@@ -473,10 +479,7 @@ export default DisplayFields;
 export async function APISubmitAction({ request }) {
 
 
-    if( ! String(request.url).endsWith(document.location.pathname) ) {    // as request does not contain the path, check doc path
-
-        throw Error(`InlineFieldAction URL ${request.url} does not match ${document.location.pathname}`);
-    }
+    console.debug(request);    // Trace
 
     const data = await request.formData();
 
@@ -513,7 +516,6 @@ export async function APISubmitAction({ request }) {
             continue;
         }
 
-        console.debug(`InlineFieldAction=${fieldName} ${fieldValue}`);
 
         if( ! metadata.fields.hasOwnProperty(fieldName) ) {    // field not part of request
 
@@ -552,11 +554,8 @@ export async function APISubmitAction({ request }) {
 
         }
 
-        console.debug(`InlineFieldAction (json apend): ${JSON.stringify(form_data)}`);
 
     }
-
-    console.debug(`InlineFieldAction (json): ${JSON.stringify(form_data)}`);
 
 
     let actionReturn = {
@@ -593,6 +592,11 @@ export async function APISubmitAction({ request }) {
 
         });
 
+
+    console.debug(update);    // Trace
+
+    console.debug(actionReturn);    // Trace
+    
     return actionReturn;
 
 }
