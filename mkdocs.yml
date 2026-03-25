@@ -25,17 +25,17 @@ nav:
 
     - projects/centurion_erp/index.md
 
-    - User Interface:
+  - Centurion User Interface:
 
-      - projects/centurion_erp/user_interface/index.md
+    - projects/centurion_user_interface/index.md
 
-      - projects/centurion_erp/user_interface/metadata.md
+    - projects/centurion_user_interface/metadata.md
 
-      - projects/centurion_erp/user_interface/navigation.md
+    - projects/centurion_user_interface/navigation.md
 
-      - projects/centurion_erp/user_interface/setup.md
+    - projects/centurion_user_interface/setup.md
 
-      - projects/centurion_erp/user_interface/url.md
+    - projects/centurion_user_interface/url.md
 
 - Operations: 
 
