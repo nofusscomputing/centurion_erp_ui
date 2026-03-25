@@ -115,3 +115,30 @@ The `urls` key is used by the UI for actions within a view. The expected structu
 #### Sub Models
 
 This ob
+
+
+### Allowed Methods
+
+_**To Do:** when used update_
+
+
+### Table Fields
+
+The `table_fields` key supplies what table columns to display when the layout type is `table`.
+
+``` json
+
+[
+    "display_name",
+    "organization",
+    "checkins",
+    "created",
+    "-action_delete-"
+]
+
+```
+
+| Field | Type | When<br>Required | When<br>Optional | Description  |
+|:---|:---:|:---:|:---:|:---|
+| `<value>` | string | always | - | Name of the table column to display. This value is derived from the key name for the API data object to display. |
+| `-action_delete-` | string | - | always | Action Delete. This special value instructs the interface to provided a delete button to remove the row. |
