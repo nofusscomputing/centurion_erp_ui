@@ -121,9 +121,18 @@ const DisplayTable = ({
             }
         }
 
+        if( loader_data && loader_metadata ) {
+
+            setMetaData(loader_metadata ? loader_metadata : null)
+            setTableData(loader_data ? loader_data : null)
+            setPageNumber(1)
+
+        }
+
 
     }, [
-        loader_data
+        loader_data,
+        loader_metadata,
     ])
 
 
