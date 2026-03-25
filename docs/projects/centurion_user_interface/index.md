@@ -32,7 +32,7 @@ about: https://github.com/nofusscomputing/centurion_erp_ui/
 
 <br>
 
-**Centurion UI** is a metadata-driven frontend that renders and interacts with structured data provided by backends such as Centurion ERP. Unlike traditional UIs, it **does not handle security or business logic** — those remain fully on the backend. The UI’s role is to interpret and display data as views, pages, and components, letting users focus on using applications rather than building interfaces.
+**Centurion UI** is a metadata-driven frontend that renders and interacts with structured data provided by backends such as [Centurion ERP](../centurion_erp/index.md). Unlike traditional UIs, it **does not handle security or business logic** — those remain fully on the backend. The UI’s role is to interpret and display data as views, pages, and components, letting users focus on using applications rather than building interfaces.
 
 
 ## Components of Centurion UI
@@ -79,7 +79,7 @@ This approach ensures that **adding new features to your backend requires no UI 
 
 ## Development Philosophy
 
-The UI is being developed **in parallel with Centurion ERP**, allowing the specification of the interface to be refined through real-world use. This ensures that:
+The UI is being developed **in parallel with [Centurion ERP](../centurion_erp/index.md)**, allowing the specification of the interface to be refined through real-world use. This ensures that:
 
 - Views, components, and interactions are validated as the backend evolves.
 - The UI remains adaptable and backend-agnostic.

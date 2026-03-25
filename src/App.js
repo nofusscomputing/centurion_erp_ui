@@ -117,12 +117,6 @@ function App() {
                         >
 
 
-                            <Route path=":common_model/:common_pk/:model/:pk/delete" element={null} />
-
-
-                            <Route path=":user/token/:pk/delete" element={null} />
-
-
                             <Route path=":user/token/add" element={null} />
 
 
@@ -154,10 +148,6 @@ function App() {
                                 loader = {pagedLoader}
                                 action={APISubmitAction} shouldRevalidate={() => false}
                             />
-
-
-                            <Route path=":model/:pk/delete" element={<ModelForm />}
-                                loader = {pagedLoader} />
 
                         </Route>
 
@@ -229,10 +219,6 @@ function App() {
                                     loader = {pagedLoader}
                                     action={APISubmitAction} shouldRevalidate={() => false}
                                 />
-
-
-                                <Route path="delete" element={<ModelForm />}
-                                    loader = {pagedLoader} />
 
 
                                 {/* ********************************************************

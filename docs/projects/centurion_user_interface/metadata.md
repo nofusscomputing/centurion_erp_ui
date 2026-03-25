@@ -115,3 +115,112 @@ The `urls` key is used by the UI for actions within a view. The expected structu
 #### Sub Models
 
 This ob
+
+
+### Allowed Methods
+
+_**To Do:** when used update_
+
+
+### Table Fields
+
+The `table_fields` key supplies what table columns to display when the layout type is `table`.
+
+``` json
+
+[
+    "display_name",
+    "organization",
+    "checkins",
+    "created",
+    "-action_delete-"
+]
+
+```
+
+| Field | Type | When<br>Required | When<br>Optional | Description  |
+|:---|:---:|:---:|:---:|:---|
+| `<value>` | string | always | - | Name of the table column to display. This value is derived from the key name for the API data object to display. |
+| `-action_delete-` | string | - | always | Action Delete. This special value instructs the interface to provided a delete button to remove the row. |
+
+
+### Layout
+
+The `layout` key provides the required information to render each tab of a `DetailView` page.
+
+``` json
+[
+    {
+        "name": "Details",
+        "slug": "details",
+        "sections": []
+    }
+]
+
+```
+
+| Field | Type | When<br>Required | When<br>Optional | Description  |
+|:---|:---:|:---:|:---:|:---|
+| `name` | string | always | - | Friendly name for the tab that will be displayed to users. |
+| `slug` | string | always | - | Unique value that will is used for the HTML element id. |
+| [`sections`](#sections) | array[objects] | always | - | Each section to render for the current tab. |
+
+
+#### Sections
+
+Each `layout.<>.sections.<>` object provides the section layout for each tab of a `DetailView` page.
+
+``` jsonc
+
+[
+    {   // Single column example.
+        "layout": "single",
+        "fields": [
+            "config"
+        ]
+    },
+    {   // Double column section example.
+        "layout": "double",
+        "left": [
+            "organization",
+            "device_type",
+            "device_model",
+            "name",
+            "serial_number",
+            "uuid",
+            "inventorydate",
+            "created",
+            "modified"
+        ],
+        "right": [
+            "model_notes",
+            "is_virtual"
+        ]
+    },
+    {   // Table section example.
+        "layout": "table",
+        "name": "Operating System",
+        "field": "operating_system"
+    }
+]
+
+```
+
+| | Field | Type | When<br>Required | When<br>Optional | Description  |
+|:---|:---|:---:|:---:|:---:|:---|
+|`Single Column section layout` ||||||
+| | `name` | string | - | always | Section name to use. Will be displayed as the sections title. |
+| | `layout` | string | always | - | Use value `single` to set layout to be a single-column section. |
+| | `fields` | array[string] | always | - | Names of the fields to display. This value is derived from the key name for the API data object to display. |
+| `Double Column section layout` ||||||
+| | `name` | string | - | always | Section name to use. Will be displayed as the sections title. |
+| | `layout` | string | always | - | Use value `double` to set layout to be a single-column section. |
+| | `left` | array[string] | always | - | Names of the fields to display in the left hand column. This value is derived from the key name for the API data object to display. |
+| | `right` | array[string] | always | - | Names of the fields to display in the right hand column. This value is derived from the key name for the API data object to display. |
+| `Table section layout` ||||||
+| | `name` | string | - | always | Section name to use. Will be displayed as the sections title. |
+| | `layout` | string | always | - | Use value `table` to set layout to be a single-column section. |
+| | `field` | string |  | | Name of the url key within the parent objects `_urls` field. |
+
+!!! tip
+    When the layout key has a value of `table`, the the url as part of the parent object is queried to obtain the [table fields](#table-fields) to display.
