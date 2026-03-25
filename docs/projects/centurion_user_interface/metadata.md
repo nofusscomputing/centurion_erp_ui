@@ -142,3 +142,25 @@ The `table_fields` key supplies what table columns to display when the layout ty
 |:---|:---:|:---:|:---:|:---|
 | `<value>` | string | always | - | Name of the table column to display. This value is derived from the key name for the API data object to display. |
 | `-action_delete-` | string | - | always | Action Delete. This special value instructs the interface to provided a delete button to remove the row. |
+
+
+### Layout
+
+The `layout` key provides the required information to render each tab of a `DetailView` page.
+
+``` json
+[
+    {
+        "name": "Details",
+        "slug": "details",
+        "sections": []
+    }
+]
+
+```
+
+| Field | Type | When<br>Required | When<br>Optional | Description  |
+|:---|:---:|:---:|:---:|:---|
+| `name` | string | always | - | Friendly name for the tab that will be displayed to users. |
+| `slug` | string | always | - | Unique value that will is used for the HTML element id. |
+| [`sections`](#sections) | array[objects] | always | - | Each section to render for the current tab. |
