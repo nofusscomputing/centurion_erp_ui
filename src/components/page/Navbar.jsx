@@ -122,6 +122,7 @@ const Navbar = ({
                                                 name = {'icon' in module ? String(module.icon) : String(module.name)}
                                                 size = "lg"
                                             />
+                                            <span style={{marginRight: "var(--pf-v6-c-nav__link--ColumnGap)"}}></span>
                                             {module.display_name}
                                         </>
                                     )}
