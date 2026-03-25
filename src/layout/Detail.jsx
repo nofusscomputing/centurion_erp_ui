@@ -6,6 +6,7 @@ import {
 } from "react";
 
 import {
+    Form,
     Link,
     useLoaderData,
     useLocation,
@@ -206,14 +207,15 @@ const Detail = () => {
 
                                     <Card isPlain>
 
-                                        <form onSubmit={async (e) => {
+                                        <Form onSubmit={async (e) => {
                                             e.preventDefault();
 
                                             const response = await apiFetch(
                                                 String(page_data['_urls']['notes']).split('api/v2')[1],
                                                 null,
                                                 'POST',
-                                                notes_form
+                                                notes_form,
+                                                false
                                             );
 
                                             if( response.status === 201 ) {
@@ -239,13 +241,16 @@ const Detail = () => {
 
                                                     console.log(`model note form ${JSON.stringify(notes_form)}`)
                                                 }}
+                                                style = {{
+                                                    width: "1000px"
+                                                }}
                                                 value={notes_form?.body}
                                             />
                                         </CardBody>
                                         <CardFooter>
-                                            <Button variant="primary">Create Note</Button>
+                                            <Button variant="primary" type="submit">Create Note</Button>
                                         </CardFooter>
-                                        </form>
+                                        </Form>
                                     </Card>
                                 </FlexItem>
 

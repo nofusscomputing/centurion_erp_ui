@@ -8,6 +8,7 @@ const TextArea = ({
     value='',
     onChange = null,
     onSubmit = null,
+    style = null,
 }) => {
 
 
@@ -17,7 +18,7 @@ const TextArea = ({
     let label = ''
 
     /** CSS style for the textarea */
-    let style = {};
+    let fieldStyle = style ? style : {};
     
 
     if( field_data ) {
@@ -58,8 +59,8 @@ const TextArea = ({
 
     if( auto_content_height ) {
 
-        style = {
-            ...style,
+        fieldStyle = {
+            ...fieldStyle,
             height: String(( String(value).match(/\n/g)?.length * 25 )  + 'pt'),
 
         }
@@ -75,7 +76,7 @@ const TextArea = ({
             name = {id}
             required={required}
             className={fieldset ? field_class_name : field_class_name + ' ' + class_name}
-            style={style}
+            style={fieldStyle}
             onChange={onChange}
             onKeyUp={(e) =>{
 
