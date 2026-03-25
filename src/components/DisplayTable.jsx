@@ -27,6 +27,7 @@ import {
     Tr
 } from "@patternfly/react-table";
 
+import ActionDialog from "./ActionDialog";
 import { apiFetch } from "../hooks/apiFetch";
 import Dialog from "../layout/Dialog";
 import FieldData from "../functions/FieldData";
@@ -487,12 +488,22 @@ const DisplayTable = ({
 
                                                     return (
                                                         <Td dataLabel={key}>
-                                                            <Button
-                                                                variant="primary"
-                                                                component={(props) => <Link {...props} to={String(data._urls._self).split('api/v2')[1] + '/delete'} />}
-                                                            >
-                                                                Delete
-                                                            </Button>
+                                                            <ActionDialog
+                                                                objectData = {data}
+                                                                objectMetadata={metadata}
+                                                                updateCallback = {(success, id) => {
+
+                                                                    success && setTableData(
+
+                                                                        prev => {
+                                                                            return {
+                                                                            ...prev,
+                                                                            results: prev.results.filter(row => row.id !== id)
+                                                                        }}
+                                                                    )
+                                                                }}
+                                                                type="delete"
+                                                            />
                                                         </Td>
                                                     );
 
