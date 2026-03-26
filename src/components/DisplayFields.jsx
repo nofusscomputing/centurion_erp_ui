@@ -57,6 +57,7 @@ export const Fields = ({
             String(objectMetadata.fields[field]?.type).toLowerCase() == 'markdown'
             && field !== 'model_notes'
             && textarea_fields.includes(String(objectMetadata.fields[field]?.type).toLowerCase())
+            && ! isEdit
         ) {
 
             return(
