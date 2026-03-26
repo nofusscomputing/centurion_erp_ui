@@ -173,6 +173,13 @@ const Detail = () => {
 
                     {tabDetails && tabDetails.map(( tab, index ) => {
 
+                        if(
+                            String(location.pathname).endsWith('/add')
+                            && index !== 0
+                        ) {
+                            return;
+                        }
+
                         return (
                             <Tab
                                 key={index}
