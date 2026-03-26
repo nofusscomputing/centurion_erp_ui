@@ -52,7 +52,7 @@ export const Fields = ({
     ];
 
     return fields.map((field) => {
-        
+
         if(
             String(objectMetadata.fields[field]?.type).toLowerCase() == 'markdown'
             && field !== 'model_notes'
@@ -140,7 +140,6 @@ const Column = ({isEdit, isMobile, children}) => {
                 }}
                 aria-label="Model fields"
                 horizontalTermWidthModifier={{default:"140px"}}
-                isAutoFit
                 isHorizontal={!isMobile}
                 isInlineGrid
             >
