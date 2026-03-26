@@ -35,7 +35,7 @@ import { apiFetch } from "../hooks/apiFetch";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
 import DetailSection from "../components/page/detail/DetailSection";
-import TextArea from "../components/form/Textarea";
+import MarkdownEditor from "../components/MarkdownEditor";
 
 
 
@@ -229,8 +229,9 @@ const Detail = () => {
 
                                         }}>
                                         <CardBody>
-                                            <TextArea 
+                                            <MarkdownEditor
                                                 id = 'model-note'
+                                                grow = {true}
                                                 required = {true}
                                                 onChange = {(e) => {
                                                     setNotesForm((prevState) => ({ 
