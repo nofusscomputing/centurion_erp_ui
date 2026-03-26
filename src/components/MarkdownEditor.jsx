@@ -40,7 +40,7 @@ const MarkdownEditor = ({
     isRequired = false,
     id,
     name,
-    objectData,
+    objectData = null,
     onChange = null,
     readOnly = false,
     resizeOrientation = "vertical",
@@ -124,12 +124,14 @@ const MarkdownEditor = ({
                 title = {<TabTitleText>Preview</TabTitleText>}
             >
                 <TabContentBody hasPadding>
+                    {value &&
                     <RenderMarkdown
                         full_width={true}
-                        env={objectData[name].render ?? {}}
+                        env={objectData && (objectData[name].render ?? {})}
                     >
                         {value}
                     </RenderMarkdown>
+                    }
                 </TabContentBody>
             </Tab>
         </Tabs>
