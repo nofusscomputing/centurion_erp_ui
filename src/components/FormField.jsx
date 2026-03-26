@@ -19,6 +19,7 @@ import {
 
 import FieldData from "../functions/FieldData";
 import DualFieldSelector from "./form/DualFieldSelector";
+import MarkdownEditor from "./MarkdownEditor";
 
 
 
@@ -273,11 +274,6 @@ const FormField = ({
                 );
 
             case 'JSON':
-            case 'Markdown':
-
-                if( updatedFieldData?.render ) {
-                    updatedFieldData = updatedFieldData.markdown;
-                }
 
                 return (
                     <TextArea
@@ -285,6 +281,27 @@ const FormField = ({
                         isRequired = {isRequired}
                         id = {fieldName}
                         key = {fieldName}
+                        name = {fieldName}
+                        onChange = {handleFieldChange}
+                        readOnly = {readOnly}
+                        resizeOrientation = "vertical"
+                        value = {updatedFieldData}
+                    />
+                );
+
+            case 'Markdown':
+
+                if( updatedFieldData?.render ) {
+                    updatedFieldData = updatedFieldData.markdown;
+                }
+
+                return (
+                    <MarkdownEditor
+                        ariaLabel = "text area example"
+                        grow = {true}
+                        isRequired = {isRequired}
+                        id = {fieldName}
+                        objectData = {objectData}
                         name = {fieldName}
                         onChange = {handleFieldChange}
                         readOnly = {readOnly}
