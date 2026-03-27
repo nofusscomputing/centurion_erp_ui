@@ -1,8 +1,24 @@
-import { renderToString } from 'react-dom/server'
+import DOMPurify from 'dompurify';
+
+import
+    React, {
+        useEffect,
+        useState
+} from 'react';
+
+
+
+import {
+    renderToString
+} from 'react-dom/server'
+
+
 import hljs from 'highlight.js'
 
 import markdownIt from "markdown-it";
-import { full as emoji } from 'markdown-it-emoji'
+import {
+    full as emoji
+} from 'markdown-it-emoji'
 
 import '../styles/markdown.css'
 
@@ -11,7 +27,6 @@ import ticket_link_plugin from './markdown_plugins/TicketLink';
 import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
 import IconLoader from '../components/IconLoader';
 import CodeCopy_plugin from './markdown_plugins/CodeCopy';
-
 
 
 
@@ -64,24 +79,216 @@ const md = markdownIt({
 
 
 
-export default function RenderMarkdown(markdown, full_width=false) {
+const VOID_ELEMENTS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img",
+  "input", "link", "meta", "param", "source", "track", "wbr"
+]);
 
-    let rendered_markdown = md.render( String(markdown.children), markdown.env )
 
-    let class_name = null
 
-    if( markdown.class ) {
+function attrsToProps(attrs) {
 
-        class_name = markdown.class
+    if (!attrs) return {};
+
+    const props = {};
+
+    for (const [name, value] of attrs) {
+
+        if (name === "class") props.className = value;
+        else if (name === "tabindex") props.tabIndex = value;
+        else props[name] = value;
+
+    }
+
+
+    return props;
+
+}
+
+
+
+function tokensToJSX(tokens, depth = 0) {
+    const output = [];
+
+    const stack = [{ children: output }];
+
+    tokens.forEach((token, idx) => {
+
+        const key = `${depth}-${idx}`;
+
+        const Tag = token.tag;
+
+
+        if (token.jsx != null) {
+
+            stack[stack.length - 1].children.push(token.jsx);
+
+            return;
+
+        }
+
+
+        if (token.type.endsWith("_open")) {
+
+            const props = { ...attrsToProps(token.attrs) };
+
+            const element = { Tag, props, children: [] };
+
+            stack[stack.length - 1].children.push(element);
+
+            stack.push(element);
+
+
+        } else if (token.type.endsWith("_close")) {
+
+            stack.pop();
+
+
+        } else if ( token.type === "inline" && token.children ) {
+
+            const children = tokensToJSX(token.children, depth + 1);
+
+            stack[stack.length - 1].children.push(...children);
+
+
+        }else if( token.type.endsWith("html_block") && token.content ) {
+
+            stack[stack.length - 1].children.push(md.utils.escapeHtml(token.content));
+
+
+        } else if( token.type === 'fence' && token.tag === 'code' ) {
+
+            const lang = String(token.info || '').trim();
+
+            const rawHtml = lang && hljs.getLanguage(lang)
+                ? hljs.highlight(token.content, {
+                    language: lang,
+                    ignoreIllegals: true
+                }).value
+                : token.content;
+
+            const safeHtml = DOMPurify.sanitize(rawHtml);
+
+            stack[stack.length - 1].children.push(
+                <pre key={key}>
+                    <code
+                        className="hljs"
+                        dangerouslySetInnerHTML={{ __html: safeHtml }}
+                    />
+                </pre>
+            );
+
+
+            return;
+
+
+        }  else if ( ["emoji", "text"].includes(token.type) ) {
+
+            /**
+             * DOMPurify not really required, as this is only emoji `:code:` or
+             * plain text. However if markdown-it or a plugin changes it could
+             * set the content field to contain html, so clean-it-up.
+             */
+
+            stack[stack.length - 1].children.push(DOMPurify.sanitize(token.content));
+
+
+        } else if ( token.type === "code_inline" && token.content ) {
+
+            const props = { ...attrsToProps(token.attrs) };
+
+            const children = [token.content];
+
+            stack[stack.length - 1].children.push({ Tag, props, children });
+
+
+        } else if (VOID_ELEMENTS.has(token.tag)) {
+
+            const props = { ...attrsToProps(token.attrs) };
+
+            stack[stack.length - 1].children.push({ Tag, props });
+
+
+        } else {
+
+            const unknownToken = {
+                content: token.content,
+                props: attrsToProps(token.attrs),
+                tag: Tag,
+                type: token.type,
+                token: token
+            }
+
+            /**
+             * Capture tokens not parsed above. Something's clearly changed
+             * As this error is not supposed to display.
+             */
+            console.warn(unknownToken)
+
+
+        }
+    });
+
+
+    function renderElement(elementOrString, index) {
+
+        if (!elementOrString) return null;
+
+        if (typeof elementOrString === "string") {
+            return elementOrString.replace(/^"|"$/g, '');
+        }
+
+        if (React.isValidElement(elementOrString)) return elementOrString;
+
+        if (typeof elementOrString !== "object" || !("Tag" in elementOrString)) return elementOrString;
+
+        const { Tag, props = {}, children } = elementOrString;
+
+        if (VOID_ELEMENTS.has(Tag)) {
+            return <Tag key={index} {...props} />;
+        }
+
+        if( ! Tag ) return;
+
+        return (
+            <Tag key={index} {...props}>
+                {(children || []).map(renderElement)}
+            </Tag>
+        );
+    }
+
+
+    return output.map(renderElement);
+}
+
+
+export default function RenderMarkdown({ children, className = null, env, full_width=false }) {
+  const [tokens, setTokens] = useState([]);
+
+  useEffect(() => {
+        if (typeof children !== "string") {
+        setTokens([]);
+        return;
+        }
+        const parsed = md.parse(children, env);
+        setTokens(parsed);
+    }, [children, env]);
+
+    let class_name = 'markdown'
+
+    if( className ) {
+
+        class_name = class_name.concat(' ' + className)
     }
 
     if( full_width ) {
-        return <div className={'full-width ' + class_name} dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
+        class_name = class_name.concat(' full-width')
     }
 
-    return <div className={class_name} dangerouslySetInnerHTML={createHTML(rendered_markdown)} />;
-}
+    return (
+        <div className={class_name}>
+            {tokensToJSX(tokens)}
+        </div>
+    );
 
-function createHTML(html_string) {
-    return {__html: html_string};
-  }
+}

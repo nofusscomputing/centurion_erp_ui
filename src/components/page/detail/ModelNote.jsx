@@ -43,7 +43,11 @@ const ModelNote = ({
             </CardHeader>
 
             <CardBody>
-                <RenderMarkdown>{note_data['body']}</RenderMarkdown>
+                <RenderMarkdown
+                    env = {{}}
+                >
+                    {note_data['body']}
+                </RenderMarkdown>
             </CardBody>
 
             <CardFooter>
