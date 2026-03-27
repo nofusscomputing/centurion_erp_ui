@@ -64,6 +64,7 @@ const MarkdownEditor = ({
             onSelect = {handleTabClick}
             aria-label = "Markdown edit and preview tabs"
             role = "region"
+            unmountOnExit
         >
             <Tab
                 aria-label = "Edit"
@@ -127,7 +128,7 @@ const MarkdownEditor = ({
                     {value &&
                     <RenderMarkdown
                         full_width={true}
-                        env={objectData && (objectData[name].render ?? {})}
+                        env={objectData?.[name]?.render ?? {}}
                     >
                         {value}
                     </RenderMarkdown>
