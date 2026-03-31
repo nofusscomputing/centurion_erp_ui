@@ -63,6 +63,8 @@ For Centurion UI to function dynamically, metadata that Centurion UI requires mu
 
     Metadata structure for providing the different field types that the UI can handle.
 
+    - [Makrdown](./fields/markdown.md)
+
 - [URLs](./url.md)
 
 

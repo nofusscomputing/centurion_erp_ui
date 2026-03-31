@@ -3,7 +3,7 @@ title: Metadata
 description: Backend Metadata requirements for Centurion User Interface by No Fuss Computing
 date: 2024-11-30
 template: project.html
-about: https://gitlab.com/nofusscomputing/infrastructure/configuration-management/centurion_erp
+about: https://github.com/nofusscomputing/centurion_erp_ui/
 ---
 
 The magic of Centurion UI is done completely by providing a structured `JSON` document. The expectations for this document can be found below and further within additional sections as notated. As Centurion UI is a web application, all of the metadata is done via HTTP requests.
