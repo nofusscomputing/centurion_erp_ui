@@ -95,6 +95,7 @@ function attrsToProps(attrs) {
     for (const [name, value] of attrs) {
 
         if (name === "class") props.className = value;
+        else if (name === "style") props.style = {value};
         else if (name === "tabindex") props.tabIndex = value;
         else props[name] = value;
 
