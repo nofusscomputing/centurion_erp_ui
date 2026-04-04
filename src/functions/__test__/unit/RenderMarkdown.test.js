@@ -681,7 +681,7 @@ describe("Plugins", () => {
     const pluginFootnote = [
         // {
         //     "name": "Footnote - ",
-        //     "markdown": "",
+        //     "markdown": "some random text with a footnote[^this is a footnote]",
         //     "html": ""
         // },
     ]
