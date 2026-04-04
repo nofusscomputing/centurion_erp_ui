@@ -6,10 +6,68 @@ template: project.html
 about: https://github.com/nofusscomputing/centurion_erp_ui/
 ---
 
+<!-- markdownlint-disable code-fence-style fenced-code-language -->
+
 Markdown is a simple text language that gets converted to html. Our Markdown implementation is based off of [CommonMark](https://spec.commonmark.org/) with our own custom Markdown plugins.
 
 
 ## Code Block
+
+
+### Block
+
+Multiple lines of code can be rendered by declaring the codeblock in block style. it must begin and end (on it's own line) a triple tick `\````
+
+~~~ markdown
+
+```
+
+aVariable: bool = True
+
+```
+
+~~~
+
+- **Output ->**
+
+    ```
+
+    aVariable: bool = True
+
+    ```
+
+It is also possible to define the language the code is in by adding it to the blocks definition. In this case, the codeblock was defined as py (python) code. Available code languages can be found in the [docs](https://highlightjs.readthedocs.io/en/latest/supported-languages.html).
+
+~~~ markdown
+
+``` py
+
+aVariable: bool = True
+
+```
+
+~~~
+
+- **Output ->**
+
+    ``` py
+
+    aVariable: bool = True
+
+    ```
+
+
+### Inline
+
+Inline codeblock is used to show code within a string of text. Decare using a single tick `\`` either side of the code.
+
+``` markdown
+
+Some text within a markdown document that has a code block, `aVariable: bool = True`. Notice the sinlge ticks?
+
+```
+
+- **Output ->** Some text within a markdown document that has a code block, `aVariable: bool = True`. Notice the sinlge ticks?
 
 
 ## Headings
@@ -42,3 +100,5 @@ Markdown is a simple text language that gets converted to html. Our Markdown imp
 
 
 ### Italics
+
+<!-- markdownlint-restore -->

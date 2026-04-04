@@ -9,26 +9,47 @@ import RenderMarkdown from "../../RenderMarkdown";
 describe("CommonMark Rendering", () => {
 
     const commonMarkCodeBlocks= [
-        // {
-        //     "name": "Tabbed",
-        //     "markdown": "",
-        //     "html": ""
-        // },
-        // {
-        //     "name": "triple quote no lang",
-        //     "markdown": "",
-        //     "html": ""
-        // },
-        // {
-        //     "name": "triple quotes lang",
-        //     "markdown": "",
-        //     "html": ""
-        // },
-        // {
-        //     "name": "inline",
-        //     "markdown": "",
-        //     "html": ""
-        // },
+        {
+            "name": "Code Block - Triple quote no lang",
+            "markdown": "```\na_var: str = 'python string variable'\n```",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "a_var: str = 'python string variable'" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - Triple quotes with lang",
+            "markdown": "``` py \na_var: str = 'python string variable'\n```",
+            "html": (
+                "<pre>" +
+                    '<code class="hljs">' +
+                        'a_var: ' +
+                        '<span class="hljs-built_in">' +
+                            'str' +
+                        '</span>' +
+                        ' = ' +
+                        '<span class=\"hljs-string\">' +
+                            "'python string variable'" +
+                        '</span>' +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - Inline",
+            "markdown": "some text with a codeblock (`some codeblock`) inline.",
+            "html": (
+                '<p>' +
+                    'some text with a codeblock (' +
+                    '<code>' +
+                        'some codeblock' +
+                    '</code>' +
+                    ') inline.' +
+                '</p>')
+        },
     ]
 
     const commonMarkHeadings = [
@@ -152,7 +173,7 @@ describe("CommonMark Rendering", () => {
 
             const element = container.querySelector("div[class=markdown]");
 
-            expect(element.innerHTML).toBe(html)
+            expect(String(element.innerHTML).replace("\n", '')).toBe(html)
         }
     );
 
