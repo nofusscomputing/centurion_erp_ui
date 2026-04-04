@@ -2430,4 +2430,9 @@ some text[^1] that has a numeral one as the reference. and another form of refer
 
 [^1]: this is a description for ref numeral 1.
 
+
+## Ticket Link
+
+A ticket link is used to reference a ticket. Use the numerical value of the ticket prefixed with a hash. i.e. `#1` = #1
+
 <!-- markdownlint-restore -->
