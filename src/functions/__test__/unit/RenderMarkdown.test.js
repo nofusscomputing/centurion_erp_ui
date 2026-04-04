@@ -208,6 +208,16 @@ describe("CommonMark Rendering", () => {
             "markdown": "* foo\n\n* bar\n",
             "html": "<ul><li><p>foo</p></li><li><p>bar</p></li></ul>"
         },
+        {
+            "name": "List - numbered (sequential)",
+            "markdown": "1. foo\n\n2. bar\n",
+            "html": "<ol><li><p>foo</p></li><li><p>bar</p></li></ol>"
+        },
+        {
+            "name": "List - numbered (non-sequential)",
+            "markdown": "1. foo\n\n1. bar\n",
+            "html": "<ol><li><p>foo</p></li><li><p>bar</p></li></ol>"
+        },
     ]
 
     const commonMarkTable = [

@@ -159,6 +159,75 @@ A line with a http protocol url. http://example.com
 
 ## Lists
 
+List as the name implies is to declare a list. Lists are broken down into two seperate types: Ordered and Un-Ordered.
+
+``` markdown
+
+An unordered list:
+
+- first item
+
+- second item
+
+or
+
+An unordered list:
+
+* first item
+
+* second item
+
+
+An Ordered list:
+
+1. first item
+
+1. second item
+
+or
+
+
+An Ordered list:
+
+1. first item
+
+2. second item
+
+
+```
+
+- **Output ->**
+
+    An unordered list:
+
+    - first item
+
+    - second item
+
+    or
+
+    An unordered list:
+
+    * first item  <!-- markdownlint-disable-line -->
+
+    * second item  <!-- markdownlint-disable-line -->
+
+
+    An Ordered list:
+
+    1. first item
+
+    1. second item
+
+    or
+
+
+    An Ordered list:
+
+    1. first item
+
+    2. second item
+
 
 ## Table
 
