@@ -140,6 +140,22 @@ the second line. This creates two seperate paragraphs,
 
 ## Links
 
+a Link enables you to link to a URL.
+
+``` markdown
+
+A line with a [link](./relative.md) declared.
+
+A line with a http protocol url. http://example.com
+
+```
+
+- **Output ->**
+
+    A line with a [link](./relative.md) declared. <!-- markdownlint-disable-line -->
+
+    A line with a http protocol url. http://example.com <!-- markdownlint-disable-line -->
+
 
 ## Lists
 

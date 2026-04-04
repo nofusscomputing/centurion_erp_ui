@@ -165,11 +165,31 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkLinks = [
-        // {
-        //     "name": "",
-        //     "markdown": "",
-        //     "html": ""
-        // },
+        {
+            "name": "Links - Text",
+            "markdown": "A line with a [link](./relative.md) declared",
+            "html": (
+                "<p>" +
+                    "A line with a " +
+                    '<a href="./relative.md">' +
+                        "link" +
+                    "</a>" +
+                    " declared"+
+                "</p>"
+            )
+        },
+        {
+            "name": "Links - plain html link",
+            "markdown": "A line with a plain http link declared. http://example.com",
+            "html": (
+                "<p>" +
+                    "A line with a plain http link declared. " +
+                    '<a href="http://example.com">' +
+                        "http://example.com" +
+                    "</a>" +
+                "</p>"
+            )
+        },
     ]
 
     const commonMarkLists = [
