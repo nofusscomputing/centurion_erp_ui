@@ -97,6 +97,7 @@ function attrsToProps(attrs) {
         if (name === "class") props.className = value;
         else if (name === "style") props.style = {value};
         else if (name === "tabindex") props.tabIndex = value;
+        else if( ['checked', 'disabled'].includes(name) ) props[name] = typeof(value) === 'boolean' ? value : true
         else props[name] = value;
 
     }
@@ -157,7 +158,29 @@ function tokensToJSX(tokens, depth = 0) {
             stack[stack.length - 1].children.push(md.utils.escapeHtml(token.content));
 
 
-        } else if( token.type === 'fence' && token.tag === 'code' ) {
+        } else if( token.type === "html_inline" && token.content ) {
+
+            // stack[stack.length - 1].children.push(token.content);
+
+            const re = new RegExp(/<(?<tag>[a-z-]+)\s(?<attrs>.+)>/g);
+
+            const attrs_re = new RegExp(/(?<name>[a-z]+)(?:\=")(?<value>[^"]*)(?:\")/g);
+
+            const inline_html = [ ...String(token.content).matchAll(re) ]
+
+            // const found_tag = inline_html[0].groups.tag
+            const found_attrs = [ ...String(inline_html[0].groups.attrs).matchAll(attrs_re)].map(m => [m.groups.name, m.groups.value])
+
+            // const props = { ...attrsToProps(found_attrs) }
+
+            stack[stack.length - 1].children.push({
+                Tag: inline_html[0].groups.tag,
+                props: { ...attrsToProps(found_attrs) },
+                children: []
+            });
+
+
+        }else if( token.type === 'fence' && token.tag === 'code' ) {
 
             const lang = String(token.info || '').trim();
 
