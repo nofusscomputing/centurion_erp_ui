@@ -262,4 +262,194 @@ This is **bold** text. As is this __bold__ text. to create italics text use an _
 
     This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ <!-- markdownlint-disable-line -->
 
+
+## Custom Markdown
+
+The following additional markdown features are available.
+
+
+### Admonitions
+
+An admonition is a block that is rendered to stand out. Each admonition must be declared with a type. i.e. `info`. Available types are:
+
+- 'note',
+- 'summary', 'abstract', 'tldr',
+- 'info', 'todo',
+- 'tip', 'hint',
+- 'success', 'check', 'done',
+- 'question', 'help', 'faq',
+- 'warning', 'attention', 'caution',
+- 'failure', 'fail', 'missing',
+- 'danger', 'error', 'bug',
+- 'example', 'snippet',
+- 'quote', 'cite'
+
+``` markdown
+
+!!! note
+    admonition text goes here
+
+!!! summary
+    admonition text goes here
+
+!!! abstract
+    admonition text goes here
+
+!!! tldr
+    admonition text goes here
+
+!!! info
+    admonition text goes here
+
+!!! todo
+    admonition text goes here
+
+!!! tip
+    admonition text goes here
+
+!!! hint
+    admonition text goes here
+
+!!! success
+    admonition text goes here
+
+!!! check
+    admonition text goes here
+
+!!! done
+    admonition text goes here
+
+!!! question
+    admonition text goes here
+
+!!! help
+    admonition text goes here
+
+!!! faq
+    admonition text goes here
+
+!!! warning
+    admonition text goes here
+
+!!! attention
+    admonition text goes here
+
+!!! caution
+    admonition text goes here
+
+!!! failure
+    admonition text goes here
+
+!!! fail
+    admonition text goes here
+
+!!! missing
+    admonition text goes here
+
+!!! danger
+    admonition text goes here
+
+!!! error
+    admonition text goes here
+
+!!! bug
+    admonition text goes here
+
+!!! example
+    admonition text goes here
+
+!!! snippet
+    admonition text goes here
+
+!!! quote
+    admonition text goes here
+
+!!! cite
+    admonition text goes here
+
+```
+
+- **Output ->**
+
+    !!! note
+        admonition text goes here
+
+    !!! summary
+        admonition text goes here
+
+    !!! abstract
+        admonition text goes here
+
+    !!! tldr
+        admonition text goes here
+
+    !!! info
+        admonition text goes here
+
+    !!! todo
+        admonition text goes here
+
+    !!! tip
+        admonition text goes here
+
+    !!! hint
+        admonition text goes here
+
+    !!! success
+        admonition text goes here
+
+    !!! check
+        admonition text goes here
+
+    !!! done
+        admonition text goes here
+
+    !!! question
+        admonition text goes here
+
+    !!! help
+        admonition text goes here
+
+    !!! faq
+        admonition text goes here
+
+    !!! warning
+        admonition text goes here
+
+    !!! attention
+        admonition text goes here
+
+    !!! caution
+        admonition text goes here
+
+    !!! failure
+        admonition text goes here
+
+    !!! fail
+        admonition text goes here
+
+    !!! missing
+        admonition text goes here
+
+    !!! danger
+        admonition text goes here
+
+    !!! error
+        admonition text goes here
+
+    !!! bug
+        admonition text goes here
+
+    !!! example
+        admonition text goes here
+
+    !!! snippet
+        admonition text goes here
+
+    !!! quote
+        admonition text goes here
+
+    !!! cite
+        admonition text goes here
+
 <!-- markdownlint-restore -->

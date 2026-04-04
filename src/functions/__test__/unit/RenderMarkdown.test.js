@@ -289,12 +289,469 @@ describe("CommonMark Rendering", () => {
 
 describe("Plugins", () => {
 
-    const pluginModelTag = [
+    const pluginAdmonition = [
+        {
+            "name": "Admonition - Note",
+            "markdown": "!!! note\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition note">' +
+                    '<p class="admonition-title">' +
+                        "Note" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Summary",
+            "markdown": "!!! summary\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition summary">' +
+                    '<p class="admonition-title">' +
+                        "Summary" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Abstract",
+            "markdown": "!!! abstract\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition abstract">' +
+                    '<p class="admonition-title">' +
+                        "Abstract" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Tldr",
+            "markdown": "!!! tldr\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition tldr">' +
+                    '<p class="admonition-title">' +
+                        "Tldr" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Info",
+            "markdown": "!!! info\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition info">' +
+                    '<p class="admonition-title">' +
+                        "Info" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Todo",
+            "markdown": "!!! todo\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition todo">' +
+                    '<p class="admonition-title">' +
+                        "Todo" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Tip",
+            "markdown": "!!! tip\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition tip">' +
+                    '<p class="admonition-title">' +
+                        "Tip" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Hint",
+            "markdown": "!!! hint\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition hint">' +
+                    '<p class="admonition-title">' +
+                        "Hint" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Success",
+            "markdown": "!!! success\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition success">' +
+                    '<p class="admonition-title">' +
+                        "Success" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Check",
+            "markdown": "!!! check\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition check">' +
+                    '<p class="admonition-title">' +
+                        "Check" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Done",
+            "markdown": "!!! done\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition done">' +
+                    '<p class="admonition-title">' +
+                        "Done" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Question",
+            "markdown": "!!! question\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition question">' +
+                    '<p class="admonition-title">' +
+                        "Question" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Help",
+            "markdown": "!!! help\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition help">' +
+                    '<p class="admonition-title">' +
+                        "Help" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Faq",
+            "markdown": "!!! faq\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition faq">' +
+                    '<p class="admonition-title">' +
+                        "Faq" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Warning",
+            "markdown": "!!! warning\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition warning">' +
+                    '<p class="admonition-title">' +
+                        "Warning" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Attention",
+            "markdown": "!!! attention\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition attention">' +
+                    '<p class="admonition-title">' +
+                        "Attention" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Caution",
+            "markdown": "!!! caution\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition caution">' +
+                    '<p class="admonition-title">' +
+                        "Caution" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Failure",
+            "markdown": "!!! failure\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition failure">' +
+                    '<p class="admonition-title">' +
+                        "Failure" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Fail",
+            "markdown": "!!! fail\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition fail">' +
+                    '<p class="admonition-title">' +
+                        "Fail" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Missing",
+            "markdown": "!!! missing\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition missing">' +
+                    '<p class="admonition-title">' +
+                        "Missing" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Danger",
+            "markdown": "!!! danger\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition danger">' +
+                    '<p class="admonition-title">' +
+                        "Danger" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Error",
+            "markdown": "!!! error\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition error">' +
+                    '<p class="admonition-title">' +
+                        "Error" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Bug",
+            "markdown": "!!! bug\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition bug">' +
+                    '<p class="admonition-title">' +
+                        "Bug" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Example",
+            "markdown": "!!! example\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition example">' +
+                    '<p class="admonition-title">' +
+                        "Example" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Snippet",
+            "markdown": "!!! snippet\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition snippet">' +
+                    '<p class="admonition-title">' +
+                        "Snippet" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Quote",
+            "markdown": "!!! quote\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition quote">' +
+                    '<p class="admonition-title">' +
+                        "Quote" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+        {
+            "name": "Admonition - Cite",
+            "markdown": "!!! cite\n    This is an information admonition",
+            "html": ( 
+                '<div class="admonition cite">' +
+                    '<p class="admonition-title">' +
+                        "Cite" +
+                    "</p>" +
+                    "<p>" +
+                        "This is an information admonition" +
+                    "</p>" +
+                "</div>"
+            )
+        },
+    ]
+
+    const pluginEmoji = [
         // {
-        //     "name": "Table - ",
+        //     "name": "Emoji - ",
         //     "markdown": "",
         //     "html": ""
         // },
+    ]
+
+    const pluginFootnote = [
+        // {
+        //     "name": "Footnote - ",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const pluginTaskList = [
+        // {
+        //     "name": "TaskList - ",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const pluginTicketLink = [
+        // {
+        //     "name": "TicketLink - ",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const pluginHTMLWhiteList = [
+        // {
+        //     "name": "HTMLWhiteList - ",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+
+    const pluginTestCases = [
+        ...pluginAdmonition,
+        ...pluginEmoji,
+        ...pluginFootnote,
+        ...pluginTaskList,
+        ...pluginTicketLink,
+        ...pluginHTMLWhiteList,
+    ];
+
+
+
+    test.each(pluginTestCases)(
+        '$name',
+        ({ markdown, html, env = {} }) => {
+
+            render(
+                <RenderMarkdown env={env}>
+                    {markdown}
+                </RenderMarkdown>
+            )
+
+            // await waitFor(() => {
+            //     const svg = document.querySelector('svg')
+            //     expect(svg).not.toBeNull()
+            // })
+
+            const rendered = document.querySelector('div[class=markdown]')
+
+
+
+            expect(String(rendered.innerHTML).replace("\n", '')).toBe(html)
+
+        })
+
+});
+
+
+
+describe("Plugins - JSX Objects", () => {
+
+    const pluginModelTag = [
         {
             "name": "Model Tag",
             "markdown": "$device-1",
@@ -336,6 +793,7 @@ describe("Plugins", () => {
             }
         },
     ]
+
 
 
     const pluginTestCases = [
