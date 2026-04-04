@@ -671,11 +671,14 @@ describe("Plugins", () => {
     ]
 
     const pluginEmoji = [
-        // {
-        //     "name": "Emoji - ",
-        //     "markdown": "",
-        //     "html": ""
-        // },
+        {
+            "name": "Emoji",
+            "markdown": "an emoji called Heavy Check Mark :heavy_check_mark:",
+            "html": (
+                "<p>" +
+                    "an emoji called Heavy Check Mark ✔️" +
+                "</p>")
+        },
     ]
 
     const pluginFootnote = [
