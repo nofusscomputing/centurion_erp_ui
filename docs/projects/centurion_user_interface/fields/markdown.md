@@ -452,4 +452,23 @@ An admonition is a block that is rendered to stand out. Each admonition must be 
     !!! cite
         admonition text goes here
 
+
+### Task List
+
+A task list is a list that contains a check box.
+
+``` markdown
+
+- [ ] Unchecked task list item
+
+- [x] A checked task list item
+
+```
+
+- **Output ->**
+
+    - [ ] Unchecked task list item
+
+    - [x] A checked task list item
+
 <!-- markdownlint-restore -->
