@@ -718,11 +718,20 @@ describe("Plugins", () => {
     ]
 
     const pluginHTMLWhiteList = [
-        // {
-        //     "name": "HTMLWhiteList - ",
-        //     "markdown": "",
-        //     "html": ""
-        // },
+    //     {
+    //         "name": "HTMLWhiteList - Details/Summary Block",
+    //         "markdown": "<details><summary>the title</summary>\n\nthe text body\n\n</details>",
+    //         "html": (
+    //             "<details>" +
+    //                 "<summary>" +
+    //                     "the title" +
+    //                 "<summary>" +
+    //                 "<p>" +
+    //                     "the text body" +
+    //                 "</p>" +
+    //             "</details>"
+    //         )
+    //     },
     ]
 
 

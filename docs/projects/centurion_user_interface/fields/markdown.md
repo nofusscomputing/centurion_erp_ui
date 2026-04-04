@@ -471,4 +471,26 @@ A task list is a list that contains a check box.
 
     - [x] A checked task list item
 
+
+### Details/Summary Block
+
+
+``` markdown
+
+<details><summary>the title</summary>
+
+the details inner block
+
+</details>
+
+```
+
+- **Output ->**
+
+    <details><summary>the title</summary> <!-- markdownlint-disable-line -->
+
+    the details inner block
+
+    </details> <!-- markdownlint-disable-line -->
+
 <!-- markdownlint-restore -->
