@@ -78,6 +78,7 @@ function model_link (state) {
 
           icon_t.jsx = (
             <IconLoader
+              key={begining}
               name={String( item_link.groups.model_type ).toLowerCase()}
               fill="#777"
             />
