@@ -72,6 +72,44 @@ Some text within a markdown document that has a code block, `aVariable: bool = T
 
 ## Headings
 
+Headings as the name implies is a section heading for a page. They are defined with a hash `#` and by the number of hashes.
+
+``` markdown
+
+# Level One Heading
+
+## Level Two Heading
+
+### Level three Heading
+
+#### Level four Heading
+
+##### Level five Heading
+
+###### Level six Heading
+
+```
+
+
+- **Output ->**
+
+    # Level One Heading <!-- markdownlint-disable-line -->
+
+
+    ## Level Two Heading <!-- markdownlint-disable-line -->
+
+
+    ### Level three Heading <!-- markdownlint-disable-line -->
+
+
+    #### Level four Heading <!-- markdownlint-disable-line -->
+
+
+    ##### Level five Heading <!-- markdownlint-disable-line -->
+
+
+    ###### Level six Heading <!-- markdownlint-disable-line -->
+
 
 ## Line Breaks
 

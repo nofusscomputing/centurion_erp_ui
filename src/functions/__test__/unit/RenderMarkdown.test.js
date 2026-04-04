@@ -53,11 +53,78 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkHeadings = [
-        // {
-        //     "name": "",
-        //     "markdown": "",
-        //     "html": ""
-        // },
+        {
+            "name": "Heading - Level 1",
+            "markdown": "# Level One",
+            "html": (
+                '<h1 id="level-one" tabindex="-1">' +
+                    'Level One ' +
+                    '<a class="header-anchor" href="#level-one">' +
+                        '¶' +
+                    '</a>' +
+                '</h1>'
+            )
+        },
+        {
+            "name": "Heading - Level 2",
+            "markdown": "## Level Two",
+            "html": (
+                '<h2 id="level-two" tabindex="-1">' +
+                    'Level Two ' +
+                    '<a class="header-anchor" href="#level-two">' +
+                        '¶' +
+                    '</a>' +
+                '</h2>'
+            )
+        },
+        {
+            "name": "Heading - Level 3",
+            "markdown": "### Level Three",
+            "html": (
+                '<h3 id="level-three" tabindex="-1">' +
+                    'Level Three ' +
+                    '<a class="header-anchor" href="#level-three">' +
+                        '¶' +
+                    '</a>' +
+                '</h3>'
+            )
+        },
+        {
+            "name": "Heading - Level 4",
+            "markdown": "#### Level Four",
+            "html": (
+                '<h4 id="level-four" tabindex="-1">' +
+                    'Level Four ' +
+                    '<a class="header-anchor" href="#level-four">' +
+                        '¶' +
+                    '</a>' +
+                '</h4>'
+            )
+        },
+        {
+            "name": "Heading - Level 5",
+            "markdown": "##### Level Five",
+            "html": (
+                '<h5 id="level-five" tabindex="-1">' +
+                    'Level Five ' +
+                    '<a class="header-anchor" href="#level-five">' +
+                        '¶' +
+                    '</a>' +
+                '</h5>'
+            )
+        },
+        {
+            "name": "Heading - Level 6",
+            "markdown": "###### Level Six",
+            "html": (
+                '<h6 id="level-six" tabindex="-1">' +
+                    'Level Six ' +
+                    '<a class="header-anchor" href="#level-six">' +
+                        '¶' +
+                    '</a>' +
+                '</h6>'
+            )
+        },
     ]
 
     const commonMarkLineBreaks = [
