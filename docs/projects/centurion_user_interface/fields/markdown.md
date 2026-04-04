@@ -239,13 +239,27 @@ An Ordered list:
 
 ```
 
+- **Output ->**
+
+| col 1 | col 2 |
+|---|---|
+| col 1, row 1 data | col 2 row one data |
+
 
 ## Text Formatting
 
+Text formatting is as simple as wrapping the text to format inside of another char(s).
 
-### Bold
+``` markdown
+
+This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_
 
 
-### Italics
+
+```
+
+- **Output ->**
+
+    This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ <!-- markdownlint-disable-line -->
 
 <!-- markdownlint-restore -->

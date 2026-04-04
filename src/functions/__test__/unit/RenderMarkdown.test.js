@@ -221,11 +221,6 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkTable = [
-        // {
-        //     "name": "Table - ",
-        //     "markdown": "",
-        //     "html": ""
-        // },
         {
             "name": "Table - Basic",
             "markdown": "| col 1 | col 2 |\n|\:---|---|\n| dat col 1 | dat col 2 |\n",
@@ -234,11 +229,6 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkTextBold = [
-        // {
-        //     "name": "Tabbed",
-        //     "markdown": "",
-        //     "html": ""
-        // },
         {
             "name": "Text, Bold - double asterix",
             "markdown": "**the text**",
@@ -252,11 +242,6 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkTextItalics = [
-        // {
-        //     "name": "Tabbed",
-        //     "markdown": "",
-        //     "html": ""
-        // },
         {
             "name": "Text, Italics - single asterix",
             "markdown": "*italic text*",
