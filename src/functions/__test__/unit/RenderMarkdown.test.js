@@ -128,16 +128,40 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkLineBreaks = [
-        // {
-        //     "name": "backslash at end of line is converted to <br>",
-        //     "markdown": "",
-        //     "html": ""
-        // },
-        // {
-        //     "name": "",
-        //     "markdown": "",
-        //     "html": ""
-        // },
+        {
+            "name": "Line Break - double newline char",
+            "markdown": "first line\n\nsecond line",
+            "html": (
+                "<p>" +
+                    "first line" +
+                "</p>" +
+                "<p>" +
+                    "second line" +
+                "</p>"
+            )
+        },
+        {
+            "name": "Line Break - Second line indent 4x Space char",
+            "markdown": "first line\\\n    second line",
+            "html": (
+                "<p>" +
+                    "first line" +
+                "<br>" +
+                    "second line" +
+                "</p>"
+            )
+        },
+        {
+            "name": "Line Break - double space",
+            "markdown": "first line  \nsecond line",
+            "html": (
+                "<p>" +
+                    "first line" +
+                "<br>" +
+                    "second line" +
+                "</p>"
+            )
+        },
     ]
 
     const commonMarkLinks = [

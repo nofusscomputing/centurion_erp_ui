@@ -113,6 +113,30 @@ Headings as the name implies is a section heading for a page. They are defined w
 
 ## Line Breaks
 
+A Line break is for breaking up text into paragraphs.
+
+
+``` markdown
+
+first line with second line indented
+    this is the second line
+
+
+first line with the second line padded with a blank line
+
+the second line. This creates two seperate paragraphs,
+
+```
+
+- **Output ->**
+
+    first line with second line indented  
+        this is the second line
+
+    first line with the second line padded with a blank line
+
+    the second line. This creates two seperate paragraphs,
+
 
 ## Links
 
