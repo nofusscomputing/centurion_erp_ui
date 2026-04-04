@@ -6,6 +6,160 @@ import {
 import RenderMarkdown from "../../RenderMarkdown";
 
 
+describe("CommonMark Rendering", () => {
+
+    const commonMarkCodeBlocks= [
+        // {
+        //     "name": "Tabbed",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        // {
+        //     "name": "triple quote no lang",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        // {
+        //     "name": "triple quotes lang",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        // {
+        //     "name": "inline",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const commonMarkHeadings = [
+        // {
+        //     "name": "",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const commonMarkLineBreaks = [
+        // {
+        //     "name": "backslash at end of line is converted to <br>",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        // {
+        //     "name": "",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const commonMarkLinks = [
+        // {
+        //     "name": "",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+    ]
+
+    const commonMarkLists = [
+        // {
+        //     "name": "",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        {
+            "name": "List - Using hyphon",
+            "markdown": "- foo\n\n- bar\n",
+            "html": "<ul><li><p>foo</p></li><li><p>bar</p></li></ul>"
+        },
+        {
+            "name": "List - Using asterix",
+            "markdown": "* foo\n\n* bar\n",
+            "html": "<ul><li><p>foo</p></li><li><p>bar</p></li></ul>"
+        },
+    ]
+
+    const commonMarkTable = [
+        // {
+        //     "name": "Table - ",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        {
+            "name": "Table - Basic",
+            "markdown": "| col 1 | col 2 |\n|\:---|---|\n| dat col 1 | dat col 2 |\n",
+            "html": "<table><thead><tr><th>col 1</th><th>col 2</th></tr></thead><tbody><tr><td>dat col 1</td><td>dat col 2</td></tr></tbody></table>"
+        },
+    ]
+
+    const commonMarkTextBold = [
+        // {
+        //     "name": "Tabbed",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        {
+            "name": "Text, Bold - double asterix",
+            "markdown": "**the text**",
+            "html": "<p><strong>the text</strong></p>"
+        },
+        {
+            "name": "Text, Bold - double underscore",
+            "markdown": "__another text__",
+            "html": "<p><strong>another text</strong></p>"
+        },
+    ]
+
+    const commonMarkTextItalics = [
+        // {
+        //     "name": "Tabbed",
+        //     "markdown": "",
+        //     "html": ""
+        // },
+        {
+            "name": "Text, Italics - single asterix",
+            "markdown": "*italic text*",
+            "html": "<p><em>italic text</em></p>"
+        },
+        {
+            "name": "Text, Italics - single underscore",
+            "markdown": "*italic text*",
+            "html": "<p><em>italic text</em></p>"
+        },
+    ]
+
+
+    const commonMarkTestCases = [
+        ...commonMarkCodeBlocks,
+        ...commonMarkHeadings,
+        ...commonMarkLineBreaks,
+        ...commonMarkLinks,
+        ...commonMarkLists,
+        ...commonMarkTable,
+        ...commonMarkTextBold,
+        ...commonMarkTextItalics,
+    ];
+
+
+    test.each(commonMarkTestCases)(
+        "$name",
+        ({ name, markdown, html }) => {
+
+            const { container } = render(
+                <RenderMarkdown env={{}}>
+                    {markdown}
+                </RenderMarkdown>
+            );
+
+            const element = container.querySelector("div[class=markdown]");
+
+            expect(element.innerHTML).toBe(html)
+        }
+    );
+
+});
+
+
+
 describe("Plugins", () => {
 
     const pluginModelTag = [
