@@ -22,27 +22,32 @@ const config = {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
-    'src/**'
+    // 'src/**'
+    "src/**/*.{js,jsx,ts,tsx}"
   ],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "<rootDir>/coverage",
+  coverageDirectory: "<rootDir>/artifacts/coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
+  coveragePathIgnorePatterns: [
   //   "/node_modules/"
-  // ],
+    "\\.tmp\\.",
+    "src/images/icons"
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "babel",
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
+  coverageReporters: [
   //   "json",
   //   "text",
-  //   "lcov",
+    "lcov",
   //   "clover"
-  // ],
+    "json-summary",
+    "text-summary"
+  ],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,
@@ -115,6 +120,25 @@ const config = {
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
+
+//   reporters: [
+//     'default',
+//     'jest-junit',
+//   ],
+  reporters: [
+    'default',
+    [
+    'jest-junit',
+    {
+        outputDirectory: './artifacts',
+        outputName: 'test_results.junit.xml',
+    },
+    ],
+  ],
+
+  // enable JSON output
+  testResultsProcessor: undefined, // not needed if using --json
+
 
   // Automatically reset mock state before every test
   // resetMocks: false,
