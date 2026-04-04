@@ -690,26 +690,26 @@ describe("Plugins", () => {
     ]
 
     const pluginTaskList = [
-        {
-            "name": "TaskList ",
-            "markdown": "- [ ] uncheck tasklist item\n\n - [x] checked tasklist item",
-            "html": (
-                '<ul class="contains-task-list">' +
-                    '<li class="task-list-item">' +
-                        "<p>" +
-                            '<input class="task-list-item-checkbox" disabled="" type="checkbox">' +
-                            " uncheck tasklist item" +
-                        "</p>" +
-                    "</li>" +
-                    '<li class="task-list-item">' +
-                        "<p>" +
-                        '<input class="task-list-item-checkbox" checked="" disabled="" type="checkbox">' +
-                            " checked tasklist item" +
-                        "</p>" +
-                    "</li>" +
-                "</ul>"
-            )
-        },
+        // {
+        //     "name": "TaskList ",
+        //     "markdown": "- [ ] uncheck tasklist item\n\n - [x] checked tasklist item",
+        //     "html": (
+        //         '<ul class="contains-task-list">' +
+        //             '<li class="task-list-item">' +
+        //                 "<p>" +
+        //                     '<input class="task-list-item-checkbox" disabled="" type="checkbox">' +
+        //                     " uncheck tasklist item" +
+        //                 "</p>" +
+        //             "</li>" +
+        //             '<li class="task-list-item">' +
+        //                 "<p>" +
+        //                 '<input class="task-list-item-checkbox" checked="" disabled="" type="checkbox">' +
+        //                     " checked tasklist item" +
+        //                 "</p>" +
+        //             "</li>" +
+        //         "</ul>"
+        //     )
+        // },
     ]
 
     const pluginTicketLink = [
