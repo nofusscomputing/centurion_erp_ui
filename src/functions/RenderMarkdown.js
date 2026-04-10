@@ -130,7 +130,7 @@ function tokensToJSX(tokens, depth = 0) {
         }
 
 
-        if (token.type.endsWith("_open")) {
+        if (token.type.endsWith("_open") && Tag) {
 
             const props = { ...attrsToProps(token.attrs) };
 
@@ -140,47 +140,7 @@ function tokensToJSX(tokens, depth = 0) {
 
             stack.push(element);
 
-
-        } else if (token.type.endsWith("_close")) {
-
-            stack.pop();
-
-
-        } else if ( token.type === "inline" && token.children ) {
-
-            const children = tokensToJSX(token.children, depth + 1);
-
-            stack[stack.length - 1].children.push(...children);
-
-
-        }else if( token.type.endsWith("html_block") && token.content ) {
-
-            stack[stack.length - 1].children.push(md.utils.escapeHtml(token.content));
-
-
-        } else if( token.type === "html_inline" && token.content ) {
-
-            // stack[stack.length - 1].children.push(token.content);
-
-            const re = new RegExp(/<(?<tag>[a-z-]+)\s(?<attrs>.+)>/g);
-
-            const attrs_re = new RegExp(/(?<name>[a-z]+)(?:\=")(?<value>[^"]*)(?:\")/g);
-
-            const inline_html = [ ...String(token.content).matchAll(re) ]
-
-            // const found_tag = inline_html[0].groups.tag
-            const found_attrs = [ ...String(inline_html[0].groups.attrs).matchAll(attrs_re)].map(m => [m.groups.name, m.groups.value])
-
-            // const props = { ...attrsToProps(found_attrs) }
-
-            stack[stack.length - 1].children.push({
-                Tag: inline_html[0].groups.tag,
-                props: { ...attrsToProps(found_attrs) },
-                children: []
-            });
-
-
-        }else if( token.type === 'fence' && token.tag === 'code' ) {
+        } else if( token.type === 'fence' && token.tag === 'code' ) {
 
             const lang = String(token.info || '').trim();
 
@@ -225,6 +185,46 @@ function tokensToJSX(tokens, depth = 0) {
 
             stack[stack.length - 1].children.push({ Tag, props, children });
 
+        } else if( token.type.endsWith("html_block") && token.content ) {
+
+            stack[stack.length - 1].children.push(md.utils.escapeHtml(token.content));
+
+
+        } else if( token.type === "html_inline" && token.content ) {
+
+            const re = new RegExp(/<(?<tag>[a-z-]+)\s(?<attrs>.+)>/g);
+
+            const attrs_re = new RegExp(/(?<name>[a-z]+)(?:\=")(?<value>[^"]*)(?:\")/g);
+
+            const inline_html = [ ...String(token.content).matchAll(re) ]
+
+            const found_attrs = [ ...String(inline_html[0].groups.attrs).matchAll(attrs_re)].map(m => [m.groups.name, m.groups.value])
+
+
+            const element = {
+                Tag: inline_html[0].groups.tag,
+                props: { ...attrsToProps(found_attrs) },
+                children: []
+            }
+
+            stack[stack.length - 1].children.push(element);
+
+
+        } else if ( token.type === "inline" && token.children ) {
+
+            const children = tokensToJSX(token.children, depth + 1);
+
+            stack[stack.length - 1].children.push(...children);
+
+
+        }else if(
+            (token.type.endsWith("_close") && Tag)
+            || [
+                "paragraph_close"
+            ].includes(token.type)
+        ) {
+
+            stack.pop();
 
         } else if (VOID_ELEMENTS.has(token.tag)) {
 
