@@ -220,6 +220,14 @@ describe("CommonMark Rendering", () => {
         },
     ]
 
+    const commonMarkStrikethrough = [
+        {
+            "name": "Strikethrough",
+            "markdown": "some text that has ~~strikethrough~~ text.",
+            "html": "<p>some text that has <s>strikethrough</s> text.</p>"
+        },
+    ]
+
     const commonMarkTable = [
         {
             "name": "Table - Basic",
@@ -261,6 +269,7 @@ describe("CommonMark Rendering", () => {
         ...commonMarkLineBreaks,
         ...commonMarkLinks,
         ...commonMarkLists,
+        ...commonMarkStrikethrough,
         ...commonMarkTable,
         ...commonMarkTextBold,
         ...commonMarkTextItalics,
