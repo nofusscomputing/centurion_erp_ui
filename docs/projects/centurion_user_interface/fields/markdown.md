@@ -2416,7 +2416,7 @@ A footnote adds a reference and if specified a longer description to text.
 
 ``` markdown
 
-some text[^1] that has a numeral one as the reference. and another form of reference is long text[^this is some long text for reference description]
+some text[^1] that has a numeral one as the reference. and another form of reference is long text^[this is some long text for reference description]
 
 
 [^1]: this is a description for ref numeral 1.
@@ -2425,7 +2425,7 @@ some text[^1] that has a numeral one as the reference. and another form of refer
 
 - **output ->**
 
-some text[^1] that has a numeral one as the reference. and another form of reference is long text[^this is some long text for reference description]
+some text[^1] that has a numeral one as the reference. and another form of reference is long text^[this is some long text for reference description]
 
 
 [^1]: this is a description for ref numeral 1.

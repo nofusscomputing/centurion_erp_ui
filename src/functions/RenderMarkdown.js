@@ -80,8 +80,9 @@ const md = markdownIt({
 
 
 const VOID_ELEMENTS = new Set([
-  "area", "base", "br", "col", "embed", "hr", "img",
-  "input", "link", "meta", "param", "source", "track", "wbr"
+  "br",
+  "hr",
+  "input",
 ]);
 
 
@@ -106,6 +107,102 @@ function attrsToProps(attrs) {
     return props;
 
 }
+
+
+md.renderer.rules.footnote_ref = (tokens, idx, options, env, slf) => {
+    const id = md.renderer.rules.footnote_anchor_name(tokens, idx, options, env, slf)
+
+    const caption = md.renderer.rules.footnote_caption(tokens, idx, options, env, slf)
+    let refid = id
+
+    if (tokens[idx].meta.subId > 0) refid += `:${tokens[idx].meta.subId}`
+
+
+    return {
+        Tag: 'sup',
+        props: { ...attrsToProps([
+            ["class", "footnote-ref"]
+        ])},
+        children: [
+            {
+                Tag: 'a',
+                props: { ...attrsToProps([
+                    ["href",`#fn${id}`],
+                    ["id",`fnref${refid}`]
+                ])},
+                children: [
+                    caption
+                ]
+            }
+        ]
+    };
+
+}
+
+
+md.renderer.rules.footnote_anchor = (tokens, idx, options, env, slf) => {
+    let id = md.renderer.rules.footnote_anchor_name(tokens, idx, options, env, slf)
+
+    if (tokens[idx].meta.subId > 0) id += `:${tokens[idx].meta.subId}`
+
+
+    return {
+        Tag: 'a',
+        props: { ...attrsToProps([
+            ["class", "footnote-backref"],
+            ["href",`#fnref${id}`]
+        ])},
+        children: [
+            "\u21a9\uFE0E"
+        ]
+    };
+
+}
+
+
+
+md.renderer.rules.footnote_open = (tokens, idx, options, env, slf) => {
+
+    let id = md.renderer.rules.footnote_anchor_name(tokens, idx, options, env, slf)
+
+    if (tokens[idx].meta.subId > 0) id += `:${tokens[idx].meta.subId}`
+
+    return {
+        Tag: 'li',
+        props: { ...attrsToProps([
+            ["class", "footnote-item"],
+            ["id",`fn${id}`]
+        ])},
+        children: []
+    }
+}
+
+
+md.renderer.rules.footnote_block_open = () => {
+    return [
+        {
+            Tag: 'hr',
+            props: { ...attrsToProps([
+                ["class", "footnotes-sep"]
+            ])}
+        },
+        {
+            Tag: 'section',
+            props: { ...attrsToProps([
+                ["class", "footnotes"]
+            ])},
+            children: [{
+                Tag: 'ol',
+                props: { ...attrsToProps([
+                    ["class", "footnotes-list"]
+                ])},
+                children: []
+            }]
+        }
+    ];
+};
+
+
 
 
 
@@ -185,6 +282,55 @@ function tokensToJSX(tokens, depth = 0) {
 
             stack[stack.length - 1].children.push({ Tag, props, children });
 
+
+        } else if ( token.type === "footnote_anchor" ) {
+
+            const element = md.renderer.rules.footnote_anchor(tokens, idx, md.options, {docId: 0}, md.renderer)
+
+            stack[stack.length - 1 ].children.push(
+                element
+            )
+
+
+        } else if ( token.type === "footnote_block_open" ) {
+            
+            const element = md.renderer.rules.footnote_block_open(tokens, idx, md.options)
+
+            stack[stack.length - 1 ].children.push(
+                ...element
+            )
+
+            let aasd4 = 'ss'
+
+            stack.push(element[element.length - 1]);
+
+
+        } else if ( token.type === "footnote_open" ) {
+        
+            const sectionIDX = stack[stack.length - 1].children.length - 1
+
+            const sectionElement = stack[stack.length - 1].children[sectionIDX]
+
+            const olIDX = sectionElement.children.length - 1
+
+            const olElement = sectionElement.children[ olIDX ]
+
+            const element = md.renderer.rules.footnote_open(tokens, idx, md.options, {}, md.renderer)
+
+            sectionElement.children.push(
+                element
+            )
+
+            stack.push(element);
+
+
+        } else if ( token.type === 'footnote_ref' ) {
+
+            const element = md.renderer.rules.footnote_ref(tokens, idx, md.options, {docId: 0}, md.renderer)
+
+            stack[stack.length - 1].children.push(element);
+
+
         } else if( token.type.endsWith("html_block") && token.content ) {
 
             stack[stack.length - 1].children.push(md.utils.escapeHtml(token.content));
@@ -220,6 +366,8 @@ function tokensToJSX(tokens, depth = 0) {
         }else if(
             (token.type.endsWith("_close") && Tag)
             || [
+                "footnote_block_close",
+                "footnote_close",
                 "paragraph_close"
             ].includes(token.type)
         ) {

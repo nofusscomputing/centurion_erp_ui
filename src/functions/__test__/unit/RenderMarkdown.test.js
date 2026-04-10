@@ -682,11 +682,163 @@ describe("Plugins", () => {
     ]
 
     const pluginFootnote = [
-        // {
-        //     "name": "Footnote - ",
-        //     "markdown": "some random text with a footnote[^this is a footnote]",
-        //     "html": ""
-        // },
+        {
+            "name": "Footnote - Numerical ref and longnote",
+            "markdown": (
+                "Here is a footnote reference,[^1] and another.[^longnote]\n"+
+                "[^1]: Here is the footnote.\n\n"+
+                "[^longnote]: Here's one with multiple blocks.\n\n"+
+                "    Subsequent paragraphs are indented to show that they belong to the previous footnote."
+            ),
+            "html": (
+                "<p>" +
+                    "Here is a footnote reference," +
+                    '<sup class="footnote-ref">' +
+                        '<a href="#fn1" id="fnref1">' +
+                            "[1]" +
+                        "</a>" +
+                    "</sup>" +
+                    " and another." +
+                    '<sup class="footnote-ref">' +
+                        '<a href="#fn2" id="fnref2">' +
+                            "[2]" +
+                        "</a>" +
+                    "</sup>" +
+                "</p>" +
+                '<hr class="footnotes-sep">' +
+                '<section class="footnotes">' +
+                    '<ol class="footnotes-list">' +
+                        '<li class="footnote-item" id="fn1">' +
+                            "<p>" +
+                                "Here is the footnote." +
+                                '<a class="footnote-backref" href="#fnref1">' +
+                                    "↩︎" +
+                                "</a>" +
+                            "</p>" +
+                        "</li>" +
+                        '<li class="footnote-item" id="fn2">' +
+                            "<p>" +
+                                "Here's one with multiple blocks." +
+                            "</p>" +
+                            "<p>" +
+                                "Subsequent paragraphs are indented to show that they belong to the previous footnote." +
+                                '<a class="footnote-backref" href="#fnref2">' +
+                                    "↩︎" +
+                                "</a>" +
+                            "</p>" +
+                        "</li>" +
+                    "</ol>" +
+                "</section>"
+            )
+        },
+        {
+            "name": "Footnote - longnote only",
+            "markdown": "some random text with a footnote^[this is a footnote description]. more text",
+            "html": (
+                "<p>" +
+                    "some random text with a footnote" +
+                    '<sup class="footnote-ref">' +
+                        '<a href="#fn1" id="fnref1">' +
+                            "[1]" +
+                        "</a>" +
+                    "</sup>" +
+                    ". more text" +
+                "</p>" +
+                '<hr class="footnotes-sep">' +
+                '<section class="footnotes">' +
+                    '<ol class="footnotes-list">' +
+                        '<li class="footnote-item" id="fn1">' +
+                            "<p>" +
+                                "this is a footnote description" +
+                                '<a class="footnote-backref" href="#fnref1">' +
+                                    "↩︎" +
+                                "</a>" +
+                            "</p>" +
+                        "</li>" +
+                    "</ol>" +
+                "</section>"
+            )
+        },
+        {
+            "name": "Footnote - Numerical ref separate description",
+            "markdown": "some random text with a footnote[^1].\n\n\n[^1]: footnote description is this text",
+            "html": (
+                "<p>" +
+                    "some random text with a footnote" +
+                    '<sup class="footnote-ref">' +
+                        '<a href="#fn1" id="fnref1">' +
+                            "[1]" +
+                        "</a>" +
+                    "</sup>" +
+                    "." +
+                "</p>" +
+                '<hr class="footnotes-sep">' +
+                '<section class="footnotes">' +
+                    '<ol class="footnotes-list">' +
+                        '<li class="footnote-item" id="fn1">' +
+                            "<p>" +
+                                "footnote description is this text" +
+                                '<a class="footnote-backref" href="#fnref1">' +
+                                    "↩︎" +
+                                "</a>" +
+                            "</p>" +
+                        "</li>" +
+                    "</ol>" +
+                "</section>"
+            )
+        },
+        {
+            "name": "Footnote - Numerical ref separate description Multi",
+            "markdown": "some random text with a footnote[^1].\n\nanother random text with a footnote[^2].\n\n\n[^1]: footnote description is this text\n[^2]: footnote description two is this text",
+            "html": (
+                "<p>" +
+                    "some random text with a footnote" +
+                    '<sup class="footnote-ref">' +
+                        '<a href="#fn1" id="fnref1">' +
+                            "[1]" +
+                        "</a>" +
+                    "</sup>" +
+                    "." +
+                "</p>" +
+
+
+                "<p>" +
+                    "another random text with a footnote" +
+                    '<sup class="footnote-ref">' +
+                        '<a href="#fn2" id="fnref2">' +
+                            "[2]" +
+                        "</a>" +
+                    "</sup>" +
+                    "." +
+                "</p>" +
+
+
+                '<hr class="footnotes-sep">' +
+                '<section class="footnotes">' +
+                    '<ol class="footnotes-list">' +
+                        '<li class="footnote-item" id="fn1">' +
+                            "<p>" +
+                                "footnote description is this text" +
+                                '<a class="footnote-backref" href="#fnref1">' +
+                                    "↩︎" +
+                                "</a>" +
+                            "</p>" +
+                        "</li>" +
+
+
+                        '<li class="footnote-item" id="fn2">' +
+                            "<p>" +
+                                "footnote description two is this text" +
+                                '<a class="footnote-backref" href="#fnref2">' +
+                                    "↩︎" +
+                                "</a>" +
+                            "</p>" +
+                        "</li>" +
+
+                    "</ol>" +
+                "</section>"
+            )
+        },
     ]
 
     const pluginTaskList = [
