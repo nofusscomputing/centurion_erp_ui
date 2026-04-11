@@ -823,8 +823,9 @@ describe("Plugins", () => {
                         "</a>" +
                     "</sup>" +
                 "</p>" +
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -862,8 +863,9 @@ describe("Plugins", () => {
                     "</sup>" +
                     ". more text" +
                 "</p>" +
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -890,8 +892,9 @@ describe("Plugins", () => {
                     "</sup>" +
                     "." +
                 "</p>" +
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -931,8 +934,9 @@ describe("Plugins", () => {
                 "</p>" +
 
 
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +

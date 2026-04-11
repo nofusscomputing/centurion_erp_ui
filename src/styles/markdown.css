@@ -1,4 +1,11 @@
 
+
+.markdown hr.footnotes-sep {
+    margin-top: 50px;
+    margin-bottom: 50px;
+
+}
+
 div.markdown h1 {
   font-size: 22pt;
   /* margin: 0px;

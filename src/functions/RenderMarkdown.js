@@ -192,7 +192,7 @@ md.renderer.rules.footnote_block_open = () => {
         {
             Tag: 'hr',
             props: { ...attrsToProps([
-                ["class", "footnotes-sep"]
+                ["class", "pf-v6-c-divider footnotes-sep"]
             ])}
         },
         {
@@ -201,6 +201,12 @@ md.renderer.rules.footnote_block_open = () => {
                 ["class", "footnotes"]
             ])},
             children: [{
+                Tag: 'h2',
+                children: [
+                    "Footnotes"
+                ]
+            },
+            {
                 Tag: 'ol',
                 props: { ...attrsToProps([
                     ["class", "footnotes-list"]
