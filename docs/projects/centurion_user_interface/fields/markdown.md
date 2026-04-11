@@ -353,7 +353,7 @@ Text formatting is as simple as wrapping the text to format inside of another ch
 
 ``` markdown
 
-This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_
+This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ You can also make ^super\ script^ text as well as ~sub\ script~ text.
 
 
 
@@ -361,7 +361,7 @@ This is **bold** text. As is this __bold__ text. to create italics text use an _
 
 - **Output ->**
 
-    This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ <!-- markdownlint-disable-line -->
+    This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ You can also make ^super\ script^ text as well as ~sub\ script~ text.<!-- markdownlint-disable-line -->
 
 
 ## Custom Markdown

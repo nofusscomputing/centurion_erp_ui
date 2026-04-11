@@ -984,6 +984,32 @@ describe("Plugins", () => {
         },
     ]
 
+    const PluginSubScript = [
+        {
+            "name": "Sub Script",
+            "markdown": "a paragraph with ~subscript~ text in the middle.",
+            "html": "<p>a paragraph with <sub>subscript</sub> text in the middle.</p>"
+        },
+        {
+            "name": "Sub Script - with space",
+            "markdown": "a paragraph with ~sub\\ script~ text in the middle.",
+            "html": "<p>a paragraph with <sub>sub script</sub> text in the middle.</p>"
+        },
+    ]
+
+    const PluginSuperScript = [
+        {
+            "name": "Super Script",
+            "markdown": 'a paragraph with ^superscript^ text in the middle.',
+            "html": "<p>a paragraph with <sup>superscript</sup> text in the middle.</p>"
+        },
+        {
+            "name": "Super Script - with space",
+            "markdown": 'a paragraph with ^super\\ script^ text in the middle.',
+            "html": "<p>a paragraph with <sup>super script</sup> text in the middle.</p>"
+        },
+    ]
+
     const pluginTaskList = [
         {
             "name": "TaskList ",
@@ -1029,6 +1055,8 @@ describe("Plugins", () => {
         ...pluginAdmonition,
         ...pluginEmoji,
         ...pluginFootnote,
+        ...PluginSubScript,
+        ...PluginSuperScript,
         ...pluginTaskList,
         ...pluginHTMLWhiteList,
     ];
