@@ -34,6 +34,52 @@ describe("CommonMark Rendering", () => {
 
     const commonMarkCodeBlocks= [
         {
+            "name": "Code Block - indented 4x spaces",
+            "markdown": "    code line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - indented 4x spaces (multi-line)",
+            "markdown": "    code line\n    second code line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line\n" +
+                        "second code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - indented 1x tab",
+            "markdown": "\tcode line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - indented 1x tab (multi-line)",
+            "markdown": "\tcode line\n\tsecond code line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line\n" +
+                        "second code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
             "name": "Code Block - Triple quote no lang",
             "markdown": "```\na_var: str = 'python string variable'\n```",
             "html": (
