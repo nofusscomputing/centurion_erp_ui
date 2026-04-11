@@ -363,6 +363,25 @@ describe("CommonMark Rendering", () => {
         },
     ]
 
+    const commonMarkOther = [
+        {
+            "name": "Other - Horizontal rule",
+            "markdown": "----",
+            "html": (
+                '<hr class="pf-v6-c-divider">'
+            )
+        },
+        {
+            "name": "Other - Horizontal rule between paragraph",
+            "markdown": "a paragraph of text with horizontal rule after\n\n----\n\nanother paragraph after the horizontal rule",
+            "html": (
+                "<p>a paragraph of text with horizontal rule after</p>" +
+                '<hr class="pf-v6-c-divider">' +
+                "<p>another paragraph after the horizontal rule</p>"
+            )
+        },
+    ]
+
 
     const commonMarkTestCases = [
         ...commonMarkBlockHTML,
@@ -375,6 +394,7 @@ describe("CommonMark Rendering", () => {
         ...commonMarkTable,
         ...commonMarkTextBold,
         ...commonMarkTextItalics,
+        ...commonMarkOther,
     ];
 
 

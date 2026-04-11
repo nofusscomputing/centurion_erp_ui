@@ -111,6 +111,32 @@ Headings as the name implies is a section heading for a page. They are defined w
     ###### Level six Heading <!-- markdownlint-disable-line -->
 
 
+## Horizontal Rule
+
+A horizontal rule renders a horizontal line across the page. It acts as a seperator. to declare, use `----`.
+
+``` markdown
+
+A paragraph of text.
+
+----
+
+another paragraph of text.
+
+```
+
+!!! tip
+    There must be a blonk line before and after the declaration.
+
+- **Output ->**
+
+    A paragraph of text.
+
+    ----
+
+    another paragraph of text.
+
+
 ## Line Breaks
 
 A Line break is for breaking up text into paragraphs.

@@ -371,6 +371,13 @@ function tokensToJSX(tokens, depth = 0) {
             stack[stack.length - 1].children.push(element);
 
 
+        }else if( token.tag === 'hr' && token.type === 'hr') {
+
+            const props = { ...attrsToProps([ ['class', 'pf-v6-c-divider'] ]) };
+
+            stack[stack.length - 1].children.push({ Tag, props });
+
+
         } else if ( token.type === "inline" && token.children ) {
 
             const children = tokensToJSX(token.children, depth + 1);
