@@ -359,6 +359,8 @@ describe("CommonMark Rendering", () => {
 
             const element = container.querySelector("div[class=markdown]");
 
+            expect(String(element.innerHTML).replace("\n", '')).not.toBe('')
+
             /**
              * No new-line char before and/or after html tag.
              * 
@@ -995,6 +997,8 @@ describe("Plugins", () => {
             const rendered = document.querySelector('div[class=markdown]')
 
 
+            expect(String(rendered.innerHTML).replace("\n", '')).not.toBe('')
+
             /**
              * No new-line char before and/or after html tag.
              * 
@@ -1124,6 +1128,8 @@ describe("Plugins - JSX Objects", () => {
 
             const rendered = document.querySelector('div[class=markdown]')
 
+
+            expect(String(rendered.innerHTML).replace("\n", '')).not.toBe('')
 
             /**
              * No new-line char before and/or after html tag.
