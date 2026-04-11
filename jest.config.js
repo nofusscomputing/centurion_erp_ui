@@ -22,27 +22,32 @@ const config = {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
-    'src/**'
+    // 'src/**'
+    "src/**/*.{js,jsx,ts,tsx}"
   ],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "<rootDir>/coverage",
+  coverageDirectory: "<rootDir>/artifacts/coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
+  coveragePathIgnorePatterns: [
   //   "/node_modules/"
-  // ],
+    "\\.tmp\\.",
+    "src/images/icons"
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "babel",
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
+  coverageReporters: [
   //   "json",
   //   "text",
-  //   "lcov",
+    "lcov",
   //   "clover"
-  // ],
+    "json-summary",
+    "text-summary"
+  ],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,
@@ -93,6 +98,11 @@ const config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
 
+  moduleNameMapper: {
+    '\\.(css)$': '<rootDir>/src/__test__/__mocks__/reactTextFileImports.js',
+  },
+
+
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
 
@@ -110,6 +120,25 @@ const config = {
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
+
+//   reporters: [
+//     'default',
+//     'jest-junit',
+//   ],
+  reporters: [
+    'default',
+    [
+    'jest-junit',
+    {
+        outputDirectory: './artifacts',
+        outputName: 'test_results.junit.xml',
+    },
+    ],
+  ],
+
+  // enable JSON output
+  testResultsProcessor: undefined, // not needed if using --json
+
 
   // Automatically reset mock state before every test
   // resetMocks: false,
@@ -138,7 +167,9 @@ const config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: [
+    '<rootDir>/src/__test__/__mocks__/fetch.js'
+  ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -147,7 +178,8 @@ const config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: "jsdom",
+//   testEnvironment: "jest-environment-jsdom",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -177,14 +209,19 @@ const config = {
 
   // A map from regular expressions to paths to transformers
   // transform: undefined,
+  transform: {
+        "\\.[jt]sx?$": "babel-jest",
+        '\\.svg$':
+        '<rootDir>/src/__test__/__mocks__/svgPathMock.js',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: [
-    // "/node_modules/",
-    // "src/",
-    //   "\\.pnp\\.[^\\/]+$"
-    "node_modules/(?!src)/'",
-  ],
+  // transformIgnorePatterns: [
+  //   // "/node_modules/",
+  //   // "src/",
+  //   //   "\\.pnp\\.[^\\/]+$"
+  //   "node_modules/(?!src)/'",
+  // ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

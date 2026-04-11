@@ -30,6 +30,7 @@ Docs are built with MkDocs and can be linted and built.
     docker run -t --rm \
         -e IS_BUILD=1 \
         -ti \
+        --rm \
         --entrypoint "" \
         --volume ${PWD}:/workdir \
         --workdir /workdir \

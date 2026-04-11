@@ -20,6 +20,22 @@ export function FormatTime({
 
     // credit https://stackoverflow.com/a/74800084
     Date.prototype.format = function(formatString) {
+
+        const calMonths = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
+
         return Object.entries({
             YYYY: this.getFullYear(),
             YY: this.getFullYear().toString().substring(2),
@@ -39,8 +55,8 @@ export function FormatTime({
             S: this.getSeconds(),
             ss: this.getSeconds().toString().padStart(2, '0'),
             s: this.getSeconds(),
-            MMMM: this.toLocaleString('default', { month: 'long'  }),
-            MMM: this.toLocaleString('default',  { month: 'short' }),
+            MMMM: String(calMonths[this.getMonth()]),
+            MMM: String(calMonths[this.getMonth()]).substring(0,3),
             MM: (this.getMonth() + 1).toString().padStart(2, '0'),
             // M: this.getMonth() + 1,
             HH: this.getHours().toString().padStart(2, '0'), // military

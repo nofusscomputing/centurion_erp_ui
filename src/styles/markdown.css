@@ -218,7 +218,7 @@ button.code-copy svg {
 }
 
 .hljs {
-  background: var(--background-colour-inactive);
+  background: var(--pf-t--global--background--color--secondary--default);
   color: var(--text-colour);
   padding: 5px;
   border: 1px solid var(--border-colour);

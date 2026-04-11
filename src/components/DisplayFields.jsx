@@ -61,14 +61,12 @@ export const Fields = ({
         ) {
 
             return(
-                <div className="markdown">
                     <FieldData
                         full_width = {true}
                         metadata={objectMetadata}
                         field_name={field}
                         data={objectData}
                     />
-                </div>
             );
 
         } else {

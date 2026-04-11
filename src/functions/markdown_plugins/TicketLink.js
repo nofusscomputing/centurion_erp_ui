@@ -79,9 +79,11 @@ function ticket_link (state, silent) {
 
           const icon_t = state.push('html_inline', '', 0)
 
-          icon_t.content = renderToStaticMarkup(
+          icon_t.jsx = (
             <IconLoader
-              name={'ticket_status_new'}
+              key={begining}
+              name={'ticket_status_'+String(state.env.tickets[item_link.groups.model_id].status).toLowerCase().replace(' ', '_').replace('(', '').replace(')', '')}
+              fill="#777"
             />
           )
 

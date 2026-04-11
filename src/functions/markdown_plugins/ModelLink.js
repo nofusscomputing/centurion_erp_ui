@@ -76,8 +76,9 @@ function model_link (state) {
 
           const icon_t = state.push('html_inline', '', 0)
 
-          icon_t.content = renderToStaticMarkup(
+          icon_t.jsx = (
             <IconLoader
+              key={begining}
               name={String( item_link.groups.model_type ).toLowerCase()}
               fill="#777"
             />
