@@ -9,27 +9,23 @@ import RenderMarkdown from "../../RenderMarkdown";
 describe("CommonMark Rendering", () => {
 
     const commonMarkBlockHTML = [
-        // {
-        //     "name": "HTML Block - HTML Comment",
-        //     "markdown": (
-        //         "This is a paragraph that contains a html comment after it\n" +
-        //         "\n" +
-        //         "<!--- this is a html comment that should not be displayed -->\n" +
-        //         "\n" +
-        //         "This is the last paragraph and is after the html comment"
-        //     ),
-        //     "html": (
-        //         "<p>" +
-        //             "This is a paragraph that contains a html comment after it" +
-        //         "</p>" +
-        //         "<!--- " +
-        //             "this is a html comment that should not be displayed" +
-        //         " -->" +
-        //         "<p>" +
-        //             "This is the last paragraph and is after the html comment" +
-        //         "</p>"
-        //     )
-        // },
+        {
+            "name": "HTML Block - HTML Comment",
+            "markdown": (
+                "This is a paragraph that contains a html comment after it\n" +
+                "\n" +
+                "<!--- this is a html comment that should not be displayed -->" +
+                "This is the last paragraph and is after the html comment"
+            ),
+            "html": (
+                "<p>" +
+                    "This is a paragraph that contains a html comment after it" +
+                "</p>" +
+                "<p>" +
+                    "This is the last paragraph and is after the html comment" +
+                "</p>"
+            )
+        },
     ]
 
     const commonMarkCodeBlocks= [
