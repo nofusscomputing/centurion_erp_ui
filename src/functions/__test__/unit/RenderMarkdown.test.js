@@ -299,9 +299,9 @@ describe("CommonMark Rendering", () => {
             "name": "Table - Basic",
             "markdown": "| col 1 | col 2 |\n|---|---|\n| dat col 1 | dat col 2 |\n",
             "html": (
-                "<table>" +
-                    '<thead><tr><th>col 1</th><th>col 2</th></tr></thead>' +
-                    '<tbody><tr><td>dat col 1</td><td>dat col 2</td></tr></tbody>' +
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th class="pf-v6-c-table__th">col 1</th><th class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td class="pf-v6-c-table__td">dat col 1</td><td class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
                 "</table>"
             )
         },
@@ -309,9 +309,9 @@ describe("CommonMark Rendering", () => {
             "name": "Table - Center Align col",
             "markdown": "| col 1 | col 2 |\n|---|:---:|\n| dat col 1 | dat col 2 |\n",
             "html": (
-                "<table>" +
-                    '<thead><tr><th>col 1</th><th style="text-align: center;">col 2</th></tr></thead>' +
-                    '<tbody><tr><td>dat col 1</td><td style="text-align: center;">dat col 2</td></tr></tbody>' +
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th class="pf-v6-c-table__th">col 1</th><th style="text-align: center;" class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td class="pf-v6-c-table__td">dat col 1</td><td style="text-align: center;" class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
                 "</table>"
             )
         },
@@ -319,9 +319,9 @@ describe("CommonMark Rendering", () => {
             "name": "Table - Left Align col",
             "markdown": "| col 1 | col 2 |\n|:---|---|\n| dat col 1 | dat col 2 |\n",
             "html": (
-                "<table>" +
-                    '<thead><tr><th style="text-align: left;">col 1</th><th>col 2</th></tr></thead>' +
-                    '<tbody><tr><td style="text-align: left;">dat col 1</td><td>dat col 2</td></tr></tbody>' +
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th style="text-align: left;" class="pf-v6-c-table__th">col 1</th><th class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td style="text-align: left;" class="pf-v6-c-table__td">dat col 1</td><td class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
                 "</table>"
             )
         },
@@ -329,9 +329,9 @@ describe("CommonMark Rendering", () => {
             "name": "Table - Right Align col",
             "markdown": "| col 1 | col 2 |\n|---:|---|\n| dat col 1 | dat col 2 |\n",
             "html": (
-                "<table>" +
-                    '<thead><tr><th style="text-align: right;">col 1</th><th>col 2</th></tr></thead>' +
-                    '<tbody><tr><td style="text-align: right;">dat col 1</td><td>dat col 2</td></tr></tbody>' +
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th style="text-align: right;" class="pf-v6-c-table__th">col 1</th><th class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td style="text-align: right;" class="pf-v6-c-table__td">dat col 1</td><td class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
                 "</table>"
             )
         },
@@ -408,7 +408,8 @@ describe("CommonMark Rendering", () => {
                 </RenderMarkdown>
             );
 
-            const element = container.querySelector("div[class=markdown]");
+            // const element = container.querySelector("div[class=markdown]");
+            const element = container.querySelector("div[class='markdown pf-v6-c-content']")
 
             expect(String(element.innerHTML).replace("\n", '')).not.toBe('')
 
@@ -1049,7 +1050,7 @@ describe("Plugins", () => {
             //     expect(svg).not.toBeNull()
             // })
 
-            const rendered = document.querySelector('div[class=markdown]')
+            const rendered = document.querySelector("div[class='markdown pf-v6-c-content']")
 
 
             expect(String(rendered.innerHTML).replace("\n", '')).not.toBe('')
@@ -1181,7 +1182,7 @@ describe("Plugins - JSX Objects", () => {
                 expect(svg).not.toBeNull()
             })
 
-            const rendered = document.querySelector('div[class=markdown]')
+            const rendered = document.querySelector("div[class='markdown pf-v6-c-content']")
 
 
             expect(String(rendered.innerHTML).replace("\n", '')).not.toBe('')

@@ -86,6 +86,31 @@ const VOID_ELEMENTS = new Set([
 ]);
 
 
+/**
+ * Additional attributes to add to HTML elements.
+ */
+const ADDITIONAL_ATTRIBUTES = {
+    table: [
+        ['class', 'pf-v6-c-table pf-m-grid-md pf-m-compact']
+    ],
+    thead: [
+        ['class', 'pf-v6-c-table__thead']
+    ],
+    tr: [
+        ['class', 'pf-v6-c-table__tr']
+    ],
+    th: [
+        ['class', 'pf-v6-c-table__th']
+    ],
+    tbody: [
+        ['class', 'pf-v6-c-table__tbody']
+    ],
+    td: [
+        ['class', 'pf-v6-c-table__td']
+    ],
+};
+
+
 
 function attrsToProps(attrs) {
 
@@ -95,7 +120,8 @@ function attrsToProps(attrs) {
 
     for (const [name, value] of attrs) {
 
-        if (name === "class") props.className = value;
+        if( name === undefined || value === undefined ) continue;
+        else if (name === "class") props.className = value;
         else if (name === "style") {
 
             // convert to jsx styles
@@ -103,7 +129,7 @@ function attrsToProps(attrs) {
             // split to obtain key value of style
             convertedValue = String(convertedValue).split(':')
 
-            props.style = {[convertedValue[0]]: [convertedValue[1]]}
+            props.style = {[convertedValue[0]]: convertedValue[1]}
 
         }
         else if (name === "tabindex") props.tabIndex = value;
@@ -244,7 +270,7 @@ function tokensToJSX(tokens, depth = 0) {
 
         if (token.type.endsWith("_open") && Tag) {
 
-            const props = { ...attrsToProps(token.attrs) };
+            const props = { ...attrsToProps([...(token.attrs || []), ...(ADDITIONAL_ATTRIBUTES[token.tag] || [])]) };
 
             const element = { Tag, props, children: [] };
 
@@ -468,7 +494,7 @@ export default function RenderMarkdown({ children, className = null, env, full_w
         setTokens(parsed);
     }, [children, env]);
 
-    let class_name = 'markdown'
+    let class_name = 'markdown pf-v6-c-content'
 
     if( className ) {
 
