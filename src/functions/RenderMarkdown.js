@@ -96,7 +96,16 @@ function attrsToProps(attrs) {
     for (const [name, value] of attrs) {
 
         if (name === "class") props.className = value;
-        else if (name === "style") props.style = {value};
+        else if (name === "style") {
+
+            // convert to jsx styles
+            let convertedValue = String(value).replace(/-([a-z])/g, (_, c) => c.toUpperCase())
+            // split to obtain key value of style
+            convertedValue = String(convertedValue).split(':')
+
+            props.style = {[convertedValue[0]]: [convertedValue[1]]}
+
+        }
         else if (name === "tabindex") props.tabIndex = value;
         else if( ['checked', 'disabled'].includes(name) ) props[name] = typeof(value) === 'boolean' ? value : true
         else props[name] = value;

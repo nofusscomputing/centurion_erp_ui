@@ -301,8 +301,43 @@ describe("CommonMark Rendering", () => {
     const commonMarkTable = [
         {
             "name": "Table - Basic",
-            "markdown": "| col 1 | col 2 |\n|\:---|---|\n| dat col 1 | dat col 2 |\n",
-            "html": "<table><thead><tr><th>col 1</th><th>col 2</th></tr></thead><tbody><tr><td>dat col 1</td><td>dat col 2</td></tr></tbody></table>"
+            "markdown": "| col 1 | col 2 |\n|---|---|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                "<table>" +
+                    '<thead><tr><th>col 1</th><th>col 2</th></tr></thead>' +
+                    '<tbody><tr><td>dat col 1</td><td>dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
+        },
+        {
+            "name": "Table - Center Align col",
+            "markdown": "| col 1 | col 2 |\n|---|:---:|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                "<table>" +
+                    '<thead><tr><th>col 1</th><th style="text-align: center;">col 2</th></tr></thead>' +
+                    '<tbody><tr><td>dat col 1</td><td style="text-align: center;">dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
+        },
+        {
+            "name": "Table - Left Align col",
+            "markdown": "| col 1 | col 2 |\n|:---|---|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                "<table>" +
+                    '<thead><tr><th style="text-align: left;">col 1</th><th>col 2</th></tr></thead>' +
+                    '<tbody><tr><td style="text-align: left;">dat col 1</td><td>dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
+        },
+        {
+            "name": "Table - Right Align col",
+            "markdown": "| col 1 | col 2 |\n|---:|---|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                "<table>" +
+                    '<thead><tr><th style="text-align: right;">col 1</th><th>col 2</th></tr></thead>' +
+                    '<tbody><tr><td style="text-align: right;">dat col 1</td><td>dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
         },
     ]
 

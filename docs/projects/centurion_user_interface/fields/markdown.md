@@ -246,6 +246,8 @@ Some text that has ~~strikethrough~~ text in the middle.
 
 ## Table
 
+Basic Table:
+
 ``` markdown
 
 | col 1 | col 2 |
@@ -254,11 +256,69 @@ Some text that has ~~strikethrough~~ text in the middle.
 
 ```
 
+Tables can also have the column alignment adjusted to be one of: `left`, `center` or `right`. _Note the colon in column 2, row 2_
+
+Table with left align column:
+
+``` markdown
+
+| col 1 | col 2 |
+|---|:---|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+```
+
+Table with center align column:
+
+``` markdown
+
+| col 1 | col 2 |
+|---|:---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+```
+
+Table with right align column:
+
+``` markdown
+
+| col 1 | col 2 |
+|---|---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+```
+
 - **Output ->**
+
+Basic Table:
 
 | col 1 | col 2 |
 |---|---|
 | col 1, row 1 data | col 2 row one data |
+
+Table with left align column:
+
+| col 1 | col 2 |
+|---|:---|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+Table with center align column:
+
+| col 1 | col 2 |
+|---|:---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+Table with right align column:
+
+| col 1 | col 2 |
+|---|---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
 
 
 ## Text Formatting
