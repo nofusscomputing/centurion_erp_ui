@@ -237,7 +237,7 @@ function tokensToJSX(tokens, depth = 0) {
 
             stack.push(element);
 
-        } else if( token.type === 'fence' && token.tag === 'code' ) {
+        } else if( (token.type === 'fence' || token.type === 'code_block') && token.tag === 'code' ) {
 
             const lang = String(token.info || '').trim();
 

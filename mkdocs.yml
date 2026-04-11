@@ -37,6 +37,10 @@ nav:
 
     - projects/centurion_user_interface/url.md
 
+    - Fields:
+
+      - projects/centurion_user_interface/fields/markdown.md
+
 - Operations: 
 
   - operations/index.md
