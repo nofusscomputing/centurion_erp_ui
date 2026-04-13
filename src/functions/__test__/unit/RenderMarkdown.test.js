@@ -8,7 +8,73 @@ import RenderMarkdown from "../../RenderMarkdown";
 
 describe("CommonMark Rendering", () => {
 
+    const commonMarkBlockHTML = [
+        {
+            "name": "HTML Block - HTML Comment",
+            "markdown": (
+                "This is a paragraph that contains a html comment after it\n" +
+                "\n" +
+                "<!--- this is a html comment that should not be displayed -->" +
+                "This is the last paragraph and is after the html comment"
+            ),
+            "html": (
+                "<p>" +
+                    "This is a paragraph that contains a html comment after it" +
+                "</p>" +
+                "<p>" +
+                    "This is the last paragraph and is after the html comment" +
+                "</p>"
+            )
+        },
+    ]
+
     const commonMarkCodeBlocks= [
+        {
+            "name": "Code Block - indented 4x spaces",
+            "markdown": "    code line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - indented 4x spaces (multi-line)",
+            "markdown": "    code line\n    second code line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line\n" +
+                        "second code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - indented 1x tab",
+            "markdown": "\tcode line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
+        {
+            "name": "Code Block - indented 1x tab (multi-line)",
+            "markdown": "\tcode line\n\tsecond code line",
+            "html": (
+                "<pre>" +
+                    '<code class=\"hljs\">' +
+                        "code line\n" +
+                        "second code line" +
+                    '</code>' +
+                '</pre>'
+            )
+        },
         {
             "name": "Code Block - Triple quote no lang",
             "markdown": "```\na_var: str = 'python string variable'\n```",
@@ -231,8 +297,43 @@ describe("CommonMark Rendering", () => {
     const commonMarkTable = [
         {
             "name": "Table - Basic",
-            "markdown": "| col 1 | col 2 |\n|\:---|---|\n| dat col 1 | dat col 2 |\n",
-            "html": "<table><thead><tr><th>col 1</th><th>col 2</th></tr></thead><tbody><tr><td>dat col 1</td><td>dat col 2</td></tr></tbody></table>"
+            "markdown": "| col 1 | col 2 |\n|---|---|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th class="pf-v6-c-table__th">col 1</th><th class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td class="pf-v6-c-table__td">dat col 1</td><td class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
+        },
+        {
+            "name": "Table - Center Align col",
+            "markdown": "| col 1 | col 2 |\n|---|:---:|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th class="pf-v6-c-table__th">col 1</th><th style="text-align: center;" class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td class="pf-v6-c-table__td">dat col 1</td><td style="text-align: center;" class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
+        },
+        {
+            "name": "Table - Left Align col",
+            "markdown": "| col 1 | col 2 |\n|:---|---|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th style="text-align: left;" class="pf-v6-c-table__th">col 1</th><th class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td style="text-align: left;" class="pf-v6-c-table__td">dat col 1</td><td class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
+        },
+        {
+            "name": "Table - Right Align col",
+            "markdown": "| col 1 | col 2 |\n|---:|---|\n| dat col 1 | dat col 2 |\n",
+            "html": (
+                '<table class="pf-v6-c-table pf-m-grid-md pf-m-compact">' +
+                    '<thead class="pf-v6-c-table__thead"><tr class="pf-v6-c-table__tr"><th style="text-align: right;" class="pf-v6-c-table__th">col 1</th><th class="pf-v6-c-table__th">col 2</th></tr></thead>' +
+                    '<tbody class="pf-v6-c-table__tbody"><tr class="pf-v6-c-table__tr"><td style="text-align: right;" class="pf-v6-c-table__td">dat col 1</td><td class="pf-v6-c-table__td">dat col 2</td></tr></tbody>' +
+                "</table>"
+            )
         },
     ]
 
@@ -262,8 +363,28 @@ describe("CommonMark Rendering", () => {
         },
     ]
 
+    const commonMarkOther = [
+        {
+            "name": "Other - Horizontal rule",
+            "markdown": "----",
+            "html": (
+                '<hr class="pf-v6-c-divider">'
+            )
+        },
+        {
+            "name": "Other - Horizontal rule between paragraph",
+            "markdown": "a paragraph of text with horizontal rule after\n\n----\n\nanother paragraph after the horizontal rule",
+            "html": (
+                "<p>a paragraph of text with horizontal rule after</p>" +
+                '<hr class="pf-v6-c-divider">' +
+                "<p>another paragraph after the horizontal rule</p>"
+            )
+        },
+    ]
+
 
     const commonMarkTestCases = [
+        ...commonMarkBlockHTML,
         ...commonMarkCodeBlocks,
         ...commonMarkHeadings,
         ...commonMarkLineBreaks,
@@ -273,6 +394,7 @@ describe("CommonMark Rendering", () => {
         ...commonMarkTable,
         ...commonMarkTextBold,
         ...commonMarkTextItalics,
+        ...commonMarkOther,
     ];
 
 
@@ -286,9 +408,17 @@ describe("CommonMark Rendering", () => {
                 </RenderMarkdown>
             );
 
-            const element = container.querySelector("div[class=markdown]");
+            // const element = container.querySelector("div[class=markdown]");
+            const element = container.querySelector("div[class='markdown pf-v6-c-content']")
 
-            expect(String(element.innerHTML).replace("\n", '')).toBe(html)
+            expect(String(element.innerHTML).replace("\n", '')).not.toBe('')
+
+            /**
+             * No new-line char before and/or after html tag.
+             * 
+             * New-line char within content is fine and maybe required for rendering
+             */
+            expect(String(element.innerHTML).replace(">\n", '>').replace("\n<", '<')).toBe(html)
         }
     );
 
@@ -714,8 +844,9 @@ describe("Plugins", () => {
                         "</a>" +
                     "</sup>" +
                 "</p>" +
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -753,8 +884,9 @@ describe("Plugins", () => {
                     "</sup>" +
                     ". more text" +
                 "</p>" +
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -781,8 +913,9 @@ describe("Plugins", () => {
                     "</sup>" +
                     "." +
                 "</p>" +
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -822,8 +955,9 @@ describe("Plugins", () => {
                 "</p>" +
 
 
-                '<hr class="footnotes-sep">' +
+                '<hr class="pf-v6-c-divider footnotes-sep">' +
                 '<section class="footnotes">' +
+                    "<h2>Footnotes</h2>" +
                     '<ol class="footnotes-list">' +
                         '<li class="footnote-item" id="fn1">' +
                             "<p>" +
@@ -847,6 +981,32 @@ describe("Plugins", () => {
                     "</ol>" +
                 "</section>"
             )
+        },
+    ]
+
+    const PluginSubScript = [
+        {
+            "name": "Sub Script",
+            "markdown": "a paragraph with ~subscript~ text in the middle.",
+            "html": "<p>a paragraph with <sub>subscript</sub> text in the middle.</p>"
+        },
+        {
+            "name": "Sub Script - with space",
+            "markdown": "a paragraph with ~sub\\ script~ text in the middle.",
+            "html": "<p>a paragraph with <sub>sub script</sub> text in the middle.</p>"
+        },
+    ]
+
+    const PluginSuperScript = [
+        {
+            "name": "Super Script",
+            "markdown": 'a paragraph with ^superscript^ text in the middle.',
+            "html": "<p>a paragraph with <sup>superscript</sup> text in the middle.</p>"
+        },
+        {
+            "name": "Super Script - with space",
+            "markdown": 'a paragraph with ^super\\ script^ text in the middle.',
+            "html": "<p>a paragraph with <sup>super script</sup> text in the middle.</p>"
         },
     ]
 
@@ -895,6 +1055,8 @@ describe("Plugins", () => {
         ...pluginAdmonition,
         ...pluginEmoji,
         ...pluginFootnote,
+        ...PluginSubScript,
+        ...PluginSuperScript,
         ...pluginTaskList,
         ...pluginHTMLWhiteList,
     ];
@@ -916,12 +1078,17 @@ describe("Plugins", () => {
             //     expect(svg).not.toBeNull()
             // })
 
-            const rendered = document.querySelector('div[class=markdown]')
+            const rendered = document.querySelector("div[class='markdown pf-v6-c-content']")
 
 
+            expect(String(rendered.innerHTML).replace("\n", '')).not.toBe('')
 
-            expect(String(rendered.innerHTML).replace("\n", '')).toBe(html)
-
+            /**
+             * No new-line char before and/or after html tag.
+             * 
+             * New-line char within content is fine and maybe required for rendering
+             */
+            expect(String(rendered.innerHTML).replace(">\n", '>').replace("\n<", '<')).toBe(html)
         })
 
 });
@@ -1043,11 +1210,17 @@ describe("Plugins - JSX Objects", () => {
                 expect(svg).not.toBeNull()
             })
 
-            const rendered = document.querySelector('div[class=markdown]')
+            const rendered = document.querySelector("div[class='markdown pf-v6-c-content']")
 
 
+            expect(String(rendered.innerHTML).replace("\n", '')).not.toBe('')
 
-            expect(String(rendered.innerHTML).replace("\n", "")).toBe(html)
+            /**
+             * No new-line char before and/or after html tag.
+             * 
+             * New-line char within content is fine and maybe required for rendering
+             */
+            expect(String(rendered.innerHTML).replace(">\n", '>').replace("\n<", '<')).toBe(html)
 
         })
 

@@ -111,6 +111,32 @@ Headings as the name implies is a section heading for a page. They are defined w
     ###### Level six Heading <!-- markdownlint-disable-line -->
 
 
+## Horizontal Rule
+
+A horizontal rule renders a horizontal line across the page. It acts as a seperator. to declare, use `----`.
+
+``` markdown
+
+A paragraph of text.
+
+----
+
+another paragraph of text.
+
+```
+
+!!! tip
+    There must be a blonk line before and after the declaration.
+
+- **Output ->**
+
+    A paragraph of text.
+
+    ----
+
+    another paragraph of text.
+
+
 ## Line Breaks
 
 A Line break is for breaking up text into paragraphs.
@@ -246,6 +272,8 @@ Some text that has ~~strikethrough~~ text in the middle.
 
 ## Table
 
+Basic Table:
+
 ``` markdown
 
 | col 1 | col 2 |
@@ -254,11 +282,69 @@ Some text that has ~~strikethrough~~ text in the middle.
 
 ```
 
+Tables can also have the column alignment adjusted to be one of: `left`, `center` or `right`. _Note the colon in column 2, row 2_
+
+Table with left align column:
+
+``` markdown
+
+| col 1 | col 2 |
+|---|:---|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+```
+
+Table with center align column:
+
+``` markdown
+
+| col 1 | col 2 |
+|---|:---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+```
+
+Table with right align column:
+
+``` markdown
+
+| col 1 | col 2 |
+|---|---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+```
+
 - **Output ->**
+
+Basic Table:
 
 | col 1 | col 2 |
 |---|---|
 | col 1, row 1 data | col 2 row one data |
+
+Table with left align column:
+
+| col 1 | col 2 |
+|---|:---|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+Table with center align column:
+
+| col 1 | col 2 |
+|---|:---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
+
+Table with right align column:
+
+| col 1 | col 2 |
+|---|---:|
+| col 1, row 1 data | col 2 row one data |
+| col 1, row 1 data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz| col 2 row one data (random text to make column wider so alignment is visible) abcdefghijklmnopqrstuvwxyz |
 
 
 ## Text Formatting
@@ -267,7 +353,7 @@ Text formatting is as simple as wrapping the text to format inside of another ch
 
 ``` markdown
 
-This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_
+This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ You can also make ^super\ script^ text as well as ~sub\ script~ text.
 
 
 
@@ -275,7 +361,7 @@ This is **bold** text. As is this __bold__ text. to create italics text use an _
 
 - **Output ->**
 
-    This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ <!-- markdownlint-disable-line -->
+    This is **bold** text. As is this __bold__ text. to create italics text use an _underscore_. you can also combine so that the text is **_bold and italics_** or _**bold and italics**_ You can also make ^super\ script^ text as well as ~sub\ script~ text.<!-- markdownlint-disable-line -->
 
 
 ## Custom Markdown

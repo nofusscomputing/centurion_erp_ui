@@ -61,6 +61,10 @@ const md = markdownIt({
 
     .use( require('markdown-it-footnote') )
 
+    .use(require('markdown-it-sub'))
+
+    .use(require('markdown-it-sup'))
+
     .use( require('markdown-it-task-lists') )
 
     .use(ticket_link_plugin)
@@ -86,6 +90,31 @@ const VOID_ELEMENTS = new Set([
 ]);
 
 
+/**
+ * Additional attributes to add to HTML elements.
+ */
+const ADDITIONAL_ATTRIBUTES = {
+    table: [
+        ['class', 'pf-v6-c-table pf-m-grid-md pf-m-compact']
+    ],
+    thead: [
+        ['class', 'pf-v6-c-table__thead']
+    ],
+    tr: [
+        ['class', 'pf-v6-c-table__tr']
+    ],
+    th: [
+        ['class', 'pf-v6-c-table__th']
+    ],
+    tbody: [
+        ['class', 'pf-v6-c-table__tbody']
+    ],
+    td: [
+        ['class', 'pf-v6-c-table__td']
+    ],
+};
+
+
 
 function attrsToProps(attrs) {
 
@@ -95,8 +124,18 @@ function attrsToProps(attrs) {
 
     for (const [name, value] of attrs) {
 
-        if (name === "class") props.className = value;
-        else if (name === "style") props.style = {value};
+        if( name === undefined || value === undefined ) continue;
+        else if (name === "class") props.className = value;
+        else if (name === "style") {
+
+            // convert to jsx styles
+            let convertedValue = String(value).replace(/-([a-z])/g, (_, c) => c.toUpperCase())
+            // split to obtain key value of style
+            convertedValue = String(convertedValue).split(':')
+
+            props.style = {[convertedValue[0]]: convertedValue[1]}
+
+        }
         else if (name === "tabindex") props.tabIndex = value;
         else if( ['checked', 'disabled'].includes(name) ) props[name] = typeof(value) === 'boolean' ? value : true
         else props[name] = value;
@@ -183,7 +222,7 @@ md.renderer.rules.footnote_block_open = () => {
         {
             Tag: 'hr',
             props: { ...attrsToProps([
-                ["class", "footnotes-sep"]
+                ["class", "pf-v6-c-divider footnotes-sep"]
             ])}
         },
         {
@@ -192,6 +231,12 @@ md.renderer.rules.footnote_block_open = () => {
                 ["class", "footnotes"]
             ])},
             children: [{
+                Tag: 'h2',
+                children: [
+                    "Footnotes"
+                ]
+            },
+            {
                 Tag: 'ol',
                 props: { ...attrsToProps([
                     ["class", "footnotes-list"]
@@ -229,7 +274,7 @@ function tokensToJSX(tokens, depth = 0) {
 
         if (token.type.endsWith("_open") && Tag) {
 
-            const props = { ...attrsToProps(token.attrs) };
+            const props = { ...attrsToProps([...(token.attrs || []), ...(ADDITIONAL_ATTRIBUTES[token.tag] || [])]) };
 
             const element = { Tag, props, children: [] };
 
@@ -237,7 +282,7 @@ function tokensToJSX(tokens, depth = 0) {
 
             stack.push(element);
 
-        } else if( token.type === 'fence' && token.tag === 'code' ) {
+        } else if( (token.type === 'fence' || token.type === 'code_block') && token.tag === 'code' ) {
 
             const lang = String(token.info || '').trim();
 
@@ -356,6 +401,13 @@ function tokensToJSX(tokens, depth = 0) {
             stack[stack.length - 1].children.push(element);
 
 
+        }else if( token.tag === 'hr' && token.type === 'hr') {
+
+            const props = { ...attrsToProps([ ['class', 'pf-v6-c-divider'] ]) };
+
+            stack[stack.length - 1].children.push({ Tag, props });
+
+
         } else if ( token.type === "inline" && token.children ) {
 
             const children = tokensToJSX(token.children, depth + 1);
@@ -446,7 +498,7 @@ export default function RenderMarkdown({ children, className = null, env, full_w
         setTokens(parsed);
     }, [children, env]);
 
-    let class_name = 'markdown'
+    let class_name = 'markdown pf-v6-c-content'
 
     if( className ) {
 
