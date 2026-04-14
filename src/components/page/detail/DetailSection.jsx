@@ -68,6 +68,7 @@ const DetailSection = ({
         cardData = (
             <DisplayFields
                 existingFormData = {data}
+                isCreate = {String(location.pathname).endsWith('/add')}
                 layout = {layout}
                 metadata = {metadata}
             />

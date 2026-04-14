@@ -158,20 +158,17 @@ const Column = ({isEdit, isMobile, children}) => {
  * @todo there needs to be a way to specify if its just going to be markdown/json
  *  field data, or if its going to be a description list group.
  * 
- * @param {{
- *      existingFormData: object,
- *      layout: array,
- *      metadata: object,
- * }}
- * @param existingFormData Data for the object
- * @param layout Page Layout information.
- * @param data API Metadata for the object.
+ * @param props
+ * @param {object} props.existingFormData Data for the object
+ * @param {array} props.layout Page Layout information.
+ * @param {boolean} props.isCreate set fields to create mode
+ * @param {object} props.metadata API Metadata for the object.
  * 
  * @returns Component ready to be placed on a card.
  */
 const DisplayFields = ({
     existingFormData = null,
-    isCreate,
+    isCreate = false,
     layout = null,
     metadata,
     onClose = null,
@@ -245,7 +242,7 @@ const DisplayFields = ({
 
     let cardData;
 
-    if( layout.layout === 'double' ) {
+    if( layout.layout === 'double' && ! isCreate ) {
 
         cardData = (
             <>
@@ -295,7 +292,7 @@ const DisplayFields = ({
             </>
         );
 
-    } else if( layout.layout === 'single' ) {
+    } else if( layout.layout === 'single' || isCreate ) {
 
         let columnFields = layout.fields
 
