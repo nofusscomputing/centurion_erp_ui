@@ -1,0 +1,3 @@
+# Prevent committing mock data as it's not required.
+*
+!.gitignore
