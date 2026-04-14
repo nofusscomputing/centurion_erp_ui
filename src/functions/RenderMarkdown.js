@@ -486,7 +486,7 @@ function tokensToJSX(tokens, depth = 0) {
 }
 
 
-export default function RenderMarkdown({ children, className = null, env, full_width=false }) {
+export default function RenderMarkdown({ children, className = null, env = {}, full_width=false }) {
   const [tokens, setTokens] = useState([]);
 
   useEffect(() => {
