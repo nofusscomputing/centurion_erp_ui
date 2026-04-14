@@ -1,0 +1,13 @@
+{
+    "id": 3,
+    "display_name": "Choice",
+    "name": "choice",
+    "description": {
+        "markdown": "This field is used to display a field of text that when editing is limited to choices supplied.",
+        "render": {}
+    },
+    "field": 1,
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/3"
+    }
+}

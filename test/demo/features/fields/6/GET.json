@@ -1,0 +1,13 @@
+{
+    "id": 6,
+    "display_name": "Email",
+    "name": "email",
+    "description": {
+        "markdown": "This field is used to display a field that is an email address.",
+        "render": {}
+    },
+    "field": "the.recipient@domainname.tld",
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/6"
+    }
+}

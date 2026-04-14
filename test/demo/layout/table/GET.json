@@ -1,0 +1,89 @@
+{
+    "results": [
+        {
+            "id": 2,
+            "display_name": "Boolean",
+            "name": "boolean",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/2"
+            }
+        },
+        {
+            "id": 3,
+            "display_name": "Choice",
+            "name": "choice",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/3"
+            }
+        },
+        {
+            "id": 4,
+            "display_name": "Date",
+            "name": "date",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/4"
+            }
+        },
+        {
+            "id": 4,
+            "display_name": "DateTime",
+            "name": "datetime",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/5"
+            }
+        },
+        {
+            "id": 6,
+            "display_name": "Email",
+            "name": "email",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/6"
+            }
+        },
+        {
+            "id": 7,
+            "display_name": "Integer",
+            "name": "integer",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/7"
+            }
+        },
+        {
+            "id": 8,
+            "display_name": "JSON",
+            "name": "json",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/8"
+            }
+        },
+        {
+            "id": 9,
+            "display_name": "Markdown",
+            "name": "markdown",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/9"
+            }
+        },
+        {
+            "id": 1,
+            "display_name": "String",
+            "name": "string",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/1"
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "page": 1,
+            "pages": 1,
+            "count": 9
+        }
+    },
+    "links": {
+        "first": "/mock/api/v2/features/fields?page%5Bnumber%5D=1",
+        "last": "/mock/api/v2/features/fields?page%5Bnumber%5D=1",
+        "next": null,
+        "prev": null
+    }
+}

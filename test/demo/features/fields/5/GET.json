@@ -1,0 +1,13 @@
+{
+    "id": 5,
+    "display_name": "DateTime",
+    "name": "datetime",
+    "description": {
+        "markdown": "This field is used to display a field that is a date with time.",
+        "render": {}
+    },
+    "field": "2024-07-11T17:30:00.537175+09:30",
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/5"
+    }
+}
