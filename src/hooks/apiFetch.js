@@ -53,9 +53,10 @@ export async function apiFetch(
 
 
     let request_data = {
-        credentials: 'include',
+        ...( getCookie('csrftoken') ? { credentials: 'include' } : {}),
         headers: {
-            'X-CSRFToken': getCookie('csrftoken')
+            ...(getCookie('csrftoken') ? { 'X-CSRFToken': getCookie('csrftoken') } : {})
+
         },
         method: http_method,
     }
@@ -66,7 +67,10 @@ export async function apiFetch(
 
         if( data_body ) {
 
-            data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
+            if( getCookie('csrftoken') ) {
+                data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
+            }
+
 
             request_data['body'] = JSON.stringify(data_body)
         }
