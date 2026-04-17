@@ -77,7 +77,7 @@ const Detail = () => {
             setPageHeading(metadata['name']);
         }
 
-        setPageDescription(null)
+        setPageDescription(metadata['description'])
 
 
         setPageHeaderIcons(
@@ -111,6 +111,7 @@ const Detail = () => {
 
     },[
         page_data,
+        metadata
     ])
 
 
@@ -137,6 +138,7 @@ const Detail = () => {
         }
 
     }, [
+        page_data,
         update_notes,
     ])
 
@@ -160,6 +162,7 @@ const Detail = () => {
 
     return (
         <>
+            { page_data && metadata && <>
             <PageSection
                 className="pf-m-sticky-top"
                 type="tabs"
@@ -328,6 +331,7 @@ const Detail = () => {
     `           `})}
 
             </PageSection>
+            </>}
         </>
     );
 
