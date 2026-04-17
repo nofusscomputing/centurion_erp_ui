@@ -486,8 +486,14 @@ function tokensToJSX(tokens, depth = 0) {
 }
 
 
-export default function RenderMarkdown({ children, className = null, env = {}, full_width=false }) {
+export default function RenderMarkdown({ children, className = null, env, full_width=false }) {
   const [tokens, setTokens] = useState([]);
+
+  if( env === undefined ) {
+    
+    throw Error("'env' parameter must be specified. if not required use empty object `{}`");
+
+  }
 
   useEffect(() => {
         if (typeof children !== "string") {
