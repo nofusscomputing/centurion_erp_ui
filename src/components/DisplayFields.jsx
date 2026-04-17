@@ -178,6 +178,8 @@ const DisplayFields = ({
 
     const [ data, setformData ] = useState(existingFormData);
 
+    const [ pageMetadata, setPageMetadata ] = useState(metadata);
+
     const [ formState, setFormState ] = useState({});
 
     const isMobile = useIsMobile();
@@ -198,6 +200,12 @@ const DisplayFields = ({
             }
         }
     };
+
+    useEffect(() => {
+        setformData(existingFormData)
+        setPageMetadata(metadata)
+    }, [existingFormData]);
+
 
     useEffect(() => {
 
@@ -263,7 +271,7 @@ const DisplayFields = ({
                             isCreate={isCreate}
                             isEdit={isEdit}
                             objectData={data}
-                            objectMetadata={metadata}
+                            objectMetadata={pageMetadata}
                             onChange={setFormState}
                         />
                     </Column>
@@ -283,7 +291,7 @@ const DisplayFields = ({
                             isCreate={isCreate}
                             isEdit={isEdit}
                             objectData={data}
-                            objectMetadata={metadata}
+                            objectMetadata={pageMetadata}
                             onChange={setFormState}
                         />
                     </Column>
@@ -297,7 +305,7 @@ const DisplayFields = ({
         let columnFields = layout.fields
 
         if( isCreate) {
-            columnFields = Object.entries(metadata.fields).map(([fieldName, meta]) => {
+            columnFields = Object.entries(pageMetadata.fields).map(([fieldName, meta]) => {
                 return fieldName;
             });
         }
@@ -314,7 +322,7 @@ const DisplayFields = ({
                     isCreate={isCreate}
                     isEdit={isEdit}
                     objectData={data}
-                    objectMetadata={metadata}
+                    objectMetadata={pageMetadata}
                     onChange={setFormState}
                 />
             </Column>
@@ -387,7 +395,7 @@ const DisplayFields = ({
                         <List>
                         {Object.entries(actionData.errors).map(([fieldKey, fieldErrors]) => {
 
-                            return (<ListItem>{metadata.fields[fieldKey].label}</ListItem>);
+                            return (<ListItem>{pageMetadata.fields[fieldKey].label}</ListItem>);
 
                         })}
                         </List>
@@ -399,7 +407,7 @@ const DisplayFields = ({
                 {actionGroup}
 
                 <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
-                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(metadata)} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(pageMetadata)} />
                 <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 
             </Form>
