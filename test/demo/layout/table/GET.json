@@ -25,7 +25,7 @@
             }
         },
         {
-            "id": 4,
+            "id": 5,
             "display_name": "DateTime",
             "name": "datetime",
             "_urls": {
@@ -65,6 +65,14 @@
             }
         },
         {
+            "id": 10,
+            "display_name": "Relationship",
+            "name": "relationship",
+            "_urls": {
+                "_self": "/mock/api/v2/features/fields/10"
+            }
+        },
+        {
             "id": 1,
             "display_name": "String",
             "name": "string",
@@ -77,7 +85,7 @@
         "pagination": {
             "page": 1,
             "pages": 1,
-            "count": 9
+            "count": 10
         }
     },
     "links": {

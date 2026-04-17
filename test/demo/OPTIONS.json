@@ -85,6 +85,11 @@
           "display_name": "List",
           "name": "list",
           "link": "/layout/table"
+        },
+        {
+          "display_name": "Detail",
+          "name": "detail",
+          "link": "/layout/detail/1"
         }
       ]
     }
