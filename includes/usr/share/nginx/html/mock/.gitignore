@@ -1,3 +1,5 @@
-# Prevent committing mock data as it's not required.
-*
+# Prevent committing mock datadata as it's not required.
+*.*
 !.gitignore
+!api/**/*.*
+# !api/v2/base/user/1/GET.json
