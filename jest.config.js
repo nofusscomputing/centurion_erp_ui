@@ -212,8 +212,7 @@ const config = {
   transform: {
         "\\.[jt]sx?$": "babel-jest",
         "\\.mjs$": "babel-jest",
-        '\\.svg$':
-        '<rootDir>/src/__test__/__mocks__/svgPathMock.js',
+        '\\.svg$': '<rootDir>/src/__test__/__mocks__/svgPathMock.js',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
@@ -222,7 +221,7 @@ const config = {
     // "src/",
     //   "\\.pnp\\.[^\\/]+$"
     // "node_modules/(?!src)/'",
-    "/node_modules/(?!(markdown-it)/)"
+    "/node_modules/(?!(markdown-it|react-router|@patternfly/react-core)/)"
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
