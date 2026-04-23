@@ -12,10 +12,10 @@ import {
     DualListSelectorControl
 } from '@patternfly/react-core';
 
-import AngleDoubleLeftIcon from '@patternfly/react-icons/dist/esm/icons/angle-double-left-icon';
-import AngleDoubleRightIcon from '@patternfly/react-icons/dist/esm/icons/angle-double-right-icon';
-import AngleLeftIcon from '@patternfly/react-icons/dist/esm/icons/angle-left-icon';
-import AngleRightIcon from '@patternfly/react-icons/dist/esm/icons/angle-right-icon';
+import { AngleDoubleLeftIcon } from '@patternfly/react-icons';
+import { AngleDoubleRightIcon } from '@patternfly/react-icons';
+import { AngleLeftIcon } from '@patternfly/react-icons';
+import { AngleRightIcon } from '@patternfly/react-icons';
 
 
 /** Helper Function to build event object */
