@@ -25,8 +25,6 @@ import '../styles/markdown.css'
 import model_link_plugin from './markdown_plugins/ModelLink';
 import ticket_link_plugin from './markdown_plugins/TicketLink';
 import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
-import IconLoader from '../components/IconLoader';
-import CodeCopy_plugin from './markdown_plugins/CodeCopy';
 
 
 
@@ -71,15 +69,7 @@ const md = markdownIt({
 
     .use(model_link_plugin)
 
-    .use(html_whitelist_plugin)
-
-    .use(CodeCopy_plugin, {
-        element: renderToString(
-            <span  className="icon" >
-                <IconLoader name = 'copy' fill='#ff0000' />
-            </span>
-        )
-    });
+    .use(html_whitelist_plugin);
 
 
 
