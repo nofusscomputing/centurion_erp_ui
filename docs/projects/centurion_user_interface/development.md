@@ -48,8 +48,6 @@ To use his mock backend, do the following on your development machine:
         --rm \
         -d \
         -p 3000:80 \
-        -e "API_URL=http://127.0.0.1:3000/mock/api/v2" \
-        -v ${PWD}/includes/usr/share/nginx/html/mock:/usr/share/nginx/html/mock \
         -v ${PWD}/includes/etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf \
         --name centurion-ui \
         centurion-ui:dev
