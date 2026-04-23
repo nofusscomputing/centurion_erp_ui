@@ -90,6 +90,8 @@ The UI is being developed **in parallel with [Centurion ERP](../centurion_erp/in
 - The UI remains adaptable and backend-agnostic.
 - Development teams can focus on building features rather than rewriting interfaces.
 
+Additional information related to development can be found in its [docs](./development.md).
+
 
 ## Vision
 

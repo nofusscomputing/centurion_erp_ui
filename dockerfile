@@ -43,7 +43,7 @@ ENV CI_PROJECT_URL=${CI_PROJECT_URL}
 ENV CI_COMMIT_SHA=${CI_COMMIT_SHA}
 ENV CI_COMMIT_TAG=${CI_COMMIT_TAG}
 
-ENV API_URL=__API_URL__
+ENV API_URL="http://127.0.0.1:3000/mock/api/v2"
 
 
 COPY --from=build /workdir/build/ /usr/share/nginx/html/

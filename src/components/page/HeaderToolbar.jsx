@@ -19,11 +19,11 @@ import {
 } from "@patternfly/react-core";
 
 
-import CogIcon from '@patternfly/react-icons/dist/esm/icons/cog-icon';
-import EllipsisVIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
-import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
+import { CogIcon } from '@patternfly/react-icons';
+import { EllipsisVIcon } from '@patternfly/react-icons';
+import { HelpIcon } from '@patternfly/react-icons';
 import imgAvatar from '@patternfly/react-core/src/components/assets/avatarImg.svg';
-import QuestionCircleIcon from '@patternfly/react-icons/dist/esm/icons/question-circle-icon';
+import { QuestionCircleIcon } from '@patternfly/react-icons';
 
 
 import UserContext from "../../hooks/UserContext";

@@ -158,20 +158,17 @@ const Column = ({isEdit, isMobile, children}) => {
  * @todo there needs to be a way to specify if its just going to be markdown/json
  *  field data, or if its going to be a description list group.
  * 
- * @param {{
- *      existingFormData: object,
- *      layout: array,
- *      metadata: object,
- * }}
- * @param existingFormData Data for the object
- * @param layout Page Layout information.
- * @param data API Metadata for the object.
+ * @param props
+ * @param {object} props.existingFormData Data for the object
+ * @param {array} props.layout Page Layout information.
+ * @param {boolean} props.isCreate set fields to create mode
+ * @param {object} props.metadata API Metadata for the object.
  * 
  * @returns Component ready to be placed on a card.
  */
 const DisplayFields = ({
     existingFormData = null,
-    isCreate,
+    isCreate = false,
     layout = null,
     metadata,
     onClose = null,
@@ -180,6 +177,8 @@ const DisplayFields = ({
     const actionData = useActionData();
 
     const [ data, setformData ] = useState(existingFormData);
+
+    const [ pageMetadata, setPageMetadata ] = useState(metadata);
 
     const [ formState, setFormState ] = useState({});
 
@@ -201,6 +200,12 @@ const DisplayFields = ({
             }
         }
     };
+
+    useEffect(() => {
+        setformData(existingFormData)
+        setPageMetadata(metadata)
+    }, [existingFormData]);
+
 
     useEffect(() => {
 
@@ -245,7 +250,7 @@ const DisplayFields = ({
 
     let cardData;
 
-    if( layout.layout === 'double' ) {
+    if( layout.layout === 'double' && ! isCreate ) {
 
         cardData = (
             <>
@@ -266,7 +271,7 @@ const DisplayFields = ({
                             isCreate={isCreate}
                             isEdit={isEdit}
                             objectData={data}
-                            objectMetadata={metadata}
+                            objectMetadata={pageMetadata}
                             onChange={setFormState}
                         />
                     </Column>
@@ -286,7 +291,7 @@ const DisplayFields = ({
                             isCreate={isCreate}
                             isEdit={isEdit}
                             objectData={data}
-                            objectMetadata={metadata}
+                            objectMetadata={pageMetadata}
                             onChange={setFormState}
                         />
                     </Column>
@@ -295,12 +300,12 @@ const DisplayFields = ({
             </>
         );
 
-    } else if( layout.layout === 'single' ) {
+    } else if( layout.layout === 'single' || isCreate ) {
 
         let columnFields = layout.fields
 
         if( isCreate) {
-            columnFields = Object.entries(metadata.fields).map(([fieldName, meta]) => {
+            columnFields = Object.entries(pageMetadata.fields).map(([fieldName, meta]) => {
                 return fieldName;
             });
         }
@@ -317,7 +322,7 @@ const DisplayFields = ({
                     isCreate={isCreate}
                     isEdit={isEdit}
                     objectData={data}
-                    objectMetadata={metadata}
+                    objectMetadata={pageMetadata}
                     onChange={setFormState}
                 />
             </Column>
@@ -390,7 +395,7 @@ const DisplayFields = ({
                         <List>
                         {Object.entries(actionData.errors).map(([fieldKey, fieldErrors]) => {
 
-                            return (<ListItem>{metadata.fields[fieldKey].label}</ListItem>);
+                            return (<ListItem>{pageMetadata.fields[fieldKey].label}</ListItem>);
 
                         })}
                         </List>
@@ -402,7 +407,7 @@ const DisplayFields = ({
                 {actionGroup}
 
                 <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
-                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(metadata)} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(pageMetadata)} />
                 <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 
             </Form>

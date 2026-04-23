@@ -282,7 +282,7 @@ export default function FieldData({
                     + "\r\n"
 
                 field_data = (
-                    <RenderMarkdown full_width={full_width}>
+                    <RenderMarkdown env={{}} full_width={full_width}>
                         {markdown}
                     </RenderMarkdown>
                 )

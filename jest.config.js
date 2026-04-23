@@ -168,7 +168,10 @@ const config = {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-    '<rootDir>/src/__test__/__mocks__/fetch.js'
+    '<rootDir>/src/__test__/__mocks__/apiFetch.js',
+    '<rootDir>/src/__test__/__mocks__/fetch.js',
+    '<rootDir>/src/__test__/__mocks__/reactRouter.js',
+    '<rootDir>/src/__test__/__mocks__/windowMatchMedia.js'
   ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
@@ -212,8 +215,7 @@ const config = {
   transform: {
         "\\.[jt]sx?$": "babel-jest",
         "\\.mjs$": "babel-jest",
-        '\\.svg$':
-        '<rootDir>/src/__test__/__mocks__/svgPathMock.js',
+        '\\.svg$': '<rootDir>/src/__test__/__mocks__/svgPathMock.js',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
@@ -222,7 +224,7 @@ const config = {
     // "src/",
     //   "\\.pnp\\.[^\\/]+$"
     // "node_modules/(?!src)/'",
-    "/node_modules/(?!(markdown-it)/)"
+    "/node_modules/(?!(markdown-it|react-router|@patternfly/react-core)/)"
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them

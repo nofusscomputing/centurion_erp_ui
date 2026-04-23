@@ -1,0 +1,87 @@
+{
+    "name": "User",
+    "description": "Centurion Users",
+    "urls": {},
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+    ],
+    "fields": {
+        "id": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "ID"
+        },
+        "display_name": {
+            "type": "String",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Display name"
+        },
+        "name": {
+            "type": "String",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Name",
+            "help_text": "Name of the field"
+        },
+        "description": {
+            "multi_line": true,
+            "type": "Markdown",
+            "required": false,
+            "style": {
+                "class": null
+            },
+            "read_only": false,
+            "write_only": false,
+            "label": "Field Description",
+            "help_text": "A description of what the field would be used for"
+        },
+        "field": {
+            "type": "JSON",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Demo of Field",
+            "help_text": "This is a demonstration of the field in question"
+        }
+    },
+    "layout": [
+        {
+            "name": "Details",
+            "slug": "details",
+            "sections": [
+                {
+                    "layout": "single",
+                    "fields": [
+                        "description"
+                    ]
+                },
+                {
+                    "name": "Demo",
+                    "layout": "double",
+                    "left": [
+                        "display_name"
+                    ],
+                    "right": [
+                        "field"
+                    ]
+                }
+            ]
+        }
+    ]
+}

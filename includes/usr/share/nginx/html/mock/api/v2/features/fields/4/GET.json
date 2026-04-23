@@ -1,0 +1,13 @@
+{
+    "id": 4,
+    "display_name": "Date",
+    "name": "date",
+    "description": {
+        "markdown": "This field is used to display a field that is a date.",
+        "render": {}
+    },
+    "field": "2026-04-14",
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/4"
+    }
+}

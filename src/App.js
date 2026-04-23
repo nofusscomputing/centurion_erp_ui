@@ -211,13 +211,35 @@ function App() {
 
 
                             <Route path=":pk"
-                                action={APISubmitAction} shouldRevalidate={() => false}
+                                action={APISubmitAction}
+                                shouldRevalidate={({ currentParams, nextParams }) => {
+
+                                    const reValidate = (
+                                        currentParams.module !== nextParams.module ||
+                                        currentParams.model !== nextParams.model ||
+                                        currentParams.id !== nextParams.id
+                                    )
+
+                                    return reValidate
+
+                                }}
                             >
 
 
                                 <Route index element={<Detail />} 
                                     loader = {pagedLoader}
-                                    action={APISubmitAction} shouldRevalidate={() => false}
+                                    action={APISubmitAction}
+                                    shouldRevalidate={({ currentParams, nextParams }) => {
+
+                                        const reValidate = (
+                                            currentParams.module !== nextParams.module ||
+                                            currentParams.model !== nextParams.model ||
+                                            currentParams.pk !== nextParams.pk
+                                        )
+
+                                        return reValidate
+
+                                    }}
                                 />
 
 
