@@ -28,7 +28,7 @@
   "scripts": {
     "start": "webpack serve --mode development --no-open",
     "build": "webpack --mode production",
-    "test": "jest",
+    "test": "jest --json --outputFile=artifacts/test_results.json",
     "unit-test": "jest unit/"
   },
   "eslintConfig": {
