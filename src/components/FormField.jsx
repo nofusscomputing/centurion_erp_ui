@@ -173,6 +173,7 @@ const FormField = ({
 
                 return (
                     <Switch
+                        aria-label = {fieldName}
                         id="simple-switch"
                         key = {fieldName}
                         name = {fieldName}
