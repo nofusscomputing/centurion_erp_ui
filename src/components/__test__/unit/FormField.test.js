@@ -425,4 +425,277 @@ describe("FormField", () => {
 
     });
 
+
+    describe("Edit data", () => {
+
+        const isCreate = false
+        const isEdit = true
+
+
+        test.each(fields)(
+            'Enabled - $data.name - $data.id',
+           ({ data, options }) => {
+            /**
+             * A field that is Enabled should display
+             */
+
+
+            const { container } = render(
+                <FormField
+                    errorState = {{}}
+                    fieldName = {"field"}
+                    formState = {{}}
+                    isEdit = {isEdit}
+                    isCreate = {isCreate}
+                    objectData = {data}
+                    objectMetadata = {options}
+                    onChange = {null}
+                />
+            );
+
+
+            const rendered = container.querySelector(`${htmlFieldType( options.fields["field"].type )}[name="field"]`)
+
+            // Field must exist in data
+            expect(String(rendered.outerHTML).replace("\n", '')).not.toBe('')
+
+            // Field attribute to check
+            expect([ null, true]).toContain(rendered.getAttribute('enabled'))
+
+        });
+
+
+        test.each(fields)(
+            'Create Only - $data.name - $data.id',
+           ({ data, options }) => {
+            /**
+             * A field that is read_only and write_only should display
+             */
+
+
+            const testMetadata = { ...options }
+
+            testMetadata['fields']['field'].read_only = true
+            testMetadata['fields']['field'].write_only = true
+
+            const { container } = render(
+                <FormField
+                    errorState = {{}}
+                    fieldName = {"field"}
+                    formState = {{}}
+                    isEdit = {isEdit}
+                    isCreate = {isCreate}
+                    objectData = {data}
+                    objectMetadata = {testMetadata}
+                    onChange = {null}
+                />
+            );
+
+            const rendered = container.querySelector(`${htmlFieldType( options.fields["field"].type )}[name="field"]`)
+
+            // Field must not exist in data
+            expect(rendered).toBe(null)
+
+        });
+
+
+        test.each(fields)(
+            'Read-Only - $data.name - $data.id',
+           ({ data, options }) => {
+            /**
+             * A field that is read_only and not write_only should not display
+             */
+
+
+            const testMetadata = { ...options }
+
+            testMetadata['fields']['field'].read_only = true
+            testMetadata['fields']['field'].write_only = false
+
+            const { container } = render(
+                <FormField
+                    errorState = {{}}
+                    fieldName = {"field"}
+                    formState = {{}}
+                    isEdit = {isEdit}
+                    isCreate = {isCreate}
+                    objectData = {data}
+                    objectMetadata = {testMetadata}
+                    onChange = {null}
+                />
+            );
+
+            const rendered = container.querySelector(`${htmlFieldType( options.fields["field"].type )}[name="field"]`)
+
+            // Field must not exist in data
+            expect(rendered).toBe(null)
+
+
+        });
+
+
+        test.each(fields)(
+            'Required - $data.name - $data.id',
+           ({ data, options }) => {
+            /**
+             * A field that is required should display
+             */
+
+
+            const testMetadata = { ...options }
+
+            testMetadata['fields']['field'].read_only = false
+            testMetadata['fields']['field'].required = true
+            testMetadata['fields']['field'].write_only = false
+
+            const { container } = render(
+                <FormField
+                    errorState = {{}}
+                    fieldName = {"field"}
+                    formState = {{}}
+                    isEdit = {isEdit}
+                    isCreate = {isCreate}
+                    objectData = {data}
+                    objectMetadata = {testMetadata}
+                    onChange = {null}
+                />
+            );
+
+            const rendered = container.querySelector(`${htmlFieldType( options.fields["field"].type )}[name="field"]`)
+
+            // Field must exist in data
+            expect(String(rendered.outerHTML).replace("\n", '')).not.toBe('')
+
+            // Field attribute to check
+            expect(rendered.getAttribute('required')).toBe(null)
+
+        });
+
+
+    
+        test.each(fields)(
+            'Initial Value - $data.name - $data.id',
+           ({ data, options }) => {
+            /**
+             * A field that has an initial value set must add it as its value
+             */
+
+
+            const initialFieldValue = ( fieldType ) => {
+
+                switch( fieldType ) {
+
+                    case 'Boolean':
+
+                        return {
+                            value: data['field'],
+                            rendered: "on"
+                        };
+
+                    case 'Choice':
+
+                        return {
+                            value: data['field'],
+                            rendered: String(data['field'])
+                        };
+
+                    case 'Relationship':
+
+                        return {
+                            value: data['field'],
+                            rendered: String(data['field'].id)
+                        };
+
+                    case 'Date':
+                        return {
+                            value: data['field'],
+                            rendered: data['field']
+                        };
+
+                    case 'DateTime':
+                        return {
+                            value: data['field'],
+                            // rendered: FormatTime({
+                            //     time: data['field'],
+                            //     tz: "Australia/Darwin"
+                            // })
+                            rendered: String(FormatTime({
+                                time: data['field'],
+                                iso: true,
+                                tz: "Australia/Darwin"
+                            })).replace('Z', '').substring(0, 16)
+                        };
+
+                    case 'Email':
+                        return {
+                            value: data['field'],
+                            rendered: data['field']
+                        };
+
+                    // case 'GenericField':    // 'UUID':    // todo: fix centurion field type
+                    case 'Integer':
+                        return {
+                            value: data['field'],
+                            rendered: String(data['field'])
+                        };
+
+                    case 'String':
+                        return {
+                            value: data['field'],
+                            rendered: data['field']
+                        };
+
+                    case 'JSON':
+                        return {
+                            value: JSON.stringify( data['field'] ),
+                            rendered: JSON.stringify( data['field'], null, 4 )
+                        };
+
+                    case 'Markdown':
+                        return {
+                            value: data['field'],
+                            rendered: data['field'].markdown
+                        };
+
+                    default:
+                        throw Error('Test cant continue without knowing the HTML field type.')
+
+                }
+            }
+
+            const fieldValue = initialFieldValue( options.fields["field"].type )
+
+            const testMetadata = { ...options }
+
+            testMetadata['fields']['field'].initial = fieldValue.value
+            testMetadata['fields']['field'].read_only = false
+            testMetadata['fields']['field'].required = true
+            testMetadata['fields']['field'].write_only = false
+
+            const { container } = render(
+                <FormField
+                    errorState = {{}}
+                    fieldName = {"field"}
+                    formState = {{}}
+                    isEdit = {isEdit}
+                    isCreate = {isCreate}
+                    objectData = {data}
+                    objectMetadata = {testMetadata}
+                    onChange = {null}
+                />
+            );
+
+            const rendered = container.querySelector(`${htmlFieldType( options.fields["field"].type )}[name="field"]`)
+
+            // Field must exist in data
+            expect(String(rendered.outerHTML).replace("\n", '')).not.toBe('')
+
+            // Field attribute to check
+            expect(rendered.value).toBe(fieldValue.rendered)
+        
+        });
+
+
+    });
+
 });
