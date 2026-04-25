@@ -263,7 +263,7 @@ const FormField = ({
                 return (
                     <TextInput
                         aria-describedby = "simple-form-name-01-helper"
-                        isRequired = {isRequired}
+                        isRequired = {isRequired ? null : undefined}
                         id = {fieldName}
                         key = {fieldName}
                         name = {fieldName}
@@ -279,7 +279,7 @@ const FormField = ({
                 return (
                     <TextArea
                         aria-label = "text area example"
-                        isRequired = {isRequired}
+                        isRequired = {isRequired ? null : undefined}
                         id = {fieldName}
                         key = {fieldName}
                         name = {fieldName}
@@ -300,7 +300,7 @@ const FormField = ({
                     <MarkdownEditor
                         ariaLabel = "text area example"
                         grow = {true}
-                        isRequired = {isRequired}
+                        isRequired = {isRequired ? null : undefined}
                         id = {fieldName}
                         objectData = {objectData}
                         name = {fieldName}
