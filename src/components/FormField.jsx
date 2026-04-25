@@ -268,7 +268,7 @@ const FormField = ({
                         key = {fieldName}
                         name = {fieldName}
                         onChange = {handleFieldChange}
-                        readOnly = {readOnly}
+                        readOnly = {readOnly ? null : undefined}
                         type = {inputFieldType}
                         value = {updatedFieldData}
                     />
@@ -284,7 +284,7 @@ const FormField = ({
                         key = {fieldName}
                         name = {fieldName}
                         onChange = {handleFieldChange}
-                        readOnly = {readOnly}
+                        readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
                         value = {updatedFieldData}
                     />
@@ -305,7 +305,7 @@ const FormField = ({
                         objectData = {objectData}
                         name = {fieldName}
                         onChange = {handleFieldChange}
-                        readOnly = {readOnly}
+                        readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
                         value = {updatedFieldData}
                     />
