@@ -98,6 +98,21 @@ describe("Root Layout", () => {
     const baseDir = path.join(__dirname, '../../../../includes/usr/share/nginx/html/mock/api/v2')
 
 
+    let consoleErrorSpy;
+
+    const allowedErrors = [
+        // /Warning: ReactDOM\.render is deprecated/,
+        // /act\(\.\.\.\)/,
+    ];
+
+    beforeEach(() => {
+        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        consoleErrorSpy.mockRestore();
+    });
+
 
 
     describe("List Layout", () => {
@@ -169,6 +184,47 @@ describe("Root Layout", () => {
                 const headings = await screen.findAllByRole("heading", { level: 1 })
 
                 expect(headings[1].textContent).toBe(options.name);
+
+            }
+        )
+
+
+        test.each(listLayout)(
+            'List Layout (No Errors) - $options.name',
+            async ({ data, options }) => {
+
+                const loader = async () => {
+
+                    return {
+                        page_data: data,
+                        metadata: options
+                    };
+                }
+
+
+                const Stub = createRoutesStub([
+                    {
+                        Component: RootLayout,
+                        children: [
+                            {
+                                path: options.urls.self,
+                                Component: List,
+                                loader: loader
+                            }
+                        ],
+                    }
+                ]);
+
+
+                render(
+                    <UserProvider>
+                        <Stub initialEntries={[options.urls.self]} />
+                    </UserProvider>
+                );
+
+                const headings = await screen.findAllByRole("heading", { level: 1 })
+
+                expect(consoleErrorSpy).not.toHaveBeenCalled();
 
             }
         )
@@ -246,6 +302,47 @@ describe("Root Layout", () => {
                 const headings = await screen.findAllByRole("heading", { level: 1 })
 
                 expect(headings[1].textContent).toBe(data.name);
+
+            }
+        )
+
+
+        test.each(detailLayout)(
+            'Detail Layout (No Errors) - $data.name - $data.id',
+            async ({ data, options }) => {
+
+                const loader = async () => {
+
+                    return {
+                        page_data: data,
+                        metadata: options
+                    };
+                }
+
+
+                const Stub = createRoutesStub([
+                    {
+                        Component: RootLayout,
+                        children: [
+                            {
+                                path: data._urls._self.split('api/v2')[1],
+                                Component: Detail,
+                                loader: loader
+                            }
+                        ],
+                    }
+                ]);
+
+
+                render(
+                    <UserProvider>
+                        <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
+                    </UserProvider>
+                );
+
+                const headings = await screen.findAllByRole("heading", { level: 1 })
+
+                expect(consoleErrorSpy).not.toHaveBeenCalled();
 
             }
         )

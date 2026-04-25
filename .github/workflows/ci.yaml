@@ -130,7 +130,7 @@ jobs:
       - name: Run Tests
         shell: bash
         run:
-          npm test -- --testPathPatterns="__test__/unit"
+          npm run test-unit
 
 
       - name: Obtain Test Data

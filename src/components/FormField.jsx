@@ -173,6 +173,7 @@ const FormField = ({
 
                 return (
                     <Switch
+                        aria-label = {fieldName}
                         id="simple-switch"
                         key = {fieldName}
                         name = {fieldName}
@@ -192,9 +193,9 @@ const FormField = ({
                         const options = { "component": [] }
 
                         if(
-                            ( typeof(choice.value) === 'number' && Number(fieldData) == choice.value )
+                            ( typeof(choice.value) === 'number' && Number(updatedFieldData) == choice.value )
                             ||
-                            ( typeof(choice.value) === 'string' && String(fieldData) == choice.value )
+                            ( typeof(choice.value) === 'string' && String(updatedFieldData) == choice.value )
                         ) {
 
                             selectedOption = choice.value;
@@ -262,12 +263,12 @@ const FormField = ({
                 return (
                     <TextInput
                         aria-describedby = "simple-form-name-01-helper"
-                        isRequired = {isRequired}
+                        isRequired = {isRequired ? null : undefined}
                         id = {fieldName}
                         key = {fieldName}
                         name = {fieldName}
                         onChange = {handleFieldChange}
-                        readOnly = {readOnly}
+                        readOnly = {readOnly ? null : undefined}
                         type = {inputFieldType}
                         value = {updatedFieldData}
                     />
@@ -278,12 +279,12 @@ const FormField = ({
                 return (
                     <TextArea
                         aria-label = "text area example"
-                        isRequired = {isRequired}
+                        isRequired = {isRequired ? null : undefined}
                         id = {fieldName}
                         key = {fieldName}
                         name = {fieldName}
                         onChange = {handleFieldChange}
-                        readOnly = {readOnly}
+                        readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
                         value = {updatedFieldData}
                     />
@@ -299,12 +300,12 @@ const FormField = ({
                     <MarkdownEditor
                         ariaLabel = "text area example"
                         grow = {true}
-                        isRequired = {isRequired}
+                        isRequired = {isRequired ? null : undefined}
                         id = {fieldName}
                         objectData = {objectData}
                         name = {fieldName}
                         onChange = {handleFieldChange}
-                        readOnly = {readOnly}
+                        readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
                         value = {updatedFieldData}
                     />

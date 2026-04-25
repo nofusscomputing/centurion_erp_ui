@@ -28,8 +28,8 @@
   "scripts": {
     "start": "webpack serve --mode development --no-open",
     "build": "webpack --mode production",
-    "test": "jest --json --outputFile=artifacts/test_results.json",
-    "unit-test": "jest unit/"
+    "test": "jest",
+    "test-unit": "jest --json --outputFile=artifacts/test_results.json --testPathPatterns='__test__/unit'"
   },
   "eslintConfig": {
     "extends": [
