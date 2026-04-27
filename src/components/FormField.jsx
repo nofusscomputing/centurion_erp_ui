@@ -90,7 +90,21 @@ const FormField = ({
 
         let field_value = _event.target.value;
 
-        if( _event.target.type === 'checkbox' ) {
+        if( field_value === '' ) {
+
+            onChange((prevState) => {
+
+                const next = { ...prevState };
+
+                delete next[_event.target.name];
+
+                return next;
+
+            });
+
+            return;
+
+        } else if( _event.target.type === 'checkbox' ) {
 
             field_value = _event.target.checked;
 
@@ -115,22 +129,8 @@ const FormField = ({
         }
 
 
-        if( field_value !== null ){
+        onChange((prevState) => ({ ...prevState, [_event.target.name]: field_value }));
 
-            onChange((prevState) => ({ ...prevState, [_event.target.name]: field_value }));
-
-        } else {
-
-            onChange((prevState) => {
-
-                const next = { ...prevState };
-
-                delete next[_event.target.name];
-
-                return next;
-
-            });
-        }
     }
 
 
