@@ -34,13 +34,28 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import UserContext from "../hooks/UserContext";
 
 
-
+/** Fetch and display fields.
+ * 
+ * @param param
+ * @param {object} param.errorState Form errors.
+ * @param {array} param.fields Form fields to fetch.
+ * @param {object} param.formState Current form edit state.
+ * @param {boolean} param.isCreate Is the object being created.
+ * @param {boolean} param.isEdit It the object being edited.
+ * @param {boolean} param.isFlex Display form as flex.
+ * @param {object} param.objectData Object Data.
+ * @param {object} param.objectMetadata Object Metadata
+ * @param {function} param.onChange Callback when the form changes.
+ * 
+ * @returns 
+ */
 export const Fields = ({
     errorState,
     fields,
     formState,
     isCreate = false,
     isEdit,
+    isFlex = false,
     objectData,
     objectMetadata,
     onChange,
@@ -58,6 +73,7 @@ export const Fields = ({
             && field !== 'model_notes'
             && textarea_fields.includes(String(objectMetadata.fields[field]?.type).toLowerCase())
             && ! isEdit
+            && ! isFlex
         ) {
 
             return(
@@ -68,6 +84,47 @@ export const Fields = ({
                         data={objectData}
                     />
             );
+
+        } else if( isFlex ) {
+
+            if( isEdit || isCreate ) {
+
+                return (
+                    <FormField
+                        errorState={errorState}
+                        fieldName = {field}
+                        formState = {formState}
+                        isCreate = {isCreate}
+                        isEdit = {isEdit}
+                        objectData = {objectData}
+                        objectMetadata = {objectMetadata}
+                        onChange = {onChange}
+                    />
+                );
+                
+            } else {
+
+                return (
+                    <FlexItem
+                        direction={{ default: 'column' }}
+                    >
+                        <label
+                            style={{
+                                display: "block",
+                                fontWeight: "var(--pf-t--global--font--weight--200)"
+                            }}
+                        >{objectMetadata.fields[field]?.label}</label>
+                        <div>
+                            <FieldData
+                                metadata={objectMetadata}
+                                field_name={field}
+                                data={objectData}
+                            />
+                        </div>
+                    </FlexItem>
+                );
+
+            }
 
         } else {
 
