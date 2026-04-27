@@ -148,24 +148,33 @@ const FormField = ({
         }
 
 
-        const fieldData = (
-            fieldName in formState ?
-                formState[fieldName]
-            :
-                FieldData({
-                    metadata: objectMetadata,
-                    field_name: fieldName,
-                    data: objectData,
-                    withFormatting: (
-                        (dataFieldType === 'DateTime' && readOnly) ?
-                            true
-                        :
-                            false
-                    )
-                })
-        )
+        const fieldData = FieldData({
+            metadata: objectMetadata,
+            field_name: fieldName,
+            data: objectData,
+            withFormatting: (
+                (dataFieldType === 'DateTime' && readOnly) ?
+                    true
+                :
+                    false
+            )
+        });
 
-        let updatedFieldData = (isCreate ?objectMetadata.fields[fieldName].initial : fieldData);
+
+        let updatedFieldData = (
+            isCreate ?
+            (
+                Object.hasOwn(formState, fieldName) ?
+                    formState[fieldName]
+                :
+                    objectMetadata.fields[fieldName].initial
+            )
+            :
+                Object.hasOwn(formState, fieldName) ?
+                    formState[fieldName]
+                :
+                    fieldData
+        );
 
         switch( dataFieldType ) {
 
