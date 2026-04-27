@@ -20,6 +20,7 @@ import {
     DescriptionListDescription,
     DescriptionListGroup,
     DescriptionListTerm,
+    Divider,
     Flex,
     FlexItem,
     List,
@@ -46,6 +47,7 @@ import UserContext from "../hooks/UserContext";
  * @param {object} param.objectData Object Data.
  * @param {object} param.objectMetadata Object Metadata
  * @param {function} param.onChange Callback when the form changes.
+ * @param {boolean} param.useDivider After each form field, add a divider.
  * 
  * @returns 
  */
@@ -59,6 +61,7 @@ export const Fields = ({
     objectData,
     objectMetadata,
     onChange,
+    useDivider = false
 }) => {
 
     let textarea_fields = [
@@ -90,6 +93,7 @@ export const Fields = ({
             if( isEdit || isCreate ) {
 
                 return (
+                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
@@ -100,6 +104,8 @@ export const Fields = ({
                         objectMetadata = {objectMetadata}
                         onChange = {onChange}
                     />
+                    { useDivider && <Divider />}
+                    </>
                 );
                 
             } else {
@@ -121,6 +127,7 @@ export const Fields = ({
                                 data={objectData}
                             />
                         </div>
+                        { useDivider && <Divider />}
                     </FlexItem>
                 );
 
@@ -128,9 +135,10 @@ export const Fields = ({
 
         } else {
 
-            if( ! isEdit ) {
+            if( ! isEdit && ! isCreate) {
 
                 return(
+                    <>
                     <DescriptionListGroup>
                         <DescriptionListTerm>{objectMetadata.fields[field]?.label}</DescriptionListTerm>
                         <DescriptionListDescription>
@@ -140,7 +148,9 @@ export const Fields = ({
                                 data={objectData}
                             />
                         </DescriptionListDescription>
+                        { useDivider && <Divider />}
                     </DescriptionListGroup>
+                    </>
                 );
 
             }
@@ -154,6 +164,7 @@ export const Fields = ({
 
             if(field in objectMetadata.fields ) {
                 return (
+                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
@@ -164,6 +175,7 @@ export const Fields = ({
                         objectMetadata = {objectMetadata}
                         onChange = {onChange}
                     />
+                    </>
                 );
             } else {
                 return;
