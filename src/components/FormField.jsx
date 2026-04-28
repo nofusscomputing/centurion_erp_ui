@@ -1,9 +1,15 @@
 import {
+    useContext,
     useRef,
 } from "react";
 
 import {
+    Form
+} from "react-router";
+
+import {
     Alert,
+    Button,
     FormGroup,
     FormGroupLabelHelp,
     FormHelperText,
@@ -17,9 +23,15 @@ import {
     TextInput
 } from "@patternfly/react-core";
 
+import {
+    TimesIcon,
+    CheckIcon
+} from '@patternfly/react-icons';
+
 import FieldData from "../functions/FieldData";
 import DualFieldSelector from "./form/DualFieldSelector";
 import MarkdownEditor from "./MarkdownEditor";
+import UserContext from "../hooks/UserContext";
 
 
 
@@ -33,23 +45,18 @@ import MarkdownEditor from "./MarkdownEditor";
  * The form state object will be in the format ready to be used as the JSON
  * body that the API requires.
  * 
- * @param {{
- *      errorState: array<Object>
- *      fieldName: string,
- *      formState: string,
- *      isEdit: boolean,
- *      objectData: object,
- *      objectMetadata: object,
- *      onChange: function
- * }}
- * @param errorState Any found errors.
- * @param fieldName name of the field. This is the name of the key within the API object.
- * @param formState State of any edits within the form.
- * @param isCreate Is new field data being added
- * @param isEdit Is the field being edited.
- * @param objectData object as received from API.
- * @param objectMetadata object metadata as received from API.
- * @param onChange State hook to save stat_event.
+ * @param param
+ * 
+ * @param {array<Object>} param.errorState Any found errors.
+ * @param {string} param.fieldName name of the field. This is the name of the key within the API object.
+ * @param {object} param.formState State of any edits within the form.
+ * @param {function} param.inlineEditCancel Callback to run when inline edit cancel is pressed.
+ * @param {boolean} param.isCreate Is new field data being added
+ * @param {boolean} param.isEdit Is the field being edited.
+ * @param {boolean} param.isInlineEdit Is the field being edited inline.
+ * @param {object} param.objectData object as received from API.
+ * @param {object} param.objectMetadata object metadata as received from API.
+ * @param {function} param.onChange State hook to save stat_event.
  * 
  * @returns Desired Form Field as a ready to place component.
  */
@@ -57,12 +64,18 @@ const FormField = ({
     errorState,
     fieldName,
     formState,
+    inlineEditCancel,
     isEdit = false,
     isCreate = false,
+    isInlineEdit = false,
     objectData,
     objectMetadata,
     onChange = null,
 }) => {
+
+    if( String(fieldName).endsWith('_badge') && isEdit) {
+        fieldName = String(fieldName).replace('_badge', '')
+    }
 
     const labelHelpRef = useRef(null);
 
@@ -71,6 +84,8 @@ const FormField = ({
     const readOnly = Boolean(objectMetadata.fields[fieldName].read_only)
 
     const writeOnly = Boolean(objectMetadata.fields[fieldName].write_only);
+
+    const user = useContext(UserContext);
 
     if(
         (isCreate && ((readOnly && !writeOnly) ))
@@ -347,7 +362,7 @@ const FormField = ({
     }
 
 
-    return (
+    const formGroup = (
         <FormGroup
             label = {objectMetadata.fields[fieldName].label}
             labelHelp = {
@@ -364,7 +379,22 @@ const FormField = ({
         >
 
             {fetchFormField()}
-
+            { ! readOnly && isInlineEdit &&
+            <>
+                <Button
+                    aria-label="Save"
+                    icon={<CheckIcon />}
+                    type="submit"
+                    variant="plain"
+                />
+                <Button
+                    aria-label="Cancel"
+                    icon={<TimesIcon />}
+                    variant="plain"
+                    onClick={inlineEditCancel}
+                />
+            </>
+            }
             <FormHelperText>
             <HelperText>
                 <HelperTextItem>
@@ -381,6 +411,38 @@ const FormField = ({
             </HelperText>
             </FormHelperText>
         </FormGroup>
+    );
+
+    return (
+        <>
+        { isInlineEdit &&
+            <>
+            <Form
+                className = "pf-v6-c-form pf-m-vertical"
+                id={'edit-' + fieldName} method="PATCH"
+                onSubmit={(e) => {
+                    
+                    if( isInlineEdit ) {
+                        
+                        inlineEditCancel();
+
+                    } else {
+
+                        onChange({})
+
+                    }
+                }}
+            >
+                {formGroup}
+
+                <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(objectMetadata)} />
+                <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
+            </Form>
+            </>
+        }
+        { ! isInlineEdit && formGroup }
+        </>
     );
 
 

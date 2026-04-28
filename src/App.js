@@ -189,11 +189,24 @@ function App() {
 
 
                             <Route path=":model/add" element={<Ticket />}
-                                action={InlineFieldAction} loader = {pagedLoader} />
+                                action={APISubmitAction} loader = {pagedLoader} />
 
 
                             <Route path=":model/:pk" element={<Ticket />}
-                                loader = {pagedLoader} action={InlineFieldAction} />
+                                action={APISubmitAction}
+                                loader = {pagedLoader}
+                                shouldRevalidate={({ currentParams, nextParams }) => {
+
+                                    const reValidate = (
+                                        currentParams.module !== nextParams.module ||
+                                        currentParams.model !== nextParams.model ||
+                                        currentParams.id !== nextParams.id
+                                    )
+
+                                    return reValidate
+
+                                }}
+                            />
 
                         </Route>
 

@@ -27,6 +27,8 @@ import {
     ListItem,
 } from "@patternfly/react-core";
 
+import { PencilAltIcon } from '@patternfly/react-icons';
+
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
 import FormField from "./FormField";
@@ -56,13 +58,15 @@ export const Fields = ({
     fields,
     formState,
     isCreate = false,
-    isEdit,
+    isEdit = false,
     isFlex = false,
     objectData,
     objectMetadata,
     onChange,
     useDivider = false
 }) => {
+
+    const [isFieldEdit, setIsFieldEdit] = useState({});
 
     let textarea_fields = [
         'json',
@@ -135,12 +139,23 @@ export const Fields = ({
 
         } else {
 
-            if( ! isEdit && ! isCreate) {
+            if( ! isEdit && ! isCreate && ! isFieldEdit?.[field]) {
 
                 return(
                     <>
                     <DescriptionListGroup>
-                        <DescriptionListTerm>{objectMetadata.fields[field]?.label}</DescriptionListTerm>
+                        <DescriptionListTerm>
+                            {objectMetadata.fields[field]?.label}
+                            { ! Boolean(objectMetadata.fields[String(field).endsWith('_badge') ? String(field).replace('_badge', '') : field]?.read_only) &&
+                            <Button
+                                aria-label="Action"
+                                icon={<PencilAltIcon />}
+                                variant="plain"
+                                onClick={(_event) => {
+                                    setIsFieldEdit({[field]: true})
+                                }}
+                            />}
+                        </DescriptionListTerm>
                         <DescriptionListDescription>
                             <FieldData
                                 metadata={objectMetadata}
@@ -170,7 +185,12 @@ export const Fields = ({
                         fieldName = {field}
                         formState = {formState}
                         isCreate = {isCreate}
-                        isEdit = {isEdit}
+                        isEdit = {isFieldEdit?.[field] ? isFieldEdit[field] : isEdit}
+                        isInlineEdit = {isFieldEdit?.[field] ? true : false}
+                        inlineEditCancel = {() => {
+                            setIsFieldEdit(!isFieldEdit)
+                            onChange({})
+                        }}
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
                         onChange = {onChange}
