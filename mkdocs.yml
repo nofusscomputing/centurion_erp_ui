@@ -43,6 +43,12 @@ nav:
 
       - projects/centurion_user_interface/fields/markdown.md
 
+    - Layouts:
+
+      - projects/centurion_user_interface/layout/index.md
+
+      - projects/centurion_user_interface/layout/ticket.md
+
 - Operations: 
 
   - operations/index.md

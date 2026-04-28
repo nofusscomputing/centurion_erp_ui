@@ -58,7 +58,7 @@ For Centurion UI to function dynamically, metadata that Centurion UI requires mu
 
     Metadata structure for providing user details.
 
-- View Layout
+- [View Layout](./layout/index.md)
 
     Metadata structure for providing the layout that will be rendered.
 

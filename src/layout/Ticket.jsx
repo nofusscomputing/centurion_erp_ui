@@ -1,19 +1,41 @@
-import { useEffect, useId, useState } from "react";
-import { Form, useLoaderData, useOutletContext, useParams } from "react-router";
+import {
+    useContext,
+    useEffect,
+    useId,
+    useState
+} from "react";
+
+import {
+    Form,
+    useActionData,
+    useLoaderData,
+    useOutletContext,
+    useParams
+} from "react-router";
+
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    DescriptionList,
+    Flex,
+    PageSection,
+    Sidebar,
+    SidebarContent,
+} from "@patternfly/react-core";
 
 import '../styles/ticket.css'
 
-import InlineField from "../components/InlineFields";
-import LinkedItems from "../components/page/ticket/LinkedItems";
-import MarkdownEditor from "../components/MarkdownEditor";
-import RelatedTickets from "../components/page/ticket/RelatedTickets";
-import Section from "../components/Section";
-import TicketComments from "../components/page/ticket/TicketComments";
-
-import FieldData from "../functions/FieldData";
-
 import { apiFetch } from "../hooks/apiFetch";
+import { Comments } from "../components/Comment";
+import FieldData from "../functions/FieldData";
+import { Fields } from "../components/DisplayFields";
+import LinkedItems from "../components/page/ticket/LinkedItems";
+import RelatedTickets from "../components/page/ticket/RelatedTickets";
 import urlBuilder from "../hooks/urlBuilder";
+import UserContext from "../hooks/UserContext";
 
 
 
@@ -36,11 +58,13 @@ export function secondsToTime(secs) {
 }
 
 
-const Ticket = ({
-    actionData = null,
-}) => {
+const Ticket = () => {
+
+    const actionData = useActionData();
 
     const [comment_metadata, setCommentMetaData] = useState(null);
+
+    const [ formState, setFormState ] = useState({});
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
@@ -50,8 +74,6 @@ const Ticket = ({
     setPageHeaderIcons(null);
 
     const [ editing_description, setEditingDescription ] = useState( false )
-
-    const [ new_ticket_form, setNewTicketFormData ] = useState({})
 
     const {page_data, metadata} = useLoaderData();
 
@@ -68,6 +90,22 @@ const Ticket = ({
     const [new_ticket, setNewTicket] = useState(
         url_params.params.action === 'add' ? true : false
     )
+
+    const user = useContext(UserContext);
+
+
+    useEffect(() => {
+
+        if(actionData?.body && actionData?.ok) {
+
+            setTicketData(actionData.body);
+
+                delete actionData.body;
+                delete actionData.errors;
+                delete actionData.ok;
+        }
+
+    }, [actionData])
 
 
     useEffect(() => {
@@ -107,27 +145,32 @@ const Ticket = ({
 
     useEffect(() => {
 
-        let ticket_type_entry = String(page_data['ticket_type']).toLowerCase()
-        ticket_type_entry = ticket_type_entry.replace(' ', '-').replace('_', '-')
+        if( ticket_metadata?.name ) {
 
-        SetTicketType(ticket_type_entry)
+            let ticket_type_entry = String(ticket_metadata.name).toLowerCase()
+            ticket_type_entry = ticket_type_entry.endsWith('s') ? ticket_type_entry.substring(0, (ticket_type_entry.length - 1)) : ticket_type_entry
+            ticket_type_entry = ticket_type_entry.replace(' ', '-').replace('_', '-')
+
+            SetTicketType(ticket_type_entry)
+
+        }
 
     }, [
-        metadata.fields,
-        page_data
+        metadata?.fields,
+        ticket_metadata
     ])
 
 
     useEffect(() => {
 
-        if( ! new_ticket ) {
+        if( ! new_ticket && ticket_data ) {
 
-            if( page_data['_urls']['comments'] ) {
+            if( ticket_data['_urls']['comments'] ) {
 
                 async function do_fetch() {
 
                     await apiFetch(
-                        page_data['_urls']['comments'],
+                        ticket_data['_urls']['comments'],
                         (data) =>{
 
                             setCommentMetaData(data)
@@ -144,28 +187,19 @@ const Ticket = ({
 
     }, [
         new_ticket,
-        page_data,
+        ticket_data,
     ])
-
-
-    const handleDescriptionCancel = () => {
-
-        setEditingDescription(false)
-
-    }
 
 
     const handleDescriptionEdit = () => {
 
-        setEditingDescription(true)
+        setEditingDescription(!editing_description)
 
-    }
+        if( ! editing_description ) {
 
+            setFormState({})
 
-    const handleDescriptionSave = ({event}) => {
-
-        setEditingDescription(false)
-
+        }
     }
 
 
@@ -184,359 +218,389 @@ const Ticket = ({
         }
     }
 
-    const onFieldChange = ( field_name, field_value ) => {
-        
-        setNewTicketFormData((prevState) => ({
-            ...prevState,
-            [field_name]: field_value
-        }))
-    }
-
-    console.debug(`new form data: ${JSON.stringify( new_ticket_form )}`)
+    console.debug(`new form data: ${JSON.stringify( formState )}`)
 
 
-    const return_data = (
-        ticket_metadata && (
-        <>
+    const ticketSideBar = (
+        ticket_metadata &&
 
-        <div id={'ticket-' + ticketElementId()} className="ticket">
-
-            <div className="contents">
-
-                <Section
-                    className="description"
-                    titleBar={(
-                        ! editing_description && (
-                        <h3
-                            className={"description ticket-type-" + ticket_type}
-                            style={{
-                                fontSize: 'var(--font-size)',
-                                fontWeight: 'normal',
-                                margin: '0',
-                            }}
-                        >
-                            <span>
-                                <span className="sub-script">opened by&nbsp;</span>
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='opened_by'
-                                    data={ticket_data}
-                                />
-                            </span>&nbsp;
-                            <span>
-                                <span className="sub-script">on&nbsp;</span> 
-                                <FieldData
-                                    metadata={metadata}
-                                    field_name='created'
-                                    data={ticket_data}
-                                />
-                            </span>&nbsp;
-                            <span>
-                            <span className="sub-script">Updated&nbsp;</span> 
-                            <FieldData
-                                metadata={metadata}
-                                field_name='modified'
-                                data={ticket_data}
-                            />
-                            </span>
-                        </h3>
-                        )
-                    )}
-                >
-                    {new_ticket && 
-                        <>
-                        <InlineField
-                        data={null}
-                        field_name='title'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <button id="random-id" className="button submit-button" type="Submit">Test Submit</button>
-                    </>
-                    }
-                    { (editing_description || new_ticket) && (
-
-
-                    <MarkdownEditor
-                        auto_content_height = {true}
-                        data={ticket_data}
-                        field_name = 'description'
-                        metadata={metadata}
-                        onCancel={handleDescriptionCancel}
-                        onChange={onFieldChange}
-                        onSave={handleDescriptionSave}
-                    />
-
-                    )}
-
-                    {  ! editing_description && ! new_ticket && (
-
-                    <div className="markdown">
-                        <button className="common-field form" onClick={handleDescriptionEdit}>Edit</button>
-                        <FieldData
-                            metadata={metadata}
-                            field_name='description'
-                            data={ticket_data}
-                        />
-                    </div>
-                    )}
-
-                </Section>
-
-                { ! new_ticket &&
-
-                <RelatedTickets
-                    data_url={String(page_data?._urls?.ticket_dependencies).split('api/v2')[1]}
-                    ticket_id={page_data?.id}
-                />}
-
-                { ! new_ticket &&
-
-                <LinkedItems
-                    data_url={String(page_data?._urls?.linked_models).split('api/v2')[1]}
-                />}
-
-                { comment_metadata &&
-
-                <TicketComments
-                    comment_metadata = {comment_metadata}
-                    comments_url = {String(page_data?._urls?.comments).split('api/v2')[1] + ''}
-                    new_comment_url = {String(page_data?._urls?.comments).split('api/v2')[1] + ''}
-                    ticket_id = {page_data['id']}
-                />}
-
-            </div>
-
-            <Section
-                className="sidebar"
-                id={'ticket-sidebar-' + ticketElementId()} 
+        <Card
+            className="sidebar"
+            isCompact
+        >
+            <CardHeader
+                className={"header ticket-type-" + ticket_type}
                 style={{
-                    display: "flex",
-                    flexDirection: "column",
+                    fontWeight: "bold",
+                    textAlign: "center",
                 }}
-                titleBar={(
-                    <h3
-                        className={"sidebar ticket-type-" + ticket_type}
-                        style={{
-                            fontWeight: "bold",
-                            textAlign: "center",
-                        }}
-                    >
-                        Ticket&nbsp;#
-                        <FieldData
-                            metadata={metadata}
-                            field_name='id'
-                            data={ticket_data}
-                        />
-                        &nbsp;
-                        {ticket_data?.external_ref &&(
-                            ('( #') + ticket_data['external_ref'] + (')')
-                        )}
-                    </h3>
+            >
+                Ticket&nbsp;
+                {!new_ticket &&
+                <>
+                #
+                <FieldData
+                    metadata={ticket_metadata}
+                    field_name='id'
+                    data={ticket_data}
+                />
+                &nbsp;
+                {ticket_data?.external_ref &&(
+                    ('( #') + ticket_data['external_ref'] + (')')
                 )}
+                </>}
+            </CardHeader>
+
+            <CardBody
+                style={{
+                    paddingRight: "0"
+                }}
             >
 
-                <div
-                    className="metadata"
-                    id={'ticket-sidebar-metadata-' + ticketElementId()} 
+                <DescriptionList
+                    style={{
+                        maxHeight: "calc(100svh - 69px - 53px - 21px - 15px - 90px - 64px)",
+                        minHeight: "0",
+                        overflowY: "auto",
+                        scrollbarWidth: "thin",
+
+                    }}
                 >
-                    { new_ticket &&
-                    <InlineField
+
+                    <Fields
+                        fields = {[
+                            'organization',
+                            !new_ticket && 'assigned_to',
+                            'status_badge',
+                            'category',
+                            'project',
+                            'milestone',
+                            // secondsToTime(ticket_data['duration']),
+                            !new_ticket && 'ticket_duration',
+                            'urgency_badge',
+                            'impact_badge',
+                            'priority_badge',
+                            !new_ticket && 'ticket_estimation',
+                            'planned_start_date',
+                            'real_start_date',
+                            'planned_finish_date',
+                            'real_finish_date',
+                            !new_ticket && 'subscribed_to',
+                        ].filter(Boolean)}
+                        formState={formState}
+                        isCreate={new_ticket}
+                        isEdit={false}
+                        objectData={ticket_data}
+                        objectMetadata={ticket_metadata}
+                        onChange={setFormState}
+                        useDivider={true}
+                    />
+
+                </DescriptionList>
+            </CardBody>
+        </Card>
+    );
+
+
+    const ticketSideBarNew = (
+        ticket_metadata &&
+        <Flex
+            className="sidebar"
+            direction={{ default: 'column' }}
+            style={{
+                backgroundColor: "var(--pf-t--global--background--color--primary--default)",
+                maxWidth: "300px",
+                minWidth: "300px",
+            }}
+        >
+            <Sidebar>
+                <SidebarContent>
+                <h3
+                    className={"sidebar ticket-type-" + ticket_type}
+                    style={{
+                        fontWeight: "bold",
+                        textAlign: "center",
+                    }}
+                >
+                    Ticket&nbsp;#
+                    <FieldData
+                        metadata={ticket_metadata}
+                        field_name='id'
                         data={ticket_data}
-                        field_name='organization'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
+                    />
+                    &nbsp;
+                    {ticket_data?.external_ref &&(
+                        ('( #') + ticket_data['external_ref'] + (')')
+                    )}
+                </h3>
+                <DescriptionList>
+
+                    <Fields
+                        fields = {[
+                            'organization',
+                            !new_ticket && 'assigned_to',
+                            'status_badge',
+                            'category',
+                            'project',
+                            'milestone',
+                            // secondsToTime(page_data['duration']),
+                            'urgency_badge',
+                            'impact_badge',
+                            'priority_badge',
+                            !new_ticket && 'estimate',
+                            'planned_start_date',
+                            'real_start_date',
+                            'planned_finish_date',
+                            'real_finish_date',
+                            !new_ticket && 'subscribed_to',
+                        ].filter(Boolean)}
+                        formState={formState}
+                        isCreate={new_ticket}
+                        isEdit={false}
+                        // isFlex = {true}
+                        objectData={ticket_data}
+                        objectMetadata={ticket_metadata}
+                        onChange={setFormState}
+                        useDivider={true}
+                    />
+
+                </DescriptionList>
+
+                </SidebarContent>
+            </Sidebar>
+            <h3
+                className={"sidebar ticket-type-" + ticket_type}
+                style={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                }}
+            >
+                Ticket&nbsp;#
+                <FieldData
+                    metadata={ticket_metadata}
+                    field_name='id'
+                    data={ticket_data}
+                />
+                &nbsp;
+                {ticket_data?.external_ref &&(
+                    ('( #') + ticket_data['external_ref'] + (')')
+                )}
+            </h3>
+
+            <DescriptionList>
+
+                    <Fields
+                        fields = {[
+                            'organization',
+                            !new_ticket && 'assigned_to',
+                            'status_badge',
+                            'category',
+                            'project',
+                            'milestone',
+                            // secondsToTime(page_data['duration']),
+                            'urgency_badge',
+                            'impact_badge',
+                            'priority_badge',
+                            !new_ticket && 'estimate',
+                            'planned_start_date',
+                            'real_start_date',
+                            'planned_finish_date',
+                            'real_finish_date',
+                            !new_ticket && 'subscribed_to',
+                        ].filter(Boolean)}
+                        formState={formState}
+                        isCreate={new_ticket}
+                        isEdit={false}
+                        // isFlex = {true}
+                        objectData={ticket_data}
+                        objectMetadata={ticket_metadata}
+                        onChange={setFormState}
+                        useDivider={true}
+                    />
+
+            </DescriptionList>
+
+        </Flex>
+
+    );
+
+    
+    const [ ticketDescriptionState, setTicketDescriptionState ] = useState({});
+
+    const ticketDescriptionCard = (
+        ticket_metadata &&
+        <Card
+            isCompact
+        >
+            <CardHeader>
+                {
+                ! new_ticket &&
+                (
+                    <>
+                    <span>
+                        <span className="sub-script">opened by&nbsp;</span>
+                        <FieldData
+                            metadata={ticket_metadata}
+                            field_name='opened_by'
+                            data={ticket_data}
+                        />
+                    </span>&nbsp;
+                    <span>
+                        <span className="sub-script">on&nbsp;</span> 
+                        <FieldData
+                            metadata={ticket_metadata}
+                            field_name='created'
+                            data={ticket_data}
+                        />
+                    </span>&nbsp;
+                    <span>
+                    <span className="sub-script">Updated&nbsp;</span> 
+                    <FieldData
+                        metadata={ticket_metadata}
+                        field_name='modified'
+                        data={ticket_data}
+                    />
+                    </span>
+                </>)
+
+                }
+            </CardHeader>
+            <CardBody>
+
+                <Fields
+                    // errorState={actionData}
+                    fields = {[
+                        new_ticket && 'title',
+                        'description',
+                    ].filter(Boolean)}
+                    formState={new_ticket ? ticketDescriptionState : formState }
+                    isCreate={new_ticket}
+                    isEdit={editing_description}
+                    isFlex = {true}
+                    objectData={ticket_data}
+                    objectMetadata={ticket_metadata}
+                    onChange={new_ticket ? setFormState : setTicketDescriptionState }
+                />
+
+            </CardBody>
+            <CardFooter>
+                { ! new_ticket &&
+                <>
+                    <Button
+                        variant={editing_description ? "secondary" : "primary"}
+                        onClick={handleDescriptionEdit}
+                    >
+                        <>{editing_description ? "Cancel" : "Edit"}</>
+
+                    </Button>
+                    { editing_description && <Button type="submit" variant="primary">Save</Button>}
+                </>
+                }
+                { new_ticket && <Button type="submit" variant="primary">Save</Button>}
+            </CardFooter>
+        </Card>
+
+    );
+
+
+    const ticketLayout = (
+        ticket_metadata && (
+        <PageSection
+            style={{
+                backgroundColor: "var(--pf-t--global--background--color--control--default)",
+                paddingRight: "0"
+            }}
+        >
+            <Flex
+                className="ticket"
+                
+                direction={{
+                    default: 'row',
+                }}
+                flexWrap={{
+                    default: "wrap",
+                    xl: 'nowrap'
+                }}
+            >
+
+                <Flex
+                    direction={{ default: 'column' }}
+                    grow={{ default: 'grow' }}
+                >
+
+                    {editing_description &&
+                    <Form
+                        className = "pf-v6-c-form pf-m-vertical"
+                        id={'create-' + ticketElementId()} method="PATCH" action={String(document.location.href).replace(document.location.origin, '')}
+                        onSubmit={(e) => {
+                            
+                            setFormState({})
+                        }}
+                    >
+                        {ticketDescriptionCard}
+                    </Form>
+                    }
+                    {!editing_description && ticketDescriptionCard}
+
+                    { ! new_ticket &&
+
+                    <RelatedTickets
+                        data_url={String(ticket_data?._urls?.ticket_dependencies).split('api/v2')[1]}
+                        ticket_id={ticket_data?.id}
                     />}
 
-                    { 'assigned_to' in metadata.fields &&
-                    <InlineField
-                        data={ticket_data}
-                        field_name='assigned_to'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
+                    { ! new_ticket &&
+
+                    <LinkedItems
+                        data_url={String(ticket_data?._urls?.linked_models).split('api/v2')[1]}
                     />}
 
-                    { 'assigned_users' in metadata.fields &&
-                    <InlineField
-                        data={ticket_data}
-                        field_name='assigned_users'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
+                    { comment_metadata &&
+
+                    <Comments
+                        comment_metadata = {comment_metadata}
+                        comments_url = {String(ticket_data?._urls?.comments).split('api/v2')[1] + ''}
+                        new_comment_url = {String(ticket_data?._urls?.comments).split('api/v2')[1] + ''}
+                        ticket_id = {ticket_data['id']}
                     />}
 
-                    { 'assigned_teams' in metadata.fields &&
-                    <InlineField
-                        data={ticket_data}
-                        field_name='assigned_teams'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />}
+                </Flex>
 
-                    <InlineField
-                        data={ticket_data}
-                        field_name='status_badge'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
+                <Flex
+                    direction={{ default: 'column' }}
+                    grow={{ sm: "grow"}}
+                    style={{
+                        maxWidth: "300px",
+                        minWidth: "300px",
+                        overflow: "hidden",
+                        position: "sticky",
+                        top: "calc(53px + 7px)",
+                    }}
+                >
+                    {ticketSideBar}
+                </Flex>
 
-                    { false &&
-                    <fieldset>
-                        <label>Labels</label>
-                        <span className="text">val</span>
-                    </fieldset>}
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='category'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='project'
-                        metadata={metadata}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='milestone'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    { ! new_ticket && 'duration' in metadata.fields &&
-                    <fieldset>
-                        <label>Duration</label>
-                        <span className="text">
-                            {secondsToTime(page_data['duration'])}
-                        </span>
-                    </fieldset>}
-
-                    { ! new_ticket && 'ticket_duration' in metadata.fields &&
-                    <fieldset>
-                        <label>Duration</label>
-                        <span className="text">
-                            {secondsToTime(page_data['ticket_duration'])}
-                        </span>
-                    </fieldset>}
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='urgency_badge'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='impact_badge'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='priority_badge'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    { ! new_ticket && 'estimate' in metadata.fields &&
-                    <fieldset>
-                        <label>Estimate</label>
-                        <span className="text">
-                            {secondsToTime(page_data['estimate'])}
-                        </span>
-                    </fieldset>}
-
-                    { ! new_ticket && 'ticket_estimation' in metadata.fields &&
-                    <fieldset>
-                        <label>Estimate</label>
-                        <span className="text">
-                            {secondsToTime(page_data['ticket_estimation'])}
-                        </span>
-                    </fieldset>}
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='planned_start_date'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='real_start_date'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='planned_finish_date'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    <InlineField
-                        data={ticket_data}
-                        field_name='real_finish_date'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />
-
-                    { 'subscribed_to' in metadata.fields &&
-                    <InlineField
-                        data={ticket_data}
-                        field_name='subscribed_to'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />}
-
-                    { 'subscribed_users' in metadata.fields &&
-                    <InlineField
-                        data={ticket_data}
-                        field_name='subscribed_users'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />}
-
-                    { 'subscribed_teams' in metadata.fields &&
-                    <InlineField
-                        data={ticket_data}
-                        field_name='subscribed_teams'
-                        metadata={metadata}
-                        onFieldChange={onFieldChange}
-                    />}
-
-                    <fieldset>
-                        <label>Roadmap(s)</label>
-                        <span className="text">val</span>
-                    </fieldset>
-
-                </div>
-
-            </Section>
-        </div>
-        </>
+            </Flex>
+        </PageSection>
         )
-
     );
 
 
     if( new_ticket ) {
 
         return (
-            <Form id={'create-' + ticketElementId()} method="POST" action={String(document.location.href).replace(document.location.origin, '')}
+            <Form
+                className = "pf-v6-c-form pf-m-vertical"
+                id={'create-' + ticketElementId()} method="POST" action={String(document.location.href).replace(document.location.origin, '')}
                 onSubmit={(e) => {
-                    
-                    setCommentMetaData(null)
-                    setNewTicketFormData({})
+                    setFormState({})
                 }}
             >
-                {return_data}
+                {ticketLayout}
+
+                <input id="formState" type="hidden" name="formState" value={JSON.stringify({...ticketDescriptionState, ...formState})} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(comment_metadata)} />
+                <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
             </Form>
         )
     } else {
@@ -544,7 +608,7 @@ const Ticket = ({
 
         return (
             <>
-                {return_data}
+                {ticketLayout}
             </>
         )
 
