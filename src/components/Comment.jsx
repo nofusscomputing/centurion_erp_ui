@@ -13,14 +13,20 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
+    CardTitle,
     Divider,
+    Dropdown,
+    DropdownItem,
+    DropdownList,
     Flex,
     FlexItem,
+    MenuToggle,
     Title
 } from "@patternfly/react-core"
 
 import {
-    AngleDownIcon
+    AngleDownIcon,
+    EllipsisVIcon
 } from '@patternfly/react-icons';
 
 import {apiFetch } from "../hooks/apiFetch"
@@ -38,23 +44,17 @@ import UserContext from "../hooks/UserContext"
  * 
  * @param param
  * 
- * @param {object} param.comment_metadata Comments Metadata from API.
- * @param {number} param.ticket_id ID of the ticket the comments belong to.
+ * @param {object} param.comments_metadata Comments Metadata from API.
  * @param {string} param.comments_url URL to fetch the comments from
- * @param {string} param.new_comment_url URL to use to create new comments.
- * @param {number} param.parent_comment ID of the parent comment these comments belong to.
  * 
  * @returns 
  */
 export const Comments = ({
-    comment_metadata,
-    ticket_id,
+    comments_metadata,
     comments_url,
-    new_comment_url = null,
-    parent_comment = null,
 }) => {
 
-    const [ metadata, setCommentMetadata ] = useState( comment_metadata )
+    const [ metadata, setCommentMetadata ] = useState( comments_metadata )
 
     const [comments, setComments] = useState({
         fetch_url: comments_url,
@@ -216,15 +216,11 @@ export const Comments = ({
                             }}
                         >
                             <Comment
-                                comment_data={comments.comments[key]}
-                                post_url = {comments.comments[key]['_urls']['_self']}
-                                metadata={need_metadata() ? null : metadata}
-                                ticket_id={ticket_id}
+                                objectData={comments.comments[key]}
+                                objectMetadata={need_metadata() ? null : metadata}
                                 edit_callback = {setRelaod}
                                 callback_value = {reload}
                                 comments_url = {comments_url}
-                                parent_comment = {parent_comment}
-                                new_comment_url = {new_comment_url}
                             />
                         </li>
                     )
@@ -237,11 +233,8 @@ export const Comments = ({
                         }}
                     >
                         <Comment
-                            post_url = {new_comment_url}
-                            metadata={metadata}
-                            ticket_id={ticket_id}
+                            objectMetadata={metadata}
                             isCreate = {true}
-                            parent_comment = {parent_comment}
                         />
                     </li>
                 }
@@ -260,44 +253,52 @@ export const Comments = ({
  * @param param
  * 
  * @param {boolean} param.isCreate Displays the form fields to add a comment.
- * @param {object} param.comment_data Comment data from api.
- * @param {object} param.metadata Comment Metadata from api.
- * @param {number} param.ticket_id The id for the ticket the comment belongs to.
- * @param {string} param.post_url The URL any http request is to happen against.
+ * @param {object} param.objectData Comment data from api.
+ * @param {object} param.objectMetadata Comment Metadata from api.
+ * 
+ * 
+ * @todo param.edit_callback needs to be adjusted so that the return from the patch is passed back to Comments component to be updated
  * @param {function} param.edit_callback ...
  * @param {unknown} param.callback_value ...
- * @param {unknown} param.parent_comment ...
- * @param {string} param.new_comment_url ....
  * 
- * @returns 
+ * @returns {JSX}
  */
 export const Comment = ({
 
     isCreate = false,
+    objectData,
+    objectMetadata = null,
 
-    // todo: check if args required
-    comment_data = {},
-    metadata = null,
-    ticket_id = null,
-    post_url,
     edit_callback = null,
     callback_value = null,
-    parent_comment = null,
-    new_comment_url = null,
 }) => {
 
-    if( String(post_url).includes('?') ) {
+    const [ commentMetadata, setCommentMetadata ] = useState( objectMetadata )
 
-        post_url = String(post_url).split('?')[0]
-    }
-
-    const [ comment_metadata, setCommentMetadata ] = useState( metadata )
-
-    const [ comment_page_data, setCommentPageData ] = useState( comment_data )
+    const [ comment_page_data, setCommentPageData ] = useState( objectData ? objectData : {} )
 
     const [ commentType, setCommentType ] = useState(null)
 
     const [ formState, setFormState ] = useState({});
+
+    const [ objectURL, setObjectURL ] = useState(comment_page_data?._urls?._self ? comment_page_data._urls._self : null);
+
+
+    const [ subModels, setSubModels ] = useState(() => [
+        ...( objectMetadata?.urls?.sub_models ?
+            Object.entries(objectMetadata?.urls?.sub_models).map(([key, data]) => {
+
+                return { name: data.display_name, url: data.url};
+            })
+            :
+            []
+        ),
+        {
+            name: "Comment",
+            url: objectMetadata?.urls?.self
+        }
+    ]);
+
 
     const user = useContext(UserContext);
 
@@ -313,9 +314,9 @@ export const Comment = ({
 
     useEffect(() => {
 
-        if( comment_metadata ) {
+        if( commentMetadata ) {
 
-            const comment_type = comment_metadata.name
+            const comment_type = commentMetadata.name
 
             if( comment_type.toLowerCase().includes('action') ) {
 
@@ -354,45 +355,55 @@ export const Comment = ({
         }
 
     }, [
-        comment_metadata
+        commentMetadata
     ]);
 
 
     const comment_header_text_updated = (<span className="sub-script">Updated </span>)
 
     const comment_header_text = (
-        comment_metadata && comment_page_data && !isCreate && !isEdit &&
+        <>
+        {commentMetadata && comment_page_data && !isCreate && !isEdit &&
         <div className="text">
             <FieldData
-                metadata={comment_metadata}
+                metadata={commentMetadata}
                 field_name='user'
                 data={comment_page_data}
             />
             <span className="sub-script">{comment_header} on </span>
             <FieldData
-                metadata={comment_metadata}
+                metadata={commentMetadata}
                 field_name='created'
                 data={comment_page_data}
             />
             {comment_updated && <span>{comment_header_text_updated}
                 <FieldData
-                    metadata={comment_metadata}
+                    metadata={commentMetadata}
                     field_name='modified'
                     data={comment_page_data}
                 />
             </span>}
-        </div>
+
+        </div>}
+        { (isCreate || isEdit) && commentMetadata &&
+            <CardTitle>
+                {isCreate && "Add"}
+                {isEdit && "Edit"}
+                &nbsp;{commentMetadata.name}
+            </CardTitle>
+        }
+        </>
     )
 
 
 
     useEffect(() => {
 
-        if( ! comment_metadata ) {
+        if( ! commentMetadata && objectURL ) {
 
             async function do_fetch() {
 
-                let url = String(comment_page_data._urls._self)
+                let url = objectURL
 
                 let url_tail = `/${comment_page_data['id']}`
 
@@ -425,32 +436,60 @@ export const Comment = ({
 
         };
 
-    }, [])
+    }, [
+        commentMetadata,
+        objectURL
+    ])
+
+
+
+
+
+
+
+
+
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    // const [isChecked, setIsChecked] = useState(false);
+
+    const onSelect = () => {
+        setIsOpen(!isOpen);
+    };
+
+
+
+
+
+
+
+
 
 
 
     if( commentType === 'action' ) {
 
         return(
-            comment_metadata &&
+            commentMetadata && comment_page_data && commentType &&
             <div id={'comment-' + comment_page_data['id']} key={'comment-' + comment_page_data['id']}>
                 <span style={{display: 'inline-block'}}>
                     <FieldData
-                        metadata={comment_metadata}
+                        metadata={commentMetadata}
                         field_name='user'
                         data={comment_page_data}
                     />
                 </span>&nbsp;
                 <span className="markdown" style={{display: 'inline-block'}}>
                     <FieldData
-                        metadata={comment_metadata}
+                        metadata={commentMetadata}
                         field_name='body'
                         data={comment_page_data}
                     />
                 </span>&nbsp;
                 <span className="sub-script" style={{color: '#777', display: 'inline-block'}}>
                     <FieldData
-                        metadata={comment_metadata}
+                        metadata={commentMetadata}
                         field_name='created'
                         data={comment_page_data}
                     />
@@ -463,27 +502,32 @@ export const Comment = ({
         comment_page_data &&
         <div id={'comment-icons-' + comment_page_data['id']} className="icons">
             {comment_page_data['parent'] == null &&
-             <span style={{
-                cursor: 'pointer'
-                }} onClick={(e) => {
+            //  <span style={{
+            //     cursor: 'pointer'
+            //     }}
+            //     onClick={(e) => {
 
-                    setStartThread( (start_thread ? false : true) )
+            //         setStartThread( (start_thread ? false : true) )
 
-            }}>
-                <IconLoader
-                name={'reply'}
+            //     }}
+            // >
+            //     <IconLoader
+            //         name={'reply'}
+            //         size = "lg"
+            //     />
+            // </span>
+            <Button
+                aria-label = "reply to comment"
+                icon = {
+                    <IconLoader
+                        name={'reply'}
+                        size = "lg"
+                    />
+                }
+                onClick={() => setStartThread( (start_thread ? false : true) ) }
+                variant="plain"
             />
-            </span>
             }
-            <span style={{
-                cursor: 'pointer'
-            }} onClick={(e) => {
-                    setIsEditing( true )
-                }}>
-            <IconLoader
-                name={'edit'}
-            />
-            </span>
         </div>
     )
 
@@ -503,16 +547,80 @@ export const Comment = ({
     }
 
 
+    const dropdownItems = (
+        <>
+            { isCreate && objectMetadata?.urls?.sub_models &&
+
+                subModels.map(({name, url}) => {
+
+                    return (
+                        <DropdownItem
+                            key={name}
+                            onClick={() => {
+
+                                setObjectURL(url)
+                                setCommentMetadata(null)
+                            }}
+                        >
+                            Create {name}
+                        </DropdownItem>
+                    );
+                })
+            }
+            {!isCreate &&
+            <>
+            { ! isEdit && <DropdownItem
+                key="Edit"
+                onClick={(e) => {
+                    setIsEditing( true )
+                }}
+            >
+                Edit
+            </DropdownItem>}
+            <DropdownItem key="copy-link" >
+                Copy Link
+            </DropdownItem>
+            </>}
+        </>
+    );
+
+    const headerActions = (
+        <>
+            {! isCreate && ! isEdit && header_icons}
+            <Dropdown
+                onSelect={onSelect}
+                toggle={
+                    toggleRef => (
+                        <MenuToggle
+                            ref={toggleRef}
+                            isExpanded={isOpen}
+                            onClick={() => setIsOpen(!isOpen)}
+                            variant="plain"
+                            aria-label="Card title inline with images and actions example kebab toggle"
+                            icon={<EllipsisVIcon />}
+                        />
+                    )
+                }
+                isOpen={isOpen}
+                onOpenChange={isOpen => setIsOpen(isOpen)}
+            >
+                <DropdownList>
+                    {dropdownItems}
+                </DropdownList>
+            </Dropdown>
+        </>
+    );
+
 
     const CommentCard = (
         <>
-        {(comment_metadata && comment_page_data) &&
+        {(commentMetadata && comment_page_data) &&
         <Card
             isCompact
         >
             
             <CardHeader
-                actions={{ actions: ! isCreate && ! isEdit && header_icons, hasNoOffset: true}}
+                actions={{ actions: headerActions, hasNoOffset: true}}
             >
                 {comment_header_text}
             </CardHeader>
@@ -528,17 +636,17 @@ export const Comment = ({
                         <Fields
                             // errorState={actionData}
                             fields={[
-                                (( (isCreate || isEdit) && comment_metadata.fields.source) || ( !isEdit && comment_page_data.source)) && 'source',
-                                (( (isCreate || isEdit) && comment_metadata.fields.status) || ( !isEdit && comment_page_data.status)) && 'status',
-                                (( (isCreate || isEdit) && comment_metadata.fields.assignee) || ( !isEdit && comment_page_data.assignee)) && 'assignee',
-                                (( (isCreate || isEdit) && comment_metadata.fields.category) || (!isEdit && comment_page_data.category)) && 'category'
+                                (( (isCreate || isEdit) && commentMetadata.fields.source) || ( !isEdit && comment_page_data.source)) && 'source',
+                                (( (isCreate || isEdit) && commentMetadata.fields.status) || ( !isEdit && comment_page_data.status)) && 'status',
+                                (( (isCreate || isEdit) && commentMetadata.fields.assignee) || ( !isEdit && comment_page_data.assignee)) && 'assignee',
+                                (( (isCreate || isEdit) && commentMetadata.fields.category) || (!isEdit && comment_page_data.category)) && 'category'
                             ].filter(Boolean)}
                             formState={formState}
                             isCreate={isCreate}
                             isEdit={isEdit}
                             isFlex = {true}
                             objectData={comment_page_data}
-                            objectMetadata={comment_metadata}
+                            objectMetadata={commentMetadata}
                             onChange={setFormState}
                         />
         
@@ -558,7 +666,7 @@ export const Comment = ({
                             isEdit={isEdit}
                             isFlex = {true}
                             objectData={comment_page_data}
-                            objectMetadata={comment_metadata}
+                            objectMetadata={commentMetadata}
                             onChange={setFormState}
                         />
 
@@ -571,10 +679,10 @@ export const Comment = ({
                         <Fields
                             // errorState={actionData}
                             fields={[
-                                (( (isCreate || isEdit) && comment_metadata.fields.planned_start_date) || ( !isEdit && comment_page_data.planned_start_date)) && 'planned_start_date',
-                                (( (isCreate || isEdit) && comment_metadata.fields.planned_finish_date) || ( !isEdit && comment_page_data.planned_finish_date)) && 'planned_finish_date',
-                                (( (isCreate || isEdit) && comment_metadata.fields.real_start_date) || ( !isEdit && comment_page_data.real_start_date)) && 'real_start_date',
-                                (( (isCreate || isEdit) && comment_metadata.fields.real_finish_date) || ( !isEdit && comment_page_data.real_finish_date)) && 'real_finish_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.planned_start_date) || ( !isEdit && comment_page_data.planned_start_date)) && 'planned_start_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.planned_finish_date) || ( !isEdit && comment_page_data.planned_finish_date)) && 'planned_finish_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.real_start_date) || ( !isEdit && comment_page_data.real_start_date)) && 'real_start_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.real_finish_date) || ( !isEdit && comment_page_data.real_finish_date)) && 'real_finish_date',
                                 // secondsToTime(comment_page_data['duration'])
                                 ( !isEdit && comment_page_data.duration) && 'duration',
                                 ( !isEdit && comment_page_data.estimation) && 'estimation'
@@ -584,7 +692,7 @@ export const Comment = ({
                             isEdit={isEdit}
                             isFlex = {true}
                             objectData={comment_page_data}
-                            objectMetadata={comment_metadata}
+                            objectMetadata={commentMetadata}
                             onChange={setFormState}
                         />
 
@@ -643,11 +751,7 @@ export const Comment = ({
             </Title>
 
             <Comments
-                comment_metadata = {null}
                 comments_url = {comment_page_data._urls.threads}
-                ticket_id = {ticket_id}
-                parent_comment = {comment_page_data.id}
-                new_comment_url = {new_comment_url}
             />
         </div>
         }
@@ -656,7 +760,7 @@ export const Comment = ({
 
 
     return (
-        (comment_metadata && comment_page_data && commentType) &&
+        (commentMetadata && comment_page_data && commentType) &&
         <>
         <Flex
             direction={{ default: 'column' }}
@@ -664,14 +768,14 @@ export const Comment = ({
             <FlexItem>
                 {( isCreate || isEdit ) &&
                     <Form
-                        action={isCreate ? comment_metadata['urls']['self'].split('api/v2')[1] : comment_page_data['_urls']['_self'].split('api/v2')[1] }
+                        action={isCreate ? commentMetadata['urls']['self'] : comment_page_data['_urls']['_self'] }
                         className = "pf-v6-c-form pf-m-vertical"
                         method={isCreate ? "POST" : "PATCH"}
                     >
                         {CommentCard}
 
                         <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
-                        <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(comment_metadata)} />
+                        <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(commentMetadata)} />
                         <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 
                     </Form>
