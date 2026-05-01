@@ -90,6 +90,11 @@
           "display_name": "Detail",
           "name": "detail",
           "link": "/layout/detail/1"
+        },
+        {
+          "display_name": "Ticket",
+          "name": "ticket",
+          "link": "/layout/ticket/request"
         }
       ]
     }

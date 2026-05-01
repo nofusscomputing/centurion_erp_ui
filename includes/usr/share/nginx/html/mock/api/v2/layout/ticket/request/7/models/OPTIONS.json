@@ -1,0 +1,104 @@
+{
+    "name": "Ticket Linked Models",
+    "description": "Models linked to ticket",
+    "documentation": "https://nofusscomputing.com/projects/centurion_erp/user/core/ticket_linked_model",
+    "urls": {
+        "self": "/layout/ticket/request/7/models"
+    },
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "DELETE",
+        "GET",
+        "OPTIONS",
+        "POST"
+    ],
+    "fields": {
+        "id": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "ID",
+            "help_text": "ID of the item"
+        },
+        "organization": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "Tenant",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Organization",
+            "choices": []
+        },
+        "display_name": {
+            "multi_line": true,
+            "type": "Markdown",
+            "required": false,
+            "style": {
+                "class": null
+            },
+            "read_only": true,
+            "write_only": false,
+            "label": "Display name"
+        },
+        "content_type": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "ContentType",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Content Model",
+            "help_text": "Model this history is for",
+            "choices": []
+        },
+        "ticket": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "TicketBase",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Ticket",
+            "help_text": "Ticket object is linked to",
+            "choices": []
+        },
+        "created": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Created",
+            "help_text": "Date and time of creation"
+        },
+        "modified": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Modified",
+            "help_text": "Date and time of last modification"
+        },
+        "_urls": {
+            "type": "GenericField",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": " urls"
+        }
+    },
+    "table_fields": [
+        "ticket",
+        "status_badge",
+        "created"
+    ]
+}
