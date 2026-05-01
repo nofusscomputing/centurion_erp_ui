@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
 
-import FieldData from "../../../functions/FieldData";
+import {
+    Card,
+    CardBody,
+    CardTitle,
+    Flex,
+    FlexItem
+} from "@patternfly/react-core";
 
 import { apiFetch } from "../../../hooks/apiFetch";
-
-import Section from "../../Section";
+import FieldData from "../../../functions/FieldData";
 import IconLoader from "../../IconLoader";
 
 
@@ -53,36 +61,21 @@ const LinkedItems = ({
     }
 
     return (
-        <Section
+        <Card
             className="linked-items"
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-            }}
-            titleBar={(
-                <h3
-                    className="linked-items"
-                    style={{
-                        fontSize: 'var(--font-size)',
-                        margin: '0',
-                    }}
-                >
-                    Linked Items
-                </h3>
-            )}
+            isCompact
         >
+            <CardTitle>Linked Items</CardTitle>
+            <CardBody>
             <div
                 className="items"
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                }}
             >
+                <Flex>
                 {page_data && metadata &&
                 page_data.results?.map((linked_item) => {
 
                     return (
+                        <FlexItem>
                         <div
                             className="item" key={linked_item['id']+'-linked_item'}
                             style={{
@@ -117,12 +110,14 @@ const LinkedItems = ({
                             </span>
 
                         </div>
+                        </FlexItem>
                     )
 
                 })}
+                </Flex>
             </div>
-
-        </Section>
+            </CardBody>
+        </Card>
     );
 }
  
