@@ -36,6 +36,7 @@ import LinkedItems from "../components/page/ticket/LinkedItems";
 import RelatedTickets from "../components/page/ticket/RelatedTickets";
 import urlBuilder from "../hooks/urlBuilder";
 import UserContext from "../hooks/UserContext";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -545,23 +546,21 @@ const Ticket = () => {
                     { ! new_ticket &&
 
                     <RelatedTickets
-                        data_url={String(ticket_data?._urls?.ticket_dependencies).split('api/v2')[1]}
+                        data_url={URLSanitize(ticket_data?._urls?.ticket_dependencies)}
                         ticket_id={ticket_data?.id}
                     />}
 
                     { ! new_ticket &&
 
                     <LinkedItems
-                        data_url={String(ticket_data?._urls?.linked_models).split('api/v2')[1]}
+                        data_url={URLSanitize(ticket_data?._urls?.linked_models)}
                     />}
 
                     { comment_metadata &&
 
                     <Comments
-                        comment_metadata = {comment_metadata}
-                        comments_url = {String(ticket_data?._urls?.comments).split('api/v2')[1] + ''}
-                        new_comment_url = {String(ticket_data?._urls?.comments).split('api/v2')[1] + ''}
-                        ticket_id = {ticket_data['id']}
+                        comments_metadata = {comment_metadata}
+                        comments_url = {URLSanitize(ticket_data?._urls?.comments)}
                     />}
 
                 </Flex>

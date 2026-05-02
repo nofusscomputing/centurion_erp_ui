@@ -37,6 +37,7 @@ import { MARKDOWN_TAG_MODEL_LINK_UNESCAPE_RE } from "../functions/markdown_plugi
 import { MARKDOWN_TICKET_LINK_UNESCAPE_RE } from "../functions/markdown_plugins/TicketLink";
 
 import UserContext from "../hooks/UserContext"
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -170,10 +171,10 @@ export const Comments = ({
                     
                             let needs_metadata = true
 
-                            let url = String(comments.comments[key]['_urls']['_self']).endsWith(`/${comments.comments[key].id}`) ?
-                                    String(comments.comments[key]['_urls']['_self']).replace(`/${comments.comments[key].id}`, '') 
+                            let url = URLSanitize(comments.comments[key]['_urls']['_self']).endsWith(`/${comments.comments[key].id}`) ?
+                                    URLSanitize(comments.comments[key]['_urls']['_self']).replace(`/${comments.comments[key].id}`, '') 
                                 :
-                                    comments.comments[key]['_urls']['_self'];
+                                    URLSanitize(comments.comments[key]['_urls']['_self']);
                 
                             if( url === metadata.urls.self ) {
                                 needs_metadata = false
@@ -281,7 +282,7 @@ export const Comment = ({
 
     const [ formState, setFormState ] = useState({});
 
-    const [ objectURL, setObjectURL ] = useState(comment_page_data?._urls?._self ? comment_page_data._urls._self : null);
+    const [ objectURL, setObjectURL ] = useState(comment_page_data?._urls?._self ? URLSanitize(comment_page_data._urls._self) : null);
 
 
     const [ subModels, setSubModels ] = useState(() => [

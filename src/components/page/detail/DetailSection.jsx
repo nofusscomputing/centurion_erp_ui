@@ -55,7 +55,7 @@ const DetailSection = ({
 
             cardData = (
                 <DisplayTable
-                    data_url_path={String(data._urls[layout.field]).split('api/v2')[1]}
+                    data_url_path={String(data._urls[layout.field])}
                     add_button_filter = {layout?.sub_models ? layout.sub_models : []}
                 />
             )

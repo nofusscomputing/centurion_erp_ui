@@ -36,6 +36,7 @@ import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
 import DetailSection from "../components/page/detail/DetailSection";
 import MarkdownEditor from "../components/MarkdownEditor";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -91,7 +92,7 @@ const Detail = () => {
                     </Link>
                 }
                 {(!'results' in page_data || '_urls' in page_data) && page_data['_urls']['history'] &&
-                    <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
+                    <Link to={URLSanitize(page_data['_urls']['history'])}>
                         <IconLoader
                             name='history'
                             size="xl"
@@ -99,7 +100,7 @@ const Detail = () => {
                     </Link>
                 }
                 {metadata['allowed_methods'].includes('DELETE') &&
-                    <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
+                    <Link to={URLSanitize(page_data['_urls']['_self']) + '/delete'}>
                         <IconLoader
                             name='delete'
                             size="xl"
@@ -221,7 +222,7 @@ const Detail = () => {
                                             e.preventDefault();
 
                                             const response = await apiFetch(
-                                                String(page_data['_urls']['notes']).split('api/v2')[1],
+                                                String(page_data['_urls']['notes']),
                                                 null,
                                                 'POST',
                                                 notes_form,

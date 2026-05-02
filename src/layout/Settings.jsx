@@ -11,6 +11,7 @@ import {
 
 import Card from "../components/page/Card";
 import IconLoader from "../components/IconLoader";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -55,7 +56,7 @@ const Settings = () => {
                             body={(
                                 <ul>
                                     {card.links.map((link) => {
-                                        return (<li><Link to={String(page_data[link.model]).split('api/v2')[1]}>{link.name}</Link></li>)
+                                        return (<li><Link to={URLSanitize(page_data[link.model])}>{link.name}</Link></li>)
                                     })}
                                 </ul>
                             )}

@@ -1,19 +1,19 @@
-import { Link, NavLink, json } from "react-router";
-import RenderMarkdown from "./RenderMarkdown";
-import IconLoader from "../components/IconLoader";
+import {
+    useContext
+} from "react";
+
+import {
+    Link
+} from "react-router";
+
 import Badge from "../components/Badge";
 import { FormatTime } from "./FormatTime";
-import { useContext } from "react";
+import IconLoader from "../components/IconLoader";
+import RenderMarkdown from "./RenderMarkdown";
+import URLSanitize from "./URLSanitize";
 import UserContext from "../hooks/UserContext";
 
 
-
-/**
- * Value used to split URL.
- * 
- * i.e. `http://127.0.0.1:8002/api/v2/itam/device/24` using ulr[1] would return `/itam/device/24`
- */
-const API_SPLIT = String('api/v2')
 
 /**
  * Fetch the field data from Django API Data
@@ -77,7 +77,7 @@ export default function FieldData({
                     field_data = (
                         <Badge
                             icon={data_field.icon.name}
-                            to={String(data['_urls'][data_field.url]).split('api/v2')[1]+'/edit'}
+                            to={URLSanitize(data['_urls'][data_field.url])+'/edit'}
                         >
                             {data_field.text}
                         </Badge>
@@ -201,7 +201,7 @@ export default function FieldData({
 
                                     return (
                                         <>
-                                        <Link to={field.url}>{field.display_name}</Link>&nbsp;,
+                                        <Link to={URLSanitize(field.url)}>{field.display_name}</Link>&nbsp;,
                                         </>
                                     );
 
@@ -236,7 +236,7 @@ export default function FieldData({
                                 }
 
                             field_data = (
-                                <Link to={String(data_field.url).split(API_SPLIT)[1]}>{data_field.display_name}</Link>
+                                <Link to={URLSanitize(data_field.url)}>{data_field.display_name}</Link>
                             )
 
                         } else {
@@ -252,7 +252,7 @@ export default function FieldData({
                     } else if( typeof( field_name ) === 'object' && autolink ) {
 
                         field_data = (
-                            <Link to={String(data['_urls'][field_name.key]).split(API_SPLIT)[1]}>{data_field}</Link>
+                            <Link to={URLSanitize(data['_urls'][field_name.key])}>{data_field}</Link>
                         )
 
                     } else if( typeof (data_field) === 'list' ) {
@@ -359,7 +359,7 @@ export default function FieldData({
                 ) {
 
                     field_data = (
-                        <Link to={String(data['_urls']._self).split(API_SPLIT)[1]}>{data_field}</Link>
+                        <Link to={URLSanitize(data['_urls']._self)}>{data_field}</Link>
                     )
 
                 } else {

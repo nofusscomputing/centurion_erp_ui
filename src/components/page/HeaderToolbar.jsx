@@ -28,6 +28,7 @@ import { QuestionCircleIcon } from '@patternfly/react-icons';
 
 import UserContext from "../../hooks/UserContext";
 import { useTheme, THEME_TYPES } from '../../hooks/useTheme';
+import URLSanitize from "../../functions/URLSanitize";
 
 
 /** Header Toolbar
@@ -101,7 +102,7 @@ const HeaderToolbar = () => {
                 <>
                     <DropdownItem>
                         <CogIcon />
-                        <Link to={String(user.settings._urls._self).split('api/v2')[1]}>
+                        <Link to={URLSanitize(user.settings._urls._self)}>
                             Settings
                         </Link>
                     </DropdownItem>
@@ -151,7 +152,7 @@ const HeaderToolbar = () => {
                             <Button
                                 aria-label="Settings"
                                 component={Link}
-                                    to={String(user.settings._urls._self).split('api/v2')[1]}
+                                    to={URLSanitize(user.settings._urls._self)}
                                 isSettings
                                 variant="plain"
                             />}

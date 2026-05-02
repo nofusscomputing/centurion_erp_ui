@@ -39,7 +39,7 @@ export const UserProvider = ({children}) => {
         if( settings_url.status === 200 ) {
 
             const usr_settings = await apiFetch(
-                settings_url.api_page_data.user_settings.split('api/v2')[1],
+                settings_url.api_page_data.user_settings,
                 null,
                 'GET',
                 null,
