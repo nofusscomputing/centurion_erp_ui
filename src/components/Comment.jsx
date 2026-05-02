@@ -7,6 +7,8 @@ import {
 
 import {
     Form,
+    useActionData,
+    useFetcher
 } from "react-router"
 
 import {
@@ -57,6 +59,8 @@ export const Comments = ({
     comments_url,
 }) => {
 
+    const fetcher = useFetcher();
+
     const [ metadata, setCommentMetadata ] = useState( comments_metadata )
 
     const [comments, setComments] = useState({
@@ -68,6 +72,37 @@ export const Comments = ({
 
     const ticktCommentsId = useId();
     const ticktCommentsListId = useId();
+
+
+
+    /**
+     * ToDo: Add check to see if was an edit (HTTP/PATCH), if yes, from http
+     * response update existing object with the same ID.
+     * 
+     * ToDo: If an error, display the errors near the field.
+     * 
+     * ToDo: once above two done, remove Comment component callbacks
+     */
+    useEffect(() => {
+
+        if( Object.hasOwn(fetcher.data ?? {}, 'body') && Object.hasOwn(fetcher.data ?? {}, 'ok')) {
+
+            console.debug('fetcher', fetcher.data);
+
+            setComments((prevState) => ({
+                fetch_url: prevState.fetch_url,
+                comments: {
+                    ...prevState.comments,
+                    [fetcher.data.body.id]: fetcher.data.body
+                }
+            }));
+
+        }
+
+    }, [
+        fetcher.data
+    ]);
+
 
 
     useEffect(() => {
@@ -224,9 +259,9 @@ export const Comments = ({
                             }}
                         >
                             <Comment
-                                objectData={comments.comments[key]}
-                                objectMetadata={need_metadata() ? null : metadata}
-                                edit_callback = {setRelaod}
+                                FormComponent = {fetcher.Form}
+                                objectData = {comments.comments[key]}
+                                objectMetadata = {need_metadata() ? null : metadata}
                                 comments_url = {comments_url}
                             />
                         </li>
@@ -240,10 +275,9 @@ export const Comments = ({
                         }}
                     >
                         <Comment
-                            // callback_value = {reload}
-                            edit_callback = {setRelaod}
-                            objectMetadata={metadata}
+                            FormComponent = {fetcher.Form}
                             isCreate = {true}
+                            objectMetadata={metadata}
                         />
                     </li>
                 }
@@ -265,21 +299,14 @@ export const Comments = ({
  * @param {object} param.objectData Comment data from api.
  * @param {object} param.objectMetadata Comment Metadata from api.
  * 
- * 
- * @todo param.edit_callback needs to be adjusted so that the return from the patch is passed back to Comments component to be updated
- * @param {function} param.edit_callback ...
- * @param {unknown} param.callback_value ...
- * 
  * @returns {JSX}
  */
 export const Comment = ({
 
+    FormComponent = Form,
     isCreate = false,
     objectData,
     objectMetadata = null,
-
-    edit_callback = null,
-    callback_value = null,
 }) => {
 
     const [ commentMetadata, setCommentMetadata ] = useState( objectMetadata )
@@ -773,16 +800,13 @@ export const Comment = ({
         >
             <FlexItem>
                 {( isCreate || isEdit ) &&
-                    <Form
+                    <FormComponent
                         action={isCreate ? URLSanitize(commentMetadata['urls']['self']) : URLSanitize(comment_page_data['_urls']['_self']) }
                         className = "pf-v6-c-form pf-m-vertical"
                         method={isCreate ? "POST" : "PATCH"}
                         navigate={false}
                         onSubmit={() => {
-                            if( start_thread || isCreate ) {
-                                edit_callback(true)
                                 setFormState({})
-                            }
                         }}
                     >
                         {CommentCard}
@@ -791,7 +815,7 @@ export const Comment = ({
                         <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(commentMetadata)} />
                         <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 
-                    </Form>
+                    </FormComponent>
                 }
                 {!( isCreate || isEdit ) &&
 

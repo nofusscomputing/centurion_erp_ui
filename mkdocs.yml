@@ -39,6 +39,10 @@ nav:
 
     - projects/centurion_user_interface/url.md
 
+    - Components:
+
+      - projects/centurion_user_interface/components/comment.md
+
     - Fields:
 
       - projects/centurion_user_interface/fields/markdown.md
