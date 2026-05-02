@@ -5,7 +5,9 @@ import {
     useState
 } from "react"
 
-import { Form } from "react-router"
+import {
+    Form,
+} from "react-router"
 
 import {
     Button,
@@ -59,7 +61,7 @@ export const Comments = ({
 
     const [comments, setComments] = useState({
         fetch_url: comments_url,
-        comments: {}
+        comments: null
     });
 
     const [ reload, setRelaod ] = useState(false);
@@ -70,43 +72,47 @@ export const Comments = ({
 
     useEffect(() => {
 
-        let url = comments.fetch_url
+        if( reload || comments.comments === null ) {
 
-        async function do_fetch() {
+            let url = comments.fetch_url
 
-            do {
+            async function do_fetch() {
 
-                await apiFetch(
-                    url,
-                    null,
-                    undefined,
-                    undefined,
-                    false
-                )
-                    .then((response) => {
-        
-                        response.api_page_data.results.map(( comment ) => {
-        
-                            setComments((prevState) => ({
-                                fetch_url: response.api_page_data.links.last,
-                                comments: {
-                                    ...prevState.comments,
-                                    [comment.id]: comment
-                                }
-                            }))
-        
+                do {
+
+                    await apiFetch(
+                        url,
+                        null,
+                        undefined,
+                        undefined,
+                        false
+                    )
+                        .then((response) => {
+            
+                            response.api_page_data.results.map(( comment ) => {
+            
+                                setComments((prevState) => ({
+                                    fetch_url: response.api_page_data.links.next ? response.api_page_data.links.next : prevState.fetch_url,
+                                    comments: {
+                                        ...prevState.comments,
+                                        [comment.id]: comment
+                                    }
+                                }))
+            
+                            })
+            
+                            url = response.api_page_data.links.next
+            
                         })
-        
-                        url = response.api_page_data.links.next
-        
-                    })
 
-            } while( url );
+                } while( url );
 
+            }
+
+            do_fetch();
+
+            setRelaod(false)
         }
-
-        do_fetch();
-
 
     }, [
         comments_url,
@@ -165,7 +171,8 @@ export const Comments = ({
                     listStyle: "disc"
                 }}
             >
-                {Object.keys(comments.comments).map(key => {
+                {comments.comments &&
+                Object.keys(comments.comments).map(key => {
 
                         const need_metadata = () => {
                     
@@ -220,7 +227,6 @@ export const Comments = ({
                                 objectData={comments.comments[key]}
                                 objectMetadata={need_metadata() ? null : metadata}
                                 edit_callback = {setRelaod}
-                                callback_value = {reload}
                                 comments_url = {comments_url}
                             />
                         </li>
@@ -234,6 +240,8 @@ export const Comments = ({
                         }}
                     >
                         <Comment
+                            // callback_value = {reload}
+                            edit_callback = {setRelaod}
                             objectMetadata={metadata}
                             isCreate = {true}
                         />
@@ -353,6 +361,8 @@ export const Comment = ({
 
             }
 
+            // setObjectURL(commentMetadata.urls.self)
+
         }
 
     }, [
@@ -444,13 +454,6 @@ export const Comment = ({
 
 
 
-
-
-
-
-
-
-
     const [isOpen, setIsOpen] = useState(false);
 
     // const [isChecked, setIsChecked] = useState(false);
@@ -458,15 +461,6 @@ export const Comment = ({
     const onSelect = () => {
         setIsOpen(!isOpen);
     };
-
-
-
-
-
-
-
-
-
 
 
     if( commentType === 'action' ) {
@@ -551,8 +545,8 @@ export const Comment = ({
     const dropdownItems = (
         <>
             { isCreate && objectMetadata?.urls?.sub_models &&
-
-                subModels.map(({name, url}) => {
+                <>
+                {subModels.map(({name, url}) => {
 
                     return (
                         <DropdownItem
@@ -566,7 +560,18 @@ export const Comment = ({
                             Create {name}
                         </DropdownItem>
                     );
-                })
+                })}
+                
+                <DropdownItem
+                    key = "clear-form"
+                    onClick={() => {
+
+                        setFormState({})
+                    }}
+                >
+                    Reset Fields
+                </DropdownItem>
+                </>
             }
             {!isCreate &&
             <>
@@ -752,7 +757,7 @@ export const Comment = ({
             </Title>
 
             <Comments
-                comments_url = {comment_page_data._urls.threads}
+                comments_url = {start_thread ? `${URLSanitize(comment_page_data._urls._self)}/threads` : comment_page_data._urls.threads}
             />
         </div>
         }
@@ -769,9 +774,16 @@ export const Comment = ({
             <FlexItem>
                 {( isCreate || isEdit ) &&
                     <Form
-                        action={isCreate ? commentMetadata['urls']['self'] : comment_page_data['_urls']['_self'] }
+                        action={isCreate ? URLSanitize(commentMetadata['urls']['self']) : URLSanitize(comment_page_data['_urls']['_self']) }
                         className = "pf-v6-c-form pf-m-vertical"
                         method={isCreate ? "POST" : "PATCH"}
+                        navigate={false}
+                        onSubmit={() => {
+                            if( start_thread || isCreate ) {
+                                edit_callback(true)
+                                setFormState({})
+                            }
+                        }}
                     >
                         {CommentCard}
 

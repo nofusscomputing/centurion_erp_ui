@@ -77,6 +77,35 @@ const FormField = ({
         fieldName = String(fieldName).replace('_badge', '')
     }
 
+
+    let dataFieldType = objectMetadata.fields[fieldName].type;
+
+    switch(objectMetadata.fields[fieldName].relationship_type) {
+
+        case "ManyToMany":
+
+            dataFieldType = objectMetadata.fields[fieldName].relationship_type
+
+            break;
+    }
+
+    const fieldData = Object.hasOwn(formState, fieldName)
+        ? formState[fieldName]
+        : isCreate
+            ? (objectMetadata.fields[fieldName].initial ?? '')
+            : (FieldData({
+                metadata: objectMetadata,
+                field_name: fieldName,
+                data: objectData,
+                withFormatting: (
+                    (dataFieldType === 'DateTime' && readOnly) ?
+                        true
+                    :
+                        false
+                )
+            }) ?? '');
+
+
     const labelHelpRef = useRef(null);
 
     const isRequired = Boolean(objectMetadata.fields[fieldName].required);
@@ -151,46 +180,6 @@ const FormField = ({
 
     const fetchFormField = () => {
 
-        let dataFieldType = objectMetadata.fields[fieldName].type;
-
-        switch(objectMetadata.fields[fieldName].relationship_type) {
-
-            case "ManyToMany":
-
-                dataFieldType = objectMetadata.fields[fieldName].relationship_type
-
-                break;
-        }
-
-
-        const fieldData = FieldData({
-            metadata: objectMetadata,
-            field_name: fieldName,
-            data: objectData,
-            withFormatting: (
-                (dataFieldType === 'DateTime' && readOnly) ?
-                    true
-                :
-                    false
-            )
-        });
-
-
-        let updatedFieldData = (
-            isCreate ?
-            (
-                Object.hasOwn(formState, fieldName) ?
-                    formState[fieldName]
-                :
-                    objectMetadata.fields[fieldName].initial
-            )
-            :
-                Object.hasOwn(formState, fieldName) ?
-                    formState[fieldName]
-                :
-                    fieldData
-        );
-
         switch( dataFieldType ) {
 
             case 'Boolean':
@@ -210,16 +199,16 @@ const FormField = ({
             case 'Choice':
             case 'Relationship':
 
-                let selectedOption = null;
+                let selectedOption = '';
 
                 const selectOptions = Object.entries(objectMetadata.fields[fieldName].choices).map(([key, choice]) => {
 
                         const options = { "component": [] }
 
                         if(
-                            ( typeof(choice.value) === 'number' && Number(updatedFieldData) == choice.value )
+                            ( typeof(choice.value) === 'number' && Number(fieldData) == choice.value )
                             ||
-                            ( typeof(choice.value) === 'string' && String(updatedFieldData) == choice.value )
+                            ( typeof(choice.value) === 'string' && String(fieldData) == choice.value )
                         ) {
 
                             selectedOption = choice.value;
@@ -294,7 +283,7 @@ const FormField = ({
                         onChange = {handleFieldChange}
                         readOnly = {readOnly ? null : undefined}
                         type = {inputFieldType}
-                        value = {updatedFieldData}
+                        value = {fieldData}
                     />
                 );
 
@@ -310,14 +299,16 @@ const FormField = ({
                         onChange = {handleFieldChange}
                         readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
-                        value = {updatedFieldData}
+                        value = {fieldData}
                     />
                 );
 
             case 'Markdown':
 
-                if( updatedFieldData?.render ) {
-                    updatedFieldData = updatedFieldData.markdown;
+            let markdownFieldData = fieldData
+
+                if( fieldData?.render ) {
+                    markdownFieldData = markdownFieldData.markdown;
                 }
 
                 return (
@@ -331,7 +322,7 @@ const FormField = ({
                         onChange = {handleFieldChange}
                         readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
-                        value = {updatedFieldData}
+                        value = {markdownFieldData}
                     />
                 );
 
