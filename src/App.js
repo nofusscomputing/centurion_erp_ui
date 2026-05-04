@@ -183,7 +183,6 @@ function App() {
 
                         <Route path="ticket">
 
-
                             <Route path=":model" element={<List />}
                                 loader = {pagedLoader} />
 
@@ -207,6 +206,23 @@ function App() {
 
                                 }}
                             />
+
+                            <Route path=":pk">
+
+                                <Route path=':subModel'>
+
+                                    <Route path=':subModkPk'>
+
+                                        <Route path=":subSubModel"
+                                            action={APISubmitAction}
+                                            shouldRevalidate={() => false}
+                                        />
+
+                                    </Route>
+
+                                </Route>
+
+                            </Route>
 
                         </Route>
 
@@ -320,6 +336,8 @@ export default App;
 
 
 const pagedLoader = async ({request, params}) => {
+
+    console.debug('Page Loader', request)
 
     const {api_metadata, api_page_data} = await apiFetch(
         String(request.url).replace(document.location.origin, '')

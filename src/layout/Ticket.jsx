@@ -28,7 +28,6 @@ import {
 
 import '../styles/ticket.css'
 
-import { apiFetch } from "../hooks/apiFetch";
 import { Comments } from "../components/Comment";
 import FieldData from "../functions/FieldData";
 import { Fields } from "../components/DisplayFields";
@@ -162,36 +161,6 @@ const Ticket = () => {
     ])
 
 
-    useEffect(() => {
-
-        if( ! new_ticket && ticket_data ) {
-
-            if( ticket_data['_urls']['comments'] ) {
-
-                async function do_fetch() {
-
-                    await apiFetch(
-                        ticket_data['_urls']['comments'],
-                        (data) =>{
-
-                            setCommentMetaData(data)
-
-                        },
-                        'OPTIONS'
-                    )
-                };
-
-                do_fetch();
-
-            }
-        }
-
-    }, [
-        new_ticket,
-        ticket_data,
-    ])
-
-
     const handleDescriptionEdit = () => {
 
         setEditingDescription(!editing_description)
@@ -219,7 +188,7 @@ const Ticket = () => {
         }
     }
 
-    console.debug(`new form data: ${JSON.stringify( formState )}`)
+    console.debug(`ticket form data: ${JSON.stringify( formState )}`)
 
 
     const ticketSideBar = (
@@ -358,7 +327,6 @@ const Ticket = () => {
                         formState={formState}
                         isCreate={new_ticket}
                         isEdit={false}
-                        // isFlex = {true}
                         objectData={ticket_data}
                         objectMetadata={ticket_metadata}
                         onChange={setFormState}
@@ -412,7 +380,6 @@ const Ticket = () => {
                         formState={formState}
                         isCreate={new_ticket}
                         isEdit={false}
-                        // isFlex = {true}
                         objectData={ticket_data}
                         objectMetadata={ticket_metadata}
                         onChange={setFormState}
@@ -556,12 +523,9 @@ const Ticket = () => {
                         data_url={URLSanitize(ticket_data?._urls?.linked_models)}
                     />}
 
-                    { comment_metadata &&
-
                     <Comments
-                        comments_metadata = {comment_metadata}
                         comments_url = {URLSanitize(ticket_data?._urls?.comments)}
-                    />}
+                    />
 
                 </Flex>
 

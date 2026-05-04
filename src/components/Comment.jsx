@@ -7,7 +7,6 @@ import {
 
 import {
     Form,
-    useActionData,
     useFetcher
 } from "react-router"
 
@@ -37,8 +36,6 @@ import {apiFetch } from "../hooks/apiFetch"
 import FieldData from "../functions/FieldData"
 import { Fields } from "./DisplayFields"
 import IconLoader from "./IconLoader"
-import { MARKDOWN_TAG_MODEL_LINK_UNESCAPE_RE } from "../functions/markdown_plugins/ModelLink";
-import { MARKDOWN_TICKET_LINK_UNESCAPE_RE } from "../functions/markdown_plugins/TicketLink";
 
 import UserContext from "../hooks/UserContext"
 import URLSanitize from "../functions/URLSanitize";
@@ -47,21 +44,29 @@ import URLSanitize from "../functions/URLSanitize";
 
 /** List of Comments
  * 
- * @param param
+ * This component is self contained and is only dependant upon the comments
+ * url.
  * 
- * @param {object} param.comments_metadata Comments Metadata from API.
+ * Will make an initial HTTP/OPTIONS request to the comments URL to fetch the
+ * base models metadata. Once obtained will make a HTTP/GET request to the
+ * comments url fetching all comments. This request is paginated, and will loop
+ * through and fetch every responses `links.next` url until its value is `null`.
+ * 
+ * Each comment will then be rendered via the Comment component.
+ * 
+ * @param {object} param
+ * 
  * @param {string} param.comments_url URL to fetch the comments from
  * 
- * @returns 
+ * @returns {JSX}
  */
 export const Comments = ({
-    comments_metadata,
     comments_url,
 }) => {
 
     const fetcher = useFetcher();
 
-    const [ metadata, setCommentMetadata ] = useState( comments_metadata )
+    const [ metadata, setCommentMetadata ] = useState( null )
 
     const [comments, setComments] = useState({
         fetch_url: comments_url,
@@ -87,7 +92,7 @@ export const Comments = ({
 
         if( Object.hasOwn(fetcher.data ?? {}, 'body') && Object.hasOwn(fetcher.data ?? {}, 'ok')) {
 
-            console.debug('fetcher', fetcher.data);
+            console.debug('fetcher return', fetcher.data);
 
             setComments((prevState) => ({
                 fetch_url: prevState.fetch_url,
@@ -107,7 +112,7 @@ export const Comments = ({
 
     useEffect(() => {
 
-        if( reload || comments.comments === null ) {
+        if( reload || comments.comments === null && metadata ) {
 
             let url = comments.fetch_url
 
@@ -118,12 +123,12 @@ export const Comments = ({
                     await apiFetch(
                         url,
                         null,
-                        undefined,
+                        "GET",
                         undefined,
                         false
                     )
                         .then((response) => {
-            
+
                             response.api_page_data.results.map(( comment ) => {
             
                                 setComments((prevState) => ({
@@ -151,6 +156,7 @@ export const Comments = ({
 
     }, [
         comments_url,
+        metadata,
         reload,
     ])
 
@@ -182,9 +188,7 @@ export const Comments = ({
 
         }
 
-    }, [
-        comments_url,
-    ])
+    }, [])
 
 
     return (
@@ -218,32 +222,11 @@ export const Comments = ({
                                 :
                                     URLSanitize(comments.comments[key]['_urls']['_self']);
                 
-                            if( url === metadata.urls.self ) {
+                            if( url === URLSanitize(metadata.urls.self) ) {
                                 needs_metadata = false
                 
                             }
-                    
-                            const markdown_tags = [
-                                MARKDOWN_TAG_MODEL_LINK_UNESCAPE_RE,
-                                MARKDOWN_TICKET_LINK_UNESCAPE_RE,
-                            ]
-                    
-                            let fields = []
-                            let re
-                            for( let markdown_tag of markdown_tags ) {
-                    
-                                re = new RegExp(markdown_tag);
-                    
-                                fields = [ ...fields, ...String(comments.comments[key].body).matchAll(re) ]
-                    
-                            }
-                    
-                            if( fields.length > 0) {
-                    
-                                needs_metadata = true
-                    
-                            }
-                    
+
                             return needs_metadata
                     
                         }
@@ -291,10 +274,23 @@ export const Comments = ({
 
 /** A Comment
  * 
- * This component is intended to display a comment (or the like) from a single person.
+ * Display a comment (or the like) from a single person.
  * 
- * @param param
+ * This component is self contained and is only dependant upon the objectData
+ * or isCreate.
  * 
+ * When no objectMetadata is supplied, will make an initial HTTP/OPTIONS
+ * request to fetch the comments metadata. The comment will then be rendered.
+ * 
+ * Supplying `isCreate = True` will render the comment as a form so that it can
+ * be used to create a comment. If the model in question has many different
+ * sub-models, supplying the base metadata via the `objectMetadata` param is
+ * required so that they can be added as a comment type to create.
+ * 
+ * @param {Object} param
+ * 
+ * @param {React.ComponentType<React.FormHTMLAttributes<HTMLFormElement>>}
+ *      param.FormComponent Form Component to use.
  * @param {boolean} param.isCreate Displays the form fields to add a comment.
  * @param {object} param.objectData Comment data from api.
  * @param {object} param.objectMetadata Comment Metadata from api.
@@ -388,8 +384,6 @@ export const Comment = ({
 
             }
 
-            // setObjectURL(commentMetadata.urls.self)
-
         }
 
     }, [
@@ -450,8 +444,6 @@ export const Comment = ({
                     url = url.substr(0, url.length - url_tail.length)
                 }
 
-
-
                 await apiFetch(
                     url,
                     null,
@@ -476,14 +468,11 @@ export const Comment = ({
 
     }, [
         commentMetadata,
-        objectURL
     ])
-
 
 
     const [isOpen, setIsOpen] = useState(false);
 
-    // const [isChecked, setIsChecked] = useState(false);
 
     const onSelect = () => {
         setIsOpen(!isOpen);
@@ -524,20 +513,6 @@ export const Comment = ({
         comment_page_data &&
         <div id={'comment-icons-' + comment_page_data['id']} className="icons">
             {comment_page_data['parent'] == null &&
-            //  <span style={{
-            //     cursor: 'pointer'
-            //     }}
-            //     onClick={(e) => {
-
-            //         setStartThread( (start_thread ? false : true) )
-
-            //     }}
-            // >
-            //     <IconLoader
-            //         name={'reply'}
-            //         size = "lg"
-            //     />
-            // </span>
             <Button
                 aria-label = "reply to comment"
                 icon = {
