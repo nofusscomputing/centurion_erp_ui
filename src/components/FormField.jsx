@@ -89,6 +89,8 @@ const FormField = ({
             break;
     }
 
+    const readOnly = Boolean(objectMetadata.fields[fieldName].read_only)
+
     const fieldData = Object.hasOwn(formState, fieldName)
         ? formState[fieldName]
         : isCreate
@@ -109,8 +111,6 @@ const FormField = ({
     const labelHelpRef = useRef(null);
 
     const isRequired = Boolean(objectMetadata.fields[fieldName].required);
-
-    const readOnly = Boolean(objectMetadata.fields[fieldName].read_only)
 
     const writeOnly = Boolean(objectMetadata.fields[fieldName].write_only);
 
