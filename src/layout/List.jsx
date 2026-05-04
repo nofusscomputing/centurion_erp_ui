@@ -29,13 +29,13 @@ const List = () => {
 
     useEffect(() => {
 
-        setPageHeading(metadata.name)
-        setPageDescription(metadata.description)
+        setPageHeading(metadata?.name)
+        setPageDescription(metadata?.description)
 
 
         setPageHeaderIcons(
             <>
-                {metadata['documentation'] &&
+                {metadata?.['documentation'] &&
                     <Link to={metadata['documentation']} target="_new">
                         <IconLoader
                             name='help'
@@ -53,7 +53,7 @@ const List = () => {
 
     return (
         <>
-            { metadata &&
+            { metadata && page_data &&
             <PageSection
                 aria-labelledby="page-content"
                 isFilled={true}
