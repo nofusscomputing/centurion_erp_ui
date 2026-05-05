@@ -17,8 +17,7 @@ As the name alludes, Ticket layout is designed for rendering a ticket.
     "name:" "request"
     "urls": {
         "self": "",
-        "sub_models": {
-            "<model_name>": "<sub-model URL>"
+        "sub_models": {}
         }
     }
 }

@@ -38,9 +38,7 @@ The metadata document contains everything that Centurion UI requires so that it 
 {
   "name": "",
   "description": "",
-  "urls": {
-    "self": "http://127.0.0.1:8002/api/v2"
-  },
+  "urls": {},
   "renders": [
     "application/json",
   ],
@@ -99,7 +97,10 @@ The `urls` key is used by the UI for actions within a view. The expected structu
     "self": "",
     "back": "",
     "sub_models": {
-        "" : ""
+        "<model_key>": {
+            "display_name": "<Human readable name>",
+            "url": "<sub-model URL>"
+        }
     },
     "return_url": ""
 }
