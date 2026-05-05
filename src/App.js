@@ -183,17 +183,46 @@ function App() {
 
                         <Route path="ticket">
 
-
                             <Route path=":model" element={<List />}
                                 loader = {pagedLoader} />
 
 
                             <Route path=":model/add" element={<Ticket />}
-                                action={InlineFieldAction} loader = {pagedLoader} />
+                                action={APISubmitAction} loader = {pagedLoader} />
 
 
                             <Route path=":model/:pk" element={<Ticket />}
-                                loader = {pagedLoader} action={InlineFieldAction} />
+                                action={APISubmitAction}
+                                loader = {pagedLoader}
+                                shouldRevalidate={({ currentParams, nextParams }) => {
+
+                                    const reValidate = (
+                                        currentParams.module !== nextParams.module ||
+                                        currentParams.model !== nextParams.model ||
+                                        currentParams.id !== nextParams.id
+                                    )
+
+                                    return reValidate
+
+                                }}
+                            />
+
+                            <Route path=":pk">
+
+                                <Route path=':subModel'>
+
+                                    <Route path=':subModkPk'>
+
+                                        <Route path=":subSubModel"
+                                            action={APISubmitAction}
+                                            shouldRevalidate={() => false}
+                                        />
+
+                                    </Route>
+
+                                </Route>
+
+                            </Route>
 
                         </Route>
 
@@ -307,6 +336,8 @@ export default App;
 
 
 const pagedLoader = async ({request, params}) => {
+
+    console.debug('Page Loader', request)
 
     const {api_metadata, api_page_data} = await apiFetch(
         String(request.url).replace(document.location.origin, '')

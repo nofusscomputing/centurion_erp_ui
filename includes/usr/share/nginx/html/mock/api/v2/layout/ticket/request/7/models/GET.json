@@ -1,0 +1,103 @@
+
+{
+    "results": [
+        {
+            "id": 1,
+            "organization": {
+                "id": 3,
+                "display_name": "Common",
+                "name": "Common",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "display_name": {
+                "markdown": "$entity-15",
+                "render": {
+                    "models": {
+                        "entity": {
+                            "15": {
+                                "title": "Orange Pi",
+                                "url": "/access/entity/company/15"
+                            }
+                        }
+                    }
+                }
+            },
+            "content_type": {
+                "id": 17,
+                "display_name": "Itam | Software",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "model": 2824,
+            "ticket": {
+                "id": 1,
+                "display_name": "tester ticket",
+                "title": "tester ticket",
+                "url": "/layout/ticket/request/1"
+            },
+            "created": "2025-09-28T15:16:59.665045+09:30",
+            "modified": "2025-09-28T15:16:59+09:30",
+            "_urls": {
+                "_self": "/mock/api/v2/no_data_required",
+                "knowledge_base": "/mock/api/v2/no_data_required"
+            }
+        },
+        {
+            "id": 2,
+            "organization": {
+                "id": 2,
+                "display_name": "IT Department",
+                "name": "IT Department",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "display_name": {
+                "markdown": "$device-1",
+                "render": {
+                    "models": {
+                        "device": {
+                            "1": {
+                                "title": "AUD12345678",
+                                "url": "/itam/device/1"
+                            }
+                        }
+                    }
+                }
+            },
+            "content_type": {
+                "id": 16,
+                "display_name": "Itam | Device",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "model": {
+                "id": 24,
+                "display_name": "a-random-device",
+                "name": "a-random-device",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "ticket": {
+                "id": 1,
+                "display_name": "tester ticket",
+                "title": "tester ticket",
+                "url": "/layout/ticket/request/1"
+            },
+            "created": "2025-09-30T07:41:26.626364+09:30",
+            "modified": "2025-09-30T07:41:26+09:30",
+            "_urls": {
+                "_self": "/mock/api/v2/no_data_required",
+                "knowledge_base": "/mock/api/v2/no_data_required"
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "page": 1,
+            "pages": 1,
+            "count": 2
+        }
+    },
+    "links": {
+        "first": "/layout/ticket/request/7/models?page%5Bnumber%5D=1",
+        "last": "/layout/ticket/request/7/models?page%5Bnumber%5D=1",
+        "next": null,
+        "prev": null
+    }
+}

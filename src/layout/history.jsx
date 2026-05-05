@@ -26,7 +26,7 @@ const History = () => {
         >
             {metadata && <DisplayTable
                 callback={setPageHeading}
-                data_url_path={String(metadata.urls.self).split('api/v2')[1]}
+                data_url_path={String(metadata.urls.self)}
                 loader_data={page_data}
                 loader_metadata={metadata}
             />}

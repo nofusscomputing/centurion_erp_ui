@@ -1,0 +1,123 @@
+{
+    "name": "Ticket Dependencies",
+    "description": "Tickets that a dependent upon one another.",
+    "documentation": "https://nofusscomputing.com/projects/centurion_erp/user/core/ticket_dependency",
+    "urls": {
+        "self": "/layout/ticket/request/7/ticket_dependency"
+    },
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+    ],
+    "fields": {
+        "id": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "ID",
+            "help_text": "ID of the item"
+        },
+        "display_name": {
+            "multi_line": true,
+            "type": "Markdown",
+            "required": false,
+            "style": {
+                "class": null
+            },
+            "read_only": true,
+            "write_only": false,
+            "label": "Display name"
+        },
+        "dependent_ticket": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "TicketBase",
+            "required": true,
+            "read_only": false,
+            "write_only": false,
+            "label": "Related Ticket",
+            "help_text": "The Related Ticket",
+            "choices": []
+        },
+        "ticket": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "TicketBase",
+            "required": true,
+            "read_only": false,
+            "write_only": false,
+            "label": "Ticket",
+            "help_text": "This Ticket",
+            "choices": []
+        },
+        "how_related": {
+            "type": "Choice",
+            "required": true,
+            "read_only": false,
+            "write_only": false,
+            "label": "How Related",
+            "help_text": "How is the ticket related",
+            "choices": [
+                {
+                    "value": 1,
+                    "display_name": "Related"
+                },
+                {
+                    "value": 2,
+                    "display_name": "Blocks"
+                },
+                {
+                    "value": 3,
+                    "display_name": "Blocked By"
+                }
+            ]
+        },
+        "user": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "Entity",
+            "required": true,
+            "read_only": false,
+            "write_only": false,
+            "label": "User",
+            "help_text": "Who added the dependency",
+            "choices": []
+        },
+        "organization": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "Tenant",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Organization",
+            "choices": []
+        },
+        "_urls": {
+            "type": "GenericField",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": " urls"
+        }
+    },
+    "table_fields": [
+        "id",
+        "title",
+        "status_badge",
+        "opened_by",
+        "organization",
+        "created"
+    ]
+}

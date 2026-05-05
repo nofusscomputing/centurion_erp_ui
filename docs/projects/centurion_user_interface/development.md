@@ -48,7 +48,9 @@ To use his mock backend, do the following on your development machine:
         --rm \
         -d \
         -p 3000:80 \
+        -v ${PWD}/includes/etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
         -v ${PWD}/includes/etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf \
+        -v ${PWD}/includes/usr/share/nginx/html/mock:/usr/share/nginx/html/mock \
         --name centurion-ui \
         centurion-ui:dev
 

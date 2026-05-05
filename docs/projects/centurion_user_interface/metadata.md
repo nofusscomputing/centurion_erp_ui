@@ -38,9 +38,7 @@ The metadata document contains everything that Centurion UI requires so that it 
 {
   "name": "",
   "description": "",
-  "urls": {
-    "self": "http://127.0.0.1:8002/api/v2"
-  },
+  "urls": {},
   "renders": [
     "application/json",
   ],
@@ -69,7 +67,7 @@ The metadata document contains everything that Centurion UI requires so that it 
 
 | Field | Type | When<br>Required | When<br>Optional | Description  |
 |:---|:---:|:---:|:---:|:---|
-| `name` | string | always | - | For the Roor request, use the websites name All other requests use the display's name. |
+| `name` | string | always | - | For the Root request, use the websites name All other requests use the objects name. |
 | `description` | string | List View<br>Detail View | Root Request | The description to use for the view. _**Note:** This is ignored in the root request._ |
 | `urls` | array[object] | always | - | The different URL applicable to the current endpoint. |
 | `allowed_methods` | array[string] | always | - | The type of HTTP request methods supported by the endpoint. |
@@ -82,6 +80,8 @@ As the metadata document can become quite large, not all of its details are publ
 
 
 ### Name
+
+The name field defines the object(s) name. The only exception for this is the root metadata, which should be the sites name. For clarity this name should be unique across the site as a whole.
 
 
 ### Description
@@ -97,7 +97,10 @@ The `urls` key is used by the UI for actions within a view. The expected structu
     "self": "",
     "back": "",
     "sub_models": {
-        "" : ""
+        "<model_key>": {
+            "display_name": "<Human readable name>",
+            "url": "<sub-model URL>"
+        }
     },
     "return_url": ""
 }

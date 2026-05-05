@@ -1,0 +1,94 @@
+{
+    "name": "Settings",
+    "description": "Centurion ERP Settings",
+    "urls": {
+        "self": "/mock/api/v2/settings"
+    },
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+    ],
+    "table_fields": [],
+    "layout": [
+        {
+            "name": "Application",
+            "links": [
+                {
+                    "name": "Settings",
+                    "model": "app_settings"
+                }
+            ]
+        },
+        {
+            "name": "Assistanace",
+            "links": [
+                {
+                    "name": "Knowledge Base Categories",
+                    "model": "knowledge_base_category"
+                }
+            ]
+        },
+        {
+            "name": "Core",
+            "links": [
+                {
+                    "name": "External Links",
+                    "model": "external_link"
+                }
+            ]
+        },
+        {
+            "name": "ITAM",
+            "links": [
+                {
+                    "name": "Device Model",
+                    "model": "device_model"
+                },
+                {
+                    "name": "Device Type",
+                    "model": "device_type"
+                },
+                {
+                    "name": "Software Category",
+                    "model": "software_category"
+                }
+            ]
+        },
+        {
+            "name": "ITIM",
+            "links": [
+                {
+                    "name": "Cluster Type",
+                    "model": "cluster_type"
+                },
+                {
+                    "name": "Service Port",
+                    "model": "port"
+                }
+            ]
+        },
+        {
+            "name": "Project Management",
+            "links": [
+                {
+                    "name": "Project State",
+                    "model": "project_state"
+                },
+                {
+                    "name": "Project Type",
+                    "model": "project_type"
+                }
+            ]
+        }
+    ]
+}

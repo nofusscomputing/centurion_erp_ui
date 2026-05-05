@@ -15,6 +15,7 @@ import TextField from "../components/form/Textfield";
 
 import { apiFetch } from "../hooks/apiFetch";
 import urlBuilder from "../hooks/urlBuilder";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -194,7 +195,7 @@ const ModelForm = () => {
 
                     const response = await apiFetch(
                         // url_builder.api.path,
-                        String(metadata.urls.self).split('api/v2')[1],
+                        String(metadata.urls.self),
                         setFormError,
                         url_builder.method,
                         form_data
@@ -208,8 +209,8 @@ const ModelForm = () => {
                     ) {
 
                         navigate(metadata.urls.return_url ?
-                            String(metadata.urls.return_url).split('api/v2')[1]
-                            : String(metadata.urls.self).split('api/v2')[1])
+                            URLSanitize(metadata.urls.return_url)
+                            : URLSanitize(metadata.urls.self))
 
                     } else {
 
@@ -370,8 +371,8 @@ const ModelForm = () => {
                             <button className="form common-field" type="submit">Save</button>
                             <Link to={
                                 metadata.urls.return_url ?
-                                String(metadata.urls.return_url).split('api/v2')[1]
-                                : String(metadata.urls.back).split('api/v2')[1]
+                                URLSanitize(metadata.urls.return_url)
+                                : URLSanitize(metadata.urls.back)
 
                             }><button type="button" className="form common-field inverse">Cancel</button></Link>
                         </div>

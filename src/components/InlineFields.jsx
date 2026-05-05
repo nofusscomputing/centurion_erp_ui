@@ -213,7 +213,7 @@ const InlineField = ({
 
         return (
             <fieldset id={fieldsetId}>
-                <Form id={fieldsetFormId} method="patch" action={String(data?._urls?._self).split('api/v2')[1]} onSubmit={handleFormSubmit}>
+                <Form id={fieldsetFormId} method="patch" action={String(data?._urls?._self)} onSubmit={handleFormSubmit}>
 
                     {return_field}
 
@@ -380,7 +380,7 @@ export const InlineFieldAction = async ({ request, params }) => {
 
     if( String(request.method).toLowerCase() == 'post' ) {
 
-        return redirect(String(api_return._urls._self.split('api/v2')[1]))
+        return redirect(URLSanitize(api_return._urls._self))
     }
 
     return null;

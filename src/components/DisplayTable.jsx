@@ -32,6 +32,7 @@ import { apiFetch } from "../hooks/apiFetch";
 import Dialog from "../layout/Dialog";
 import FieldData from "../functions/FieldData";
 import IconLoader from "./IconLoader";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -63,8 +64,6 @@ const DisplayTable = ({
     loader_data = null,    // todo: rename tableData
     loader_metadata = null,    // todo: rename tableMetadata
 }) => {
-
-    const API_SPLIT = String('api/v2')
 
     const [loaded, setPageLoaded] = useState(loader_data ?  true : false)
 
@@ -251,7 +250,7 @@ const DisplayTable = ({
                         return (
                             <Button
                                 variant="primary"
-                                component={(props) => <Link {...props} to={String(metadata.urls.sub_models[model_name]).split(API_SPLIT)[1] + "/add"} />}
+                                component={(props) => <Link {...props} to={URLSanitize(metadata.urls.sub_models[model_name]) + "/add"} />}
                             >
                                 Add {model_name}
                             </Button>
@@ -269,7 +268,7 @@ const DisplayTable = ({
                 return (
                         <Button
                             variant="primary"
-                            component={(props) => <Link {...props} to={String(metadata.urls.self).split(API_SPLIT)[1] + "/add"} />}
+                            component={(props) => <Link {...props} to={URLSanitize(metadata.urls.self) + "/add"} />}
                         >
                             Add
                         </Button>

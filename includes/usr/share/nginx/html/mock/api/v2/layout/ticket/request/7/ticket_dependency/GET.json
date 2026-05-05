@@ -1,0 +1,55 @@
+{
+    "results": [
+        {
+            "id": 1,
+            "display_name": {
+                "markdown": "#1234",
+                "render": {
+                    "tickets": {
+                        "1234": {
+                            "status": "Closed",
+                            "title": "Random related ticket",
+                            "url": "/itim/ticket/requestticket/1234"
+                        }
+                    }
+                }
+            },
+            "dependent_ticket": {
+                "id": 6,
+                "display_name": "67867",
+                "title": "67867",
+                "url": "/layout/ticket/request/6"
+            },
+            "ticket": {
+                "id": 7,
+                "display_name": "dfdsf",
+                "title": "dfdsf",
+                "url": "/layout/ticket/request/7"
+            },
+            "how_related": 1,
+            "user": 11,
+            "organization": {
+                "id": 10,
+                "display_name": "IT Department",
+                "name": "IT Department",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "_urls": {
+                "_self": "/layout/ticket/request/7/ticket_dependency/1"
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "page": 1,
+            "pages": 1,
+            "count": 1
+        }
+    },
+    "links": {
+        "first": "/layout/ticket/request/7/ticket_dependency?page%5Bnumber%5D=1",
+        "last": "/layout/ticket/request/7/ticket_dependency?page%5Bnumber%5D=1",
+        "next": null,
+        "prev": null
+    }
+}

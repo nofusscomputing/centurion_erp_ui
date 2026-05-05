@@ -20,11 +20,14 @@ import {
     DescriptionListDescription,
     DescriptionListGroup,
     DescriptionListTerm,
+    Divider,
     Flex,
     FlexItem,
     List,
     ListItem,
 } from "@patternfly/react-core";
+
+import { PencilAltIcon } from '@patternfly/react-icons';
 
 import { apiFetch } from "../hooks/apiFetch";
 import FieldData from "../functions/FieldData";
@@ -34,17 +37,36 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import UserContext from "../hooks/UserContext";
 
 
-
+/** Fetch and display fields.
+ * 
+ * @param param
+ * @param {object} param.errorState Form errors.
+ * @param {array} param.fields Form fields to fetch.
+ * @param {object} param.formState Current form edit state.
+ * @param {boolean} param.isCreate Is the object being created.
+ * @param {boolean} param.isEdit It the object being edited.
+ * @param {boolean} param.isFlex Display form as flex.
+ * @param {object} param.objectData Object Data.
+ * @param {object} param.objectMetadata Object Metadata
+ * @param {function} param.onChange Callback when the form changes.
+ * @param {boolean} param.useDivider After each form field, add a divider.
+ * 
+ * @returns 
+ */
 export const Fields = ({
     errorState,
     fields,
     formState,
     isCreate = false,
-    isEdit,
+    isEdit = false,
+    isFlex = false,
     objectData,
     objectMetadata,
     onChange,
+    useDivider = false
 }) => {
+
+    const [isFieldEdit, setIsFieldEdit] = useState({});
 
     let textarea_fields = [
         'json',
@@ -58,6 +80,7 @@ export const Fields = ({
             && field !== 'model_notes'
             && textarea_fields.includes(String(objectMetadata.fields[field]?.type).toLowerCase())
             && ! isEdit
+            && ! isFlex
         ) {
 
             return(
@@ -69,13 +92,70 @@ export const Fields = ({
                     />
             );
 
+        } else if( isFlex ) {
+
+            if( isEdit || isCreate ) {
+
+                return (
+                    <>
+                    <FormField
+                        errorState={errorState}
+                        fieldName = {field}
+                        formState = {formState}
+                        isCreate = {isCreate}
+                        isEdit = {isEdit}
+                        objectData = {objectData}
+                        objectMetadata = {objectMetadata}
+                        onChange = {onChange}
+                    />
+                    { useDivider && <Divider />}
+                    </>
+                );
+                
+            } else {
+
+                return (
+                    <FlexItem
+                        direction={{ default: 'column' }}
+                    >
+                        <label
+                            style={{
+                                display: "block",
+                                fontWeight: "var(--pf-t--global--font--weight--200)"
+                            }}
+                        >{objectMetadata.fields[field]?.label}</label>
+                        <div>
+                            <FieldData
+                                metadata={objectMetadata}
+                                field_name={field}
+                                data={objectData}
+                            />
+                        </div>
+                        { useDivider && <Divider />}
+                    </FlexItem>
+                );
+
+            }
+
         } else {
 
-            if( ! isEdit ) {
+            if( ! isEdit && ! isCreate && ! isFieldEdit?.[field]) {
 
                 return(
+                    <>
                     <DescriptionListGroup>
-                        <DescriptionListTerm>{objectMetadata.fields[field]?.label}</DescriptionListTerm>
+                        <DescriptionListTerm>
+                            {objectMetadata.fields[field]?.label}
+                            { ! Boolean(objectMetadata.fields[String(field).endsWith('_badge') ? String(field).replace('_badge', '') : field]?.read_only) &&
+                            <Button
+                                aria-label="Action"
+                                icon={<PencilAltIcon />}
+                                variant="plain"
+                                onClick={(_event) => {
+                                    setIsFieldEdit({[field]: true})
+                                }}
+                            />}
+                        </DescriptionListTerm>
                         <DescriptionListDescription>
                             <FieldData
                                 metadata={objectMetadata}
@@ -83,7 +163,9 @@ export const Fields = ({
                                 data={objectData}
                             />
                         </DescriptionListDescription>
+                        { useDivider && <Divider />}
                     </DescriptionListGroup>
+                    </>
                 );
 
             }
@@ -97,16 +179,23 @@ export const Fields = ({
 
             if(field in objectMetadata.fields ) {
                 return (
+                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
                         formState = {formState}
                         isCreate = {isCreate}
-                        isEdit = {isEdit}
+                        isEdit = {isFieldEdit?.[field] ? isFieldEdit[field] : isEdit}
+                        isInlineEdit = {isFieldEdit?.[field] ? true : false}
+                        inlineEditCancel = {() => {
+                            setIsFieldEdit(!isFieldEdit)
+                            onChange({})
+                        }}
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
                         onChange = {onChange}
                     />
+                    </>
                 );
             } else {
                 return;

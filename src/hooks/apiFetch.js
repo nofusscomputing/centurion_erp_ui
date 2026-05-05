@@ -20,6 +20,7 @@ export async function apiFetch(
     patch = true
 ) {
 
+    console.debug(`apiFetch called: ${http_method} ${url_path}`);
     // console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
 
     // console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
@@ -102,7 +103,10 @@ export async function apiFetch(
         // http_method === 'GET'
         // && metadata
         metadata
+        && http_method.toUpperCase() !== 'OPTIONS'
     ) {
+
+        console.debug(`apiFetch called: ${http_method} ${url_path} -Making Options Request-`);
 
         const api_metadata_response = await fetch(window.env.API_URL + url_path,
                 {
@@ -134,7 +138,17 @@ export async function apiFetch(
 
     if( api_data_response.status != 204 ) {
 
-        api_data = await api_data_response.clone().json()
+        if( http_method.toUpperCase() === 'OPTIONS' ) {
+
+            api_metadata = await api_data_response.clone().json()
+
+            api_data = await api_data_response.clone().json()
+
+        } else {
+
+            api_data = await api_data_response.clone().json()
+
+        }
 
         if( callback && api_metadata ) {
 
