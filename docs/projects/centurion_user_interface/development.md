@@ -9,6 +9,16 @@ about: https://github.com/nofusscomputing/centurion_erp_ui/
 This page covers development for the Centurion UI. We welcome contributions and hope that this page, along with our [Contribution Guide](https://github.com/nofusscomputing/centurion_erp_ui/blob/development/CONTRIBUTING.md) has fostered you being able to move forward.
 
 
+## Requirements
+
+This section contains the musts for development of this project.
+
+- Use Typescript of Javascript
+
+    !!! note
+        As this project started of using javascript, some files will not be typescript. If there is a major refactor to a javascript file, it's also to be converted to typescript. **All** new files are to be typescript.
+
+
 ## Mock API
 
 We have added as part of our docker container a feature that enables you to mock an API backend. The mock backend only covers read-only actions.

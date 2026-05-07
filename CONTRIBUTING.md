@@ -1,6 +1,7 @@
 # Contribution Guide
 
-Contributions are welcome.
+We welcome contributions to this project. This contirubution guide should be read in conjunction with the [development section](https://nofusscomputing.com/projects/centurion_user_interface/development/) of the documentation.
+
 
 ## Tests
 

@@ -36,7 +36,7 @@ module.exports = (env, argv) => {
         module: {
             rules: [
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.([jt]sx?)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: 'babel-loader',
@@ -108,7 +108,7 @@ module.exports = (env, argv) => {
         ].filter(Boolean),
 
         resolve: {
-            extensions: ['.js', '.jsx']
+            extensions: ['.js', '.jsx', '.ts', '.tsx']
         }
     };
 
