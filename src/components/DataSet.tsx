@@ -58,8 +58,10 @@ import URLSanitize from "../functions/URLSanitize";
  * @since 0.8.0
  * 
  */
-export const DataSetFooter = ({
-    component: Component = Fragment,
+export const DataSetFooter = <
+    T extends React.ElementType = React.ElementType
+>({
+    component,
     componentProps,
     itemCount,
     pageNumber = 1,
@@ -67,14 +69,16 @@ export const DataSetFooter = ({
     setPageNumber,
     setPerPage
 }: {
-    component?: React.ElementType
-    componentProps?: object
+    component?: T
+    componentProps?: React.ComponentPropsWithoutRef<T>
     itemCount: number
     pageNumber?: number
     perPage?: number
     setPageNumber: (pageNumber: number) => void
     setPerPage: (total: number) => void
 }): React.JSX.Element => {
+
+    const Component = component ?? Fragment
 
     const onPerPageSelect = (_event, newPerPage, newPage) => {
         setPerPage(newPerPage);
@@ -127,9 +131,11 @@ export const DataSetFooter = ({
  * @since 0.8.0
  * 
  */
-export const DataSetHeader = ({
+export const DataSetHeader = <
+    T extends React.ElementType = React.ElementType
+>({
     children,
-    component: Component = Fragment,
+    component,
     componentProps,
     itemCount,
     metadata,
@@ -138,14 +144,16 @@ export const DataSetHeader = ({
     selectRows,
 }: {
     children?: React.ReactNode
-    component?: React.ElementType
-    componentProps: object
+    component?: T
+    componentProps?: React.ComponentPropsWithoutRef<T>
     itemCount: number
     metadata:APIMetadata
     perPage: number
     selectedRows: number[]
     selectRows: (rows: "all" | number | number[]) => void
 }): React.JSX.Element => {
+
+    const Component = component ?? Fragment
 
     const [isSplitButtonDropdownOpen, setIsCheckItemsDropdownOpen] = useState(false);
 
@@ -279,14 +287,17 @@ export const DataSetHeader = ({
  * 
  * @ignore
  */
-export const DataSetCard = ({
-    component: Component = Fragment,
+export const DataSetCard = <
+    T extends React.ElementType = React.ElementType
+>({
+    component,
     componentProps
 }: {
-    component?: React.JSX.ElementType,
-    componentProps?: object
+    component?: T
+    componentProps?: React.ComponentPropsWithoutRef<T>
 }): React.JSX.Element => {
 
+    const Component = component ?? Fragment
 
     return (
         <Component {...componentProps}></Component>
@@ -311,21 +322,25 @@ export const DataSetCard = ({
  * @since 0.8.0
  * 
  */
-export const DataSetList = ({
-    component: Component = Fragment,
+export const DataSetList = <
+    T extends React.ElementType = React.ElementType
+>({
+    component,
     componentProps,
     metadata,
     rowData,
     selectedRows,
     selectRows,
 }: {
-    component?: React.ElementType
-    componentProps?: object
+    component?: T
+    componentProps?: React.ComponentPropsWithoutRef<T>
     metadata: APIMetadata
     rowData: APIDataset
     selectedRows: number[]
     selectRows: (rows: "all" | number | number[]) => void
 }): React.JSX.Element => {
+
+    const Component = component ?? Fragment
 
     const dataListRows = rowData.results.map((row) => {
 

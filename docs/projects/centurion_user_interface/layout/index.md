@@ -13,6 +13,6 @@ Available layouts are as follows:
 
 - Detail
 
-- List
+- [List](./list.md)
 
 - [Ticket](./ticket.md)
