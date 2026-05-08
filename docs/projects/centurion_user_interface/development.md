@@ -10,6 +10,7 @@ This page covers development for the Centurion UI. We welcome contributions and 
 
 We do have Code API documentation. and it can be found in the [API documentation](./api/index.md) section.
 
+
 ## Requirements
 
 This section contains the musts for development of this project.
