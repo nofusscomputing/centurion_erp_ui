@@ -1,5 +1,11 @@
 {
     "categorizeByGroup": false,
+    "categoryOrder": [
+        "Layout",
+        "Component",
+        "Backend",
+        "*"
+    ],
     "cleanOutputDir": true,
     "defaultCategory": "Other",
     "groupReferencesByType": false,
