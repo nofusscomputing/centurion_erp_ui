@@ -28,6 +28,7 @@
   "scripts": {
     "start": "webpack serve --mode development --no-open",
     "build": "webpack --mode production",
+    "docs-api": "typedoc",
     "test": "jest",
     "test-unit": "jest --json --outputFile=artifacts/test_results.json --testPathPatterns='__test__/unit'"
   },
@@ -81,6 +82,8 @@
     "serve": "^14.2.5",
     "style-loader": "^4.0.0",
     "text-encoding": "^0.7.0",
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript": "^6.0.3",
     "webpack": "^5.105.3",
     "webpack-cli": "^6.0.1",
