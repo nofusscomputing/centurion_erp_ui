@@ -18,8 +18,18 @@ import DisplayTable from "../components/DisplayTable"
 import IconLoader from "../components/IconLoader";
 
 
-
-const List = () => {
+/**
+ * List View component
+ * 
+ * This component is intended to display a dataset. That is many rows of data
+ * that is of the same type.
+ * 
+ * @summary List Page Layout
+ * 
+ * @category Layout
+ * @since 0.1.0
+ */
+const List = (): React.JSX.Element => {
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
