@@ -213,7 +213,9 @@ export const DataSetHeader = <
 
     return (
         <Component {...componentProps}>
-            <Toolbar>
+            <Toolbar
+                id = "dataset-header-toolbar"
+            >
                 <ToolbarContent>
 
                     <ToolbarItem>
@@ -380,6 +382,7 @@ export const DataSetList = <
     return (
         <Component {...componentProps}>
             <DataList
+                id = "dataset-list"
                 aria-label="Dataset"
             >
 
