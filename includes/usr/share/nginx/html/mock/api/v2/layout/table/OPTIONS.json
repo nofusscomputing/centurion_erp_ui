@@ -42,10 +42,14 @@
             "help_text": "Name of the field"
         }
     },
-    "table_fields": [
-        "nbsp",
-        "display_name",
-        "name",
-        "nbsp"
-    ]
+    "table_fields": {
+        "columns": [
+            [
+                "display_name"
+            ],
+            [
+                "name"
+            ]
+        ]
+    }
 }

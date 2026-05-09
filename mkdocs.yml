@@ -39,6 +39,10 @@ nav:
 
     - projects/centurion_user_interface/url.md
 
+    - API:
+
+      - projects/centurion_user_interface/api/index.md
+
     - Components:
 
       - projects/centurion_user_interface/components/comment.md
@@ -50,6 +54,8 @@ nav:
     - Layouts:
 
       - projects/centurion_user_interface/layout/index.md
+
+      - projects/centurion_user_interface/layout/list.md
 
       - projects/centurion_user_interface/layout/ticket.md
 

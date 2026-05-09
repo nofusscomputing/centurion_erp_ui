@@ -171,7 +171,10 @@ export default function FieldData({
                     <>
                         {data_field.map((icon) => {
                             return (
-                                <span className={icon.style}>
+                                <span
+                                    className = {icon.style}
+                                    key = {`field-${field_name}-icon-${icon.name}`}
+                                >
                                     <IconLoader name={icon.name} fill={null} height='20px' width='20px' />
                                 </span>
                             )

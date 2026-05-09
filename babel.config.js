@@ -7,7 +7,8 @@ module.exports = {
                 exclude: ["@babel/plugin-transform-named-capturing-groups-regex"]
             }
         ],
-        ["@babel/preset-react", { "runtime": "automatic" }]
+        ["@babel/preset-react", { "runtime": "automatic" }],
+        "@babel/preset-typescript"
     ]
 
 }

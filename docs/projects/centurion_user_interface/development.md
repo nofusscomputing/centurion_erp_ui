@@ -8,6 +8,23 @@ about: https://github.com/nofusscomputing/centurion_erp_ui/
 
 This page covers development for the Centurion UI. We welcome contributions and hope that this page, along with our [Contribution Guide](https://github.com/nofusscomputing/centurion_erp_ui/blob/development/CONTRIBUTING.md) has fostered you being able to move forward.
 
+We do have Code API documentation. and it can be found in the [API documentation](./api/index.md) section.
+
+
+## Requirements
+
+This section contains the musts for development of this project.
+
+- Use Typescript of Javascript
+
+    !!! note
+        As this project started of using javascript, some files will not be typescript. If there is a major refactor to a javascript file, it's also to be converted to typescript. **All** new files are to be typescript.
+
+- Document code. At a minimum at least typing and param descriptions.
+
+!!! tip
+    We use typedoc for [API documentation](./api/index.md) generation. For the available tags, see the [typedoc](https://typedoc.org/documents/Tags.html) documentation.
+
 
 ## Mock API
 
