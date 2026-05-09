@@ -168,6 +168,7 @@ const config = {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
+    '<rootDir>/src/__test__/__mocks__/testSetup.js',
     '<rootDir>/src/__test__/__mocks__/apiFetch.js',
     '<rootDir>/src/__test__/__mocks__/fetch.js',
     '<rootDir>/src/__test__/__mocks__/reactRouter.js',
