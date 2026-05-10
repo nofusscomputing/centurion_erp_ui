@@ -157,7 +157,7 @@ const RootLayout = (): React.JSX.Element => {
                     <div
                         style={{
                             display: "flex",
-                            flexDirection: "column",
+                            flexDirection: "row",
                             flexWrap: "wrap"
                         }}
                     >
