@@ -54,6 +54,12 @@ jobs:
       - name: Run
         shell: bash
         run:
+          npm run lint
+
+
+      - name: Run Create JUnit Report
+        shell: bash
+        run:
           npm run lint-junit
 
 
