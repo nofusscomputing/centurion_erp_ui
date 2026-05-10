@@ -20,6 +20,7 @@ import {
     Title,
 } from '@patternfly/react-core';
 
+//@ts-expect-error TS[2822]
 import '../../node_modules/@patternfly/patternfly/patternfly.css'
 
 
@@ -27,8 +28,18 @@ import Header from "../components/page/Header";
 import Navbar from "../components/page/Navbar";
 import Footer from "../components/page/Footer";
 
-
-const RootLayout = () => {
+/**
+ * This Layout is the root Layout that corresponds with the root route.
+ * 
+ * The outlet expects that the first child route will be wrapped in
+ * a {@link @patternfly/react-core#PageSection} component 
+ * 
+ * @summary Common Page Layout
+ * 
+ * @category Layout
+ * @since 0.1.0
+ */
+const RootLayout = (): React.JSX.Element => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -51,10 +62,12 @@ const RootLayout = () => {
         <Page
             isManagedSidebar
             isContentFilled
+            //@ts-expect-error TS[2322]
             masthead={<Header
                 isSidebarOpen = {isSidebarOpen}
                 onSidebarToggle = {onSidebarToggle}
             />}
+            //@ts-expect-error TS[2322]
             sidebar={<Navbar
                 isSidebarOpen = {isSidebarOpen}
             />}
@@ -81,7 +94,7 @@ const RootLayout = () => {
                     <div
                         style={{
                             display: "flex",
-                            flexDirection: "columnn",
+                            flexDirection: "column",
                             flexWrap: "wrap"
                         }}
                     >
