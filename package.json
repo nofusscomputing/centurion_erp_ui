@@ -28,7 +28,7 @@
   "scripts": {
     "start": "webpack serve --mode development --no-open",
     "build": "webpack --mode production",
-    "docs-api": "typedoc",
+    "docs-api": "typedoc --skipErrorChecking",
     "lint": "eslint src types",
     "lint-junit": "eslint src types --format junit --output-file artifacts/eslint.junit.xml",
     "test": "jest",

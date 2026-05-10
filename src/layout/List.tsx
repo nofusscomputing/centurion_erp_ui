@@ -61,7 +61,7 @@ const List = (): React.JSX.Element => {
      * 
      * - An array of numbers - Will replace the current values.
      * 
-     * @param {"all" | number | number[]} rowIds Row IDs for all of the select rows 
+     * @param {"all" | number | number[]} rowIds - Row IDs for all of the select rows 
      */
     const selectRows = ( rowIds ) => {
 

@@ -48,7 +48,7 @@ import { useNotificationActions } from "../../hooks/useNotificationActions";
  * 
  * @returns Useable Toolbar Ready to be placed in the page header.
  * 
- * @category Layout
+ * @category Component
  * @since 0.8.0
  */
 const HeaderToolbar = () => {
