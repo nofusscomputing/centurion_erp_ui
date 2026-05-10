@@ -22,6 +22,7 @@ import {
 import { CogIcon } from '@patternfly/react-icons';
 import { EllipsisVIcon } from '@patternfly/react-icons';
 import { HelpIcon } from '@patternfly/react-icons';
+// @ts-expect-error TS[2307]
 import imgAvatar from '@patternfly/react-core/src/components/assets/avatarImg.svg';
 import { QuestionCircleIcon } from '@patternfly/react-icons';
 
@@ -33,9 +34,11 @@ import URLSanitize from "../../functions/URLSanitize";
 
 /** Header Toolbar
  *
- * @param {boolean} isSidebarOpen Is the sidebar open or closed.
- * @param {function} onSidebarToggle Callback to run when the sidbar toggle is press.
+ * 
  * @returns Useable Toolbar Ready to be placed in the page header.
+ * 
+ * @category Layout
+ * @since 0.8.0
  */
 const HeaderToolbar = () => {
 
@@ -152,6 +155,7 @@ const HeaderToolbar = () => {
                             <Button
                                 aria-label="Settings"
                                 component={Link}
+                                // @ts-expect-error TS[2322]
                                     to={URLSanitize(user.settings._urls._self)}
                                 isSettings
                                 variant="plain"
@@ -161,6 +165,7 @@ const HeaderToolbar = () => {
                             <Button
                                 aria-label="Help"
                                 component={Link}
+                                    // @ts-expect-error TS[2322]
                                     to="https://nofusscomputing.com/projects/centurion_erp/"
                                     target="_blank"
                                 variant={ButtonVariant.plain}
