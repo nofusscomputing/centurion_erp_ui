@@ -72,6 +72,7 @@ export default [
                 {
                     "publicOnly": true,
                     "contexts": [
+                        "ArrowFunctionExpression",
                         "ExportNamedDeclaration",
                         "TSInterfaceDeclaration",
                         "TSTypeAliasDeclaration",
