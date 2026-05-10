@@ -58,6 +58,7 @@ jobs:
 
 
       - name: Run Create JUnit Report
+        if: success() || failure()
         shell: bash
         run:
           npm run lint-junit
@@ -79,6 +80,7 @@ jobs:
           name: ESLint Report
           path: 'eslint.junit.xml'
           reporter: java-junit
+          fail-on-error: 'false'
 
 
   mkdocs:
