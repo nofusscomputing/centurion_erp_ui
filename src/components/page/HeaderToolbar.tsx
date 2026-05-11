@@ -1,8 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-
-import { Link } from "react-router";
+import {
+    useContext,
+    useEffect,
+    useState } from "react";
 
 import {
+    Link
+} from "react-router";
+
+import {
+    AlertVariant,
     Avatar,
     Button,
     ButtonVariant,
@@ -12,6 +18,8 @@ import {
     DropdownItem,
     DropdownList,
     MenuToggle,
+    NotificationBadge,
+    NotificationBadgeVariant,
     Toolbar,
     ToolbarContent,
     ToolbarGroup,
@@ -22,6 +30,7 @@ import {
 import { CogIcon } from '@patternfly/react-icons';
 import { EllipsisVIcon } from '@patternfly/react-icons';
 import { HelpIcon } from '@patternfly/react-icons';
+// @ts-expect-error TS[2307]
 import imgAvatar from '@patternfly/react-core/src/components/assets/avatarImg.svg';
 import { QuestionCircleIcon } from '@patternfly/react-icons';
 
@@ -29,16 +38,33 @@ import { QuestionCircleIcon } from '@patternfly/react-icons';
 import UserContext from "../../hooks/UserContext";
 import { useTheme, THEME_TYPES } from '../../hooks/useTheme';
 import URLSanitize from "../../functions/URLSanitize";
+import { NotificationContext } from "../NotificationDrawer";
+import { useNotificationActions } from "../../hooks/useNotificationActions";
+
 
 
 /** Header Toolbar
  *
- * @param {boolean} isSidebarOpen Is the sidebar open or closed.
- * @param {function} onSidebarToggle Callback to run when the sidbar toggle is press.
+ * 
  * @returns Useable Toolbar Ready to be placed in the page header.
+ * 
+ * @category Component
+ * @since 0.8.0
  */
 const HeaderToolbar = () => {
 
+
+    const {
+        alerts, setAlerts,
+        alertTimeout,
+        isNotificationsOpen, setNotificationsOpen,
+        maxDisplayed,
+        notifications, setNotifications,
+        setOverflowMessage
+    } = useContext(NotificationContext);
+
+
+    const { buildOverflowMessage, removeAllAlerts } = useNotificationActions();
 
     const user = useContext(UserContext)
 
@@ -47,6 +73,8 @@ const HeaderToolbar = () => {
     const [isFullKebabDropdownOpen, setIsFullKebabDropdownOpen] = useState(false);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const { mode: themeMode, setMode: setThemeMode, modes: colorModes } = useTheme(THEME_TYPES.COLOR);
 
     const onKebabDropdownSelect = () => {
         setIsKebabDropdownOpen(false);
@@ -73,7 +101,36 @@ const HeaderToolbar = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const { mode: themeMode, setMode: setThemeMode, modes: colorModes } = useTheme(THEME_TYPES.COLOR);
+
+    const onNotificationBadgeClick = () => {
+        removeAllAlerts();
+        setNotificationsOpen(!isNotificationsOpen)
+    };
+
+
+    const totalUnreadNotifications = notifications.reduce(
+        (total, n) => total + (!n.isNotificationRead ? 1 : 0),
+        0
+    );
+
+
+    const notificationUnreadVariant = notifications.reduce(
+        (total, n) => total + ((n.variant === AlertVariant.danger && !n.isNotificationRead ) ? 1 : 0),
+        0
+    ) > 0 ? NotificationBadgeVariant.attention : NotificationBadgeVariant.unread;
+
+
+
+    useEffect(() => {
+
+        setOverflowMessage(buildOverflowMessage());
+
+    }, [
+        maxDisplayed,
+        notifications,
+        alerts
+    ]);
+
 
     useEffect(() => { // AutoMagic set based off of user preferences
 
@@ -96,7 +153,6 @@ const HeaderToolbar = () => {
     ])
 
 
-
     const KebabDropdownItems = () => {    // Mobile Menu
             return (
                 <>
@@ -116,6 +172,7 @@ const HeaderToolbar = () => {
             )
         };
 
+
     const UserDropdownItems = () => {
 
         return (
@@ -126,6 +183,7 @@ const HeaderToolbar = () => {
             </>
         );
     }
+
 
     return (
         <Toolbar id="page-toolbar" isStatic>
@@ -147,11 +205,19 @@ const HeaderToolbar = () => {
                             lg: 'visible'
                         }}
                     >
+                        <NotificationBadge
+                            count = {totalUnreadNotifications}
+                            variant={totalUnreadNotifications === 0 ? NotificationBadgeVariant.read : notificationUnreadVariant}
+                            onClick={onNotificationBadgeClick}
+                            aria-label="Notifications"
+                            isExpanded={isNotificationsOpen}
+                        />
                         <ToolbarItem>
                             {user.settings._urls &&
                             <Button
                                 aria-label="Settings"
                                 component={Link}
+                                // @ts-expect-error TS[2322]
                                     to={URLSanitize(user.settings._urls._self)}
                                 isSettings
                                 variant="plain"
@@ -161,6 +227,7 @@ const HeaderToolbar = () => {
                             <Button
                                 aria-label="Help"
                                 component={Link}
+                                    // @ts-expect-error TS[2322]
                                     to="https://nofusscomputing.com/projects/centurion_erp/"
                                     target="_blank"
                                 variant={ButtonVariant.plain}
@@ -261,7 +328,7 @@ const HeaderToolbar = () => {
         </Toolbar>
     );
 
-}
+};
 
 
 export default HeaderToolbar;

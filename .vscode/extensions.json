@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "orta.vscode-jest",
-        "burkeholland.simple-react-snippets"
+        "burkeholland.simple-react-snippets",
+        "dbaeumer.vscode-eslint"
     ]
 }

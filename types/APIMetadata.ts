@@ -27,12 +27,12 @@ interface APIMetadata {
     documentation: String;
 
     /**
-     * Field definitions describing the link APIDataObject}
+     * Field definitions describing the {@link APIDataObject}
      */
     fields: MetadataField[];
 
     /**
-     * What layout the API link APIDataObject} will use
+     * What layout the API {@link APIDataObject} will use
      */
     layout: LayoutDataset | LayoutDetail | LayoutTable;
 

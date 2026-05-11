@@ -1,0 +1,29 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    "tagDefinitions": [
+        {
+            "tagName": "@categoryDescription",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@category",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@expand",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@module",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@since",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@summary",
+            "syntaxKind": "block"
+        }
+    ]
+}

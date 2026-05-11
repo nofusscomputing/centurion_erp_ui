@@ -40,21 +40,63 @@ import FieldData from "../functions/FieldData";
 import URLSanitize from "../functions/URLSanitize";
 
 
+/**
+ * Props for DataSetFooter component.
+ *
+ * @typeParam T - React element type used for the container component.
+ * 
+ * @category Type
+ * @expand
+ * @since 0.8.0
+ */
+export type DataSetFooterProps<T extends React.ElementType = React.ElementType> = {
+
+    /**
+     * Container component used to wrap the footer UI.
+     */
+    component?: T
+
+    /**
+     * Props forwarded to the container component.
+     */
+    componentProps?: React.ComponentPropsWithoutRef<T>
+
+    /**
+     * Total number of items in the dataset.
+     */
+    itemCount: number
+
+    /**
+     * Current page index (1-based).
+     */
+    pageNumber?: number
+
+    /**
+     * Number of items displayed per page.
+     */
+    perPage?: number
+
+    /**
+     * Callback to update the current page number.
+     */
+    setPageNumber: (pageNumber: number) => void
+
+    /**
+     * Callback to update items per page.
+     */
+    setPerPage: (total: number) => void
+}
+
+
 /** 
  * Footer for DataSet Component
  * 
  * @summary Contains the pagination for the Dataset component.
  * 
- * @param param Component props
- * @param param.component Container component.
- * @param param.componentProps Additional props passed to the container component.
- * @param param.itemCount Total count of items in the dataset.
- * @param param.pageNumber Current page number.
- * @param param.perPage Number of items to display per page.
- * @param param.setPageNumber Callback to update page number.
- * @param param.setPerPage Callback to update the number of items per page.
+ * @typeParam T - React element type used for the container component.
  * 
  * @category Component
+ * @expand
  * @since 0.8.0
  * 
  */
@@ -68,15 +110,7 @@ export const DataSetFooter = <
     perPage = 10,
     setPageNumber,
     setPerPage
-}: {
-    component?: T
-    componentProps?: React.ComponentPropsWithoutRef<T>
-    itemCount: number
-    pageNumber?: number
-    perPage?: number
-    setPageNumber: (pageNumber: number) => void
-    setPerPage: (total: number) => void
-}): React.JSX.Element => {
+}: DataSetFooterProps<T>): React.JSX.Element => {
 
     const Component = component ?? Fragment
 
@@ -112,20 +146,66 @@ export const DataSetFooter = <
 
 
 
+/**
+ * Props for DataSetFooter component.
+ *
+ * @typeParam T - React element type used for the container component.
+ * 
+ * @category Type
+ * @expand
+ * @since 0.8.0
+ */
+export type DataSetHeaderProps<T extends React.ElementType = React.ElementType> = {
+
+    /**
+     * Additional content to render.
+     */
+    children?: React.ReactNode
+   
+    /**
+     * Container component used to wrap the footer UI.
+     */
+    component?: T
+
+    /**
+     * Props forwarded to the container component.
+     */
+    componentProps?: React.ComponentPropsWithoutRef<T>
+
+    /**
+     * Total count of items in the dataset.
+     */
+    itemCount: number
+
+    /**
+     * Objects metadata as presented by the API.
+     */
+    metadata:APIMetadata
+
+    /**
+     * Number of items to display per page.
+     */
+    perPage: number
+
+    /**
+     * Row IDs of selected rows from the dataset.
+     */
+    selectedRows: number[]
+
+    /**
+     * Callback to update page number.
+     * 
+     * @param rows - Rows to select.
+     */
+    selectRows: (rows: "all" | number | number[]) => void
+};
+
+
+
 /** 
  * Header for DataSet Component
  * 
  * @summary search, filtering, view Change for the DataSet Components.
- * 
- * @param param Component props
- * @param param.children Additional content to render.
- * @param param.component Container component.
- * @param param.componentProps Additional props passed to the container component.
- * @param param.itemCount Total count of items in the dataset.
- * @param param.metadata Objects metadata as presented by the API.
- * @param param.perPage Number of items to display per page.
- * @param param.selectedRows Row IDs of selected rows from the dataset.
- * @param param.selectRows Callback to update page number.
  * 
  * @category Component
  * @since 0.8.0
@@ -142,16 +222,7 @@ export const DataSetHeader = <
     perPage,
     selectedRows,
     selectRows,
-}: {
-    children?: React.ReactNode
-    component?: T
-    componentProps?: React.ComponentPropsWithoutRef<T>
-    itemCount: number
-    metadata:APIMetadata
-    perPage: number
-    selectedRows: number[]
-    selectRows: (rows: "all" | number | number[]) => void
-}): React.JSX.Element => {
+}: DataSetHeaderProps<T>): React.JSX.Element => {
 
     const Component = component ?? Fragment
 
@@ -271,7 +342,33 @@ export const DataSetHeader = <
             {children}
         </Component>
     );
+};
+
+
+
+/**
+ * Props for DataSetFooter component.
+ *
+ * @typeParam T - React element type used for the container component.
+ * 
+ * @category Type
+ * @expand
+ * @since 0.8.0
+ */
+export type DataSetCardProps<T extends React.ElementType = React.ElementType> = {
+
+    /**
+     * Container component used to wrap the footer UI.
+     */
+    component?: T
+
+    /**
+     * Props forwarded to the container component.
+     */
+    componentProps?: React.ComponentPropsWithoutRef<T>
+
 }
+
 
 
 
@@ -280,24 +377,16 @@ export const DataSetHeader = <
  * 
  * @summary Display the DataSet in card layout
  * 
- * @param param Component props
- * @param param.component Component to use as the container.
- * @param param.componentProps Additional props passed to the container component.
- * 
  * @category Component
  * @since 0.8.0
  * 
- * @ignore
  */
 export const DataSetCard = <
     T extends React.ElementType = React.ElementType
 >({
     component,
     componentProps
-}: {
-    component?: T
-    componentProps?: React.ComponentPropsWithoutRef<T>
-}): React.JSX.Element => {
+}: DataSetCardProps<T>): React.JSX.Element => {
 
     const Component = component ?? Fragment
 
@@ -307,18 +396,57 @@ export const DataSetCard = <
 }
 
 
+
+/**
+ * Props for DataSetList component.
+ *
+ * @typeParam T - React element type used for the container component.
+ * 
+ * @category Type
+ * @expand
+ * @since 0.8.0
+ */
+export type DataSetListProps<T extends React.ElementType = React.ElementType> = {
+
+    /**
+     * Container component used to wrap the footer UI.
+     */
+    component?: T
+
+    /**
+     * Props forwarded to the container component.
+     */
+    componentProps?: React.ComponentPropsWithoutRef<T>
+
+    /**
+     * Objects metadata as presented by the API.
+     */
+    metadata: APIMetadata
+
+    /**
+     * Data to populate the rows.
+     */
+    rowData: APIDataset
+
+    /**
+     * Row IDs of selected rows from the dataset.
+     */
+    selectedRows: number[]
+
+    /**
+     * Callback to update page number.
+     * 
+     * @param rows - Rows to select.
+     */
+    selectRows: (rows: "all" | number | number[]) => void
+}
+
+
+
 /** 
  * View Dataset in list layout
  * 
  * @summary Display the DataSet in List layout.
- * 
- * @param param Component props
- * @param param.component Container component.
- * @param param.componentProps Additional props passed to the container component.
- * @param param.metadata Objects metadata as presented by the API.
- * @param param.rowData Data to populate the rows.
- * @param param.selectedRows Row IDs of selected rows from the dataset.
- * @param param.selectRows Callback to update page number.
  * 
  * @category Component
  * @since 0.8.0
@@ -333,14 +461,7 @@ export const DataSetList = <
     rowData,
     selectedRows,
     selectRows,
-}: {
-    component?: T
-    componentProps?: React.ComponentPropsWithoutRef<T>
-    metadata: APIMetadata
-    rowData: APIDataset
-    selectedRows: number[]
-    selectRows: (rows: "all" | number | number[]) => void
-}): React.JSX.Element => {
+}: DataSetListProps<T>): React.JSX.Element => {
 
     const Component = component ?? Fragment
 
@@ -393,13 +514,35 @@ export const DataSetList = <
     );
 };
 
+
+
+/**
+ * Props for DataSetList component.
+ *
+ * @typeParam T - React element type used for the container component.
+ * 
+ * @category Type
+ * @expand
+ * @since 0.8.0
+ */
+export type DataSetListCellsProps = {
+
+    /**
+     * An individual rows data as presented by the API.
+     */
+    rowData: APIDataObject,
+
+    /**
+     * Objects metadata as presented by the API.
+     */
+    metadata: APIMetadata,
+}
+
+
+
 /** Create Dataset List rows from metadata
  * 
  * @summary Used by {@link DataSetList} to create the cells for the DataSet.
- * 
- * @param param Component props
- * @param param.rowData An individual rows data as presented by the API.
- * @param param.metadata Objects metadata as presented by the API.
  * 
  * @category Component
  * @since 0.8.0
@@ -407,10 +550,7 @@ export const DataSetList = <
 export const DataSetListCells = ({
     rowData,
     metadata,
-}: {
-    rowData: APIDataObject,
-    metadata: APIMetadata,
-}): React.JSX.Element => {
+}: DataSetListCellsProps): React.JSX.Element => {
 
     /**
      * by cells then by lines

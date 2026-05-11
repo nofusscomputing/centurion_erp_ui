@@ -1,11 +1,19 @@
 import jsdoc from "eslint-plugin-jsdoc";
 import typedocPlugin from "eslint-plugin-typedoc";
+import tsdoc from "eslint-plugin-tsdoc";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 
 import checkSince from "./eslint/rules/check-since.js";
 import checkCategory from "./eslint/rules/check-category.js";
+import path from "path"
 
+import { fileURLToPath } from "url"
+
+
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 
 export default [
@@ -31,7 +39,9 @@ export default [
                 sourceType: "module",
                 ecmaFeatures: {
                     jsx: true
-                }
+                },
+                project: "./tsconfig.json",
+                tsconfigRootDir: __dirname,
             }
         },
 
@@ -43,22 +53,42 @@ export default [
                 }
             },
             jsdoc,
+            tsdoc,
             typedoc: typedocPlugin,
             "@typescript-eslint": tseslint
         },
 
         rules: {
 
-            // ❌ DO NOT require JSDoc everywhere
-            "jsdoc/require-jsdoc": "off",
+            /**
+             * Force require documentation everywhere.
+             * 
+             * As only ts/tsx files are included, this rule is enforced. Intent
+             * is that anything a developer would require information on be
+             * within the API docs.
+             */
+            "jsdoc/require-jsdoc": [
+                "error",
+                {
+                    "publicOnly": true,
+                    "contexts": [
+                        "ArrowFunctionExpression",
+                        "ExportNamedDeclaration",
+                        "TSInterfaceDeclaration",
+                        "TSTypeAliasDeclaration",
+                        "ClassDeclaration",
+                        "FunctionDeclaration",
+                        "MethodDefinition",
+                        "VariableDeclaration"
+                        ]
+                }
+            ],
 
             // ✅ ONLY validate existing JSDoc blocks
             "jsdoc/check-alignment": "error",
             "jsdoc/check-param-names": "error",
-            "custom/check-category": "error",
-            "custom/check-since": "error",
             "typedoc/require-since-tag-description": "error",
-            "jsdoc/check-tag-names": "error",
+            "jsdoc/check-tag-names": "off",    // Conflicts with TSDoc standard.
             "jsdoc/check-types": "error",
             "jsdoc/check-indentation": "error",
 
@@ -67,16 +97,18 @@ export default [
             "jsdoc/require-param-description": "error",
             "jsdoc/require-returns-description": "off",
 
-            // optional stricter checks
-            "jsdoc/no-undefined-types": "error",
+            "custom/check-category": "error",
+            "custom/check-since": "error",
 
             // Always
+
+            'tsdoc/syntax': 'warn',
 
             "typedoc/no-unknown-tags": [
                 "error",
                 {
                     additionalTags: [
-                        // "customTag",
+                        "requires"
                     ]
                 },
             ],

@@ -3,6 +3,8 @@
     "categoryOrder": [
         "Layout",
         "Component",
+        "Context",
+        "Hook",
         "Backend",
         "*"
     ],
