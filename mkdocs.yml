@@ -39,6 +39,12 @@ nav:
 
     - projects/centurion_user_interface/url.md
 
+    - Interface:
+
+      - projects/centurion_user_interface/user/index.md
+
+      - projects/centurion_user_interface/user/notifications.md
+
     - API:
 
       - projects/centurion_user_interface/api/index.md
