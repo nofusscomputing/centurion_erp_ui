@@ -157,8 +157,9 @@ export const Notifications = (): React.JSX.Element => {
                 isToast
             />
             <NotificationDrawer
+                id="notifications-drawer"
                 open = {isNotificationsOpen}
-                 ref={drawerRef}
+                ref={drawerRef}
             >
                 <NotificationDrawerHeader
                     count={getUnreadNotificationsNumber()}

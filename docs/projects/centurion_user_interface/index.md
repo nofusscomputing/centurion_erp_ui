@@ -42,6 +42,8 @@ about: https://github.com/nofusscomputing/centurion_erp_ui/
 
 For Centurion UI to function dynamically, metadata that Centurion UI requires must be in an expected format. To aid in this we have broken down each area of that metadata so that its easier to parse. Those areas are:
 
+- [User Interface](./user/index.md)
+
 - [Setup Centurion UI](./setup.md)
 
     How to setup Centurion UI for your backend.
