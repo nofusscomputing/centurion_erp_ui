@@ -212,23 +212,23 @@ const Column = ({isEdit, isMobile, children}) => {
     if( isEdit ) {
 
         return (
-            <div className="pf-v6-c-form pf-m-horizontal">
+            <Flex
+                direction = {{ default: "column"}}
+            >
                 {children}
-            </div>
+            </Flex>
         );
 
     } else {
 
         return (
             <DescriptionList
-                autoFitMinModifier={{default:"140px"}}
                 columnModifier={{
                     default: '1Col'
                 }}
                 aria-label="Model fields"
-                horizontalTermWidthModifier={{default:"140px"}}
-                isHorizontal={!isMobile}
-                isInlineGrid
+                isCompact = {true}
+                isFillColumns = {false}
             >
 
                 {children}
@@ -468,7 +468,7 @@ const DisplayFields = ({
             <Form
                 id="random"
                 method={(String(location.pathname).endsWith('/add') || isCreate) ? "POST" : "PATCH"}
-                className = "pf-v6-c-form pf-m-horizontal"
+                className = "pf-v6-c-form"
                 onSubmit={(_event) => {
                     setIsLoading(true)
                 }}

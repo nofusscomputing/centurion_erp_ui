@@ -409,8 +409,9 @@ const FormField = ({
         { isInlineEdit &&
             <>
             <Form
-                className = "pf-v6-c-form pf-m-vertical"
+                className = "pf-v6-c-form"
                 id={'edit-' + fieldName} method="PATCH"
+                navigate = {false}
                 onSubmit={(e) => {
                     
                     if( isInlineEdit ) {
