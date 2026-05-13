@@ -1,6 +1,8 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import IconLoader from "../../components/IconLoader";
 
+import "../../styles/main.css"
+
 export const MARKDOWN_TAG_MODEL_LINK_UNESCAPE_RE = /(?<markdown>\$(?<model_type>[a-z_]+)-(?<model_id>\d+))/g
 
 function model_link (state) {
