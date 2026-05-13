@@ -29,7 +29,7 @@ interface APIMetadata {
     /**
      * Field definitions describing the {@link APIDataObject}
      */
-    fields: MetadataField[];
+    fields: {[key: string]: MetadataField};
 
     /**
      * What layout the API {@link APIDataObject} will use
@@ -105,6 +105,8 @@ interface MetadataField {
     required: boolean;
     type: MetadataFieldType;
     write_only: boolean;
+
+    [key: string]: any;
 }
 
 

@@ -1,4 +1,4 @@
-import {
+import React, {
     useContext,
     useEffect,
     useId,
@@ -42,8 +42,24 @@ import URLSanitize from "../functions/URLSanitize";
 
 
 
-/** List of Comments
+/**
  * 
+ * @summary Props for Comments component.
+ * 
+ * @category Props
+ * @since 0.1.0
+ */
+export type CommentsProps = {
+
+    /**
+     * URL to Fetch comments from.
+     */
+    comments_url: string
+}
+
+
+
+/** 
  * This component is self contained and is only dependant upon the comments
  * url.
  * 
@@ -54,15 +70,14 @@ import URLSanitize from "../functions/URLSanitize";
  * 
  * Each comment will then be rendered via the Comment component.
  * 
- * @param {object} param
+ * @summary List of Comments
  * 
- * @param {string} param.comments_url URL to fetch the comments from
- * 
- * @returns {JSX}
+ * @category Component
+ * @since 0.1.0
  */
 export const Comments = ({
     comments_url,
-}) => {
+}: CommentsProps): React.JSX.Element => {
 
     const fetcher = useFetcher();
 
@@ -116,6 +131,7 @@ export const Comments = ({
 
             let url = comments.fetch_url
 
+            // eslint-disable-next-line
             async function do_fetch() {
 
                 do {
@@ -164,6 +180,7 @@ export const Comments = ({
 
         if( ! metadata ) {
 
+            // eslint-disable-next-line
             async function do_fetch() {
 
                 await apiFetch(
@@ -245,7 +262,6 @@ export const Comments = ({
                                 FormComponent = {fetcher.Form}
                                 objectData = {comments.comments[key]}
                                 objectMetadata = {need_metadata() ? null : metadata}
-                                comments_url = {comments_url}
                             />
                         </li>
                     )
@@ -272,6 +288,38 @@ export const Comments = ({
 
 
 
+/**
+ * @summary Props for Comment component.
+ * 
+ * @category Props
+ * @since 0.8.0
+ */
+export type CommentProps = {
+
+    /**
+     * The form component to use.
+     */
+    FormComponent: typeof Form,
+
+    /**
+     * Is this a comment to be created. Converts the comment output to be a
+     * form.
+     */
+    isCreate?: boolean,
+
+    /**
+     * Data from the API. This object is not required when `isCreate = true`
+     */
+    objectData?: APIDataObject,
+
+    /**
+     * Metadata from the API.
+     */
+    objectMetadata: APIMetadata,
+
+}
+
+
 /** A Comment
  * 
  * Display a comment (or the like) from a single person.
@@ -287,15 +335,8 @@ export const Comments = ({
  * sub-models, supplying the base metadata via the `objectMetadata` param is
  * required so that they can be added as a comment type to create.
  * 
- * @param {Object} param
- * 
- * @param {React.ComponentType<React.FormHTMLAttributes<HTMLFormElement>>}
- *      param.FormComponent Form Component to use.
- * @param {boolean} param.isCreate Displays the form fields to add a comment.
- * @param {object} param.objectData Comment data from api.
- * @param {object} param.objectMetadata Comment Metadata from api.
- * 
- * @returns {JSX}
+ * @category Component
+ * @since 0.1.0
  */
 export const Comment = ({
 
@@ -303,11 +344,11 @@ export const Comment = ({
     isCreate = false,
     objectData,
     objectMetadata = null,
-}) => {
+}: CommentProps): React.JSX.Element => {
 
     const [ commentMetadata, setCommentMetadata ] = useState( objectMetadata )
 
-    const [ comment_page_data, setCommentPageData ] = useState( objectData ? objectData : {} )
+    const [ comment_page_data, setCommentPageData ] = useState( objectData )
 
     const [ commentType, setCommentType ] = useState(null)
 
