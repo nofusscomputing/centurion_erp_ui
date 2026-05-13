@@ -143,6 +143,9 @@ interface LayoutDetail {
      * Layout type that is to be used to render the data.
      */
     name: "detail";
+    layout: "single" | "double"
+    left: object
+    right: object
 }
 
 
