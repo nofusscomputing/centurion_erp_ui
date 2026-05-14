@@ -24,7 +24,7 @@
         "types/*"
     ],
     "excludeExternals": true,
-    "excludePrivate": true,
+    "excludePrivate": false,
     "hideGenerator": true,
     "navigation": {
         "includeCategories": true,
