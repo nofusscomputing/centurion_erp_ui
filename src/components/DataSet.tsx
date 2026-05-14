@@ -573,6 +573,11 @@ export const DataSetListCells = ({
         cells = metadata.table_fields.columns;
     }
 
+    if( Array.isArray(metadata.layout?.cells?.[0]) ) {
+
+        cells = metadata.layout.cells;
+    }
+
 
     return (
         <DataListItemCells
@@ -593,8 +598,8 @@ export const DataSetListCells = ({
                                         >
                                             <Content component="p">
                                                 {(
-                                                    (cellIndex !== 0 && fieldIndex !== 0)
-                                                    || (cellIndex === 0 && fieldIndex > 0)
+                                                    (cellIndex == 0 && fieldIndex > 0)
+                                                    || (cellIndex > 0 && fieldIndex >= 0)
                                                 ) &&
 
                                                     <b>{metadata.fields[field].label}: </b>
