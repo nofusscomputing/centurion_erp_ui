@@ -15,7 +15,6 @@ import ErrorPage from "./layout/Error";
 import List from "./layout/List";
 import RootLayout from "./layout/Root";
 import Ticket from "./layout/Ticket";
-import ModelForm from "./layout/ModelForm";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
 import { apiFetch } from "./hooks/apiFetch";
@@ -103,27 +102,6 @@ function App() {
                     ******************************************************** */}
 
                     <Route path=":module">
-
-
-
-                    {/* ********************************************************
-                        SoF - Old Routes Model Form
-                    ******************************************************** */}
-
-
-                        <Route
-                            element={<ModelForm />}
-                            loader = {pagedLoader}
-                        >
-
-
-                            <Route path=":user/token/add" element={null} />
-
-
-                        </Route>
-                    {/* ********************************************************
-                        EoF - Old Routes Model Form
-                    ******************************************************** */}
 
 
 
@@ -281,10 +259,6 @@ function App() {
 
 
                                 <Route path="project_task">
-
-
-                                    <Route path="add" element={<ModelForm />}
-                                        loader = {pagedLoader} />
 
                                     <Route path=":sub_model_pk" element={<Ticket />}
                                         loader = {pagedLoader} 
