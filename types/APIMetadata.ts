@@ -126,6 +126,8 @@ interface LayoutDataset {
      * Layout type that is to be used to render the data.
      */
     name: "dataset";
+
+    cells: string[][]
 }
 
 

@@ -5,7 +5,7 @@ import { APIObject } from "./APIObject";
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 class APIDataFieldBase {
 
@@ -79,7 +79,7 @@ class APIDataFieldBase {
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export class APIDataFieldRelationship extends (
     APIDataFieldBase
@@ -118,7 +118,7 @@ export class APIDataFieldRelationship extends (
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export class APIDataFieldString extends (
     APIDataFieldBase
@@ -147,7 +147,7 @@ export class APIDataFieldString extends (
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export class APIDataFieldMarkdown extends (
     APIDataFieldString
@@ -175,7 +175,7 @@ export class APIDataFieldMarkdown extends (
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export class APIDataFieldJson extends (
     APIDataFieldString

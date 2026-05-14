@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { PageSection } from "@patternfly/react-core";
 
@@ -8,15 +8,40 @@ import IconLoader from "../IconLoader";
 
 
 
+/**
+ * @summary Props for the Footer Component
+ * 
+ * @category Props
+ * @since 0.1.0
+ */
+export type FooterProps = {
+    
+    /**
+     * Version data for the API that's in use
+     */
+    api_version_data
+}
+
+
+
+/**
+ * This component is the sites footer that is intended to be rendered on
+ * every page.
+ * 
+ * @summary Site Footer
+ * 
+ * @category Component
+ * @since 0.1.0
+ */
 const Footer = ({
     api_version_data
-}) => {
+}: FooterProps): React.JSX.Element => {
 
-    const [api_version, SetAPIVersion] = useState(null)
+    const [api_version, SetAPIVersion] = useState<string|React.JSX.Element>(null)
 
     useEffect(() => {
 
-        let api_version = 'API release: '
+        let api_version: string | React.JSX.Element = 'API release: '
 
         if( api_version_data ) {
 
@@ -53,7 +78,7 @@ const Footer = ({
         api_version_data
     ])
 
-    let ui_version = 'UI release: '
+    let ui_version: string | React.JSX.Element = 'UI release: '
 
     if( window.env.CI_COMMIT_TAG ) {
 

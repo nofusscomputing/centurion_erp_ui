@@ -11,17 +11,40 @@ import { Link } from "react-router";
 import HeaderToolbar from "./HeaderToolbar";
 
 
+/**
+ * Props for the Header Component
+ * 
+ * @category Props
+ * @expand
+ * @since 0.1.0
+ */
+export type HeaderProps = {
 
-/** Page Header
+    /**
+     * Is the sidebar open or closed.
+     */
+    isSidebarOpen: boolean,
+
+    /**
+     * Callback to run when the sidebar toggle is press.
+     */
+    onSidebarToggle: () => void
+}
+
+
+
+/** 
+ * Site Header
+ * 
+ * Contains the Sites header bar that is rendered as part of every page.
  *
- * @param {boolean} isSidebarOpen Is the sidebar open or closed.
- * @param {function} onSidebarToggle Callback to run when the sidbar toggle is press.
- * @returns Page Header ready to be placed on the page.
+ * @category Component
+ * @since 0.1.0
  */
 const Header = ({
     isSidebarOpen,
     onSidebarToggle
-}) => {
+}: HeaderProps): React.JSX.Element => {
 
 
     return (

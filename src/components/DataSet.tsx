@@ -47,7 +47,7 @@ import URLSanitize from "../functions/URLSanitize";
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type DataSetFooterProps<T extends React.ElementType = React.ElementType> = {
 
@@ -97,7 +97,7 @@ export type DataSetFooterProps<T extends React.ElementType = React.ElementType> 
  * 
  * @category Component
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  * 
  */
 export const DataSetFooter = <
@@ -153,7 +153,7 @@ export const DataSetFooter = <
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type DataSetHeaderProps<T extends React.ElementType = React.ElementType> = {
 
@@ -208,7 +208,7 @@ export type DataSetHeaderProps<T extends React.ElementType = React.ElementType> 
  * @summary search, filtering, view Change for the DataSet Components.
  * 
  * @category Component
- * @since 0.8.0
+ * @since 0.9.0
  * 
  */
 export const DataSetHeader = <
@@ -353,7 +353,7 @@ export const DataSetHeader = <
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type DataSetCardProps<T extends React.ElementType = React.ElementType> = {
 
@@ -378,7 +378,7 @@ export type DataSetCardProps<T extends React.ElementType = React.ElementType> = 
  * @summary Display the DataSet in card layout
  * 
  * @category Component
- * @since 0.8.0
+ * @since 0.9.0
  * 
  */
 export const DataSetCard = <
@@ -404,7 +404,7 @@ export const DataSetCard = <
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type DataSetListProps<T extends React.ElementType = React.ElementType> = {
 
@@ -449,7 +449,7 @@ export type DataSetListProps<T extends React.ElementType = React.ElementType> = 
  * @summary Display the DataSet in List layout.
  * 
  * @category Component
- * @since 0.8.0
+ * @since 0.9.0
  * 
  */
 export const DataSetList = <
@@ -523,7 +523,7 @@ export const DataSetList = <
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type DataSetListCellsProps = {
 
@@ -545,7 +545,7 @@ export type DataSetListCellsProps = {
  * @summary Used by {@link DataSetList} to create the cells for the DataSet.
  * 
  * @category Component
- * @since 0.8.0
+ * @since 0.9.0
  */
 export const DataSetListCells = ({
     rowData,
@@ -573,6 +573,11 @@ export const DataSetListCells = ({
         cells = metadata.table_fields.columns;
     }
 
+    if( Array.isArray(metadata.layout?.cells?.[0]) ) {
+
+        cells = metadata.layout.cells;
+    }
+
 
     return (
         <DataListItemCells
@@ -585,7 +590,7 @@ export const DataSetListCells = ({
                         >
                             <Flex direction = {{ default: 'column' }}>
 
-                                {cell.map((field, fieldIndex) => {
+                                {cell.filter(field => field in metadata.fields).map((field, fieldIndex) => {
 
                                     return (
                                         <FlexItem
@@ -593,8 +598,11 @@ export const DataSetListCells = ({
                                         >
                                             <Content component="p">
                                                 {(
-                                                    (cellIndex !== 0 && fieldIndex !== 0)
-                                                    || (cellIndex === 0 && fieldIndex > 0)
+                                                    (
+                                                        (cellIndex == 0 && fieldIndex > 0)
+                                                        || (cellIndex > 0 && fieldIndex >= 0)
+                                                    )
+                                                    && "label" in metadata.fields[field]
                                                 ) &&
 
                                                     <b>{metadata.fields[field].label}: </b>

@@ -1,6 +1,14 @@
 
-import {useEffect, useState} from 'react';
-import { Link, useLocation, useNavigate } from "react-router";
+import {
+    useEffect,
+    useState
+} from 'react';
+
+import {
+    Link,
+    useLocation,
+    useNavigate
+} from "react-router";
 
 import {
     Nav, NavExpandable, NavItem, NavList,
@@ -13,14 +21,34 @@ import IconLoader from '../IconLoader';
 
 
 
-/** Site Page Navigation
+/**
+ * @summary Props for the Navbar component
  * 
- * @param {boolean} isSidebarOpen Is the sidebar open?
- * @returns 
+ * @category Props
+ * @since 0.1.0
+ */
+export type NavbarProps = {
+
+    /**
+     * Is the sidebar open?
+     */
+    isSidebarOpen: boolean
+}
+
+
+
+/**
+ * 
+ * Renders the complete site navigation in a sidebar.
+ * 
+ * @summary Site Page Navigation
+ * 
+ * @category Component
+ * @since 0.1.0 
  */
 const Navbar = ({
    isSidebarOpen
-}) => {
+}: NavbarProps) => {
 
     const [ navigation, SetNavigationEntries ] = useState([])
 

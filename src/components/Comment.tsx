@@ -292,7 +292,7 @@ export const Comments = ({
  * @summary Props for Comment component.
  * 
  * @category Props
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type CommentProps = {
 
@@ -320,9 +320,7 @@ export type CommentProps = {
 }
 
 
-/** A Comment
- * 
- * Display a comment (or the like) from a single person.
+/**
  * 
  * This component is self contained and is only dependant upon the objectData
  * or isCreate.
@@ -334,6 +332,9 @@ export type CommentProps = {
  * be used to create a comment. If the model in question has many different
  * sub-models, supplying the base metadata via the `objectMetadata` param is
  * required so that they can be added as a comment type to create.
+ * 
+ * 
+ * @summary Display a comment (or the like) from a single person.
  * 
  * @category Component
  * @since 0.1.0

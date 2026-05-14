@@ -5,7 +5,7 @@ import { APIObject } from "./APIObject";
  * Base Class for API Metadata
  * 
  * @category Type
- * @since 0.8.0
+ * @since 0.9.0
  */
 export class MetaDataBase extends 
     APIObject

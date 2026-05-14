@@ -21,6 +21,7 @@ import { apiFetch } from "../../../hooks/apiFetch";
 import Badge from "../../Badge";
 import DisplayFields from "../../DisplayFields";
 import DisplayTable from "../../DisplayTable"
+import URLSanitize from "../../../functions/URLSanitize";
 
 
 
@@ -55,7 +56,7 @@ const DetailSection = ({
 
             cardData = (
                 <DisplayTable
-                    data_url_path={String(data._urls[layout.field])}
+                    data_url_path={URLSanitize(String(data._urls[layout.field]))}
                     add_button_filter = {layout?.sub_models ? layout.sub_models : []}
                 />
             )

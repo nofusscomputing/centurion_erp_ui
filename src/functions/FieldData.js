@@ -355,7 +355,7 @@ export default function FieldData({
                         '_urls' in data
                         && (
                             autolink
-                            && Boolean(metadata.fields[field_name]?.autolink)
+                            || Boolean(metadata.fields[field_name]?.autolink)
                         )
                     )
                     || autolink

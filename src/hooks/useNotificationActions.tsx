@@ -33,7 +33,7 @@ const getTimeCreated = () => {
  * @summary Actions to interact with notifications.
  * 
  * @category Hook
- * @since 0.8.0
+ * @since 0.9.0
  */
 export const useNotificationActions = (): NotificationActions => {
 
@@ -161,7 +161,7 @@ export const useNotificationActions = (): NotificationActions => {
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  * 
  */
 export interface NotificationActions {
@@ -180,7 +180,7 @@ export interface NotificationActions {
      * 
      * 
      * @expand
-     * @since 0.8.0
+     * @since 0.9.0
      */
     addNewNotification: (
         title: string,
@@ -200,7 +200,7 @@ export interface NotificationActions {
      * 
      * @summary Creates an Alerts Overflow message 
      * 
-     * @since 0.8.0
+     * @since 0.9.0
      * @expand
      */
     buildOverflowMessage: () => void
@@ -211,7 +211,7 @@ export interface NotificationActions {
      * 
      * @summary Mark a notification as read.
      * 
-     * @since 0.8.0
+     * @since 0.9.0
      * @expand
      */
     markNotificationRead: ( key: string ) => void
@@ -221,7 +221,7 @@ export interface NotificationActions {
      * 
      * @summary Remove all alerts.
      * 
-     * @since 0.8.0
+     * @since 0.9.0
      * @expand
      */
     removeAlert: ( key: string ) => void
@@ -231,7 +231,7 @@ export interface NotificationActions {
      * 
      * @summary Remove all alerts.
      * 
-     * @since 0.8.0
+     * @since 0.9.0
      * @expand
      */
     removeAllAlerts: () => void

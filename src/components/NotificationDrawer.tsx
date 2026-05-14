@@ -41,7 +41,7 @@ import {
  * 
  * @category Context
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export const NotificationContext = createContext<NotificationContextValue>(null);
 
@@ -57,7 +57,7 @@ export const NotificationContext = createContext<NotificationContextValue>(null)
  * @summary Alerting and Notifications drawer
  * 
  * @category Component
- * @since 0.8.0
+ * @since 0.9.0
  */
 export const Notifications = (): React.JSX.Element => {
 
@@ -258,7 +258,7 @@ export const Notifications = (): React.JSX.Element => {
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export interface Notification {
     title: string
@@ -278,7 +278,7 @@ export interface Notification {
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export interface NotificationContextValue {
     alerts: Array<typeof Alert>;
