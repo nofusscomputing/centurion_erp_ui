@@ -361,27 +361,29 @@ describe("Root Layout", () => {
         const ticketIds = fs.readdirSync(ticketBaseDir)
 
 
-        const ticketLayout = ticketIds.map(id => {
+        const ticketLayout = ticketIds
+            .filter(id => !String(id).includes('.'))
+            .map(id => {
 
-            const filePath = path.join(ticketBaseDir, '', id, 'GET.json')
+                const filePath = path.join(ticketBaseDir, '', id, 'GET.json')
 
-            const raw = fs.readFileSync(filePath, 'utf8')
+                const raw = fs.readFileSync(filePath, 'utf8')
 
-            const json = JSON.parse(raw)
+                const json = JSON.parse(raw)
 
-            const optionsFilePath = path.join(ticketBaseDir, id, 'OPTIONS.json')
+                const optionsFilePath = path.join(ticketBaseDir, id, 'OPTIONS.json')
 
-            const rawOptions = fs.readFileSync(optionsFilePath, 'utf8')
+                const rawOptions = fs.readFileSync(optionsFilePath, 'utf8')
 
-            const jsonOptions = JSON.parse(rawOptions)
+                const jsonOptions = JSON.parse(rawOptions)
 
 
-            return {
-                data: json,
-                options: jsonOptions
-            }
+                return {
+                    data: json,
+                    options: jsonOptions
+                }
 
-        })
+            })
 
 
 

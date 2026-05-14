@@ -154,6 +154,7 @@
             ]
         },
         "title": {
+            "autolink": true,
             "type": "String",
             "required": true,
             "read_only": false,
@@ -533,15 +534,18 @@
             "label": " urls"
         }
     },
-    "table_fields": [
-        "id",
-        "title",
-        "status_badge",
-        "priority_badge",
-        "impact_badge",
-        "urgency_badge",
-        "opened_by",
-        "organization",
-        "created"
-    ]
+    "layout": {
+        "name": "dataset",
+        "cells": [
+            [
+                "title",
+                "organization",
+                "status_badge"
+            ],
+            [
+                "created",
+                "modified"
+            ]
+        ]
+    }
 }

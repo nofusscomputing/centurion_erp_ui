@@ -42,13 +42,22 @@
             "help_text": "Name of the field"
         }
     },
-    "table_fields": {
-        "columns": [
-            [
-                "display_name"
-            ],
+    "table_fields": [
+        "id",
+        "display_name",
+        "name"
+    ],
+    
+    "layout": {
+        "name": "dataset",
+        "cells": [
             [
                 "name"
+
+            ],
+            [
+                "id",
+                "display_name"
             ]
         ]
     }
