@@ -18,6 +18,7 @@ module.exports = (env, argv) => {
         output: {
             path: path.resolve(__dirname, 'build'),
             filename: isDevelopment ? '[name].js' : 'assets/js/[name].[contenthash].js',
+            chunkFilename: "[name].[contenthash].chunk.js",
             publicPath: '/',
             clean: true,
         },
@@ -83,6 +84,38 @@ module.exports = (env, argv) => {
                     }
                 },
             ]
+        },
+
+        optimization: {
+            splitChunks: {
+                chunks: "all",
+                cacheGroups: {
+                    patternfly: {
+                        test: /[\\/]node_modules[\\/]@patternfly[\\/]/,
+                        chunks: "all",
+                        priority: 30,
+                        enforce: true,
+
+                        name(module) {
+                        // extract @patternfly/<package-name>
+                        const match = module.context?.match(
+                            /[\\/]node_modules[\\/]@patternfly[\\/](.*?)([\\/]|$)/
+                        );
+
+                        if (!match) return "patternfly-misc";
+
+                        const packageName = match[1]; // e.g. react-core, react-icons
+                        return `patternfly-${packageName.replace(/[\\/]/g, "-")}`;
+                        },
+                    },
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: "vendors",
+                        chunks: "all",
+                        priority: 10,
+                    },
+                },
+            }
         },
 
         plugins: [
