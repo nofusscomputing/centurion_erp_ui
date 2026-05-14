@@ -12,10 +12,16 @@ interface APIDataObject {
      * Unique ID from the database. Generally this will be the Primary Key.
      */
     id: number;
+
+    /**
+     * Field data
+     */
+    [key: string]: any;
     /**
      * URLs for this objects relationships.
      */
     _urls: APIDataObjectUrls;
+
 }
 
 
@@ -34,4 +40,9 @@ interface APIDataObjectUrls {
      * Own URL for this object.
      */
     _self: string;
+
+    /**
+     * Additional URLs
+     */
+    [key: string]: string;
 }

@@ -3,8 +3,8 @@
     "description": "All Tickets",
     "documentation": "https://nofusscomputing.com/projects/centurion_erp/user/itim/request",
     "urls": {
-        "self": "/layout/ticket/request/7",
-        "back": "/layout/ticket/request"
+        "self": "/mock/api/v2/layout/ticket/request/7",
+        "back": "/mock/api/v2/layout/ticket/request"
     },
     "renders": [
         "application/json",

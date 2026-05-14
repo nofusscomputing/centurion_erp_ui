@@ -37,21 +37,73 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import UserContext from "../hooks/UserContext";
 
 
-/** Fetch and display fields.
+/**
+ * @summary Props for Fields Component
  * 
- * @param param
- * @param {object} param.errorState Form errors.
- * @param {array} param.fields Form fields to fetch.
- * @param {object} param.formState Current form edit state.
- * @param {boolean} param.isCreate Is the object being created.
- * @param {boolean} param.isEdit It the object being edited.
- * @param {boolean} param.isFlex Display form as flex.
- * @param {object} param.objectData Object Data.
- * @param {object} param.objectMetadata Object Metadata
- * @param {function} param.onChange Callback when the form changes.
- * @param {boolean} param.useDivider After each form field, add a divider.
+ * @category Type
+ * @since 0.8.0
+ */
+type FieldsProps = {
+
+    /**
+     * Form errors.
+     */
+    errorState: object
+
+    /**
+     * Form fields to fetch.
+     */
+    fields: Array<string>
+
+    /**
+     * Current form edit state.
+     */
+    formState: object
+
+    /**
+     * Is the object being created.
+     */
+    isCreate?: boolean
+
+    /**
+     * It the object being edited.
+     */
+    isEdit?: boolean
+
+    /**
+     * Display form as flex.
+     */
+    isFlex?: boolean
+
+    /**
+     * Object Data.
+     */
+    objectData: APIDataObject
+
+    /**
+     * Object Metadata
+     */
+    objectMetadata: APIMetadata
+
+    /**
+     * Callback when the form changes.
+     */
+    onChange: () => void
+
+    /**
+     * After each form field, add a divider.
+     */
+    useDivider?: boolean
+}
+
+
+
+/** 
  * 
- * @returns 
+ * @summary Fetch and display fields.
+ * 
+ * @category Component
+ * @since 0.8.0
  */
 export const Fields = ({
     errorState,
@@ -64,7 +116,7 @@ export const Fields = ({
     objectMetadata,
     onChange,
     useDivider = false
-}) => {
+}: FieldsProps): React.JSX.Element => {
 
     const [isFieldEdit, setIsFieldEdit] = useState({});
 
@@ -173,7 +225,7 @@ export const Fields = ({
             /**
              * 
              * 
-             *     Pure Form Group
+             * Pure Form Group
              * 
              */
 
@@ -206,29 +258,30 @@ export const Fields = ({
 
 
 
+// eslint-disable-next-line
 const Column = ({isEdit, isMobile, children}) => {
 
 
     if( isEdit ) {
 
         return (
-            <div className="pf-v6-c-form pf-m-horizontal">
+            <Flex
+                direction = {{ default: "column"}}
+            >
                 {children}
-            </div>
+            </Flex>
         );
 
     } else {
 
         return (
             <DescriptionList
-                autoFitMinModifier={{default:"140px"}}
                 columnModifier={{
                     default: '1Col'
                 }}
                 aria-label="Model fields"
-                horizontalTermWidthModifier={{default:"140px"}}
-                isHorizontal={!isMobile}
-                isInlineGrid
+                isCompact = {true}
+                isFillColumns = {false}
             >
 
                 {children}
@@ -240,20 +293,51 @@ const Column = ({isEdit, isMobile, children}) => {
 
 
 
+/**
+ * @summary Props for DisplayFields Component
+ * 
+ * @category Props
+ * @since 0.8.0
+ */
+export type DisplayFieldsProps = {
+
+    /**
+     * Data for the object.
+     */
+    existingFormData?: object | null
+
+    /**
+     * Set fields to create mode.
+     */
+    isCreate?: boolean
+
+    /**
+     * Page Layout information.
+     */
+    layout: LayoutDataset | LayoutDetail | LayoutTable
+
+    /**
+     * API Metadata for the object.
+     */
+    metadata: APIMetadata
+
+    /**
+     * On close callback
+     */
+    onClose: ( val: boolean ) => void,
+}
+
+
+
 /** Display Fields
  * 
  * Create the layout for the specified fields.
  * 
- * @todo there needs to be a way to specify if its just going to be markdown/json
- *  field data, or if its going to be a description list group.
+ * todo there needs to be a way to specify if its just going to be markdown/json
+ * field data, or if its going to be a description list group.
  * 
- * @param props
- * @param {object} props.existingFormData Data for the object
- * @param {array} props.layout Page Layout information.
- * @param {boolean} props.isCreate set fields to create mode
- * @param {object} props.metadata API Metadata for the object.
- * 
- * @returns Component ready to be placed on a card.
+ * @category Component
+ * @since 0.8.0
  */
 const DisplayFields = ({
     existingFormData = null,
@@ -261,7 +345,7 @@ const DisplayFields = ({
     layout = null,
     metadata,
     onClose = null,
-}) => {
+}: DisplayFieldsProps): React.JSX.Element => {
 
     const actionData = useActionData();
 
@@ -468,7 +552,7 @@ const DisplayFields = ({
             <Form
                 id="random"
                 method={(String(location.pathname).endsWith('/add') || isCreate) ? "POST" : "PATCH"}
-                className = "pf-v6-c-form pf-m-horizontal"
+                className = "pf-v6-c-form"
                 onSubmit={(_event) => {
                     setIsLoading(true)
                 }}
@@ -522,11 +606,26 @@ const DisplayFields = ({
 export default DisplayFields;
 
 
+/**
+ * @summary Props for APISubmitAction Loader.
+ * 
+ * @category Props
+ * @expand
+ * @since 0.8.0
+ */
+export type APISubmitActionProps = {
+
+    /**
+     * HTTP request object provided by React Router containing the submitted
+     * `FormData`.
+     */
+    request: object
+}
+
+
 
 /**
- * @function APISubmitAction
- *
- * @description
+ * 
  * React Router route `action` handler used to submit form data to a backend
  * endpoint (typically a Django REST Framework API). The function processes
  * submitted `FormData`, extracts the serialized `formState`, and constructs
@@ -539,16 +638,9 @@ export default DisplayFields;
  * The action also reads other standard form fields such as `tz`
  * (timezone) and merges them with the parsed `formState`.
  *
- * @param {Object} params
- * @param {Request} params.request
- * HTTP request object provided by React Router containing the submitted
- * `FormData`.
+ * @summary Form Submit Action
  *
- * @returns {Promise<Response|Object|null>}
- * Returns the result of the backend submission or null depending on the
- * implementation of the calling code.
- *
- * @throws {Error}
+ * @throws Error
  * Throws if the `formState` field is missing or cannot be parsed as JSON.
  *
  * @example
@@ -567,8 +659,13 @@ export default DisplayFields;
  *   path: "/:module/:id",
  *   action: APISubmitAction
  * }
+ * 
+ * @category Loader
+ * @since 0.8.0
  */
-export async function APISubmitAction({ request }) {
+export async function APISubmitAction({
+    request
+}: APISubmitActionProps): Promise<Response|Object|null> {
 
 
     console.debug(request);    // Trace

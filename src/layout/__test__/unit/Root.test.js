@@ -87,6 +87,7 @@ import Detail from "../../Detail"
 import RootLayout from "../../Root"
 import { UserProvider } from "../../../hooks/UserContext"
 import List from "../../List";
+import Ticket from "../../Ticket";
 
 
 const fs = require('fs')
@@ -327,6 +328,124 @@ describe("Root Layout", () => {
                             {
                                 path: data._urls._self.split('api/v2')[1],
                                 Component: Detail,
+                                loader: loader
+                            }
+                        ],
+                    }
+                ]);
+
+
+                render(
+                    <UserProvider>
+                        <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
+                    </UserProvider>
+                );
+
+                const headings = await screen.findAllByRole("heading", { level: 1 })
+
+                expect(consoleErrorSpy).not.toHaveBeenCalled();
+
+            }
+        )
+
+
+    });
+
+
+
+    describe("Ticket Layout", () => {
+
+
+        const ticketBaseDir = path.join(baseDir, '/layout/ticket/request')
+
+        const ticketIds = fs.readdirSync(ticketBaseDir)
+
+
+        const ticketLayout = ticketIds.map(id => {
+
+            const filePath = path.join(ticketBaseDir, '', id, 'GET.json')
+
+            const raw = fs.readFileSync(filePath, 'utf8')
+
+            const json = JSON.parse(raw)
+
+            const optionsFilePath = path.join(ticketBaseDir, id, 'OPTIONS.json')
+
+            const rawOptions = fs.readFileSync(optionsFilePath, 'utf8')
+
+            const jsonOptions = JSON.parse(rawOptions)
+
+
+            return {
+                data: json,
+                options: jsonOptions
+            }
+
+        })
+
+
+
+        test.each(ticketLayout)(
+            'Ticket Layout - $data.title - $data.id',
+            async ({ data, options }) => {
+
+                const loader = async () => {
+
+                    return {
+                        page_data: data,
+                        metadata: options
+                    };
+                }
+
+
+                const Stub = createRoutesStub([
+                    {
+                        Component: RootLayout,
+                        children: [
+                            {
+                                path: data._urls._self.split('api/v2')[1],
+                                Component: Ticket,
+                                loader: loader
+                            }
+                        ],
+                    }
+                ]);
+
+
+                render(
+                    <UserProvider>
+                        <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
+                    </UserProvider>
+                );
+
+                const headings = await screen.findAllByRole("heading", { level: 1 })
+
+                expect(headings[1].textContent).toBe(data.title);
+
+            }
+        )
+
+
+        test.each(ticketLayout)(
+            'Ticket Layout (No Errors) - $data.title - $data.id',
+            async ({ data, options }) => {
+
+                const loader = async () => {
+
+                    return {
+                        page_data: data,
+                        metadata: options
+                    };
+                }
+
+
+                const Stub = createRoutesStub([
+                    {
+                        Component: RootLayout,
+                        children: [
+                            {
+                                path: data._urls._self.split('api/v2')[1],
+                                Component: Ticket,
                                 loader: loader
                             }
                         ],

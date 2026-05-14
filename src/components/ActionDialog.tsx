@@ -1,6 +1,6 @@
 import { WarningModal } from "@patternfly/react-component-groups";
 import { Button, ButtonVariant, Spinner } from "@patternfly/react-core";
-import { useState } from "react";
+import React, { useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 
 
@@ -10,13 +10,15 @@ const sleep = ms => new Promise(r => setTimeout(r, ms))
  * 
  * Performs a HTTP/DELETE on the provided URL.
  * 
- * @param {object} param
- * @param {string} param.deleteURL URL of the object.
- * @returns {boolean} true when deleted, false otherwise.
+ * @category Function
+ * @since 0.8.0
  */
 const ActionDeleteRow = async (
-    deleteURL
-) => {
+    /**
+     * URL of the object
+     */
+    deleteURL: string
+): Promise<boolean> => {
 
     const action = await apiFetch(
         deleteURL,
@@ -40,25 +42,53 @@ const ActionDeleteRow = async (
 
 
 
+/**
+ * props for ActionDialog Component.
+ * 
+ * @category Type
+ * @expand
+ * @since 0.8.0
+ */
+export type ActionDialogProps = {
+
+    /**
+     * Type of action.
+     * 
+     */
+    actionType?: 'delete',
+
+    /**
+     * Data from the API.
+     */
+    objectData: APIDataObject
+
+    /**
+     * Metadata from the API.
+     */
+    objectMetadata: APIMetadata
+
+    /**
+     * Callback to run on update.
+     */
+    updateCallback:(success: boolean, id: number) => void
+}
+
+
+
 /** Action Dialog Box
  * 
  * A self contained action dialog box that performs certain actions,
  * i.e. delete a row.
  * 
- * @param {object} props
- * @param {"delete"} [props.actionType="delete"] Type of action dialog.
- * @param {object} props.objectData The objects data as received from the backend.
- * @param {object} props.objectMetadata The objects metadata as received from the backend.
- * @param {(success: boolean, id: number) => void} props.updateCallback Callback fired after action completes.
- * 
- * @returns Self contained component ready to place.
+ * @category Component
+ * @since 0.8.0
  */
 const ActionDialog = ({
     actionType = 'delete',
     objectData,
     objectMetadata,
     updateCallback,
-}) => {
+}: ActionDialogProps): React.JSX.Element => {
 
     const [isOpen, setIsOpen] = useState(false);
 
