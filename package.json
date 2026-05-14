@@ -70,7 +70,6 @@
     "@typescript-eslint/parser": "^8.59.2",
     "babel-jest": "^30.3.0",
     "babel-loader": "^10.0.0",
-    "babel-preset-react-app": "^10.1.0",
     "chromedriver": "^133.0.3",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.4",

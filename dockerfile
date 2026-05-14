@@ -17,7 +17,6 @@ WORKDIR /workdir
 
 
 RUN npm install; \
-    npm remove babel-preset-react-app; \
     npm run build
 
 
@@ -30,7 +29,6 @@ LABEL \
   org.opencontainers.image.vendor="No Fuss Computing" \
   org.opencontainers.image.title="Centurion ERP UI" \
   org.opencontainers.image.description="A react UI for Centurion ERP" \
-  org.opencontainers.image.vendor="No Fuss Computing" \
   io.artifacthub.package.license="MIT"
 
 
