@@ -590,7 +590,7 @@ export const DataSetListCells = ({
                         >
                             <Flex direction = {{ default: 'column' }}>
 
-                                {cell.map((field, fieldIndex) => {
+                                {cell.filter(field => field in metadata.fields).map((field, fieldIndex) => {
 
                                     return (
                                         <FlexItem
