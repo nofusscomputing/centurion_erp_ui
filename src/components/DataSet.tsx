@@ -598,8 +598,11 @@ export const DataSetListCells = ({
                                         >
                                             <Content component="p">
                                                 {(
-                                                    (cellIndex == 0 && fieldIndex > 0)
-                                                    || (cellIndex > 0 && fieldIndex >= 0)
+                                                    (
+                                                        (cellIndex == 0 && fieldIndex > 0)
+                                                        || (cellIndex > 0 && fieldIndex >= 0)
+                                                    )
+                                                    && "label" in metadata.fields[field]
                                                 ) &&
 
                                                     <b>{metadata.fields[field].label}: </b>
