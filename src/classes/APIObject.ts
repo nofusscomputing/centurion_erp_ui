@@ -4,7 +4,7 @@
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export class APIObject {
 

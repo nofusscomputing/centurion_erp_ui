@@ -11,7 +11,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms))
  * Performs a HTTP/DELETE on the provided URL.
  * 
  * @category Function
- * @since 0.8.0
+ * @since 0.9.0
  */
 const ActionDeleteRow = async (
     /**
@@ -47,7 +47,7 @@ const ActionDeleteRow = async (
  * 
  * @category Type
  * @expand
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type ActionDialogProps = {
 
@@ -81,7 +81,7 @@ export type ActionDialogProps = {
  * i.e. delete a row.
  * 
  * @category Component
- * @since 0.8.0
+ * @since 0.9.0
  */
 const ActionDialog = ({
     actionType = 'delete',

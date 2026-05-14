@@ -292,7 +292,7 @@ export const Comments = ({
  * @summary Props for Comment component.
  * 
  * @category Props
- * @since 0.8.0
+ * @since 0.9.0
  */
 export type CommentProps = {
 
