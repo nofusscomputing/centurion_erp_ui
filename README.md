@@ -4,7 +4,7 @@
 
 <br>
 
-![Project Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnofusscomputing%2Fcenturion_erp_ui_ui%2Frefs%2Fheads%2Fdevelopment%2F.centurion%2Fproject_status.json)
+![Project Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnofusscomputing%2Fcenturion_erp_ui%2Frefs%2Fheads%2Fdevelopment%2F.centurion%2Fproject_status.json)
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/centurion-erp-ui?style=plastic&logo=docker&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/centurion-erp-ui) 
 
