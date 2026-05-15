@@ -260,6 +260,187 @@ jobs:
 
 
 
+  badge-endpoint:
+    name: Publish Badge endpoint files
+    if: ${{ github.ref_name == 'master' || github.ref_name == 'development' }}
+    needs:
+      - test-unit
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Endpoint Repo
+        uses: actions/checkout@v4
+        with:
+          repository: 'nofusscomputing/.github'
+          ref: 'master'
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+          path: 'endpoint_publish'
+          fetch-depth: '1'
+          show-progress: true
+          submodules: false
+
+
+      - name: Create Publish Directories
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          cd endpoint_publish;
+          echo "[Debug] PWD[${PWD}]";
+          mkdir -p repositories/nofusscomputing/centurion_ui/${{ github.ref_name }};
+          ls -la;
+
+
+      - name: Create Publish Directories
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          # cd repositories/nofusscomputing/centurion_ui/${{ github.ref_name }};
+          echo "[Debug] PWD[${PWD}]";
+
+
+      - name: Download Badge Endpoint json
+        uses: actions/download-artifact@v4
+        with:
+          name: test-unit
+
+
+      - name: Add Unit test endpoint file
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - cd endpoint_publish";
+
+          cd endpoint_publish;
+
+          echo "[Debug] **************************** - ls -la";
+
+          ls -la
+
+          echo "[Debug] ****************************";
+
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - ls -la ../";
+
+          ls -la ../
+
+          echo "[Debug] **************************** - cp ../badge_endpoint_test_unit.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_unit.json";
+
+          cp ../badge_endpoint_test_unit.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_unit.json;
+
+          echo "[Debug] **************************** - ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/";
+
+          ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/;
+
+
+
+
+      - name: Add Coverage endpoint file
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - cd endpoint_publish";
+
+          cd endpoint_publish;
+
+          echo "[Debug] **************************** - ls -la";
+
+          ls -la
+
+          echo "[Debug] ****************************";
+
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - ls -la ../";
+
+          ls -la ../
+
+          echo "[Debug] **************************** - cp ../badge_endpoint_test_coverage.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_coverage.json";
+
+          cp ../badge_endpoint_test_coverage.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_coverage.json;
+
+          echo "[Debug] **************************** - ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/";
+
+          ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/;
+
+
+
+      - name: Configure git
+        shell: bash
+        run: |
+          git config --global user.email "helpdesk@nofusscomputing.com";
+          git config --global user.name "nfc-bot";
+
+
+      - name: Git add
+        id: git-add
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          cd endpoint_publish;
+          echo "[Debug] ****************************";
+          ls -la
+          echo "[Debug] ****************************";
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          git status;
+          echo "[Debug] ****************************";
+
+          if [ "$(git status -s)" ]; then
+
+            echo "changed=true" > $GITHUB_OUTPUT;
+
+            echo "[Info] Changes need to be committed";
+
+          else
+
+            echo "changed=false" > $GITHUB_OUTPUT;
+
+            echo "[Info] NO changes to be committed";
+
+          fi
+
+          echo "[Debug] ****************************";
+
+          git add .
+
+
+      - name: Git commit
+        if: ${{ steps.git-add.outputs.changed == 'true' }}
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          cd endpoint_publish;
+          echo "[Debug] ****************************";
+          ls -la
+          echo "[Debug] ****************************";
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          git commit -m "chore: add badge endpount file nofusscomputing/centurion_ui/${{ github.ref_name }}"
+
+
+      - name: git push
+        if: ${{ steps.git-add.outputs.changed == 'true' }}
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          cd endpoint_publish;
+          echo "[Debug] ****************************";
+          ls -la
+          echo "[Debug] ****************************";
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          git push
+
+
+
+
+
   gitlab-mirror:
     if: ${{ github.repository == 'nofusscomputing/centurion_erp_ui' }}
     runs-on: ubuntu-latest
