@@ -1,3 +1,202 @@
+## 0.9.0 (2026-05-15)
+
+### feat
+
+- **layout**: Add Notifications and the corresponding context to the root layout.
+- **component**: Add Notifications button to Header toolbar
+- **component**: Add NotificationDrawer
+- **hook**: NotificationActions added
+- **component**: Add DataSet Component for data not suitable for tables
+- **function**: URL sanitizer created
+- **component**: Add option to FormField for inline editing
+- **component**: Add option to for divider between fields
+- **component**: fleax display option added to FormField
+- **function**: Remove markdown plugin code copy
+- **component**: If detail view has description, render it.
+- **docker**: Add ability to mock API backend
+- **function**: Add markdown render support for sub/sup html rendering
+- **function**: Add support for rendering token type `code_block`
+- **function**: correctly create input html during markdown render for tasklist
+- **component**: MarkdownEditor component instead of TextArea for markdown field
+- Remove delete routes
+- **component**: Add ActionDialog to perform delete of object
+- **component**: Add Dual selector form field
+- **component**: Adjust formfield type for relationship ManyToMany
+- **component**: Add Number form field
+- **component**: Add E-mail form field
+- **component**: Add Date form field
+- **component**: If a form field is being created and it contains an initial value, populate the field with it
+- **component**: Dynamic inline editing setup
+- **component**: Add Modal dialog pop-up for adding row for DisplayTable
+- **component**: Add Modal dialog for inline editing
+- **component**: Add support for passing isCreate to DisplayFields
+- **component**: Add support for passing isCreate to FormFields
+- **component**: Add support to update the API from ui for inline edit and add
+- **component**: Add field editing to DisplayFields
+- **component**: Add dynamic form field creator
+- **component**: Enable as part of `DisplayTable` to have a nested tab as collapsible per row
+- **style**: Set printable area to main HTML tag
+- **hook**: Add hook for mobile browser detection
+- **component**: Dynamic SVG DOM loader
+- **component**: Make user menu functional
+
+### Fixes
+
+- **component**: if field label does not exist when rendering DataSetListCells dont attempt to render one
+- **component**: if field does not exist when rendering DataSetListCells ignore the field
+- **hook**: When fetching UserSettings sanitize the URL prior to fetching data
+- **component**: When rendering DetailSection sanitize the URL to fetch the table data
+- **component**: Field name must display within DataSetListCells if it is not field or cell index `0`
+- **function**: if autolink part of field metadata and its set, use its value to render data as link to self
+- **component**: correct formatting for markdown TicketLink
+- **component**: correct formatting for markdown ModelLink
+- **layout**: Correct Page Heading and toolbar layout
+- **layout**: page_data is a dep for list view
+- **component**: move readOnly const to be declared before usage within FormField
+- **component**: Only run metadata effects when required
+- **component**: Correct FormField initial and state values
+- **component**: FormField must display correct data for create, edit and view
+- **component**: empty FormField must be removed from state
+- **component**: When rendering html fields, ensure readonly attribute is valid HTML
+- **component**: When rendering html fields, ensure required attribute is valid HTML
+- **component**: When rendering choice/relationship, if initial value is defined, select correct option
+- **component**: When rendering switch ensure has aria-label
+- **component**: trigger redraw when data and metadata is updated
+- Check all route params for route revalidate
+- **hook**: If no cookie (credential), dont attempt to send
+- **function**: when rendering markdown, env param must be passed
+- **function**: when rendering markdown, env not required so default to empty
+- **docker**: ensure that when saving app env file, it's to the correct location
+- **component**: Ensure that when in Create mode that All object fields are present
+- **function**: Short month formatting is three chars long
+- **function**: ensure IconLoader has unique key
+- **component**: Ensure that if there is no render context for the markdown editor (prieview), set to empty
+- **layout**: When adding new object from DetailView, don't show other tabs
+- **component**: Dont render markdown if value is emptyautoFit description list
+- **component**: Dont autoFit description list
+- **component**: render textarea if field is markdown and in edit mode
+- **component**: Ensure that DisplayTable re-renders on fresh loader data
+- **component**: Get notes form working
+- **component**: Correct `NavExpendable` icon spacing
+- **component**: Correct flex wrapping for dual column section
+- **component**: If creating a new field (single column) dont use the supplied column fields, use all meta fields
+- **component**: Track read and write only separately
+- **component**: When checking if DisplayTable requires data, use correct page number variable
+- **component**: During DisplayTable, if loader data available, load it directly
+- **component**: Dont try to call calback if it doesnt exist
+- **component**: Add missing column to table
+- **component**: Prevent Page title form text wrapping
+- **component**: Ensure that string choice field is supported
+- **component**: single column fields must not lways be idEdit mode
+- **component**: Correct DescriptionList formatting
+- **component**: Get nav RouterLinks working again!!!
+- User correct API log out URL
+- **component**: Add Icons back to nav groups and entries
+- **build**: Dont rewrite named groups out of regex strings
+- **layout**: remove PageSection component from Main
+
+### Refactoring
+
+- **layout**: Update Settings to use the PatternFly design system
+- **component**: convert Navbar from jsx -> tsx
+- **component**: convert Footer from jsx -> tsx
+- **component**: convert Header jsx -> tsx
+- **component**: Convert DisplayFields from js -> ts
+- **component**: Convert Comment from js -> ts
+- **component**: Convert ActionDialog from js ->ts
+- correct form/display field layout
+- **layout**: rename Root .jsx -> .tsx
+- **component**: rename .jsx -> .tsx
+- **layout**: Migrate List layout to use DataSet component
+- **layout**: Change list from jsx ->tsx
+- **component**: Use fetcher for Comments
+- **component**: Update var names for clarity
+- **component**: Migrate Ticket RelatedTickets to use PatternFly design system
+- **component**: Migrate Ticket LinkedItems to use PatternFly design system
+- **layout**: Migrate ticket to use patternfly design system
+- **component**: Migrate ticket comment to use patternfly design system
+- dont use full path for node module svg imports
+- **docker**: demo to be included in base and be default for API_URL
+- **function**: Apply PaternFly styles to markdown rendering
+- **function**: Render footnotes as jsx object
+- **function**: model link to return IconLoad compopnent
+- **function**: re-work markdown rendering to return JSX objects
+- **layout**: Use MarkdownEditor component for detailView Notes
+- **component**: Update MarkdownEditor to use PatternFly
+- **component**: Update table row delete to use ActionDialog for deleting row.
+- **layout**: Update Ticket to use new root layout
+- **component**: Update ModelForm to use new root layout
+- **component**: Make tabs page header sticker within DetailView
+- **Layout**: Update root Layout to include header and breadcrumbs.
+- **layout**: Use loader for history view
+- Clean up routes and set-up prop'er nesting
+- **component**: Update external links to work with PatternFly
+- **component**: Update badge to work with PatternFly
+- **component**: Separate the Displayfields Editing and not logic for displaying
+- **component**: Add inline form errors to new inline form
+- **layout**: Remove edit routes
+- **layout**: Move adding a new model to use DetailView
+- **layout**: ListView to set it's own header name and icon
+- **component**: Update DisplayTable Buttons so they are using PatternFly
+- **layout**: Update HistoryView so its using PatternFly
+- **component**: Update DisplayTable so that Expandable section is using PatternFly
+- **component**: rename Table -> DisplayTable
+- **function**: If filed_data is empty use `-`
+- **layout**: Update DetailView to PatternFly
+- **layout**: Update notes submit button to PatternFly
+- **layout**: Place ListView data in card
+- **layout**: Update Detail view to use PatternFly
+- **component**: Update table to use PatternFly
+- **component**: rename component Table -> DisplayTable
+- **component**: Update icon loading in footer
+- **component**: clean up nav icons components
+- **component**: Convert SVG Icons back to SVG files
+- **component**: IconLoader now uses SVGIconLoader
+- **component**: Navtabs converted to PatternFly
+- **component**: Remove NavTabs Back link in favour of Breadcrumbs
+- **layout**: Adjust ListView so that it uses PatternFly
+- **component**: Use Title Component for HEAD title
+- **layout**: Adjust Main (home page) so that it uses PatternFly
+- **layout**: Adjust Root so that it uses PatternFly
+- **component**: Adjust Navigation so that it uses PatternFly
+- **component**: Adjust Footer so that it uses PatternFly
+- **component**: Adjust Header so that it uses PatternFly
+- **npm**: switch from react-scripts -> webpack
+
+### Tests
+
+- **layout**: Add test case for ticket layout to ensure no errors on load
+- **unit**: NotificationDrawer Test Suite
+- **layout**: List view test suite
+- **component**: DataSet test suite
+- **component**: Test Cases for FormField Edit data
+- **component**: Test Cases for FormField Add data
+- **layout**: Update root test cases to check for error logs and fail tests if any
+- **layout**: Unit Test suites for detail and list layouts
+- **unit**: CommonMark Horizontal rule test case
+- **unit**: CommonMark HTML comment test case
+- **unit**: CommonMark Table column alignment
+- **unit**: fail any markdown render test case if returned HTML is empty
+- **unit**: CommonMark different code block styles
+- **unit**: disabled test - CommonMark HTML Comment
+- **unit**: CommonMark Strikethrough test cases
+- **unit**: Enabled test - Plugin TaskList Whitelist
+- **unit**: Plugin TicketLink test cases
+- **unit**: disabled test - Plugin TaskList Whitelist
+- **unit**: Plugin Emoji test cases
+- **unit**: disabled test - Plugin FootNote Whitelist
+- **unit**: disabled test - Plugin HTML Whitelist
+- **unit**: Plugin TaskList test cases
+- **unit**: Plugin Admon test cases
+- **unit**: CommonMark List test cases
+- **unit**: CommonMark Link test cases
+- **unit**: CommonMark Line Breaks test cases
+- **unit**: CommonMark Heading test cases
+- **unit**: CommonMark Code block test cases
+- **unit**: initial test suite for markdown CommonMark cases
+- **unit**: Markdown Plugin model_tag
+- **mock**: Add mock for fetch
+
 ## 0.8.0 (2026-03-03)
 
 ### feat
