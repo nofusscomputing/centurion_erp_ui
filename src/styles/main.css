@@ -1,0 +1,61 @@
+
+@media print {
+    body,
+    footer,
+    nav,
+    .pf-v6-c-nav__subnav {
+        visibility: hidden;
+    }
+    main {
+        visibility: visible;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    hr,
+    .pf-v6-c-divider {
+        display: block;
+        height: 1px;
+        background: transparent;
+        width: 100%;
+        border: none;
+        border-top: solid 1px #aaa;
+    }
+}
+
+.nfc-text-no-wrap {
+    word-break: unset;
+    white-space: nowrap;
+}
+
+
+.sub-script {
+    text-decoration: none;
+    font-size: smaller;
+    margin-right: .3em;
+    
+}
+
+
+.text {
+    text-decoration: none;
+    margin-right: .3em;
+    
+}
+
+
+.metadata,
+.text-inline a {
+    text-decoration: none !important;
+    color:#a3a3a3;
+}
+
+
+.text-inline a .text{
+    text-decoration: underline;
+}
+
+
+.text-inline .icon {
+  margin-right: .3rem;
+}

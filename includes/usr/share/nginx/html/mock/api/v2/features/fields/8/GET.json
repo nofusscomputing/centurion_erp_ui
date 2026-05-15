@@ -1,0 +1,16 @@
+{
+    "id": 8,
+    "display_name": "JSON",
+    "name": "json",
+    "description": {
+        "markdown": "This field is used to display a field that contains a `json` document.",
+        "render": {}
+    },
+    "field": {
+        "ds": "abcxyz",
+        "here": "s"
+    },
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/8"
+    }
+}

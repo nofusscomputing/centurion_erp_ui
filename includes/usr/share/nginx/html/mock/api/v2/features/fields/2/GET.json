@@ -1,0 +1,13 @@
+{
+    "id": 2,
+    "display_name": "Boolean",
+    "name": "boolean",
+    "description": {
+        "markdown": "This field is used to display a field that is binary.",
+        "render": {}
+    },
+    "field": true,
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/2"
+    }
+}

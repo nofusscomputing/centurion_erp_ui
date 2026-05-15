@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
 
-import FieldData from "../../../functions/FieldData";
+import {
+    Card,
+    CardBody,
+    CardTitle
+} from "@patternfly/react-core";
 
 import { apiFetch } from "../../../hooks/apiFetch";
-
+import FieldData from "../../../functions/FieldData";
 import IconLoader from "../../IconLoader";
-import Section from "../../Section";
 
 
 
@@ -49,23 +55,17 @@ const RelatedTickets = ({
     }
 
     return (
-        <Section
+        <Card
             className="related-tickets"
             id={'section-related-tickets'}
-            titleBar={(
-                <h3
-                    className="related-tickets"
-                    style={{
-                        fontSize: 'var(--font-size)',
-                        margin: '0',
-                    }}
-                >
-                    Related Tickets
-                </h3>
-            )}
+            isCompact
         >
+            <CardTitle>Related Tickets</CardTitle>
 
-            <div className="items">
+            <CardBody
+                className="items"
+            >
+            <div >
 
             {(metadata && page_data) &&
 
@@ -165,8 +165,8 @@ const RelatedTickets = ({
 
             })}
             </div>
-
-        </Section>
+            </CardBody>
+        </Card>
     );
 }
  

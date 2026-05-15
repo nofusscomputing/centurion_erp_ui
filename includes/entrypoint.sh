@@ -3,7 +3,7 @@
 set -e
 
 
-cat <<EOF > /usr/share/nginx/html/env.js
+cat <<EOF > /usr/share/nginx/html/assets/js/env.js
 
 window.env = {
     API_URL: "${API_URL}",

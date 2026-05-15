@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { apiFetch } from "./apiFetch";
+import URLSanitize from "../functions/URLSanitize";
 
 
 /**
@@ -39,7 +40,7 @@ export const UserProvider = ({children}) => {
         if( settings_url.status === 200 ) {
 
             const usr_settings = await apiFetch(
-                settings_url.api_page_data.user_settings.split('api/v2')[1],
+                URLSanitize(settings_url.api_page_data.user_settings),
                 null,
                 'GET',
                 null,

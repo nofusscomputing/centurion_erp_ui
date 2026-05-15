@@ -1,0 +1,13 @@
+{
+    "id": 7,
+    "display_name": "Integer",
+    "name": "integer",
+    "description": {
+        "markdown": "This field is used to display a field that contains a full number.",
+        "render": {}
+    },
+    "field": 1234,
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/7"
+    }
+}

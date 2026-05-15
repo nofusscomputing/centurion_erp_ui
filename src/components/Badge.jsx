@@ -1,68 +1,97 @@
-import { useId } from "react";
-import FieldData from "../functions/FieldData";
+import {
+    useId
+} from "react";
+
+import {
+    Link
+} from "react-router";
+
+import "../styles/components/badge.css"
+
+import IconLoader from "./IconLoader";
 
 
 
+/** Display a Badge
+ * 
+ * @param {Object} param
+ * @param {string} param.background HTML colour for the badge , defaults to pf label gray colour.
+ * @param {string} param.classNameSuffix Suffix to append to the CSS class.
+ * @param {string} param.icon Name of the icon to use
+ * @param {url} param.to HTML colour for the badge.
+ * @param {string|null} param.target HTML Link Target _blank or null.
+ * 
+ * @returns {JSX.Component} Component ready to be placed.
+ */
 const Badge = ({
-    background = null,
     children = null,
-    icon_style = null,
-    message = null,
-    text_style = null,
-
+    background = null,
+    classNameSuffix = null,
+    icon = null,
+    to = null,
+    target = null,
 }) => {
 
     const badgeId = useId()
-    const badgeTextId = useId()
 
-    message = message ? message : '-'
+    let badgeIconStyle = {}, badgeContentStyle = {}
 
-    if( children ) {
 
-        if( children.type?.name == "TicketStatusIcon" ) {
+    if( !icon && to ) {
+        icon = 'link'
+    }
 
-            message = FieldData({
-                metadata: children.props.metadata,
-                field_name:'status',
-                data: children.props.page_data
-            })
 
-        }
+    if( icon && background ) {
+
+            badgeIconStyle["backgroundColor"] = background;
+            badgeIconStyle['borderColor'] = background;
+
+            badgeContentStyle['borderColor'] = background;
+  
+    } else if( ! classNameSuffix ) {
+
+        classNameSuffix = 'default'
 
     }
 
 
-    let class_name = 'badge badge-icon '
-    if( icon_style ) {
+    let cssClassName = "centurion-badge", cssIconClassName = "centurion-badge-icon", cssContentClassName = "centurion-badge-content"
+    if( classNameSuffix ) {
 
-        class_name += ' icon ' + icon_style
+        cssClassName += ` centurion-badge-style-${classNameSuffix}`
+
+        cssIconClassName += ` centurion-badge-icon-${classNameSuffix}`
+
+        cssContentClassName += ` centurion-badge-content-${classNameSuffix}`
+        
     }
 
-    let style = {
-        backgroundColor: 'var(--background-colour-active)'
-    }
-    if( background ) {
 
-        style = {
-            backgroundColor: background
-        }
-    }
+    const badgeLayout = (
+        <>
+            <span className={cssIconClassName} style={badgeIconStyle}>
+                { icon && <IconLoader name={icon} fill="var(--background-colour-active)" height='15px' width='15px'/>}
+            </span>
+            <span className={cssContentClassName} style={badgeContentStyle}>{children}</span>
+        </>
+    );
 
-    text_style = 'badge-text ' + text_style
-    if( text_style ) {
-        text_style = text_style + ' ' + text_style
-    }
 
     return (
         <span
-            className={class_name}
+            className={cssClassName}
             id={badgeId}
-            style={style}
         >
-            { children }
-        <span className={text_style} id={badgeTextId}>{message}</span>
-     </span>
-    );
+            { ! to && badgeLayout}
+            { to &&
+            <Link to={to} target={target}>
+                {badgeLayout}
+            </Link>
+            }
+        </span>
+    )
+
 }
 
 export default Badge

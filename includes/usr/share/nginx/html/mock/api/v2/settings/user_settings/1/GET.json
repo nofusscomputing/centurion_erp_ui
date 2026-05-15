@@ -1,0 +1,11 @@
+{
+    "id": 1,
+    "display_name": "UserSettings object (1)",
+    "url": "/mock/api/v2/settings/user_settings/1",
+    "_urls": {
+        "_self": "/mock/api/v2/settings/user_settings/1"
+    },
+    "browser_mode": 2,
+    "timezone": "Australia/Darwin",
+    "user": 1
+}

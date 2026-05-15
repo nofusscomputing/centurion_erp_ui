@@ -10,6 +10,7 @@
 
 # production
 /build
+artifacts/
 
 # misc
 .DS_Store
@@ -23,3 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 
 **.tmp.*
+
+## MKDocs Build
+
+*.junit.xml
+pages/

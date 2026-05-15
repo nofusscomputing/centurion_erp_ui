@@ -29,6 +29,60 @@ jobs:
       DOCKER_PUBLISH_PASSWORD: ${{ secrets.NFC_DOCKERHUB_TOKEN }}
 
 
+
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+
+
+      - uses: actions/checkout@v4
+
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+
+      - name: Setup
+        shell: bash
+        run:
+          npm install
+
+
+      - name: Run
+        shell: bash
+        run:
+          npm run lint
+
+
+      - name: Run Create JUnit Report
+        if: success() || failure()
+        shell: bash
+        run:
+          npm run lint-junit
+
+
+      - name: Upload build Artifact
+        if: ${{ success() || failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-lint
+          path: artifacts/
+
+
+      - name: ESLint Lint Report
+        if: success() || failure()
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: eslint-lint
+          name: ESLint Report
+          path: 'eslint.junit.xml'
+          reporter: java-junit
+          fail-on-error: 'false'
+
+
   mkdocs:
     name: 'MKDocs'
     permissions:
@@ -38,6 +92,352 @@ jobs:
       checks: write
       actions: write
     uses: nofusscomputing/action_mkdocs/.github/workflows/reusable_mkdocs.yaml@development
+
+
+  react:
+    name: React SPA
+    runs-on: ubuntu-latest
+    steps:
+
+
+      - uses: actions/checkout@v4
+
+
+      - name: Run Trivy vulnerability scanner against package-lock.json
+        uses: aquasecurity/trivy-action@97e0b3872f55f89b95b2f65b3dbab56962816478    # 0.34.2
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: false
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          scan-ref: package-lock.json
+          exit-code: 0
+
+
+      - name: Upload scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+
+      - name: Upload scan results sarif Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-scan-results-package-lock.json-sarif
+          path: trivy-results.sarif
+
+
+
+  test-unit:
+    name: Unit Tests
+    needs:
+      - eslint
+    runs-on: ubuntu-latest
+    env:
+      # TZ has no DST and is close to west side of intl date line.
+      TZ: Australia/Darwin
+    steps:
+
+
+      - uses: actions/checkout@v4
+
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+
+      - name: Setup
+        shell: bash
+        run:
+          npm install
+
+
+      - name: Trace ICU / Locale
+        run: |
+          locale;
+
+          node -p "process.versions.icu"
+          node -e "console.log(Intl.DateTimeFormat().resolvedOptions())"
+
+          node -e "console.log(new Date().toLocaleString('default', { month: 'long' }))"
+
+          node -e "console.log(Intl.DateTimeFormat.supportedLocalesOf(['en-AU', 'en-GB', 'en-US']))";
+
+          node -e "console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)";
+
+          date;
+
+          date +"%Z %z";
+
+          node -e "console.log(new Intl.DateTimeFormat('default', { month: 'long' }).format(new Date('2025-06-01')))";
+          node -e "console.log(new Intl.DateTimeFormat('en-AU', { month: 'long' }).format(new Date('2025-06-01')))";
+          node -e "console.log(new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date('2025-06-01')))";
+          node -e "console.log(new Intl.DateTimeFormat('en-GB', { month: 'long' }).format(new Date('2025-06-01')))";
+
+          node -e "console.log(new Intl.DateTimeFormat('default', { month: 'short' }).format(new Date('2025-06-01')))";
+          node -e "console.log(new Intl.DateTimeFormat('en-AU', { month: 'short' }).format(new Date('2025-06-01')))";
+          node -e "console.log(new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date('2025-06-01')))";
+          node -e "console.log(new Intl.DateTimeFormat('en-GB', { month: 'short' }).format(new Date('2025-06-01')))";
+
+
+      - name: Run Tests
+        shell: bash
+        run:
+          npm run test-unit
+
+
+      - name: Obtain Test Data
+        id: test-data
+        if: success() || failure()
+        shell: bash
+        run: |
+          echo "COVERAGE_LINES=$(jq -r '.total.lines.pct' artifacts/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT;
+          echo "COVERAGE_BRANCH=$(jq -r '.total.branches.pct' artifacts/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT;
+
+          echo "${COVERAGE_LINES} - ${COVERAGE_BRANCH}";
+
+
+          echo "TESTS_NUM_PASSED=$(jq -r '.numPassedTests' artifacts/test_results.json)" >> $GITHUB_OUTPUT;
+          echo "TESTS_NUM_SKIPPED=$(jq -r '.numPendingTests' artifacts/test_results.json)" >> $GITHUB_OUTPUT;
+          echo "TESTS_NUM_FAILED=$(jq -r '.numFailedTests' artifacts/test_results.json)" >> $GITHUB_OUTPUT;
+
+
+
+
+      - name: Create Coverage Shields.io Endpoint
+        if: success() || failure()
+        shell: bash
+        run: |
+          echo '
+            {
+              "schemaVersion": 1,
+              "label": "Unit Test Coverage",
+              "labelColor": "#323330",
+              "message": "${{ steps.test-data.outputs.COVERAGE_LINES }}% Line | ${{ steps.test-data.outputs.COVERAGE_BRANCH }}% Branch",
+              "logoSvg": "<svg enable-background=\"new 0 0 398.3 439.9\" viewBox=\"0 0 398.3 439.9\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m334.9 218.1c-.5.3-18.3-2.7-40.7-4.2-18.2-1.2-39.5-1.2-56.7 0-14 .9-32.4-6.1-34.6 2.3-8.2 31.4-26 58.7-48.5 79.9-17 16-36.4 28.1-57.4 35.6-25-12.8-36.8-41.4-26.2-66.4 8.4-19.9 18.3-41.7.1-46.7-13.2-3.6-20.5 9-25.5 22.5-9.7 25.9-28.2 52.7-33.5 84.5-5.6 33.5 0 69.1 29 89.3 67.6 46.8 140.9-29 218.2-48.1 28-6.9 58.8-5.8 83.5-20.1 18.5-10.7 30.8-28.5 34.2-48.5 5.6-32.2-11.1-64.1-41.9-80.1z\" fill=\"#99425b\" stroke=\"#fff\" stroke-width=\"20\"/><path d=\"m202.9 216.2c-8.2 31.4-26 58.7-48.5 79.9-17 16-36.4 28.1-57.4 35.6-25-12.8-36.8-41.4-26.2-66.4 8.4-19.9 18.3-41.7.1-46.7-13.2-3.6-20.5 9-25.5 22.5-9.7 25.9-28.2 52.7-33.5 84.5-5.6 33.5 0 69.1 29 89.3 67.6 46.8 140.9-29 218.2-48.1 28-6.9 58.8-5.8 83.5-20.1 18.5-10.7 30.8-28.5 34.2-48.5 5.6-32.1-11.1-64.1-41.9-80\" fill=\"none\" stroke=\"#fff\" stroke-width=\"20\"/><path d=\"m264.9 91.2 54.3 110.8 65.1-192h-239l65 191.6z\" fill=\"#99425b\"/><path d=\"m264.9 91.2 54.3 110.8 65.1-192h-239l65 191.6z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"20\"/><circle cx=\"199\" cy=\"216.6\" fill=\"#99425b\" r=\"40.9\"/><g stroke=\"#fff\" stroke-width=\"20\"><circle cx=\"199\" cy=\"216.6\" fill=\"none\" r=\"40.9\"/><circle cx=\"332.4\" cy=\"216.6\" fill=\"#99425b\" r=\"40.9\"/><circle cx=\"332.4\" cy=\"216.6\" fill=\"none\" r=\"40.9\"/></g><circle cx=\"65.1\" cy=\"216.9\" fill=\"#99425b\" r=\"40.9\"/><circle cx=\"65.1\" cy=\"216.9\" fill=\"none\" r=\"40.9\" stroke=\"#fff\" stroke-width=\"20\"/></svg>",
+              "color": "#F0DB4F",
+              "style": "plastic"
+            }' > artifacts/badge_endpoint_test_coverage.json;
+
+
+
+      - name: Create Test Result Shields.io Endpoint
+        if: success() || failure()
+        shell: bash
+        run: |
+          echo '
+          {
+            "schemaVersion": 1,
+            "label": "Unit Test",
+            "labelColor": "#323330",
+            "message": "${{ steps.test-data.outputs.TESTS_NUM_PASSED }} passed | ${{ steps.test-data.outputs.TESTS_NUM_SKIPPED }} skipped | ${{ steps.test-data.outputs.TESTS_NUM_FAILED }} failed",
+            "logoSvg": "<svg enable-background=\"new 0 0 398.3 439.9\" viewBox=\"0 0 398.3 439.9\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m334.9 218.1c-.5.3-18.3-2.7-40.7-4.2-18.2-1.2-39.5-1.2-56.7 0-14 .9-32.4-6.1-34.6 2.3-8.2 31.4-26 58.7-48.5 79.9-17 16-36.4 28.1-57.4 35.6-25-12.8-36.8-41.4-26.2-66.4 8.4-19.9 18.3-41.7.1-46.7-13.2-3.6-20.5 9-25.5 22.5-9.7 25.9-28.2 52.7-33.5 84.5-5.6 33.5 0 69.1 29 89.3 67.6 46.8 140.9-29 218.2-48.1 28-6.9 58.8-5.8 83.5-20.1 18.5-10.7 30.8-28.5 34.2-48.5 5.6-32.2-11.1-64.1-41.9-80.1z\" fill=\"#99425b\" stroke=\"#fff\" stroke-width=\"20\"/><path d=\"m202.9 216.2c-8.2 31.4-26 58.7-48.5 79.9-17 16-36.4 28.1-57.4 35.6-25-12.8-36.8-41.4-26.2-66.4 8.4-19.9 18.3-41.7.1-46.7-13.2-3.6-20.5 9-25.5 22.5-9.7 25.9-28.2 52.7-33.5 84.5-5.6 33.5 0 69.1 29 89.3 67.6 46.8 140.9-29 218.2-48.1 28-6.9 58.8-5.8 83.5-20.1 18.5-10.7 30.8-28.5 34.2-48.5 5.6-32.1-11.1-64.1-41.9-80\" fill=\"none\" stroke=\"#fff\" stroke-width=\"20\"/><path d=\"m264.9 91.2 54.3 110.8 65.1-192h-239l65 191.6z\" fill=\"#99425b\"/><path d=\"m264.9 91.2 54.3 110.8 65.1-192h-239l65 191.6z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"20\"/><circle cx=\"199\" cy=\"216.6\" fill=\"#99425b\" r=\"40.9\"/><g stroke=\"#fff\" stroke-width=\"20\"><circle cx=\"199\" cy=\"216.6\" fill=\"none\" r=\"40.9\"/><circle cx=\"332.4\" cy=\"216.6\" fill=\"#99425b\" r=\"40.9\"/><circle cx=\"332.4\" cy=\"216.6\" fill=\"none\" r=\"40.9\"/></g><circle cx=\"65.1\" cy=\"216.9\" fill=\"#99425b\" r=\"40.9\"/><circle cx=\"65.1\" cy=\"216.9\" fill=\"none\" r=\"40.9\" stroke=\"#fff\" stroke-width=\"20\"/></svg>",
+            "color": "#F0DB4F",
+            "style": "plastic"
+          }' > artifacts/badge_endpoint_test_unit.json;
+
+
+      - name: Upload Reports
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-unit
+          path: artifacts/
+
+
+      - name: Unit Test Report
+        if: success() || failure()
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: test-unit
+          name: Unit Test Report
+          path: 'test_results.junit.xml'
+          reporter: java-junit
+          fail-on-error: 'false'
+
+
+
+  badge-endpoint:
+    name: Publish Badge endpoint files
+    if: ${{ github.ref_name == 'master' || github.ref_name == 'development' }}
+    needs:
+      - test-unit
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Endpoint Repo
+        uses: actions/checkout@v4
+        with:
+          repository: 'nofusscomputing/.github'
+          ref: 'master'
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+          path: 'endpoint_publish'
+          fetch-depth: '1'
+          show-progress: true
+          submodules: false
+
+
+      - name: Create Publish Directories
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          cd endpoint_publish;
+          echo "[Debug] PWD[${PWD}]";
+          mkdir -p repositories/nofusscomputing/centurion_ui/${{ github.ref_name }};
+          ls -la;
+
+
+      - name: Create Publish Directories
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          # cd repositories/nofusscomputing/centurion_ui/${{ github.ref_name }};
+          echo "[Debug] PWD[${PWD}]";
+
+
+      - name: Download Badge Endpoint json
+        uses: actions/download-artifact@v4
+        with:
+          name: test-unit
+
+
+      - name: Add Unit test endpoint file
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - cd endpoint_publish";
+
+          cd endpoint_publish;
+
+          echo "[Debug] **************************** - ls -la";
+
+          ls -la
+
+          echo "[Debug] ****************************";
+
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - ls -la ../";
+
+          ls -la ../
+
+          echo "[Debug] **************************** - cp ../badge_endpoint_test_unit.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_unit.json";
+
+          cp ../badge_endpoint_test_unit.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_unit.json;
+
+          echo "[Debug] **************************** - ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/";
+
+          ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/;
+
+
+
+
+      - name: Add Coverage endpoint file
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - cd endpoint_publish";
+
+          cd endpoint_publish;
+
+          echo "[Debug] **************************** - ls -la";
+
+          ls -la
+
+          echo "[Debug] ****************************";
+
+          echo "[Debug] PWD[${PWD}]";
+
+          echo "[Debug] **************************** - ls -la ../";
+
+          ls -la ../
+
+          echo "[Debug] **************************** - cp ../badge_endpoint_test_coverage.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_coverage.json";
+
+          cp ../badge_endpoint_test_coverage.json repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/badge_endpoint_test_coverage.json;
+
+          echo "[Debug] **************************** - ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/";
+
+          ls -la repositories/nofusscomputing/centurion_ui/${{ github.ref_name }}/;
+
+
+
+      - name: Configure git
+        shell: bash
+        run: |
+          git config --global user.email "helpdesk@nofusscomputing.com";
+          git config --global user.name "nfc-bot";
+
+
+      - name: Git add
+        id: git-add
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          cd endpoint_publish;
+          echo "[Debug] ****************************";
+          ls -la
+          echo "[Debug] ****************************";
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          git status;
+          echo "[Debug] ****************************";
+
+          if [ "$(git status -s)" ]; then
+
+            echo "changed=true" > $GITHUB_OUTPUT;
+
+            echo "[Info] Changes need to be committed";
+
+          else
+
+            echo "changed=false" > $GITHUB_OUTPUT;
+
+            echo "[Info] NO changes to be committed";
+
+          fi
+
+          echo "[Debug] ****************************";
+
+          git add .
+
+
+      - name: Git commit
+        if: ${{ steps.git-add.outputs.changed == 'true' }}
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          cd endpoint_publish;
+          echo "[Debug] ****************************";
+          ls -la
+          echo "[Debug] ****************************";
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          git commit -m "chore: add badge endpount file nofusscomputing/centurion_ui/${{ github.ref_name }}"
+
+
+      - name: git push
+        if: ${{ steps.git-add.outputs.changed == 'true' }}
+        shell: bash
+        run: |
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          cd endpoint_publish;
+          echo "[Debug] ****************************";
+          ls -la
+          echo "[Debug] ****************************";
+          echo "[Debug] PWD[${PWD}]";
+          echo "[Debug] ****************************";
+          git push
+
+
 
 
 

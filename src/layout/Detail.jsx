@@ -1,39 +1,54 @@
 import {
+    createRef,
     useEffect,
+    useMemo,
     useState
 } from "react";
 
 import {
+    Form,
     Link,
     useLoaderData,
-    useParams
+    useLocation,
+    useOutletContext,
 } from "react-router";
+
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    Divider,
+    Flex,
+    FlexItem,
+    PageSection,
+    Tab,
+    TabContent,
+    Tabs,
+    TabTitleText
+} from "@patternfly/react-core";
 
 import '../styles/detail.css'
 
 import { apiFetch } from "../hooks/apiFetch";
 
-import Button from "../components/form/Button";
-import ContentHeader from "../components/page/ContentHeader";
 import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
-import NavTabs from "../components/page/detail/Navtabs";
 import DetailSection from "../components/page/detail/DetailSection";
-import TextArea from "../components/form/Textarea";
-import Section from "../components/Section";
+import MarkdownEditor from "../components/MarkdownEditor";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
 const Detail = () => {
 
-    const [active_tab, setActiveTab] = useState(null)
+    const {
+        setPageDescription, setPageHeading, setPageHeaderIcons
+    } = useOutletContext()
 
-    const [ content_heading, setContentHeading ] = useState(null)
-    const [ content_header_icon, SetContentHeaderIcon ] = useState(null)
+    const location = useLocation();
 
     const {metadata, page_data} = useLoaderData();
-
-    const params = useParams();
 
 
     const [ notes, setNotes ] = useState(null)
@@ -51,41 +66,44 @@ const Detail = () => {
 
     useEffect(() => {
 
-        setActiveTab(null)
-
         if( 'name' in page_data ) {
 
-            setContentHeading(page_data['name']);
+            setPageHeading(page_data['name']);
 
         }else if( 'title' in page_data ) {
 
-            setContentHeading(page_data['title']);
+            setPageHeading(page_data['title']);
 
         }else{
-            setContentHeading(metadata['name']);
+            setPageHeading(metadata['name']);
         }
 
+        setPageDescription(metadata['description'])
 
-        SetContentHeaderIcon(
+
+        setPageHeaderIcons(
             <>
                 { ('documentation' in metadata) &&
                     <Link to={metadata['documentation']} target="_new">
                         <IconLoader
                             name='help'
+                            size="xl"
                         />
                     </Link>
                 }
-                {page_data['_urls']['history'] &&
-                    <Link to={String(page_data['_urls']['history']).split('api/v2')[1]}>
+                {(!'results' in page_data || '_urls' in page_data) && page_data['_urls']['history'] &&
+                    <Link to={URLSanitize(page_data['_urls']['history'])}>
                         <IconLoader
                             name='history'
+                            size="xl"
                         />
                     </Link>
                 }
                 {metadata['allowed_methods'].includes('DELETE') &&
-                    <Link to={String(page_data['_urls']['_self']).split('api/v2')[1] + '/delete'}>
+                    <Link to={URLSanitize(page_data['_urls']['_self']) + '/delete'}>
                         <IconLoader
                             name='delete'
+                            size="xl"
                         />
                     </Link>
                 }
@@ -94,10 +112,15 @@ const Detail = () => {
 
     },[
         page_data,
+        metadata
     ])
 
 
     useEffect(() => {
+
+        if( 'results' in page_data ) {
+            return
+        }
 
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
@@ -116,141 +139,203 @@ const Detail = () => {
         }
 
     }, [
+        page_data,
         update_notes,
     ])
 
 
+    const [activeTabKey, setActiveTabKey] = useState(0);
+
+    const handleTabClick = (event, tabIndex) => {
+        setActiveTabKey(tabIndex);
+    };
+
+
+    const tabDetails = useMemo(() => {
+
+        return metadata.layout.map(tab => ({
+            name: tab.name,
+            ref: createRef()
+        }));
+
+    }, [metadata.layout])
+
+
     return (
-        metadata && page_data &&
         <>
-        <ContentHeader
-            content_heading={content_heading}
-            content_header_icon={content_header_icon}
-        />
-        <Section
-            className="detail"
-            titleBar={(
-                <NavTabs
-                active_tab={active_tab}
-                back_url = {metadata.urls.back ?
-                    String(metadata.urls.back).split('api/v2')[1]
-                    : '/' + params.module + '/' + params.model
-                }
-                setActiveTab={setActiveTab}
-                tabs={metadata.layout} />
-            )}
-        >
+            { page_data && metadata && <>
+            <PageSection
+                className="pf-m-sticky-top"
+                type="tabs"
+            >
+                <Tabs
+                    activeKey={activeTabKey}
+                    onSelect={handleTabClick}
+                    aria-label="page-tabs"
+                    role="region"
+                >
 
-            { (metadata && page_data) && metadata.layout.map(( tab, index ) => {
+                    {tabDetails && tabDetails.map(( tab, index ) => {
 
-                if( active_tab === tab.name.toLowerCase()
-                    || (
-                        active_tab === null
-                        && index === 0
-                    )
-                ) {
+                        if(
+                            String(location.pathname).endsWith('/add')
+                            && index !== 0
+                        ) {
+                            return;
+                        }
+
+                        return (
+                            <Tab
+                                key={index}
+                                eventKey={index}
+                                title={<TabTitleText>{tab.name}</TabTitleText>}
+                                tabContentId={`tab${index}`}
+                                tabContentRef={tab.ref} 
+                            />
+                        );
+
+                    })}
+                </Tabs>
+            </PageSection>
+
+            <PageSection
+                isFilled={true}
+            >
+
+                {tabDetails && tabDetails.map((tab, index) => {
+
+                    let metadataTab = metadata.layout[index]
+
+                    let page_content
 
                     if( tab.name.toLowerCase() === 'notes' ) {
 
-                        return(
+                        page_content = (
                             (notes && note_metadata) &&
-                            <div className="model-notes">
+                            <>
 
-                                <div className="model-notes-comment">
+                                <FlexItem>
 
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault()
+                                    <Card isPlain>
 
-                                        const response = await apiFetch(
-                                            String(page_data['_urls']['notes']).split('api/v2')[1],
-                                            null,
-                                            'POST',
-                                            notes_form
-                                        )
+                                        <Form onSubmit={async (e) => {
+                                            e.preventDefault();
 
-                                        if( response.status === 201 ) {
+                                            const response = await apiFetch(
+                                                String(page_data['_urls']['notes']),
+                                                null,
+                                                'POST',
+                                                notes_form,
+                                                false
+                                            );
 
-                                            setNotesForm({})
+                                            if( response.status === 201 ) {
 
-                                            setUpdateNotes( update_notes ? false : true )
+                                                setNotesForm({});
 
-                                            e.target.reset()
-                                        }
+                                                setUpdateNotes( update_notes ? false : true );
 
-                                    }}>
-                                        <TextArea 
-                                            id = 'model-note'
-                                            required = {true}
-                                            onChange = {(e) => {
-                                                setNotesForm((prevState) => ({ 
-                                                    ...prevState,
-                                                    body: e.target.value,
-                                                    // organization: page_data['organization'].id,
-                                                    // device: page_data.id
-                                                }
-                                                ))
+                                                e.target.reset();
+                                            }
 
-                                                console.log(`model note form ${JSON.stringify(notes_form)}`)
-                                            }}
-                                            value={notes_form?.body}
-                                        />
-                                        <Button
-                                            button_align = 'right'
-                                            button_text = 'Create Note'
-                                        />
-                                    </form>
-                                </div>
+                                        }}>
+                                        <CardBody>
+                                            <MarkdownEditor
+                                                id = 'model-note'
+                                                grow = {true}
+                                                required = {true}
+                                                onChange = {(e) => {
+                                                    setNotesForm((prevState) => ({ 
+                                                        ...prevState,
+                                                        body: e.target.value,
+                                                    }
+                                                    ))
 
-                                <div className="notes">
-                                {
-                                    notes.results.map((note) => {
-                                    return (<ModelNote
-                                            note_data={note}
-                                            metadata = {note_metadata}
-                                        />)
-                                    })}
-                                </div>
-                            </div>
+                                                    console.log(`model note form ${JSON.stringify(notes_form)}`)
+                                                }}
+                                                style = {{
+                                                    width: "1000px"
+                                                }}
+                                                value={notes_form?.body}
+                                            />
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button variant="primary" type="submit">Create Note</Button>
+                                        </CardFooter>
+                                        </Form>
+                                    </Card>
+                                </FlexItem>
+
+                                <FlexItem><Divider /></FlexItem>
+
+                                {notes.results.map((note) => {
+                                    return (
+                                        <>
+                                            <FlexItem>
+                                                <ModelNote
+                                                    note_data={note}
+                                                    metadata = {note_metadata}
+                                                />
+                                            </FlexItem>
+                                            <Divider />
+                                        </>
+                                    );
+                                })}
+                            </>
                         )
 
                     } else {
 
-                        return( tab.sections.map(( section, section_index ) => {
+                        page_content = metadataTab.sections.map(( section, section_index ) => {
 
-                            if( section_index !== 0 ) {
-                                
-                                return(
-                                    <div>
+                            if(
+                                String(location.pathname).endsWith('/add')
+                                && section_index !== 0
+                            ) {
+                                return;
+                            }
 
-                                        <hr />
+                            return (
+                                <>
+                                    {section_index !== 0 && <Divider />}
 
+                                    <FlexItem>
                                         <DetailSection
                                             index = { section_index }
                                             layout = {section}
                                             data = { page_data }
                                             metadata = { metadata }
-                                            tab = {tab}
+                                            name = {tab.name}
                                         />
-                                    </div>
-                                )
-                            }
-
-                            return(
-                                <DetailSection
-                                    index = { section_index }
-                                    layout = {section}
-                                    data = { page_data }
-                                    metadata = { metadata }
-                                    tab = {tab}
-                                />
-                            )
-                        }))
+                                    </FlexItem>
+                                </>
+                            );
+                            
+                        })
                     }
-                }
-            })}
-        </Section>
+
+                    return (
+                        <TabContent
+                            eventKey={index}
+                            key={index}
+                            id={`tab${index}`}
+                            ref={tab.ref}
+                            aria-label={`tab ${index}`}
+                            hidden={activeTabKey!=index}
+                        >
+
+                            {activeTabKey == index && page_content}
+
+                        </TabContent>
+                    );
+
+    `           `})}
+
+            </PageSection>
+            </>}
         </>
-     );
+    );
+
 }
  
 export default Detail;

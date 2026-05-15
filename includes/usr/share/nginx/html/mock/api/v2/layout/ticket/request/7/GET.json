@@ -1,0 +1,112 @@
+{
+    "id": 7,
+    "display_name": "dfdsf",
+    "organization": {
+        "id": 10,
+        "display_name": "IT Department",
+        "name": "IT Department",
+        "url": "/mock/api/v2/no_data_required"
+    },
+    "external_system": null,
+    "external_ref": null,
+    "parent_ticket": null,
+    "status": 3,
+    "status_badge": {
+        "icon": {
+            "name": "ticket_status_assigned",
+            "style": "ticket-status-icon ticket-status-icon-assigned"
+        },
+        "text": "Assigned",
+        "text_style": "ticket-status-text badge-text-ticket_status-assigned",
+        "url": null
+    },
+    "category": {
+        "id": 4,
+        "display_name": "Hardware",
+        "url": "/mock/api/v2/settings/ticket_category/4"
+    },
+    "title": "My PC does not work",
+    "description": {
+        "markdown": "my PC is broken.\n\nI **can't** turn it off and on again as it wont turn on.",
+        "render": {}
+    },
+    "ticket_duration": 0,
+    "ticket_estimation": 900,
+    "project": {
+        "id": 5,
+        "display_name": "PC Refresh",
+        "name": "PC Refresh",
+        "url": "/mock/api/v2/project_management/project/5"
+    },
+    "milestone": null,
+    "urgency": 1,
+    "urgency_badge": {
+        "icon": {
+            "name": "circle",
+            "style": "status very-low"
+        },
+        "text": "Very Low",
+        "text_style": "",
+        "url": null
+    },
+    "impact": 5,
+    "impact_badge": {
+        "icon": {
+            "name": "circle",
+            "style": "status very-high"
+        },
+        "text": "Very High",
+        "text_style": "",
+        "url": null
+    },
+    "priority": 2,
+    "priority_badge": {
+        "icon": {
+            "name": "circle",
+            "style": "status low"
+        },
+        "text": "Low",
+        "text_style": "",
+        "url": null
+    },
+    "opened_by": {
+        "id": 2,
+        "display_name": "IP Wierd",
+        "url": "/mock/api/v2/no_data_required"
+    },
+    "subscribed_to": [
+        {
+            "id": 2,
+            "display_name": "IP Wierd",
+            "url": "/mock/api/v2/no_data_required"
+        }
+    ],
+    "assigned_to": [
+        {
+            "id": 1,
+            "display_name": "IP Funny",
+            "url": "/mock/api/v2/no_data_required"
+        }
+    ],
+    "planned_start_date": null,
+    "planned_finish_date": null,
+    "real_start_date": null,
+    "real_finish_date": null,
+    "tto": 0,
+    "ttr": 0,
+    "is_deleted": false,
+    "is_solved": false,
+    "date_solved": null,
+    "is_closed": false,
+    "date_closed": null,
+    "created": "2025-04-16T02:38:14.248779+09:30",
+    "modified": "2026-04-27T14:47:57+09:30",
+    "_urls": {
+        "_self": "/mock/api/v2/layout/ticket/request/7",
+        "comments": "/mock/api/v2/layout/ticket/request/7/comments",
+        "linked_models": "/mock/api/v2/layout/ticket/request/7/models",
+        "ticket_dependencies": "/mock/api/v2/layout/ticket/request/7/ticket_dependency",
+        "project": "/mock/api/v2/project_management/project",
+        "ticketcategory": "/mock/api/v2/settings/ticket_category?requestticket=true"
+    }
+}

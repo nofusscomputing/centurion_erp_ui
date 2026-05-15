@@ -1,0 +1,72 @@
+{
+    "results": [
+        {
+            "id": 65,
+            "organization": {
+                "id": 10,
+                "display_name": "IT Department",
+                "name": "IT Department",
+                "url": ""
+            },
+            "parent": {
+                "id": 64,
+                "display_name": "TicketCommentBase object (64)",
+                "url": "/layout/ticket/request/7/comment/64"
+            },
+            "ticket": {
+                "id": 7,
+                "display_name": "dfdsf",
+                "title": "dfdsf",
+                "url": "/layout/ticket/request/7"
+            },
+            "external_ref": null,
+            "external_system": null,
+            "category": {
+                "id": 1,
+                "display_name": "cat one",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "body": {
+                "markdown": "placed order",
+                "render": {}
+            },
+            "private": false,
+            "duration": 200,
+            "estimation": 0,
+            "template": null,
+            "is_template": false,
+            "source": 4,
+            "user": {
+                "id": 1,
+                "display_name": "IP Funny",
+                "url": "/mock/api/v2/no_data_required"
+            },
+            "is_closed": false,
+            "date_closed": null,
+            "created": "2026-04-29T19:41:31.316291+09:30",
+            "modified": "2026-04-29T19:41:31+09:30",
+            "_urls": {
+                "_self": "/layout/ticket/request/7/ticketcommenttask/40/threads/65"
+            },
+            "status": 1,
+            "assignee": null,
+            "planned_start_date": null,
+            "planned_finish_date": null,
+            "real_start_date": null,
+            "real_finish_date": null
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "page": 1,
+            "pages": 1,
+            "count": 1
+        }
+    },
+    "links": {
+        "first": "/layout/ticket/request/7/ticketcommenttask/40/threads?page%5Bnumber%5D=1",
+        "last": "/layout/ticket/request/7/ticketcommenttask/40/threads?page%5Bnumber%5D=1",
+        "next": null,
+        "prev": null
+    }
+}

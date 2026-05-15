@@ -1,139 +1,83 @@
-div.ticket {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
+:root {
 
-div.ticket .contents {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+  --background-colour-ticket-comment-default: #177fe6a4;
+  --background-colour-ticket-comment-notification: #96c7ff;
+  --background-colour-ticket-comment-solution: #b7ff96;
+  --background-colour-ticket-comment-task: #f8ff96;
 
-div.ticket section h3.description .sub-script,
-div.ticket section h3.sidebar .sub-script {
-  color: #777;
-}
+  --background-colour-ticket-type-change: #badff7;
+  --background-colour-ticket-type-incident: #f7baba;
+  --background-colour-ticket-type-issue: #baf7db;
+  --background-colour-ticket-type-request: #f7e9ba;
+  --background-colour-ticket-type-problem: #f7d0ba;
+  --background-colour-ticket-type-project-task: #c5baf7;
 
-div.ticket hr {
-  border: none;
-  border-bottom: 1px solid var(--border-colour-form-field);
-  margin: .5rem 0;
+
+  --background-colour-ticket-type-change: #61bbf8;
+  --background-colour-ticket-type-incident: #fd6161;
+  --background-colour-ticket-type-issue: #61fcb3;
+  --background-colour-ticket-type-request: #f7d35e;
+  --background-colour-ticket-type-problem: #fc9960;
+  --background-colour-ticket-type-project-task: #7b5ff7;
 }
 
 
 div.ticket h3.description.ticket-type-change,
-div.ticket section.sidebar h3.ticket-type-change {
+div.ticket .sidebar .header.ticket-type-change {
   background-color: var(--background-colour-ticket-type-change);
 }
 
 div.ticket h3.description.ticket-type-incident,
-div.ticket section.sidebar h3.ticket-type-incident {
+div.ticket .sidebar .header.ticket-type-incident {
   background-color: var(--background-colour-ticket-type-incident);
 }
 
 div.ticket h3.description.ticket-type-issue,
-div.ticket section.sidebar h3.ticket-type-issue {
+div.ticket .sidebar .header.ticket-type-issue {
   background-color: var(--background-colour-ticket-type-issue);
 }
 
 div.ticket h3.description.ticket-type-problem,
-div.ticket section.sidebar h3.ticket-type-problem {
+div.ticket .sidebar .header.ticket-type-problem {
   background-color: var(--background-colour-ticket-type-problem);
 }
 
 div.ticket h3.description.ticket-type-projecttask,
-div.ticket section.sidebar h3.ticket-type-projecttask {
+div.ticket .sidebar .header.ticket-type-projecttask {
   background-color: var(--background-colour-ticket-type-project-task);
 }
 
 div.ticket h3.description.ticket-type-request,
-div.ticket section.sidebar h3.ticket-type-request {
+div.ticket .sidebar .header.ticket-type-request {
   background-color: var(--background-colour-ticket-type-request);
+  color: #000;
 }
 
 
-div.ticket section.sidebar {
-  background-color: var(--background-colour-active);
-  border: 1px solid var(--border-colour);
-  display: flex;
-  flex-direction: column;
-  top: 76px;
-  bottom: 0px;
-  position: sticky;
-  margin: 0;
-  top: 76px;
-  height: calc(100vh - 154px - 30px);
 
-}
-
-div.ticket section.sidebar h3 {
+div.ticket .sidebar h5,
+div.ticket .sidebar .header {
   background-color: chocolate;
-  display: flow-root;
-  margin: 0;
-}
-
-div.ticket section.sidebar .metadata {
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: calc(100vh - 154px - 30px - 30px - 10px);
-  scrollbar-width: thin;
-
-}
-
-div.ticket .sidebar .metadata fieldset {
-  border: none;
-  margin-bottom: .5rem;
-  min-width: 300px;
-  max-width: 300px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 1rem;
-}
-
-div.ticket .sidebar .metadata fieldset label {
-  display: flow-root;
-  font-weight: bold;
 }
 
 
-div.ticket .sidebar .metadata fieldset label input,
-div.ticket .sidebar .metadata fieldset label select {
-  width: 95%;
-}
-
-
-div.ticket section.description,
-div.ticket section.related-tickets,
-div.ticket section.linked-items {
-    flex-grow: 0;
-}
-
-
-
-div.ticket section h3.related-tickets,
-div.ticket section h3.linked-items {
-  background-color: var(--contrasting-colour);
-  color: var(--text-colour-button);
-}
-
-
-div.ticket section.related-tickets .items {
+div.ticket .related-tickets .items {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-div.ticket section.related-tickets .item:hover,
-div.ticket section.linked-items .item:hover {
+div.ticket .related-tickets .item:hover,
+div.ticket .linked-items .item:hover {
   filter: brightness(90%);
   background:#ffffff;
 }
 
-div.ticket section.related-tickets div.items div.item div {
+div.ticket .related-tickets div.items div.item div {
   height: 24px;
 }
 
-div.ticket section.related-tickets .icon svg {
+div.ticket .related-tickets .icon svg {
   align-self: center;
 }
 
@@ -156,14 +100,6 @@ div.ticket section.related-tickets .ticket-related-related svg {
 }
 
 
-
-
-div.ticket div.comments ul.comments li,
-div.ticket div.comments ul.replies li {
-  padding-left: .5rem;
-}
-
-
 .ticket .discussion {
   background-color: var(--background-colour-inactive);
   padding-bottom: 20px;
@@ -172,7 +108,6 @@ div.ticket div.comments ul.replies li {
 .ticket .discussion .replies h3 {
   display: flex;
   flex-direction: row;
-  /* padding: 0; */
   padding-left: .5rem;
 }
 .ticket .discussion .replies h3 svg {
@@ -180,29 +115,6 @@ div.ticket div.comments ul.replies li {
   fill: var(--text-colour);
 }
 
-
-div.ticket div.comments .replies section {
-  margin-right: 0rem;
-}
-
-
-div.ticket section.comment {
-  border-width: 1px;
-  border-style: solid;
-}
-
-.ticket .comment h4.comment {
-  display: flex;
-  flex-direction: row;
-  font-size: var(--font-size);
-  font-weight: normal;
-  margin: 0;
-  padding-left: .5rem;
-}
-
-.ticket .comment h4.comment .text {
-  flex-grow: 1;
-}
 
 .ticket .comment h4 .icons {
   display: flex;
@@ -217,46 +129,6 @@ div.ticket section.comment {
   align-self: center;
   padding: 0 .1rem;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-div.ticket section div.comment.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-div.ticket .comments section div.comment.row fieldset {
-  padding: 0 .2rem;
-}
-
-div.ticket .comments section div.comment.row:not(.form) fieldset {
-  padding: 0 .5rem;
-}
-
-.ticket .comments section .comment-form fieldset textarea {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.ticket .comment-form form fieldset span.help-text {
-  font-size: xx-small;
-}
-
 
 
 
@@ -311,63 +183,3 @@ div.ticket .comments section div.comment.row:not(.form) fieldset {
 .ticket .comment-type-task h4.comment .icons svg {
   fill: var(--contrasting-colour);
 }
-
-
-
-@media all and ( max-width: 1160px) {
-
-  div.ticket section.sidebar {
-    top: unset;
-    bottom: unset;
-    margin: 1rem;
-    margin-right: 1rem;
-    position: unset;
-    height: fit-content;
-
-  }
-
-  div.ticket section.sidebar .metadata {
-    overflow-y: unset;
-    height: fit-content;
-  }
-
-  div.ticket .sidebar .metadata fieldset {
-    max-width: unset;
-  }
-  
-  div.ticket {
-    flex-wrap: wrap;
-  }
-
-
-}
-
-
-
-
-@media all and ( max-width: 850px) {
-
-
-  /* Hide navigation menu and reformat to be on */
-
-
-}
-
-
-
-/* ###################################################################
-
-ticket fixme
-
-################################################################### */
-
-
-
-
-
-.ticket .comment .markdown {
-  padding: 1rem;
-}
-
-
-

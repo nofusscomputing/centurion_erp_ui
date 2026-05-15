@@ -20,17 +20,18 @@ export async function apiFetch(
     patch = true
 ) {
 
-    console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
+    console.debug(`apiFetch called: ${http_method} ${url_path}`);
+    // console.debug(`apiFetch, using API_URL env variable: [${window.env.API_URL}]`)
 
-    console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
+    // console.debug(`apiFetch [method: ${http_method}] was passed URL: [${url_path}] with fetch metadata as ${metadata}`)
 
     if( String(url_path).includes(String(window.env.API_URL).trim()) ) {    // normalise passed URLs
 
-        console.debug(`url_path for function apiFetch was a full url, [${url_path}], normalizing...`)
+        // console.debug(`url_path for function apiFetch was a full url, [${url_path}], normalizing...`)
 
         url_path = String(url_path).replace(String(window.env.API_URL).trim(), '').replace('//', '/')
 
-        console.debug(`normailized to [${url_path}]`)
+        // console.debug(`normailized to [${url_path}]`)
 
     }
 
@@ -47,15 +48,16 @@ export async function apiFetch(
 
     }
 
-    url_path = String(url_path).replace('/add', '').replace('/delete', '').replace('/edit', '')
+    url_path = String(url_path).replace('/add', '').replace('/edit', '')
 
-    console.debug(`apiFetch url_path is: ${url_path}`)
+    // console.debug(`apiFetch url_path is: ${url_path}`)
 
 
     let request_data = {
-        credentials: 'include',
+        ...( getCookie('csrftoken') ? { credentials: 'include' } : {}),
         headers: {
-            'X-CSRFToken': getCookie('csrftoken')
+            ...(getCookie('csrftoken') ? { 'X-CSRFToken': getCookie('csrftoken') } : {})
+
         },
         method: http_method,
     }
@@ -66,7 +68,10 @@ export async function apiFetch(
 
         if( data_body ) {
 
-            data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
+            if( getCookie('csrftoken') ) {
+                data_body['csrfmiddlewaretoken'] = getCookie('csrftoken')
+            }
+
 
             request_data['body'] = JSON.stringify(data_body)
         }
@@ -98,7 +103,10 @@ export async function apiFetch(
         // http_method === 'GET'
         // && metadata
         metadata
+        && http_method.toUpperCase() !== 'OPTIONS'
     ) {
+
+        console.debug(`apiFetch called: ${http_method} ${url_path} -Making Options Request-`);
 
         const api_metadata_response = await fetch(window.env.API_URL + url_path,
                 {
@@ -130,13 +138,17 @@ export async function apiFetch(
 
     if( api_data_response.status != 204 ) {
 
-        api_data = await api_data_response.clone().json()
-        
-        if( api_data_response.status == 400 ) {
+        if( http_method.toUpperCase() === 'OPTIONS' ) {
 
-            throw Error(JSON.stringify(api_data))
+            api_metadata = await api_data_response.clone().json()
+
+            api_data = await api_data_response.clone().json()
+
+        } else {
+
+            api_data = await api_data_response.clone().json()
+
         }
-    
 
         if( callback && api_metadata ) {
 
@@ -150,7 +162,7 @@ export async function apiFetch(
     }
 
 
-    console.debug(`apiFetch finished for URL: [${url_path}]`)
+    // console.debug(`apiFetch finished for URL: [${url_path}]`)
 
     if(
         (

@@ -1,0 +1,203 @@
+/*
+*
+*
+* Badge Style Variables.
+*
+*/
+.centurion-badge-style-default {
+    --centurion-badge-icon-background-color: var(--pf-t--global--color--nonstatus--gray--default);
+    --centurion-badge-icon-border-color: var(--pf-t--global--color--nonstatus--gray--default);
+}
+
+
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-accepted,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-accepted {
+  --centurion-badge-icon-background-color: #e1ffb2;
+  --centurion-badge-icon-border-color: #e1ffb2;
+  --centurion-badge-icon-fill-color: #2e9200;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-approvals,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-approvals {
+  --centurion-badge-icon-background-color: #ffceb2;
+  --centurion-badge-icon-border-color: #ffceb2;
+  --centurion-badge-icon-fill-color: #d86100;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-assigned,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-assigned {
+  --centurion-badge-icon-background-color: #e1ffb2;
+  --centurion-badge-icon-border-color: #e1ffb2;
+  --centurion-badge-icon-fill-color: #2e9200;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-assigned_planning,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-assigned_planning {
+  --centurion-badge-icon-background-color: #e1ffb2;
+  --centurion-badge-icon-border-color: #e1ffb2;
+  --centurion-badge-icon-fill-color: #2e9200;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-closed,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-closed {
+  --centurion-badge-icon-background-color: #c9b2ff;
+  --centurion-badge-icon-border-color: #c9b2ff;
+  --centurion-badge-icon-fill-color: #640092;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-draft,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-draft {
+  --centurion-badge-icon-background-color: #cacaca;
+  --centurion-badge-icon-border-color: #cacaca;
+  --centurion-badge-icon-fill-color: #4d4d4d;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-evaluation,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-evaluation {
+  --centurion-badge-icon-background-color: #b2d6ff;
+  --centurion-badge-icon-border-color: #b2d6ff;
+  --centurion-badge-icon-fill-color: #007592;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-invalid,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-invalid {
+  --centurion-badge-icon-background-color: #ffb2b6;
+  --centurion-badge-icon-border-color: #ffb2b6;
+  --centurion-badge-icon-fill-color: #920000;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-new,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-new {
+  --centurion-badge-icon-background-color: #b2dcff;
+  --centurion-badge-icon-border-color: #b2dcff;
+  --centurion-badge-icon-fill-color: #004492
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-pending,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-pending {
+  --centurion-badge-icon-background-color: #ffceb2;
+  --centurion-badge-icon-border-color: #ffceb2;
+  --centurion-badge-icon-fill-color: #d86100;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-solved,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-solved {
+  --centurion-badge-icon-background-color: #c9b2ff;
+  --centurion-badge-icon-border-color: #c9b2ff;
+  --centurion-badge-icon-fill-color: #640092;
+}
+
+.centurion-badge-content-ticket-status-icon-ticket-status-icon-testing,
+.centurion-badge-icon-ticket-status-icon-ticket-status-icon-testing {
+  --centurion-badge-icon-background-color: #b2d3ff;
+  --centurion-badge-icon-border-color: #b2d3ff;
+  --centurion-badge-icon-fill-color: #8c00ff;
+}
+
+
+.centurion-badge-content-status-very-low,
+.centurion-badge-icon-status-very-low{
+  --centurion-badge-icon-background-color: #008cff83;
+  --centurion-badge-icon-border-color: #008cff83;
+  --centurion-badge-icon-fill-color: #008cff;
+}
+
+.centurion-badge-content-status-low,
+.centurion-badge-icon-status-low {
+  --centurion-badge-icon-background-color: #00921383;
+  --centurion-badge-icon-border-color: #00921383;
+  --centurion-badge-icon-fill-color: #009213;
+}
+
+.centurion-badge-content-status-medium,
+.centurion-badge-icon-status-medium {
+  --centurion-badge-icon-background-color: #fbff0083;
+  --centurion-badge-icon-border-color: #fbff0083;
+  --centurion-badge-icon-fill-color: #fbff00;
+}
+
+.centurion-badge-content-status-high,
+.centurion-badge-icon-status-high {
+  --centurion-badge-icon-background-color: #ff880083;
+  --centurion-badge-icon-border-color: #ff880083;
+  --centurion-badge-icon-fill-color: #ff8800;
+}
+
+.centurion-badge-content-status-very-high,
+.centurion-badge-icon-status-very-high {
+  --centurion-badge-icon-background-color: #ff000083;
+  --centurion-badge-icon-border-color: #ff000083;
+  --centurion-badge-icon-fill-color: #ff0000;
+}
+
+
+
+.centurion-badge-content-action-add,
+.centurion-badge-icon-action-add {
+  --centurion-badge-icon-background-color: #315f9c;
+  --centurion-badge-icon-border-color: #315f9c;
+  /* --centurion-badge-icon-fill-color: */
+}
+
+
+.centurion-badge-content-action-install,
+.centurion-badge-icon-action-install {
+  --centurion-badge-icon-background-color: #319c3a;
+  --centurion-badge-icon-border-color: #319c3a;
+  /* --centurion-badge-icon-fill-color: */
+}
+
+
+.centurion-badge-content-action-remove,
+.centurion-badge-icon-action-remove {
+  --centurion-badge-icon-background-color: #9c3131;
+  --centurion-badge-icon-border-color: #9c3131;
+  /* --centurion-badge-icon-fill-color: */
+}
+
+
+
+
+/*
+*
+*
+* Badge Styles.
+*
+*/
+.centurion-badge {
+    /* background-color: rgb(65, 65, 65); */
+    font-size: var(--pf-t--global--font--size--body--sm);
+    gap: 0;
+    width: fit-content;
+    word-break: unset;
+    white-space: nowrap;
+}
+
+.centurion-badge a {
+    text-decoration: unset;
+    color: inherit;
+}
+
+.centurion-badge .centurion-badge-icon {
+    background-color: var(--centurion-badge-icon-background-color);
+    border: 1px solid;
+    border-color: var(--centurion-badge-icon-border-color);
+    border-right: 0 none;
+    border-top-left-radius: var(--pf-t--global--border--radius--pill);
+    border-bottom-left-radius: var(--pf-t--global--border--radius--pill);
+    padding: 4px 6px;
+}
+
+.centurion-badge .centurion-badge-icon svg{
+    fill: var(--centurion-badge-icon-fill-color);
+}
+
+.centurion-badge .centurion-badge-content {
+    border: 1px solid;
+    border-color: var(--centurion-badge-icon-border-color);
+    border-left: 0 none;
+    border-top-right-radius: var(--pf-t--global--border--radius--pill);
+    border-bottom-right-radius: var(--pf-t--global--border--radius--pill);
+    padding: 4px 6px;
+}
