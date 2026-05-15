@@ -1,6 +1,8 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import IconLoader from "../../components/IconLoader";
 
+import "../../styles/main.css"
+
 export const MARKDOWN_TAG_MODEL_LINK_UNESCAPE_RE = /(?<markdown>\$(?<model_type>[a-z_]+)-(?<model_id>\d+))/g
 
 function model_link (state) {
@@ -76,8 +78,9 @@ function model_link (state) {
 
           const icon_t = state.push('html_inline', '', 0)
 
-          icon_t.content = renderToStaticMarkup(
+          icon_t.jsx = (
             <IconLoader
+              key={begining}
               name={String( item_link.groups.model_type ).toLowerCase()}
               fill="#777"
             />

@@ -1,0 +1,64 @@
+{
+    "name": "List Layout",
+    "description": "A list layout is for displaying a dataset. in this case it's showing all fields. A list view will generally link to a single object within the dataset.",
+    "documentation": "https://nofusscomputing.com/projects/centurion_user_interface/fields/",
+    "urls": {
+        "self": "/mock/api/v2/layout/table"
+    },
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "GET",
+        "OPTIONS"
+    ],
+    "fields": {
+        "id": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "ID"
+        },
+        "display_name": {
+            "type": "GenericField",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Display name"
+        },
+        "name": {
+            "type": "String",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Name",
+            "help_text": "Name of the field"
+        }
+    },
+    "table_fields": [
+        "id",
+        "display_name",
+        "name"
+    ],
+    
+    "layout": {
+        "name": "dataset",
+        "cells": [
+            [
+                "name"
+
+            ],
+            [
+                "id",
+                "display_name"
+            ]
+        ]
+    }
+}

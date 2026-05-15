@@ -1,19 +1,19 @@
-import { Link, NavLink, json } from "react-router";
-import RenderMarkdown from "./RenderMarkdown";
-import IconLoader from "../components/IconLoader";
+import {
+    useContext
+} from "react";
+
+import {
+    Link
+} from "react-router";
+
 import Badge from "../components/Badge";
 import { FormatTime } from "./FormatTime";
-import { useContext } from "react";
+import IconLoader from "../components/IconLoader";
+import RenderMarkdown from "./RenderMarkdown";
+import URLSanitize from "./URLSanitize";
 import UserContext from "../hooks/UserContext";
 
 
-
-/**
- * Value used to split URL.
- * 
- * i.e. `http://127.0.0.1:8002/api/v2/itam/device/24` using ulr[1] would return `/itam/device/24`
- */
-const API_SPLIT = String('api/v2')
 
 /**
  * Fetch the field data from Django API Data
@@ -30,7 +30,11 @@ export default function FieldData({
     metadata,
     field_name,
     data = null,
-    autolink = false
+    autolink = false,
+    /**
+     * Post PatternFly refactor
+     */
+    withFormatting = true,    // will this be required post refactor????
 })  {
 
     const user = useContext(UserContext)
@@ -40,7 +44,7 @@ export default function FieldData({
         return null;
     }
 
-    let field_data = '';
+    let field_data = withFormatting ? '-' : null;
 
     let data_field = field_lookup(field_name, data)
     if( typeof(field_name) === 'object' ) {
@@ -71,25 +75,21 @@ export default function FieldData({
 
                 if( data_field.url ) {
                     field_data = (
-                        <Link className="badge-link" to={String(data['_urls'][data_field.url]).split('api/v2')[1]+'/edit'}>
-                            <Badge
-                                icon_style = {data_field.icon.style}
-                                message = {data_field.text}
-                                text_style = {data_field.text_style}
-                            >
-                                <IconLoader name={data_field.icon.name} fill={null} height='15px' width='15px'/>
-                            </Badge>
-                        </Link>
+                        <Badge
+                            icon={data_field.icon.name}
+                            to={URLSanitize(data['_urls'][data_field.url])+'/edit'}
+                        >
+                            {data_field.text}
+                        </Badge>
                     )
                 } else {
 
                     field_data = (
                         <Badge
-                            icon_style = {data_field.icon.style}
-                            message = {data_field.text}
-                            text_style = {data_field.text_style}
+                            icon={data_field.icon.name}
+                            classNameSuffix={String(data_field.icon.style).replace(' ', '-')}
                         >
-                            <IconLoader name={data_field.icon.name} fill={null} height='15px' width='15px'/>
+                            {data_field.text}
                         </Badge>
                     )
 
@@ -98,6 +98,12 @@ export default function FieldData({
                 break;
 
             case 'Boolean':
+
+                if( ! withFormatting ) {
+
+                    return Boolean(data_field);
+
+                }
 
                 if( Boolean(data_field) ) {
 
@@ -119,11 +125,23 @@ export default function FieldData({
 
                         field_data = String(choice.display_name)
 
+                        if( ! withFormatting ) {
+
+                            return Number(data_field);
+
+                        }
+
                         break;
 
                     } else if( typeof(data_field) === 'string' && data_field === choice.value ) {
 
                         field_data = choice.value
+                        if( ! withFormatting ) {
+
+                            return String(choice.value);
+
+                        }
+
                     }
 
                 }
@@ -131,6 +149,14 @@ export default function FieldData({
                 break;
 
             case 'DateTime':
+
+                if( ! withFormatting ) {
+                    return String(FormatTime({
+                        time: String(data_field),
+                        iso: true,
+                        tz: user.settings.timezone
+                    })).replace('Z', '')
+                }
 
                 field_data = FormatTime({
                     time: String(data_field),
@@ -145,7 +171,10 @@ export default function FieldData({
                     <>
                         {data_field.map((icon) => {
                             return (
-                                <span className={icon.style}>
+                                <span
+                                    className = {icon.style}
+                                    key = {`field-${field_name}-icon-${icon.name}`}
+                                >
                                     <IconLoader name={icon.name} fill={null} height='20px' width='20px' />
                                 </span>
                             )
@@ -169,13 +198,21 @@ export default function FieldData({
 
                                 if( field.hasOwnProperty('url') ) {
 
+                                    if( ! withFormatting ) {
+                                        return field.id
+                                    }
+
                                     return (
                                         <>
-                                        <Link to={field.url}>{field.display_name}</Link>&nbsp;,
+                                        <Link to={URLSanitize(field.url)}>{field.display_name}</Link>&nbsp;,
                                         </>
                                     );
 
                                 } else {
+
+                                    if( ! withFormatting ) {
+                                        return field.value
+                                    }
 
                                     return (
                                         <>
@@ -197,11 +234,19 @@ export default function FieldData({
 
                         if( 'url' in data_field ) {
 
+                                if( ! withFormatting ) {
+                                    return data_field.id
+                                }
+
                             field_data = (
-                                <Link to={String(data_field.url).split(API_SPLIT)[1]}>{data_field.display_name}</Link>
+                                <Link to={URLSanitize(data_field.url)}>{data_field.display_name}</Link>
                             )
 
                         } else {
+
+                                if( ! withFormatting ) {
+                                    return data_field.id
+                                }
 
                             field_data = data_field.display_name
 
@@ -210,7 +255,7 @@ export default function FieldData({
                     } else if( typeof( field_name ) === 'object' && autolink ) {
 
                         field_data = (
-                            <Link to={String(data['_urls'][field_name.key]).split(API_SPLIT)[1]}>{data_field}</Link>
+                            <Link to={URLSanitize(data['_urls'][field_name.key])}>{data_field}</Link>
                         )
 
                     } else if( typeof (data_field) === 'list' ) {
@@ -228,6 +273,10 @@ export default function FieldData({
 
             case 'JSON':
 
+                if( ! withFormatting ) {
+                    return JSON.stringify(data_field, null, 4);
+                }
+
                 let markdown = "``` json"
                     + "\r\n\r\n"
                     + JSON.stringify(data_field, null, 4)
@@ -236,14 +285,54 @@ export default function FieldData({
                     + "\r\n"
 
                 field_data = (
-                    <RenderMarkdown full_width={full_width}>
+                    <RenderMarkdown env={{}} full_width={full_width}>
                         {markdown}
                     </RenderMarkdown>
                 )
 
+                // const clipboardCopyFunc = (event, text) => {
+                //     navigator.clipboard.writeText(text.toString());
+                // };
+
+                // const [copied, setCopied] = useState(false);
+
+                // const onClick = (event, text) => {
+                //     clipboardCopyFunc(event, text);
+                //     setCopied(true);
+                // };
+
+                // const code = JSON.stringify(data_field, null, 4)
+
+                // field_data = (
+                //     <CodeBlock
+                //         actions={
+                //             <CodeBlockAction>
+                //                 <ClipboardCopyButton
+                //                     id="basic-copy-button"
+                //                     textId="code-content"
+                //                     aria-label="Copy to clipboard basic example code block"
+                //                     onClick={e => onClick(e, code)}
+                //                     exitDelay={copied ? 1500 : 600}
+                //                     maxWidth="110px"
+                //                     variant="plain"
+                //                     onTooltipHidden={() => setCopied(false)}
+                //                     >
+                //                 {copied ? 'Successfully copied to clipboard!' : 'Copy to clipboard'}
+                //                 </ClipboardCopyButton>
+                //             </CodeBlockAction>
+                //         }
+                //     >
+                //         <CodeBlockCode>{code}</CodeBlockCode>
+                //     </CodeBlock>
+                // )
+
                 break;
 
             case 'Markdown':
+
+            if( ! withFormatting ) {
+                return data_field.markdown;
+            }
 
                 field_data = (
                     <RenderMarkdown env={data_field.render ?? {}}>
@@ -266,14 +355,14 @@ export default function FieldData({
                         '_urls' in data
                         && (
                             autolink
-                            && Boolean(metadata.fields[field_name]?.autolink)
+                            || Boolean(metadata.fields[field_name]?.autolink)
                         )
                     )
                     || autolink
                 ) {
 
                     field_data = (
-                        <Link to={String(data['_urls']._self).split(API_SPLIT)[1]}>{data_field}</Link>
+                        <Link to={URLSanitize(data['_urls']._self)}>{data_field}</Link>
                     )
 
                 } else {

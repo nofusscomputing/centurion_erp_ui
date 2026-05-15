@@ -22,7 +22,7 @@ function html_whitelist (state, startLine, endLine, silent) {
   let max = state.eMarks[startLine]
 
   const HTML_SEQUENCES = [
-    [/^<!--/,        /-->/,   true],
+    // [/^<!--/,        /-->/,   true],    // When commented out, the comments dont render
     [new RegExp('^</?(' + whitelisted_tags.join('|') + ')>', 'i'), /^$/, true],
   ]
 

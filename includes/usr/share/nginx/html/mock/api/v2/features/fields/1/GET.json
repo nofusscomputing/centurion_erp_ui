@@ -1,0 +1,13 @@
+{
+    "id": 1,
+    "display_name": "String",
+    "name": "string",
+    "description": {
+        "markdown": "This field is used to display a field of text.",
+        "render": {}
+    },
+    "field": "demo field data",
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/1"
+    }
+}

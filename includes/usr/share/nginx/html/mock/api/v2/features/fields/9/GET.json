@@ -1,0 +1,16 @@
+{
+    "id": 9,
+    "display_name": "Markdown",
+    "name": "markdown",
+    "description": {
+        "markdown": "This field is used to display a field that contains text in markdown format",
+        "render": {}
+    },
+    "field": {
+        "markdown": "This is a line of text that has a **bold** word.",
+        "render": {}
+    },
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/9"
+    }
+}

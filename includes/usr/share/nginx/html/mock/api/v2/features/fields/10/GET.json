@@ -1,0 +1,16 @@
+{
+    "id": 10,
+    "display_name": "Relationship",
+    "name": "relationship",
+    "description": {
+        "markdown": "This field is used to display a field of text that when editing is limited to choices supplied. These choices are another model.",
+        "render": {}
+    },
+    "field": {
+        "id": "1",
+        "display_name": "A Relationship model"
+    },
+    "_urls": {
+        "_self": "/mock/api/v2/features/fields/10"
+    }
+}

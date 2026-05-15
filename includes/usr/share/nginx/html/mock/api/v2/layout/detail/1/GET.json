@@ -1,0 +1,18 @@
+{
+    "id": 1,
+    "layout_description": {
+        "markdown": "This layout is the **Detail** Layout.\n\nThis layout is used for displaying a single object from a dataset.\n\nThe detail view is broken down into **tabs** with each tab containing multiple **sections**. Each section is where the **fields** are laid out. The fields can be laid out in either a **double** or **single** column or a **table**.",
+        "render": {}
+    },
+    "display_name": "Detail View",
+    "name": "detail",
+    "description": {
+        "markdown": "This field is used to display a field of text.",
+        "render": {}
+    },
+    "field": "demo field data",
+    "_urls": {
+        "_self": "/mock/api/v2/layout/detail/1",
+        "fields": "/mock/api/v2/layout/table"
+    }
+}

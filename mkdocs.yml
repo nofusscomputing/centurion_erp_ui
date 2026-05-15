@@ -1,4 +1,4 @@
-INHERIT: website-template/mkdocs.yml
+INHERIT: docs_template/mkdocs.yml
 
 docs_dir: 'docs'
 
@@ -25,11 +25,45 @@ nav:
 
     - projects/centurion_erp/index.md
 
-    - User Interface:
+  - Centurion User Interface:
 
-      - projects/centurion_erp/user_interface/index.md
+    - projects/centurion_user_interface/index.md
 
-      - projects/centurion_erp/user_interface/url.md
+    - projects/centurion_user_interface/development.md
+
+    - projects/centurion_user_interface/metadata.md
+
+    - projects/centurion_user_interface/navigation.md
+
+    - projects/centurion_user_interface/setup.md
+
+    - projects/centurion_user_interface/url.md
+
+    - Interface:
+
+      - projects/centurion_user_interface/user/index.md
+
+      - projects/centurion_user_interface/user/notifications.md
+
+    - API:
+
+      - projects/centurion_user_interface/api/index.md
+
+    - Components:
+
+      - projects/centurion_user_interface/components/comment.md
+
+    - Fields:
+
+      - projects/centurion_user_interface/fields/markdown.md
+
+    - Layouts:
+
+      - projects/centurion_user_interface/layout/index.md
+
+      - projects/centurion_user_interface/layout/list.md
+
+      - projects/centurion_user_interface/layout/ticket.md
 
 - Operations: 
 

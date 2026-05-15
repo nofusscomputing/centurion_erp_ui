@@ -1,0 +1,66 @@
+{
+    "name": "User",
+    "description": "Centurion Users",
+    "urls": {},
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+    ],
+    "fields": {
+        "id": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "ID"
+        },
+        "display_name": {
+            "type": "GenericField",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Display name"
+        },
+        "first_name": {
+            "type": "String",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "First name"
+        },
+        "last_name": {
+            "type": "String",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Last name"
+        },
+        "username": {
+            "type": "String",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Username",
+            "help_text": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        },
+        "is_active": {
+            "type": "Boolean",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Active",
+            "help_text": "Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+            "initial": false
+        }
+    }
+}

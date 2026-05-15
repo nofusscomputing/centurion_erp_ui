@@ -17,7 +17,6 @@ WORKDIR /workdir
 
 
 RUN npm install; \
-    npm remove babel-preset-react-app; \
     npm run build
 
 
@@ -30,7 +29,6 @@ LABEL \
   org.opencontainers.image.vendor="No Fuss Computing" \
   org.opencontainers.image.title="Centurion ERP UI" \
   org.opencontainers.image.description="A react UI for Centurion ERP" \
-  org.opencontainers.image.vendor="No Fuss Computing" \
   io.artifacthub.package.license="MIT"
 
 
@@ -43,7 +41,7 @@ ENV CI_PROJECT_URL=${CI_PROJECT_URL}
 ENV CI_COMMIT_SHA=${CI_COMMIT_SHA}
 ENV CI_COMMIT_TAG=${CI_COMMIT_TAG}
 
-ENV API_URL=__API_URL__
+ENV API_URL="http://127.0.0.1:3000/mock/api/v2"
 
 
 COPY --from=build /workdir/build/ /usr/share/nginx/html/

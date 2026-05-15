@@ -1,0 +1,551 @@
+{
+    "name": "Requests",
+    "description": "Request Tickets",
+    "documentation": "https://nofusscomputing.com/projects/centurion_erp/user/itim/request",
+    "urls": {
+        "self": "/layout/ticket/request",
+        "back": "/layout/ticket/request"
+    },
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "allowed_methods": [
+        "GET",
+        "POST",
+        "HEAD",
+        "OPTIONS"
+    ],
+    "fields": {
+        "id": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "ID",
+            "help_text": "ID of the item"
+        },
+        "display_name": {
+            "type": "GenericField",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Display name"
+        },
+        "organization": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "Tenant",
+            "required": true,
+            "read_only": false,
+            "write_only": true,
+            "label": "Organization",
+            "choices": []
+        },
+        "external_system": {
+            "type": "Choice",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "External System",
+            "help_text": "External system this item derives",
+            "choices": []
+        },
+        "external_ref": {
+            "type": "Integer",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Reference Number",
+            "help_text": "External System reference",
+            "min_value": -9223372036854775808,
+            "max_value": 9223372036854775807
+        },
+        "parent_ticket": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "TicketBase",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Parent Ticket",
+            "help_text": "Parent of this ticket",
+            "choices": []
+        },
+        "status": {
+            "type": "Choice",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Status",
+            "help_text": "Status of ticket",
+            "choices": [
+                {
+                    "value": 1,
+                    "display_name": "Draft"
+                },
+                {
+                    "value": 2,
+                    "display_name": "New"
+                },
+                {
+                    "value": 3,
+                    "display_name": "Assigned"
+                },
+                {
+                    "value": 6,
+                    "display_name": "Assigned (Planning)"
+                },
+                {
+                    "value": 7,
+                    "display_name": "Pending"
+                },
+                {
+                    "value": 8,
+                    "display_name": "Solved"
+                },
+                {
+                    "value": 4,
+                    "display_name": "Closed"
+                },
+                {
+                    "value": 5,
+                    "display_name": "Invalid"
+                }
+            ]
+        },
+        "status_badge": {
+            "type": "Badge",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Status",
+            "initial": "{}",
+            "child": {
+                "type": "GenericField",
+                "required": true,
+                "read_only": false,
+                "write_only": false
+            }
+        },
+        "category": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "TicketCategory",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Category",
+            "help_text": "Category for this ticket",
+            "choices": [
+                {
+                    "value": 4,
+                    "display_name": "apple"
+                },
+                {
+                    "value": 9,
+                    "display_name": "fdgdfgdf"
+                }
+            ]
+        },
+        "title": {
+            "autolink": true,
+            "type": "String",
+            "required": true,
+            "read_only": false,
+            "write_only": false,
+            "label": "Title",
+            "help_text": "Title of the Ticket",
+            "max_length": 150
+        },
+        "description": {
+            "multi_line": true,
+            "type": "Markdown",
+            "required": true,
+            "style": {
+                "class": "large"
+            },
+            "read_only": false,
+            "write_only": false,
+            "label": "Description"
+        },
+        "ticket_duration": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Time Spent",
+            "help_text": "Total time spent on ticket"
+        },
+        "ticket_estimation": {
+            "type": "Integer",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Time estimation",
+            "help_text": "Time estimation to complete the ticket"
+        },
+        "project": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "Project",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Project",
+            "help_text": "Assign to a project",
+            "choices": [
+                {
+                    "value": 5,
+                    "display_name": "PC Refresh"
+                }
+            ]
+        },
+        "milestone": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "ProjectMilestone",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Project Milestone",
+            "help_text": "Assign to a milestone",
+            "choices": [
+                {
+                    "value": 7,
+                    "display_name": "345"
+                },
+                {
+                    "value": 12,
+                    "display_name": "aa react"
+                }
+            ]
+        },
+        "urgency": {
+            "type": "Choice",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Urgency",
+            "help_text": "How urgent is this tickets resolution for the user?",
+            "choices": [
+                {
+                    "value": 1,
+                    "display_name": "Very Low"
+                },
+                {
+                    "value": 2,
+                    "display_name": "Low"
+                },
+                {
+                    "value": 3,
+                    "display_name": "Medium"
+                },
+                {
+                    "value": 4,
+                    "display_name": "High"
+                },
+                {
+                    "value": 5,
+                    "display_name": "Very High"
+                }
+            ]
+        },
+        "urgency_badge": {
+            "type": "Badge",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Urgency",
+            "initial": "{}",
+            "child": {
+                "type": "GenericField",
+                "required": true,
+                "read_only": false,
+                "write_only": false
+            }
+        },
+        "impact": {
+            "type": "Choice",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Impact",
+            "help_text": "End user assessed impact",
+            "choices": [
+                {
+                    "value": 1,
+                    "display_name": "Very Low"
+                },
+                {
+                    "value": 2,
+                    "display_name": "Low"
+                },
+                {
+                    "value": 3,
+                    "display_name": "Medium"
+                },
+                {
+                    "value": 4,
+                    "display_name": "High"
+                },
+                {
+                    "value": 5,
+                    "display_name": "Very High"
+                }
+            ]
+        },
+        "impact_badge": {
+            "type": "Badge",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Impact",
+            "initial": "{}",
+            "child": {
+                "type": "GenericField",
+                "required": true,
+                "read_only": false,
+                "write_only": false
+            }
+        },
+        "priority": {
+            "type": "Choice",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Priority",
+            "help_text": "What priority should this ticket for its completion",
+            "choices": [
+                {
+                    "value": 1,
+                    "display_name": "Very Low"
+                },
+                {
+                    "value": 2,
+                    "display_name": "Low"
+                },
+                {
+                    "value": 3,
+                    "display_name": "Medium"
+                },
+                {
+                    "value": 4,
+                    "display_name": "High"
+                },
+                {
+                    "value": 5,
+                    "display_name": "Very High"
+                },
+                {
+                    "value": 6,
+                    "display_name": "Major"
+                }
+            ]
+        },
+        "priority_badge": {
+            "type": "Badge",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Priority",
+            "initial": "{}",
+            "child": {
+                "type": "GenericField",
+                "required": true,
+                "read_only": false,
+                "write_only": false
+            }
+        },
+        "opened_by": {
+            "type": "Relationship",
+            "relationship_type": "ManyToOne",
+            "relationship_resource": "Entity",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Opened By",
+            "help_text": "Who is the ticket for",
+            "choices": [
+                {
+                    "value": 5,
+                    "display_name": "two contact createascontact"
+                },
+                {
+                    "value": 1,
+                    "display_name": "Ian Funny"
+                }
+            ]
+        },
+        "subscribed_to": {
+            "type": "Relationship",
+            "relationship_type": "ManyToMany",
+            "relationship_resource": "Entity",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Subscribers",
+            "help_text": "Users / Groups subscribed to the ticket",
+            "initial": "[]",
+            "choices": [
+                {
+                    "value": 2,
+                    "display_name": "IP Wierd"
+                },
+                {
+                    "value": 1,
+                    "display_name": "Ian Funny"
+                }
+            ]
+        },
+        "assigned_to": {
+            "type": "Relationship",
+            "relationship_type": "ManyToMany",
+            "relationship_resource": "Entity",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Assignees",
+            "help_text": "Users / Groups assigned to the ticket",
+            "initial": "[]",
+            "choices": []
+        },
+        "planned_start_date": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Planned Start Date",
+            "help_text": "Planned start date."
+        },
+        "planned_finish_date": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Planned Finish Date",
+            "help_text": "Planned finish date"
+        },
+        "real_start_date": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Real Start Date",
+            "help_text": "Real start date"
+        },
+        "real_finish_date": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Real Finish Date",
+            "help_text": "Real finish date"
+        },
+        "tto": {
+            "type": "Integer",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "TTO",
+            "help_text": "Time taken to Acknowledge ticket / Time to Ownership (TTO)",
+            "min_value": -9223372036854775808,
+            "max_value": 9223372036854775807
+        },
+        "ttr": {
+            "type": "Integer",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "TTR",
+            "help_text": "Time taken to resolve the ticket / Time to Resolution (TTR)",
+            "min_value": -9223372036854775808,
+            "max_value": 9223372036854775807
+        },
+        "is_deleted": {
+            "type": "Boolean",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Deleted",
+            "help_text": "Is the ticket deleted? And ready to be purged",
+            "initial": false
+        },
+        "is_solved": {
+            "type": "Boolean",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Solved",
+            "help_text": "Is this ticket solved?",
+            "initial": false
+        },
+        "date_solved": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Solved Date",
+            "help_text": "Date ticket solved"
+        },
+        "is_closed": {
+            "type": "Boolean",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Closed",
+            "help_text": "Is this ticket closed?",
+            "initial": false
+        },
+        "date_closed": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Closed Date",
+            "help_text": "Date ticket closed"
+        },
+        "created": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": false,
+            "write_only": false,
+            "label": "Created",
+            "help_text": "Date and time of creation"
+        },
+        "modified": {
+            "type": "DateTime",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": "Modified",
+            "help_text": "Date and time of last modification"
+        },
+        "_urls": {
+            "type": "GenericField",
+            "required": false,
+            "read_only": true,
+            "write_only": false,
+            "label": " urls"
+        }
+    },
+    "layout": {
+        "name": "dataset",
+        "cells": [
+            [
+                "title",
+                "organization",
+                "status_badge"
+            ],
+            [
+                "created",
+                "modified"
+            ]
+        ]
+    }
+}

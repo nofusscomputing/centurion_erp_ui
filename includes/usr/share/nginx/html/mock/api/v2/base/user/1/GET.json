@@ -1,0 +1,9 @@
+{
+    "id": 1,
+    "display_name": "IP Funny",
+    "first_name": "Ian",
+    "last_name": "Funny",
+    "username": "ian.funny",
+    "is_active": true,
+    "url": "/mock/api/v2/base/user/1"
+}

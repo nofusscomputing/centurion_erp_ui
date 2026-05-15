@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import IconLoader from "../../components/IconLoader";
 
+import "../../styles/main.css"
 
 export const MARKDOWN_TICKET_LINK_UNESCAPE_RE = /(?<markdown>#(?<model_id>\d+))/g
 
@@ -68,9 +69,6 @@ function ticket_link (state, silent) {
     const span_o = state.push('span_open', 'span', 1)
     span_o.attrPush(['class', 'text-inline'])
 
-      const anchor_o = state.push('a_open', 'a', 1)
-      anchor_o.attrPush(['href', state.env.tickets[item_link.groups.model_id].url])
-
 
         const icon_o = state.push('icon_open', 'span', 1)
         icon_o.attrPush([
@@ -79,13 +77,19 @@ function ticket_link (state, silent) {
 
           const icon_t = state.push('html_inline', '', 0)
 
-          icon_t.content = renderToStaticMarkup(
+          icon_t.jsx = (
             <IconLoader
-              name={'ticket_status_new'}
+              key={begining}
+              name={'ticket_status_'+String(state.env.tickets[item_link.groups.model_id].status).toLowerCase().replace(' ', '_').replace('(', '').replace(')', '')}
+              fill="#777"
             />
           )
 
         const icon_c = state.push('icon_close', 'span', -1)
+
+
+      const anchor_o = state.push('a_open', 'a', 1)
+      anchor_o.attrPush(['href', state.env.tickets[item_link.groups.model_id].url])
 
 
         const ref_o = state.push('ref_open', 'span', 1)
@@ -95,6 +99,7 @@ function ticket_link (state, silent) {
           ref_t.content = ' #' + String( item_link.groups.model_id ) + ' '
 
         const ref_c = state.push('ref_close', 'span', -1)
+
 
         const text_o = state.push('text_open', 'span', 1)
         text_o.attrPush([

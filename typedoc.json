@@ -1,0 +1,49 @@
+{
+    "categorizeByGroup": false,
+    "categoryOrder": [
+        "Layout",
+        "Component",
+        "Context",
+        "Hook",
+        "Backend",
+        "*"
+    ],
+    "cleanOutputDir": true,
+    "defaultCategory": "Other",
+    "groupReferencesByType": false,
+    "extends": [
+        "./typedoc.base.json"
+    ],
+    "disableSources": true,
+    "entryPointStrategy": "expand",
+    "entryPoints": [
+        "src/*.ts",
+        "src/*.tsx",
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "types/*"
+    ],
+    "excludeExternals": true,
+    "excludePrivate": false,
+    "hideGenerator": true,
+    "navigation": {
+        "includeCategories": true,
+        "includeGroups": false,
+        "includeFolders": false,
+        "compactFolders": false,
+        "excludeReferences": false
+    },
+    "readme": "none",
+    "router": "structure-dir",
+    "sidebarLinks": {
+        "Centurion UI Docs": "/projects/centurion_user_interface/"
+    },
+    "titleLink": "/projects/centurion_user_interface/",
+    "tsconfig": "./tsconfig.json",
+    "out": "build/projects/centurion_user_interface/api",
+    "plugin": [
+        "typedoc-plugin-merge-modules"
+    ],
+    "mergeModulesRenameDefaults": true,
+    "mergeModulesMergeMode": "project",
+}

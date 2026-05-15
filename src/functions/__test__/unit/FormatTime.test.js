@@ -63,7 +63,7 @@ describe('Months format correctly', () => {
             time: '2025-06-01T00:00:00Z',
             iso: false,
             tz: 'UTC'
-        })).toBe('00:00 01 June 2025');
+        })).toBe('00:00 01 Jun 2025');
 
     });
 
@@ -73,7 +73,7 @@ describe('Months format correctly', () => {
             time: '2025-07-01T00:00:00Z',
             iso: false,
             tz: 'UTC'
-        })).toBe('00:00 01 July 2025');
+        })).toBe('00:00 01 Jul 2025');
 
     });
 
@@ -93,7 +93,7 @@ describe('Months format correctly', () => {
             time: '2025-09-01T00:00:00Z',
             iso: false,
             tz: 'UTC'
-        })).toBe('00:00 01 Sept 2025');
+        })).toBe('00:00 01 Sep 2025');
 
     });
 

@@ -1,0 +1,6 @@
+{
+    "jest.runMode": "on-demand",
+    "jest.rootPath": "src/*",
+    "typescript.tsdk": "node_modules/typescript/lib",
+   
+}

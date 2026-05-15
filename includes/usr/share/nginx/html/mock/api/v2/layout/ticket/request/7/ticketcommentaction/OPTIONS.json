@@ -1,0 +1,215 @@
+{
+  "name": "Ticket Comment Actions",
+  "description": "Comments made on Ticket",
+  "documentation": "https://nofusscomputing.com/projects/centurion_erp/user/core/ticket_comment_action",
+  "urls": {
+    "self": "/layout/ticket/request/7/ticketcommentaction"
+  },
+  "renders": [
+    "application/json",
+    "text/html"
+  ],
+  "parses": [
+    "application/json",
+    "application/x-www-form-urlencoded",
+    "multipart/form-data"
+  ],
+  "allowed_methods": [
+    "GET",
+    "POST",
+    "HEAD",
+    "OPTIONS"
+  ],
+  "fields": {
+    "id": {
+      "type": "Integer",
+      "required": false,
+      "read_only": true,
+      "write_only": false,
+      "label": "ID",
+      "help_text": "ID of the item"
+    },
+    "organization": {
+      "type": "Relationship",
+      "relationship_type": "ManyToOne",
+      "relationship_resource": "Tenant",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Organization",
+      "choices": []
+    },
+    "parent": {
+      "type": "Relationship",
+      "relationship_type": "ManyToOne",
+      "relationship_resource": "TicketCommentBase",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Parent Comment",
+      "help_text": "Parent ID for creating discussion threads",
+      "choices": []
+    },
+    "ticket": {
+      "type": "Relationship",
+      "relationship_type": "ManyToOne",
+      "relationship_resource": "TicketBase",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Ticket",
+      "help_text": "Ticket this comment belongs to",
+      "choices": []
+    },
+    "external_ref": {
+      "type": "Integer",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Reference Number",
+      "help_text": "External System reference",
+      "min_value": -9223372036854776000,
+      "max_value": 9223372036854776000
+    },
+    "external_system": {
+      "type": "Choice",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "External System",
+      "help_text": "External system this item derives",
+      "choices": []
+    },
+    "category": {
+      "type": "Relationship",
+      "relationship_type": "ManyToOne",
+      "relationship_resource": "TicketCommentCategory",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Category",
+      "help_text": "Category of the comment",
+      "choices": []
+    },
+    "body": {
+      "multi_line": true,
+      "type": "Markdown",
+      "required": true,
+      "style": {
+        "class": null
+      },
+      "read_only": false,
+      "write_only": false,
+      "label": "Body"
+    },
+    "private": {
+      "type": "Boolean",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Private",
+      "help_text": "Is this comment private",
+      "initial": false
+    },
+    "duration": {
+      "type": "Integer",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Duration",
+      "help_text": "Time spent in seconds",
+      "min_value": -9223372036854776000,
+      "max_value": 9223372036854776000
+    },
+    "estimation": {
+      "type": "Integer",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Estimate",
+      "help_text": "Time estimation in seconds",
+      "min_value": -9223372036854776000,
+      "max_value": 9223372036854776000
+    },
+    "template": {
+      "type": "Relationship",
+      "relationship_type": "ManyToOne",
+      "relationship_resource": "TicketCommentBase",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Template",
+      "help_text": "Comment Template to use",
+      "choices": []
+    },
+    "is_template": {
+      "type": "Boolean",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Template",
+      "help_text": "Is this comment a template",
+      "initial": false
+    },
+    "source": {
+      "type": "Choice",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Source",
+      "help_text": "Origin type for this comment",
+      "choices": []
+    },
+    "user": {
+      "type": "Relationship",
+      "relationship_type": "ManyToOne",
+      "relationship_resource": "Entity",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "User",
+      "help_text": "Who made the comment",
+      "choices": []
+    },
+    "is_closed": {
+      "type": "Boolean",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Comment Closed",
+      "help_text": "Is this comment considered Closed?",
+      "initial": false
+    },
+    "date_closed": {
+      "type": "DateTime",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Closed Date",
+      "help_text": "Date ticket closed"
+    },
+    "created": {
+      "type": "DateTime",
+      "required": false,
+      "read_only": false,
+      "write_only": false,
+      "label": "Created",
+      "help_text": "Date and time of creation"
+    },
+    "modified": {
+      "type": "DateTime",
+      "required": false,
+      "read_only": true,
+      "write_only": false,
+      "label": "Modified",
+      "help_text": "Date and time of last modification"
+    },
+    "_urls": {
+      "type": "GenericField",
+      "required": false,
+      "read_only": true,
+      "write_only": false,
+      "label": " urls"
+    }
+  }
+}

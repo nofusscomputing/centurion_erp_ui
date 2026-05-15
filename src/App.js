@@ -5,21 +5,22 @@ import {
     createRoutesFromElements,
 } from 'react-router'
 
+import {
+    Content,
+    PageSection
+} from '@patternfly/react-core';
 
-import './index.css'
 import Detail from "./layout/Detail";
 import ErrorPage from "./layout/Error";
 import List from "./layout/List";
 import RootLayout from "./layout/Root";
 import Ticket from "./layout/Ticket";
-import ModelForm from "./layout/ModelForm";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
-import urlBuilder from "./hooks/urlBuilder";
 import { apiFetch } from "./hooks/apiFetch";
 import { InlineFieldAction } from "./components/InlineFields";
-import MainLayout from "./layout/Main";
 import { UserProvider } from './hooks/UserContext';
+import { APISubmitAction } from './components/DisplayFields';
 
 const Login = () => {
 
@@ -34,7 +35,7 @@ const Login = () => {
 const Logout = () => {
 
     const logout = apiFetch(
-        window.env.API_URL + '/auth/logout/',
+        window.env.API_URL + '/auth/logout',
         null,
         'POST',
         null,
@@ -50,9 +51,9 @@ const Logout = () => {
 
 function DefaultFallback() {
     return (
-        <section>
-            <div style={{ textAlign: 'center', height: '100px'}}>Loading...</div>
-        </section>
+        <PageSection isFilled>
+            <Content>Loading</Content>
+        </PageSection>
     );
   }
 
@@ -62,19 +63,27 @@ function App() {
     const router = createBrowserRouter(
 
         createRoutesFromElements(
-            <Route element={<RootLayout />} >
+            <Route element={<RootLayout />}
+                    errorElement={<ErrorPage />}
+                >
 
                 <Route path="/"
-                    element={<MainLayout />}
                     errorElement={<ErrorPage />}
                     HydrateFallback={DefaultFallback}
                 >
+
+                    {/* ********************************************************
+                        SoF - Re-Write
+                    ******************************************************** */}
+
 
                     {/* ********************************************************
                         Redirects
                     ******************************************************** */}
 
                     <Route path='/login' element={<Login />} />
+
+
                     <Route path='/logout' element = {<Logout />} />
 
 
@@ -87,101 +96,213 @@ function App() {
                         loader = {pagedLoader}
                     />
 
-                    < Route path=":module">
+
+                    {/* ********************************************************
+                        Site Routes
+                    ******************************************************** */}
+
+                    <Route path=":module">
+
+
 
                         {/* ********************************************************
-                            History View
+                            Entity models
                         ******************************************************** */}
 
-                        <Route path=":model/:pk/history"
-                            element={<History />}
-                        />
+                        <Route path="entity">
 
-                        {/* ********************************************************
-                            Form View
-                        ******************************************************** */}
 
-                        <Route
-                            element={<ModelForm />}
-                            loader = {pagedLoader}
-                        >
+                            <Route path=":model" element={<List />}
+                                loader = {pagedLoader} />
 
-                            <Route path=":common_model/:common_pk/:sub_model/:sub_model_pk/:model/add" element={null} />
-                            <Route path=":common_model/:common_pk/:model/:pk/delete" element={null} />
-                            <Route path=":common_model/:common_pk/:model/:pk/edit" element={null} />
-                            <Route path=":common_model/:common_pk/project_task/add" element={null} />
-                            <Route path=":common_model/:common_pk/:model/add" element={null} />
-                            <Route path=":common_model/:model/:pk/edit" element={null} />
-                            <Route path="git_repository/:model/add" element={null} />
-                            <Route path="git_repository/:model/:pk/edit" element={null} />
 
-                            <Route path="entity/:model/add" element={null} />
-                            <Route path="entity/:model/:pk/delete" element={null} />
-                            <Route path="entity/:model/:pk/edit" element={null} />
+                            <Route path=":model/add" element={<Detail />} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
 
-                            <Route path=":model/add" element={null} />
-                            <Route path=":model/:pk/delete" element={null} />
-                            <Route path=":model/:pk/edit" element={null} />
 
-                            <Route path=":user/token/add" element={null} />
-                            <Route path=":user/token/:pk/delete" element={null} />
+                            <Route path=":model/:pk" element={<Detail />} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
 
                         </Route>
 
+
                         {/* ********************************************************
-                            List View
+                            Git Repository Models
                         ******************************************************** */}
 
-                        <Route path="entity/:model" element={<List
-                        />} loader = {pagedLoader} />
+                        <Route path="git_repository">
 
-                        <Route path="ticket/:model" element={<List
-                        />} loader = {pagedLoader} />
 
-                        <Route path=":model" element={<List
-                        />} loader = {pagedLoader} />
+                            <Route index element={<List />}
+                                loader = {pagedLoader} />
+
+
+                            <Route path="add" element={<Detail />} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
+
+
+                            <Route path=":pk" element={<Detail />} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
+
+                        </Route>
+
 
                         {/* ********************************************************
                             Tickets View
                         ******************************************************** */}
 
-                        <Route path=":common_model/:common_pk/project_task/:pk" element={<Ticket
-                            />} loader = {pagedLoader} action={InlineFieldAction} />
+                        <Route path="ticket">
 
-                        <Route path="ticket/:model/:pk" element={<Ticket
-                            />} loader = {pagedLoader} action={InlineFieldAction} />
+                            <Route path=":model" element={<List />}
+                                loader = {pagedLoader} />
 
-                        <Route path="ticket/:model/add" element={<Ticket
-                        />} action={InlineFieldAction} loader = {pagedLoader}/>
 
-                        {/* ********************************************************
-                            Detail View
-                        ******************************************************** */}
+                            <Route path=":model/add" element={<Ticket />}
+                                action={APISubmitAction} loader = {pagedLoader} />
 
-                        <Route path="entity/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
 
-                        <Route path="git_repository/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
+                            <Route path=":model/:pk" element={<Ticket />}
+                                action={APISubmitAction}
+                                loader = {pagedLoader}
+                                shouldRevalidate={({ currentParams, nextParams }) => {
 
-                        <Route path=":common_model/:common_pk/:model/:pk" element={<Detail
-                            />} loader = {pagedLoader} />
+                                    const reValidate = (
+                                        currentParams.module !== nextParams.module ||
+                                        currentParams.model !== nextParams.model ||
+                                        currentParams.id !== nextParams.id
+                                    )
 
-                        <Route path=":model/:pk" element={<Detail
-                            />}  loader = {pagedLoader} />
+                                    return reValidate
+
+                                }}
+                            />
+
+                            <Route path=":pk">
+
+                                <Route path=':subModel'>
+
+                                    <Route path=':subModkPk'>
+
+                                        <Route path=":subSubModel"
+                                            action={APISubmitAction}
+                                            shouldRevalidate={() => false}
+                                        />
+
+                                    </Route>
+
+                                </Route>
+
+                            </Route>
+
+                        </Route>
+
+
+                        <Route path=":model">
+
+
+                            <Route index element={<List />} loader = {pagedLoader} />
+
+
+                            <Route path="add" element={<Detail />} 
+                                loader = {pagedLoader}
+                                action={APISubmitAction} shouldRevalidate={() => false}
+                            />
+
+
+                            <Route path=":pk"
+                                action={APISubmitAction}
+                                shouldRevalidate={({ currentParams, nextParams }) => {
+
+                                    const reValidate = (
+                                        currentParams.module !== nextParams.module ||
+                                        currentParams.model !== nextParams.model ||
+                                        currentParams.id !== nextParams.id
+                                    )
+
+                                    return reValidate
+
+                                }}
+                            >
+
+
+                                <Route index element={<Detail />} 
+                                    loader = {pagedLoader}
+                                    action={APISubmitAction}
+                                    shouldRevalidate={({ currentParams, nextParams }) => {
+
+                                        const reValidate = (
+                                            currentParams.module !== nextParams.module ||
+                                            currentParams.model !== nextParams.model ||
+                                            currentParams.pk !== nextParams.pk
+                                        )
+
+                                        return reValidate
+
+                                    }}
+                                />
+
+
+                                {/* ********************************************************
+                                    History View
+                                ******************************************************** */}
+
+                                <Route path="history" element={<History />}
+                                    loader = {pagedLoader} />
+
+
+                                <Route path="project_task">
+
+                                    <Route path=":sub_model_pk" element={<Ticket />}
+                                        loader = {pagedLoader} 
+                                        action={InlineFieldAction} shouldRevalidate={() => false}
+                                    />
+
+                                </Route>
+
+
+                                <Route path=":sub_model">
+
+
+                                    <Route index element={<List />} 
+                                        loader = {pagedLoader}
+                                        action={APISubmitAction} shouldRevalidate={() => false}
+                                    />
+
+
+                                    <Route path=":sub_model_pk" element={<Detail />}
+                                        loader = {pagedLoader}
+                                        action={APISubmitAction} shouldRevalidate={() => false}
+                                    />
+
+                                </Route>
+
+                            </Route>
+
+                        </Route>
 
                     </Route>
+
+                    {/* ********************************************************
+                        EoF - Re-Write
+                    ******************************************************** */}
+
                 </Route>
             </Route>
         ));
 
 
     return (
-        <div className="app">
-            <UserProvider>
-                <RouterProvider router={router} />
-            </UserProvider>
-        </div>
+        <UserProvider>
+            <RouterProvider router={router} />
+        </UserProvider>
     );
 }
 
@@ -190,12 +311,9 @@ export default App;
 
 const pagedLoader = async ({request, params}) => {
 
-    const url_builder = urlBuilder(
-        params = params
-    )
+    console.debug('Page Loader', request)
 
     const {api_metadata, api_page_data} = await apiFetch(
-        // url_builder.api.url,
         String(request.url).replace(document.location.origin, '')
     )
 

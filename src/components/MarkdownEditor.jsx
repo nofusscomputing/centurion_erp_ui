@@ -1,170 +1,142 @@
-import TextArea from "./form/Textarea";
-import Button from "./form/Button";
-import { useContext, useId, useState } from "react";
-import RenderMarkdown from "../functions/RenderMarkdown";
-import { Form } from "react-router";
-import UserContext from "../hooks/UserContext";
+import {
+    useState
+} from "react";
 
-/**
- * Markdown Editor with preview tab.
+import {
+    Tab,
+    TabContentBody,
+    Tabs,
+    TabTitleText,
+    TextArea
+} from "@patternfly/react-core";
+
+import RenderMarkdown from "../functions/RenderMarkdown";
+
+
+
+/** Markdown Field with Editor and Preview tab.
+ *
+ * This component is intended to act as if its a HTML TextArea field in so far
+ * as the data and HTML form are concerned. Everything else related to the
+ * markdown itself is contained within this component.
  * 
- * ## onChange
+ * @param {object} params
+ * @param {string} params.ariaLabel Label for the form field.
+ * @param {boolean} params.grow Allow the editable text area to grow for every line.
+ * @param {boolean} [params.isRequired=false] Form field is mandatory.
+ * @param {String} params.id Form field id.
+ * @param {String} params.name Form field name.
+ * @param {object} params.objectData Object data as provided by the API.
+ * @param {(e) => void} params.onChange Callback to run when field value changes.
+ * @param {boolean} params.readOnly Is the form field read-only?
+ * @param {"vertical" | "horizontal" | "both" } [params.resizeOrientation="vertical"] Allow User to resize in specified direction.
+ * @param {string} params.value Current value of the field.
  * 
- * This paramater is intended to be used to convert the field from inline
- * editing to be a field that is part of a form. **Note:** requires that
- * parameter `data` be `null`
- * 
- * @param {Object} data API Data that contains the field.
- * @param {String} field_name The name of the field as fetched from the API.
- * @param {Object} Metadata The metadata page from the api with the field information.
- * @param {Function} onCancel The function to run when the cancel button is clicked
- * @param {Function} onChange The function that will be called when the field changes
- * @param {Function} onSave The function to run when the save button is clicked 
- * @returns 
+ * @returns TextArea HTML form field for editing and previewing markdown.
  */
 const MarkdownEditor = ({
-    data,
-    field_name,
-    metadata,
-    onCancel = null,
+    ariaLabel = null,
+    grow = false,
+    isRequired = false,
+    id,
+    name,
+    objectData = null,
     onChange = null,
-    onSave = null,
+    readOnly = false,
+    resizeOrientation = "vertical",
+    value = null,
 }) => {
 
-    const [ editing, setEditing ] = useState( true )
 
-    const [form_data, setFormData ] = useState({ [field_name]: data ? data[field_name] : '' })
+    const [activeTabKey, setActiveTabKey] = useState(0);
 
-    const fieldsetFormId = useId();
+    const handleTabClick = (event, tabIndex) => {
 
-    const user = useContext(UserContext)
+        setActiveTabKey(tabIndex);
 
-
-    const handleChange = (e) => {
-
-        if( onChange && ! data ) {
-
-            onChange( [field_name], e.target.value)
-
-        }
-
-        setFormData({[field_name]: e.target.value})
-
-    }
-
-    const handleSave = (e) => {
-
-        if( ! document.getElementById('button-save').disabled ) {    // prevent re-submission
-
-            document.getElementById('button-save').disabled = true
-
-            if( document.getElementById('textarea-' + field_name) ) {
-
-                document.getElementById('textarea-' + field_name).disabled = true
-
-            }
-
-            onSave(e)
-        }
-
-    }
+    };
 
 
-    const handletabClick = (e) => {
 
-        if( String(e.target.innerText).toLowerCase() === 'preview' ) {
-
-            e.target.classList.add("active")
-            e.target.parentElement.children['tab-edit'].classList.remove("active")
-
-            setEditing(false)
-
-        }else if( String(e.target.innerText).toLowerCase() === 'edit' ) {
-
-            e.target.classList.add("active")
-            e.target.parentElement.children['tab-preview'].classList.remove("active")
-
-            setEditing(true)
-
-        }
-    }
-
-
-    console.debug('MarkdownEditor: ' + JSON.stringify(form_data))
-
-    const return_field = (
-        <div
-            style={{
-                display: 'block',
-                width: '100%'
-            }}
+    return (
+        <Tabs
+            activeKey = {activeTabKey}
+            onSelect = {handleTabClick}
+            aria-label = "Markdown edit and preview tabs"
+            role = "region"
+            unmountOnExit
         >
-            <div id="tabs" className="markdown-edit tabs">
-                <span id="tab-edit" className="tab active" onClick={handletabClick}>Edit</span>
-                <span id="tab-preview" className="tab" onClick={handletabClick}>Preview</span>
-            </div>
+            <Tab
+                aria-label = "Edit"
+                eventKey = {0}
+                title = {<TabTitleText>Edit</TabTitleText>}
+            >
+                <TabContentBody hasPadding>
+                    <TextArea
+                        aria-label = {ariaLabel}
+                        isRequired = {isRequired}
+                        id = {id}
+                        key = {name}
+                        name = {name}
+                        onChange = {onChange}
 
-            <div className="md-editor">
+                        onClick={(e) =>{
 
-                {editing &&
-                <>
-                <TextArea
-                    auto_content_height = {true}
-                    class_name ={'full-width'}
-                    id = {field_name}
-                    fieldset = {false}
-                    field_data = {metadata.fields[field_name]}
-                    value = {form_data[field_name]?.markdown ? form_data[field_name].markdown : form_data[field_name]}
-                    onChange = {handleChange}
-                    onSubmit={(e) => {
-                        handleSave(e)
-                    }}
-                />
-                <input id="tz" type="hidden"  name="tz" value={user.settings.timezone} />
-                <input id="metadata" type="hidden"  name="metadata" value={JSON.stringify(metadata)} />
-                </>
-                }
+                            if( !grow ) return;
 
-                { ! editing &&
-                    <>
-                    <div className="markdown">
-                        <RenderMarkdown full_width={true} env={data[field_name].render ?? {}}>
-                            {form_data[field_name]?.markdown ? form_data[field_name].markdown : form_data[field_name]}
-                        </RenderMarkdown>
-                    </div>
-                    </>
-                }
-            </div>
-            <div>
-                <Button
-                    button_text = 'Cancel'
-                    type = 'cancel'
-                    onClick = {onCancel}
-                />
-                <Button
-                    id="button-save"
-                    button_text = 'Save'
-                />
-            </div>
-        </div>
-    )
 
-    if( ! data && onChange ) {
+                            if( e.target.scrollHeight > e.target.clientHeight) {
 
-        return(
-            <>
-            {return_field}
-            </>
-        )
+                                e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
 
-    } else {
+                            }
 
-        return (
-            <Form id={fieldsetFormId} name="inline_form" method="patch" action={String(data?._urls?._self).split('api/v2')[1]} onSubmit={handleSave}>
-                {return_field}
-            </Form>
-        );
-    }
+                        }}
+
+                        onKeyUp={(e) =>{
+
+                            if( !grow ) return;
+
+                            const currentScrollY = window.scrollY
+
+                            if( e.code === 'Enter'  && ! e.ctrlKey) {
+
+                                e.target.style.height = ( 25 + e.target.scrollHeight ) + "px";
+
+                            } else if( e.code === 'Enter' && e.ctrlKey ) {    // Enable ctrl-enter to be used to submit
+
+                                e.target.form.requestSubmit()
+
+                            }
+
+                            window.scrollTo(0, currentScrollY);    // Prevent window scrolling to y=0
+
+                        }}
+
+                        readOnly = {readOnly}
+                        resizeOrientation = {resizeOrientation}
+                        value = {value}
+                    />
+                </TabContentBody>
+            </Tab>
+            <Tab
+                aria-label = "Preview"
+                eventKey = {1}
+                title = {<TabTitleText>Preview</TabTitleText>}
+            >
+                <TabContentBody hasPadding>
+                    {value &&
+                    <RenderMarkdown
+                        full_width={true}
+                        env={objectData?.[name]?.render ?? {}}
+                    >
+                        {value}
+                    </RenderMarkdown>
+                    }
+                </TabContentBody>
+            </Tab>
+        </Tabs>
+    );
 
 }
  
