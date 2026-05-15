@@ -35,7 +35,7 @@ Docs are built with MkDocs and can be linted and built.
         --entrypoint "" \
         --volume ${PWD}:/workdir \
         --workdir /workdir \
-        harbor.earth.nww/docker/nofusscomputing/mkdocs-ci:0.4.1 \
+        harbor.earth.nww/docker/nofusscomputing/mkdocs-ci:0.5.0 \
         markdownlint-cli2 \
           docs/projects/centurion_user_interface/*.md \
           docs/projects/centurion_user_interface/**/*.md \
@@ -55,7 +55,7 @@ Docs are built with MkDocs and can be linted and built.
         --volume ${PWD}:/workdir \
         --workdir /workdir \
         --user $(id -u) \
-        harbor.earth.nww/docker/nofusscomputing/mkdocs-ci:0.4.1 \
+        harbor.earth.nww/docker/nofusscomputing/mkdocs-ci:0.5.0 \
         mkdocs build --clean; \
     npm run docs-api
 
