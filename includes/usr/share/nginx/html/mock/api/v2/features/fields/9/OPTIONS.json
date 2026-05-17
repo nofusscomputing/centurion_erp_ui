@@ -64,28 +64,31 @@
             "help_text": "This is a demonstration of the field in question"
         }
     },
-    "layout": [
-        {
-            "name": "Details",
-            "slug": "details",
-            "sections": [
-                {
-                    "layout": "single",
-                    "fields": [
-                        "description"
-                    ]
-                },
-                {
-                    "name": "Demo",
-                    "layout": "double",
-                    "left": [
-                        "display_name"
-                    ],
-                    "right": [
-                        "field"
-                    ]
-                }
-            ]
-        }
-    ]
+    "layout": {
+        
+        "detail": [
+            {
+                "name": "Details",
+                "slug": "details",
+                "sections": [
+                    {
+                        "layout": "single",
+                        "fields": [
+                            "description"
+                        ]
+                    },
+                    {
+                        "name": "Demo",
+                        "layout": "double",
+                        "left": [
+                            "display_name"
+                        ],
+                        "right": [
+                            "field"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
 }

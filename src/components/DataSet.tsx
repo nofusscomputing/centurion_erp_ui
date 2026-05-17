@@ -566,23 +566,11 @@ export const DataSetListCells = ({
         ]
     ]
 
-    let cells = rowLayout
-
-    if( Array.isArray(metadata.table_fields?.columns?.[0]) ) {
-
-        cells = metadata.table_fields.columns;
-    }
-
-    if( Array.isArray(metadata.layout?.cells?.[0]) ) {
-
-        cells = metadata.layout.cells;
-    }
-
 
     return (
         <DataListItemCells
             dataListCells = {
-                cells.map((cell, cellIndex) => {
+                metadata.layout.dataset.columns.map((cell, cellIndex) => {
 
                     return(
                         <DataListCell

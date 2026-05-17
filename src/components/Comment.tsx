@@ -664,7 +664,7 @@ export const Comment = ({
 
     const CommentCard = (
         <>
-        {(commentMetadata && comment_page_data) &&
+        {commentMetadata && ((!isCreate && comment_page_data) || isCreate) &&
         <Card
             isCompact
         >
@@ -686,10 +686,10 @@ export const Comment = ({
                         <Fields
                             // errorState={actionData}
                             fields={[
-                                (( (isCreate || isEdit) && commentMetadata.fields.source) || ( !isEdit && comment_page_data.source)) && 'source',
-                                (( (isCreate || isEdit) && commentMetadata.fields.status) || ( !isEdit && comment_page_data.status)) && 'status',
-                                (( (isCreate || isEdit) && commentMetadata.fields.assignee) || ( !isEdit && comment_page_data.assignee)) && 'assignee',
-                                (( (isCreate || isEdit) && commentMetadata.fields.category) || (!isEdit && comment_page_data.category)) && 'category'
+                                (( (isCreate || isEdit) && commentMetadata.fields.source) || ( (!isEdit && !isCreate) && comment_page_data.source)) && 'source',
+                                (( (isCreate || isEdit) && commentMetadata.fields.status) || ( (!isEdit && !isCreate) && comment_page_data.status)) && 'status',
+                                (( (isCreate || isEdit) && commentMetadata.fields.assignee) || ( (!isEdit && !isCreate) && comment_page_data.assignee)) && 'assignee',
+                                (( (isCreate || isEdit) && commentMetadata.fields.category) || ( (!isEdit && !isCreate) && comment_page_data.category)) && 'category'
                             ].filter(Boolean)}
                             formState={formState}
                             isCreate={isCreate}
@@ -729,13 +729,13 @@ export const Comment = ({
                         <Fields
                             // errorState={actionData}
                             fields={[
-                                (( (isCreate || isEdit) && commentMetadata.fields.planned_start_date) || ( !isEdit && comment_page_data.planned_start_date)) && 'planned_start_date',
-                                (( (isCreate || isEdit) && commentMetadata.fields.planned_finish_date) || ( !isEdit && comment_page_data.planned_finish_date)) && 'planned_finish_date',
-                                (( (isCreate || isEdit) && commentMetadata.fields.real_start_date) || ( !isEdit && comment_page_data.real_start_date)) && 'real_start_date',
-                                (( (isCreate || isEdit) && commentMetadata.fields.real_finish_date) || ( !isEdit && comment_page_data.real_finish_date)) && 'real_finish_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.planned_start_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_start_date)) && 'planned_start_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.planned_finish_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_finish_date)) && 'planned_finish_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.real_start_date) || ( (!isEdit && !isCreate) && comment_page_data.real_start_date)) && 'real_start_date',
+                                (( (isCreate || isEdit) && commentMetadata.fields.real_finish_date) || ( (!isEdit && !isCreate) && comment_page_data.real_finish_date)) && 'real_finish_date',
                                 // secondsToTime(comment_page_data['duration'])
-                                ( !isEdit && comment_page_data.duration) && 'duration',
-                                ( !isEdit && comment_page_data.estimation) && 'estimation'
+                                ( (!isEdit && !isCreate) && comment_page_data.duration) && 'duration',
+                                ( (!isEdit && !isCreate) && comment_page_data.estimation) && 'estimation'
                             ].filter(Boolean)}
                             formState={formState}
                             isCreate={isCreate}
@@ -781,7 +781,7 @@ export const Comment = ({
 
     const CommentThreads = (
         <>
-        { (comment_page_data._urls?.threads || start_thread ) &&
+        { (comment_page_data?._urls?.threads || start_thread ) &&
         <div
             style={{
                 borderBottom: "1px solid var(--pf-t--global--border--color--100)",
@@ -810,7 +810,7 @@ export const Comment = ({
 
 
     return (
-        (commentMetadata && comment_page_data && commentType) &&
+        (commentMetadata && ((!isCreate && comment_page_data) || isCreate) && commentType) &&
         <>
         <Flex
             direction={{ default: 'column' }}

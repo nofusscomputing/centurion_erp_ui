@@ -171,7 +171,7 @@ const DisplayTable = ({
         
                         setTableData(result.api_page_data)
 
-                        if( result.api_metadata.table_fields.length < 2 ) {
+                        if( result.api_metadata.layout?.table?.columns.length < 2 ) {
 
                             console.error("Missing Table Fields");
 
@@ -350,13 +350,13 @@ const DisplayTable = ({
 
 
 
-    const tableHeaderColumns = metadata?.table_fields.map((key, index) => {
+    const tableHeaderColumns = metadata?.layout?.table?.columns.map((key, index) => {
 
         collapsable_fields = []
 
         if( table_columns_count === 0 ) {
 
-            for( let field of metadata.table_fields ) {
+            for( let field of metadata.layout?.table?.columns ) {
 
                 if(
                     typeof(field) === 'string'
@@ -476,7 +476,7 @@ const DisplayTable = ({
                                         />
                                     }
 
-                                    {metadata.table_fields.map(key => {
+                                    {metadata.layout.table?.columns.map(key => {
 
                                         if (
                                             key in metadata.fields
@@ -564,7 +564,7 @@ const DisplayTable = ({
                                 </Tr>
                                 {collapsable_fields.length > 0 &&
                                 <Tr isExpanded={isTableRowExpanded(rowId)}>
-                                    <Td colSpan={(metadata.table_fields.length+1)}>
+                                    <Td colSpan={(metadata.layout.table?.columns.length+1)}>
                                         <ExpandableRowContent>
                                             <DisplayTable
                                                 isNested={true}
@@ -581,7 +581,16 @@ const DisplayTable = ({
                                                 loader_metadata={
                                                     Object({
                                                         ...metadata,
-                                                        "table_fields": collapsable_fields,
+                                                        layout: {
+                                                            ...metadata.layout,
+                                                            table: {
+                                                                ...metadata.layout.table,
+                                                                columns: [
+                                                                    ...metadata.layout.table.columns,
+                                                                    collapsable_fields
+                                                                ]
+                                                            }
+                                                        },
                                                     })
                                                 }
                                             />

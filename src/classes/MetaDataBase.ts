@@ -43,17 +43,12 @@ export class MetaDataBase extends
     /**
      * What layout the API {@link APIDataObject} will use
      */
-    layout: LayoutDataset | LayoutDetail | LayoutTable;
+    layout: UILayout;
 
     /**
      * Navigation structure for the website.
      */
     navigation?: object;
-
-    /**
-     * Fields that will be used as table columns.
-     */
-    table_fields: MetadataTableFields;
 
     /**
      * URL relevant to the current object

@@ -112,12 +112,14 @@
             "label": " urls"
         }
     },
-    "table_fields": [
-        "id",
-        "title",
-        "status_badge",
-        "opened_by",
-        "organization",
-        "created"
-    ]
+    "layout": {
+        "table": [
+            "id",
+            "title",
+            "status_badge",
+            "opened_by",
+            "organization",
+            "created"
+        ]
+    }
 }

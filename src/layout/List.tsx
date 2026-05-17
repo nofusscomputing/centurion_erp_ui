@@ -41,7 +41,7 @@ const List = (): React.JSX.Element => {
         setPageDescription, setPageHeading, setPageHeaderIcons
     } = useOutletContext()
 
-    const {metadata, page_data} = useLoaderData();
+    const {metadata, page_data} = useLoaderData<{metadata: APIMetadata, page_data: APIDataset}>();
 
     const [pageNumber, setPageNumber] = useState(1);
 
