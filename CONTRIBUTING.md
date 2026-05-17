@@ -56,7 +56,7 @@ Docs are built with MkDocs and can be linted and built.
         --workdir /workdir \
         --user $(id -u) \
         harbor.earth.nww/docker/nofusscomputing/mkdocs-ci:0.5.0 \
-        mkdocs build --clean; \
+        mkdocs build --clean --strict; \
     npm run docs-api
 
     ```
