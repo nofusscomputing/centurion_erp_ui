@@ -34,13 +34,12 @@ interface APIMetadata {
     /**
      * What layout the API {@link APIDataObject} will use
      */
-    layout: LayoutDataset | LayoutDetail | LayoutTable;
+    layout: UILayout;
 
     /**
      * Navigation structure for the website.
      */
     navigation?: object;
-    table_fields: MetadataTableFields;
 
     /**
      * URL relevant to the current object
@@ -109,6 +108,70 @@ interface MetadataField {
     [key: string]: any;
 }
 
+/**
+ * Describes how the object is to be laid out within the UI. Although ALL keys
+ * are listed as optional, unless the object does not ever be displayed in the
+ * UI, this object should have at minimum, the view the object is to be
+ * rendered as.
+ * 
+ * 
+ * @summary How to layout the object
+ * 
+ * @category Type
+ * @expand
+ * @since 0.10.0
+ */
+interface UILayout {
+
+    /**
+     * Card Layout
+     */
+    card?: [
+        {
+            /**
+             * Card Title
+             */
+            title: string
+
+            /**
+             * Card Body
+             */
+            body: object[]
+        }
+    ]
+
+    /**
+     * Dataset Layout
+     * 
+     * Used by any instance of {@link DataSetList}.
+     */
+    dataset?: {
+        columns: string[][]
+    }
+
+    /**
+     * Detail Layout
+     * 
+     * Used by any instance of {@link Detail}.
+     */
+    detail?: LayoutDetail
+
+    /**
+     * Table Layout
+     * 
+     * if an entry in the array, is itself an array, this will render as
+     * collapsible under the row in question.
+     * 
+     * Used by any instance of {@link DisplayTable}
+     */
+    table?: string[] | string[][]
+
+    // /**
+    //  * Ticket Layout
+    //  * 
+    //  */
+    // ticket?: object
+}
 
 
 
@@ -120,15 +183,15 @@ interface MetadataField {
  * @category Backend / Data Type
  * @expand
  */
-interface LayoutDataset {
+// interface LayoutDataset {
 
-    /**
-     * Layout type that is to be used to render the data.
-     */
-    name: "dataset";
+//     /**
+//      * Layout type that is to be used to render the data.
+//      */
+//     name: "dataset";
 
-    cells: string[][]
-}
+//     cells: string[][]
+// }
 
 
 
@@ -159,13 +222,13 @@ interface LayoutDetail {
  * @category Backend / Data Type
  * @expand
  */
-interface LayoutTable {
+// interface LayoutTable {
 
-    /**
-     * Layout type that is to be used to render the data.
-     */
-    name: "table";
-}
+//     /**
+//      * Layout type that is to be used to render the data.
+//      */
+//     name: "table";
+// }
 
 
 

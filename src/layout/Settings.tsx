@@ -23,7 +23,7 @@ import { Card, CardBody, CardTitle, Gallery, PageSection } from "@patternfly/rea
  */
 const Settings = (): React.JSX.Element => {
 
-    const {metadata, page_data} = useLoaderData();
+    const {metadata, page_data} = useLoaderData<{metadata: APIMetadata, page_data: APIDataObject}>();
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
@@ -58,13 +58,13 @@ const Settings = (): React.JSX.Element => {
             {metadata && page_data &&
 
                 <Gallery hasGutter role="region" aria-label="Selectable card container">
-                    {metadata.layout.map((card) => {
+                    {metadata.layout.card.map((card) => {
                         return (
                             <Card>
-                            <CardTitle>{card.name}</CardTitle>
+                            <CardTitle>{card.title}</CardTitle>
                             <CardBody>
                                 <ul>
-                                    {card.links.map((link) => 
+                                    {card.body.map((link) => 
                                         (<li><Link to={URLSanitize(page_data[link.model])}>{link.name}</Link></li>)
                                     )}
                                 </ul>

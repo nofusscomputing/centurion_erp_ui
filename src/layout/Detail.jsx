@@ -153,12 +153,12 @@ const Detail = () => {
 
     const tabDetails = useMemo(() => {
 
-        return metadata.layout.map(tab => ({
+        return metadata.layout.detail.map(tab => ({
             name: tab.name,
             ref: createRef()
         }));
 
-    }, [metadata.layout])
+    }, [metadata.layout.detail])
 
 
     return (
@@ -204,7 +204,7 @@ const Detail = () => {
 
                 {tabDetails && tabDetails.map((tab, index) => {
 
-                    let metadataTab = metadata.layout[index]
+                    let metadataTab = metadata.layout.detail[index]
 
                     let page_content
 

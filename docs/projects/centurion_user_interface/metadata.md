@@ -53,7 +53,6 @@ The metadata document contains everything that Centurion UI requires so that it 
     "POST",
     "PUT"
   ],
-  "table_fields": [],
   "layout": [],
   "version": {
     "project_url": "",
@@ -71,7 +70,6 @@ The metadata document contains everything that Centurion UI requires so that it 
 | `description` | string | List View<br>Detail View | Root Request | The description to use for the view. _**Note:** This is ignored in the root request._ |
 | `urls` | array[object] | always | - | The different URL applicable to the current endpoint. |
 | `allowed_methods` | array[string] | always | - | The type of HTTP request methods supported by the endpoint. |
-| `table_fields` | array[string] | List View<br>Or displaying a table. | depends | The fields that are to be displayed within a table. |
 | `layout` | array[object] | Detail View | depends | How the page will be layed out. |
 | `version` | array[object] | Root Request | - | Version details of your backend. |
 | [`navigation`](./navigation.md) | array[object] | Root Request | - | The sites navigation. |
@@ -123,28 +121,6 @@ This ob
 ### Allowed Methods
 
 _**To Do:** when used update_
-
-
-### Table Fields
-
-The `table_fields` key supplies what table columns to display when the layout type is `table`.
-
-``` json
-
-[
-    "display_name",
-    "organization",
-    "checkins",
-    "created",
-    "-action_delete-"
-]
-
-```
-
-| Field | Type | When<br>Required | When<br>Optional | Description  |
-|:---|:---:|:---:|:---:|:---|
-| `<value>` | string | always | - | Name of the table column to display. This value is derived from the key name for the API data object to display. |
-| `-action_delete-` | string | - | always | Action Delete. This special value instructs the interface to provided a delete button to remove the row. |
 
 
 ### Layout
@@ -224,6 +200,3 @@ Each `layout.<>.sections.<>` object provides the section layout for each tab of 
 | | `name` | string | - | always | Section name to use. Will be displayed as the sections title. |
 | | `layout` | string | always | - | Use value `table` to set layout to be a single-column section. |
 | | `field` | string |  | | Name of the url key within the parent objects `_urls` field. |
-
-!!! tip
-    When the layout key has a value of `table`, the the url as part of the parent object is queried to obtain the [table fields](#table-fields) to display.
