@@ -60,60 +60,63 @@
             "help_text": "This is a demonstration of the field in question"
         }
     },
-    "layout": [
-        {
-            "name": "Details",
-            "slug": "details",
-            "sections": [
-                {
-                    
-                    "layout": "single",
-                    "fields": [
-                        "layout_description"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Double Column",
-            "slug": "double-column",
-            "sections": [
-                {
-                    "name": "Double Column Section",
-                    "layout": "double",
-                    "left": [
-                        "display_name"
-                    ],
-                    "right": [
-                        "field"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Single Column",
-            "slug": "single-column",
-            "sections": [
-                {
-                    "name": "Single Column Section",
-                    "layout": "single",
-                    "fields": [
-                        "display_name",
-                        "field"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Table",
-            "slug": "table",
-            "sections": [
-                {
-                    "name": "Table Section",
-                    "layout": "table",
-                    "field": "fields"
-                }
-            ]
-        }
-    ]
+    "layout": {
+        "detail": [
+            {
+                "name": "Details",
+                "slug": "details",
+                "sections": [
+                    {
+                        
+                        "layout": "single",
+                        "fields": [
+                            "layout_description"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Double Column",
+                "slug": "double-column",
+                "sections": [
+                    {
+                        "name": "Double Column Section",
+                        "layout": "double",
+                        "left": [
+                            "display_name"
+                        ],
+                        "right": [
+                            "field"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Single Column",
+                "slug": "single-column",
+                "sections": [
+                    {
+                        "name": "Single Column Section",
+                        "layout": "single",
+                        "fields": [
+                            "display_name",
+                            "field"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Table",
+                "slug": "table",
+                "sections": [
+                    {
+                        "name": "Table Section",
+                        "layout": "table",
+                        "field": "fields"
+                    }
+                ]
+            }
+        ]
+    }
+
 }

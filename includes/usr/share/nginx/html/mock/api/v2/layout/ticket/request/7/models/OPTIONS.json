@@ -96,9 +96,11 @@
             "label": " urls"
         }
     },
-    "table_fields": [
-        "ticket",
-        "status_badge",
-        "created"
-    ]
+    "layout": {
+        "table": [
+            "ticket",
+            "status_badge",
+            "created"
+        ]
+    }
 }
