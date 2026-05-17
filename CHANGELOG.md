@@ -1,3 +1,13 @@
+## 0.10.0 (2026-05-17)
+
+### feat
+
+- Combine Metadata keys layout and table_fields
+
+### Fixes
+
+- **component**: Correct log for Comment so create form displays
+
 ## 0.9.0 (2026-05-15)
 
 ### feat
