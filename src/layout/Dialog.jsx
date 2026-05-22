@@ -37,7 +37,7 @@ const Dialog = ({
 
     const defaultLayout = {
         "layout": "single",
-        "fields": objectMetadata.table.columns
+        "fields": objectMetadata.table
     };
 
     return (
