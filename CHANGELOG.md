@@ -1,3 +1,10 @@
+## 0.10.1 (2026-05-22)
+
+### Fixes
+
+- metadata lay table is a list of columns, not a object with a key called columns
+- **component**: For expandable DisplayTable, only pass the expandable fields
+
 ## 0.10.0 (2026-05-17)
 
 ### feat
