@@ -171,7 +171,7 @@ const DisplayTable = ({
         
                         setTableData(result.api_page_data)
 
-                        if( result.api_metadata.layout?.table?.columns.length < 2 ) {
+                        if( result.api_metadata.layout.table.length < 2 ) {
 
                             console.error("Missing Table Fields");
 
@@ -350,13 +350,13 @@ const DisplayTable = ({
 
 
 
-    const tableHeaderColumns = metadata?.layout?.table?.columns.map((key, index) => {
+    const tableHeaderColumns = metadata?.layout.table.map((key, index) => {
 
         collapsable_fields = []
 
         if( table_columns_count === 0 ) {
 
-            for( let field of metadata.layout?.table?.columns ) {
+            for( let field of metadata.layout.table ) {
 
                 if(
                     typeof(field) === 'string'
@@ -476,7 +476,7 @@ const DisplayTable = ({
                                         />
                                     }
 
-                                    {metadata.layout.table?.columns.map(key => {
+                                    {metadata.layout.table.map(key => {
 
                                         if (
                                             key in metadata.fields
@@ -564,7 +564,7 @@ const DisplayTable = ({
                                 </Tr>
                                 {collapsable_fields.length > 0 &&
                                 <Tr isExpanded={isTableRowExpanded(rowId)}>
-                                    <Td colSpan={(metadata.layout.table?.columns.length+1)}>
+                                    <Td colSpan={(metadata.layout.table.length+1)}>
                                         <ExpandableRowContent>
                                         {isTableRowExpanded(rowId) && <>
                                             <DisplayTable
