@@ -8,6 +8,7 @@ import {
 } from "@patternfly/react-core";
 
 import DisplayTable from "../components/DisplayTable"
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -24,9 +25,9 @@ const History = () => {
             aria-labelledby="page-content"
             isFilled={true}
         >
-            {metadata && <DisplayTable
+            {metadata && page_data && <DisplayTable
                 callback={setPageHeading}
-                data_url_path={String(metadata.urls.self)}
+                data_url_path={URLSanitize(String(metadata.urls.self))}
                 loader_data={page_data}
                 loader_metadata={metadata}
             />}
