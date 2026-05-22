@@ -422,7 +422,7 @@ const DisplayTable = ({
     return (
         <>
         { loaded && (metadata && table_data) &&
-            <div>
+            <>
 
                 {!isNested && toolbar}
                     <Table
@@ -566,6 +566,7 @@ const DisplayTable = ({
                                 <Tr isExpanded={isTableRowExpanded(rowId)}>
                                     <Td colSpan={(metadata.layout.table?.columns.length+1)}>
                                         <ExpandableRowContent>
+                                        {isTableRowExpanded(rowId) && <>
                                             <DisplayTable
                                                 isNested={true}
                                                 loader_data={Object({
@@ -583,17 +584,14 @@ const DisplayTable = ({
                                                         ...metadata,
                                                         layout: {
                                                             ...metadata.layout,
-                                                            table: {
-                                                                ...metadata.layout.table,
-                                                                columns: [
-                                                                    ...metadata.layout.table.columns,
-                                                                    collapsable_fields
-                                                                ]
-                                                            }
+                                                            table: [
+                                                               ...collapsable_fields,
+                                                            ]
                                                         },
                                                     })
                                                 }
                                             />
+                                        </>}
                                         </ExpandableRowContent>
                                     </Td>
                                 </Tr>
@@ -603,7 +601,7 @@ const DisplayTable = ({
                         })}
                     </Table>
                 {table_data && <PaginationBottom />}
-            </div>
+            </>
         }
         </>
     );
