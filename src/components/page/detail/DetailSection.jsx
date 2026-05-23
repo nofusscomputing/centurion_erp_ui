@@ -84,7 +84,7 @@ const DetailSection = ({
             if( 'external_links' in data._urls ) {
 
                 apiFetch(
-                    data._urls.external_links,
+                    URLSanitize(data._urls.external_links),
                     (response) =>{
 
                         setExternalLinks(response)

@@ -36,13 +36,25 @@ export default function URLSanitize(url) {
     );
 
     function parse(value) {
+
+        let query_string = null
+
+        if( String(value).includes('?')) {
+
+            query_string = String(value).split('?')[1]
+
+            value = String(value).split('?')[0]
+
+        }
+
         const match = String(value).match(URL_REGEX);
 
         return {
             protocol: match?.groups?.protocol ?? null,
             host: match?.groups?.host ?? null,
             port: match?.groups?.port ?? null,
-            path: match?.groups?.path ?? null
+            path: match?.groups?.path ?? null,
+            query_string: query_string
         };
     }
 
@@ -52,6 +64,11 @@ export default function URLSanitize(url) {
 
 
     let cleanURL = String(url)
+
+    if( raw.query_string ) {
+        cleanURL = String(cleanURL).split('?')[0]
+    }
+
 
     if(cleanURL.startsWith(known.protocol)) {
 
@@ -78,6 +95,10 @@ export default function URLSanitize(url) {
     if(cleanURL.startsWith(known.path)) {
         
         cleanURL = cleanURL.replace(known.path, '')
+    }
+
+    if( raw.query_string ) {
+        cleanURL = `${cleanURL}?${raw.query_string}`
     }
 
 
