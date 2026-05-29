@@ -125,7 +125,7 @@ const Detail = () => {
         if( Object.keys(page_data['_urls']).includes('notes') ) {
 
             const {api_metadata, api_page_data} = apiFetch(
-                page_data['_urls']['notes'],
+                URLSanitize(page_data['_urls']['notes']),
             )
 
                 .then((data) =>{
@@ -222,7 +222,7 @@ const Detail = () => {
                                             e.preventDefault();
 
                                             const response = await apiFetch(
-                                                String(page_data['_urls']['notes']),
+                                                URLSanitize(page_data['_urls']['notes']),
                                                 null,
                                                 'POST',
                                                 notes_form,
