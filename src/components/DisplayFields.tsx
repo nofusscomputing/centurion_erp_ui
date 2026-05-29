@@ -35,6 +35,7 @@ import FormField from "./FormField";
 import { FormatTime } from "../functions/FormatTime";
 import { useIsMobile } from "../hooks/useIsMobile";
 import UserContext from "../hooks/UserContext";
+import URLSanitize from "../functions/URLSanitize";
 
 
 /**
@@ -755,7 +756,7 @@ export async function APISubmitAction({
 
     const update = await apiFetch(
         // document.location.pathname,
-        metadata.urls.self,
+        URLSanitize(metadata.urls.self),
         null,
         request.method,
         form_data,
