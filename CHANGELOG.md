@@ -1,3 +1,10 @@
+## 0.10.2 (2026-05-29)
+
+### Fixes
+
+- **loader**: APISubmitAction must sanitize URL
+- metadata lay table is a list of columns, not a object with a key called columns
+
 ## 0.10.1 (2026-05-22)
 
 ### Fixes
