@@ -1,3 +1,10 @@
+## 0.10.3 (2026-05-30)
+
+### Fixes
+
+- **component**: When rendering a field as part of DataSetList if it's an link object setup so it renders
+- **component**: Existing comment thread URL must be sanitized
+
 ## 0.10.2 (2026-05-29)
 
 ### Fixes
