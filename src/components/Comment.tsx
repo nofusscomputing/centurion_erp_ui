@@ -801,7 +801,7 @@ export const Comment = ({
             </Title>
 
             <Comments
-                comments_url = {start_thread ? `${URLSanitize(comment_page_data._urls._self)}/threads` : comment_page_data._urls.threads}
+                comments_url = {start_thread ? `${URLSanitize(comment_page_data._urls._self)}/threads` : URLSanitize(comment_page_data._urls.threads)}
             />
         </div>
         }
