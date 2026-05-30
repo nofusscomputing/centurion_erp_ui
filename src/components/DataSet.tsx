@@ -578,7 +578,13 @@ export const DataSetListCells = ({
                         >
                             <Flex direction = {{ default: 'column' }}>
 
-                                {cell.filter(field => field in metadata.fields).map((field, fieldIndex) => {
+                                {cell.filter(field => (
+                                    field in metadata.fields || (
+                                        typeof(field) == "object"
+                                        && Object.hasOwn(field, 'type')
+                                        && field?.type === 'link'
+                                    )
+                                )).map((field, fieldIndex) => {
 
                                     return (
                                         <FlexItem
@@ -597,7 +603,7 @@ export const DataSetListCells = ({
 
                                                 }
                                                 <FieldData
-                                                    autolink = {field === 'name' ? true : false}
+                                                    autolink = {(field === 'name' || typeof(field) == "object") ? true : false}
                                                     data = {rowData}
                                                     field_name = {field}
                                                     metadata = {metadata}

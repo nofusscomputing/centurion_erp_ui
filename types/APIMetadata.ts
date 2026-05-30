@@ -144,9 +144,26 @@ interface UILayout {
      * Dataset Layout
      * 
      * Used by any instance of {@link DataSetList}.
+     * 
+     * Using a string value for the column, must be a valid field name.
+     * 
+     * Using an object as the value enables any field to be setup so that it is
+     * a link to any of the urls within {@link APIDataObject}
+     * 
+     * @example
+    ``` json
+    {
+        "field": "<name of the field to render as link>",
+        "type": "link",
+        "key": "<name of the url key under _object._urls to use as the link>"
+    }
+    ```
+     *
+     * Normally the key for the url to use would be `_self` as this provides
+     * for using any of the objects fields to link to its own data view page.
      */
     dataset?: {
-        columns: string[][]
+        columns: [[string | object]]
     }
 
     /**
@@ -162,9 +179,12 @@ interface UILayout {
      * if an entry in the array, is itself an array, this will render as
      * collapsible under the row in question.
      * 
+     * Just like the `dataset.columns` keys, the value can be a link object.
+     * see {@link UILayout.dataset} for an example on the object and its keys.
+     * 
      * Used by any instance of {@link DisplayTable}
      */
-    table?: string[] | string[][]
+    table?: [string | object]
 
     // /**
     //  * Ticket Layout
