@@ -13,12 +13,14 @@ import {
     PageSection
 } from "@patternfly/react-core";
 
+import { apiFetch } from "../hooks/apiFetch";
 import {
     DataSetFooter,
     DataSetHeader,
     DataSetList
 } from "../components/DataSet";
 import IconLoader from "../components/IconLoader";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -41,16 +43,22 @@ const List = (): React.JSX.Element => {
         setPageDescription, setPageHeading, setPageHeaderIcons
     } = useOutletContext()
 
-    const {metadata, page_data} = useLoaderData<{metadata: APIMetadata, page_data: APIDataset}>();
+    const { metadata: loaderMetadata, page_data: loaderPageData } = useLoaderData<{metadata: APIMetadata, page_data: APIDataset}>();
 
-    const [pageNumber, setPageNumber] = useState(1);
+    const [ loaded, setLoaded ] = useState(loaderMetadata ? true : false);
 
-    const [perPage, setPerPage] = useState(10);
+    const [ metadata, setMetadata ] = useState(null);
+
+    const [ page_data, setPageData ] = useState(null);
+
+    const [ pageNumber, setPageNumber ] = useState(1);
+
+    const [ perPage, setPerPage ] = useState(10);
+
+    const [ reload, setReload ] = useState(false);
 
     const [ selectedRows, setSelectedRows ] = useState([]);
 
-
-    
     /** Update the Selected DataList rows
      * 
      * `rowIds` can be any of the following:
@@ -88,14 +96,26 @@ const List = (): React.JSX.Element => {
 
     useEffect(() => {
 
-        setPageHeading(metadata?.name)
-        setPageDescription(metadata?.description)
+        setMetadata(loaderMetadata);
+
+        setPageData(loaderPageData);
+
+    }, [
+        loaderMetadata,
+        loaderPageData,
+    ])
+
+
+    useEffect(() => {
+
+        setPageHeading(loaderMetadata?.name)
+        setPageDescription(loaderMetadata?.description)
 
 
         setPageHeaderIcons(
             <>
-                {metadata?.['documentation'] &&
-                    <Link to={metadata['documentation']} target="_new">
+                {loaderMetadata?.['documentation'] &&
+                    <Link to={loaderMetadata['documentation']} target="_new">
                         <IconLoader
                             name='help'
                             size="xl"
@@ -106,14 +126,63 @@ const List = (): React.JSX.Element => {
             </>
         );
 
-        setPageNumber(1);
+        setPageNumber(loaderPageData?.meta.pagination.page);
 
         setPerPage(10);
 
         setSelectedRows([]);
 
+    }, [
+        loaderMetadata,
+        loaderPageData
+    ])
 
-    }, [ metadata ])
+
+    useEffect(() =>{    // Fetch the table data if the page number has changed.
+
+        if( ! page_data && ! metadata ) return;
+
+        let url = null
+
+        if( pageNumber !== 1) {
+
+            url = `${URLSanitize(metadata.urls.self)}?page%5Bnumber%5D=${String( pageNumber )}`;
+
+        }else{
+
+            url = URLSanitize(metadata.urls.self);
+
+        }
+
+        if(
+            loaded === false
+            || page_data.meta.pagination.page !== pageNumber
+            || reload
+        ) {
+            apiFetch( url )
+                .then((result) => {
+
+                    if( result.status == 200 ) {
+
+                        if( result.api_metadata !== null ) {
+
+                            setMetadata(result.api_metadata);
+        
+                        }
+        
+                        setPageData(result.api_page_data)
+
+                        setLoaded(true);
+                        setReload(false)
+                    }
+                }
+            )
+        }
+
+    }, [
+        pageNumber,
+        reload
+    ]);
 
 
     return (
