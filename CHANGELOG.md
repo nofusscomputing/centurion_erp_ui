@@ -1,3 +1,14 @@
+## 0.11.0 (2026-05-31)
+
+### feat
+
+- **layout**: Add paginated navigation of data within list layout
+
+### Fixes
+
+- **component**: Ensure that DisplayFields columns remain the same size
+- **component**: Whilst building fieldData for DuelFieldSelector pageData my not yet be available
+
 ## 0.10.3 (2026-05-30)
 
 ### Fixes
