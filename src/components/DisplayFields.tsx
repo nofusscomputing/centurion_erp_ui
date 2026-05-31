@@ -282,7 +282,7 @@ const Column = ({isEdit, isMobile, children}) => {
                 }}
                 aria-label="Model fields"
                 isCompact = {true}
-                isFillColumns = {false}
+                isFillColumns = {true}
             >
 
                 {children}
@@ -429,10 +429,15 @@ const DisplayFields = ({
         cardData = (
             <>
             <Flex
+                flexWrap={{ default: 'wrap'}}
                 gap={{ default: 'gap'}}
             >
                 <FlexItem
                     grow={{ default: 'grow'}}
+                    flex = {{
+                        default: "flexDefault",
+                        lg: 'flex_1' 
+                    }}
                 >
                     <Column
                         isEdit = {isEdit}
@@ -453,6 +458,10 @@ const DisplayFields = ({
 
                  <FlexItem
                     grow={{ default: 'grow'}}
+                    flex = {{
+                        default: "flexDefault",
+                        lg: 'flex_1' 
+                    }}
                  >
                     <Column
                         isEdit = {isEdit}
