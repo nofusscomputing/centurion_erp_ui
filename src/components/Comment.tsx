@@ -109,14 +109,16 @@ export const Comments = ({
 
             console.debug('fetcher return', fetcher.data);
 
-            setComments((prevState) => ({
-                fetch_url: prevState.fetch_url,
-                comments: {
-                    ...prevState.comments,
-                    [fetcher.data.body.id]: fetcher.data.body
-                }
-            }));
+            if( fetcher.status_code === 201 ) {
 
+                setComments((prevState) => ({
+                    fetch_url: prevState.fetch_url,
+                    comments: {
+                        ...prevState.comments,
+                        [fetcher.data.body.id]: fetcher.data.body
+                    }
+                }));
+            }
         }
 
     }, [
