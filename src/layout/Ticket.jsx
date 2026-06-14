@@ -511,21 +511,20 @@ const Ticket = () => {
                     {!editing_description && ticketDescriptionCard}
 
                     { ! new_ticket &&
-
+                    <>
                     <RelatedTickets
                         data_url={URLSanitize(ticket_data?._urls?.ticket_dependencies)}
                         ticket_id={ticket_data?.id}
-                    />}
-
-                    { ! new_ticket &&
+                    />
 
                     <LinkedItems
                         data_url={URLSanitize(ticket_data?._urls?.linked_models)}
-                    />}
+                    />
 
                     <Comments
                         comments_url = {URLSanitize(ticket_data?._urls?.comments)}
                     />
+                    </>}
 
                 </Flex>
 
