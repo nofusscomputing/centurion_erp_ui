@@ -109,7 +109,7 @@ export const Comments = ({
 
             console.debug('fetcher return', fetcher.data);
 
-            if( fetcher.status_code === 201 ) {
+            if( fetcher.data.status_code === 201 ) {
 
                 setComments((prevState) => ({
                     fetch_url: prevState.fetch_url,
@@ -118,6 +118,10 @@ export const Comments = ({
                         [fetcher.data.body.id]: fetcher.data.body
                     }
                 }));
+
+            } else if( fetcher.data.status_code === 200 ) {
+
+                setRelaod(true);
             }
         }
 
