@@ -91,12 +91,16 @@ const DualFieldSelector = ({
 
         });
 
-        pageData[name]?.map((permission) => {
 
-            data[permission.id]["selected"] = true
+        if( pageData ) {
 
+            pageData[name]?.map((permission) => {
 
-        });
+                data[permission.id]["selected"] = true
+
+            });
+        }
+
 
         return Object.entries(data).map(([id, data]) => {
             return {
