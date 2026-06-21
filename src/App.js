@@ -258,7 +258,7 @@ function App() {
                                     loader = {pagedLoader} />
 
 
-                                <Route path="project_task">
+                                <Route path="projecttask">
 
                                     <Route path=":sub_model_pk" element={<Ticket />}
                                         loader = {pagedLoader} 
