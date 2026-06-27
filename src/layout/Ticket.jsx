@@ -441,7 +441,7 @@ const Ticket = () => {
                         new_ticket && 'title',
                         'description',
                     ].filter(Boolean)}
-                    formState={new_ticket ? ticketDescriptionState : formState }
+                    formState={new_ticket ? formState : ticketDescriptionState }
                     isCreate={new_ticket}
                     isEdit={editing_description}
                     isFlex = {true}
@@ -503,6 +503,7 @@ const Ticket = () => {
                         onSubmit={(e) => {
                             
                             setFormState({})
+                            setTicketDescriptionState({})
                         }}
                     >
                         {ticketDescriptionCard}
