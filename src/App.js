@@ -258,12 +258,16 @@ function App() {
                                     loader = {pagedLoader} />
 
 
-                                <Route path="projecttask">
+                                <Route path="ticket">
 
-                                    <Route path=":sub_model_pk" element={<Ticket />}
-                                        loader = {pagedLoader} 
-                                        action={InlineFieldAction} shouldRevalidate={() => false}
-                                    />
+                                    <Route path=":sub_model">
+
+                                        <Route path=":sub_model_pk" element={<Ticket />}
+                                            loader = {pagedLoader} 
+                                            action={InlineFieldAction} shouldRevalidate={() => false}
+                                        />
+
+                                    </Route>
 
                                 </Route>
 
