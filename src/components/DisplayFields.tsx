@@ -560,12 +560,24 @@ const DisplayFields = ({
 
         cardData = (
             <Form
+                action = {
+                    (String(location.pathname).endsWith('/add') || isCreate)
+                    ?
+                        pageMetadata.urls.new
+                        ?
+                            URLSanitize(pageMetadata.urls.new)
+                        :
+                            URLSanitize(pageMetadata.urls.self)
+                    :
+                        URLSanitize(pageMetadata.urls.self)
+                }
+                className = "pf-v6-c-form"
                 id="random"
                 method={(String(location.pathname).endsWith('/add') || isCreate) ? "POST" : "PATCH"}
-                className = "pf-v6-c-form"
                 onSubmit={(_event) => {
                     setIsLoading(true)
                 }}
+                navigate = {false}
             >
                 {actionData?.errors &&
                 <AlertGroup>
