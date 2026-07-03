@@ -3,6 +3,7 @@ import { useContext, useId, useState } from "react";
 import { apiFetch } from "../hooks/apiFetch";
 import { Form, redirect } from "react-router";
 import { FormatTime } from "../functions/FormatTime";
+import URLSanitize from "../functions/URLSanitize";
 
 
 
@@ -122,7 +123,7 @@ export const InlineFieldAction = async ({ request, params }) => {
     console.debug(`InlineFieldAction (json): ${JSON.stringify(form_data)}`)
 
     const update = await apiFetch(
-        document.location.pathname,
+        URLSanitize(request.url),
         null,
         request.method,
         form_data,
