@@ -1,7 +1,9 @@
 {
     "name": "User",
     "description": "Centurion Users",
-    "urls": {},
+    "urls": {
+        "self": "/mock/api/v2/features/fields/4"
+    },
     "renders": [
         "application/json",
         "text/html"

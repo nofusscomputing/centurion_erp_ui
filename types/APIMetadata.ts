@@ -76,9 +76,16 @@ type MetadataFieldType = "Boolean" |
 interface MetadataUrls {
 
     /**
-     * The URL to the curent object.
+     * The URL to the current object.
      */
     self: string;
+
+    /**
+     * The URL to use to create a new object.
+     * 
+     * When not specified the value of `self` is used.
+     */
+    new?: string;
 
     /**
      * Urls to any sub-models this object has where key is unique value and url
