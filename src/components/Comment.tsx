@@ -483,14 +483,17 @@ export const Comment = ({
 
             async function do_fetch() {
 
-                let url = objectURL
+                let url = URLSanitize( objectURL )
 
-                let url_tail = `/${comment_page_data['id']}`
+                if( comment_page_data ) {
+                    let url_tail = `/${comment_page_data['id']}`
 
-                if( url.endsWith( url_tail ) ) {    // Remove the object id from end of URL
+                    if( url.endsWith( url_tail ) ) {    // Remove the object id from end of URL
 
-                    url = url.substr(0, url.length - url_tail.length)
+                        url = url.substr(0, url.length - url_tail.length)
+                    }
                 }
+
 
                 await apiFetch(
                     url,
