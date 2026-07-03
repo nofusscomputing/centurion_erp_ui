@@ -8,7 +8,11 @@ import { FormatTime } from "../functions/FormatTime";
 
 export const InlineFieldAction = async ({ request, params }) => {
 
-    if( ! String(request.url).endsWith(document.location.pathname) ) {    // as request does not contain the path, check doc path
+    if(
+        ! String(url).replace(
+            document.location.origin, ''
+        ).endsWith(document.location.pathname)
+    ) {    // as request does not contain the path, check doc path
 
         throw Error(`InlineFieldAction URL ${request.url} does not match ${document.location.pathname}`)
     }

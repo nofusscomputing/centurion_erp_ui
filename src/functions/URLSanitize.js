@@ -8,6 +8,9 @@
  */
 export default function URLSanitize(url) {
 
+    // Cater for URLs that may be a route.
+    url = String(url).replace(document.location.origin, '')
+
     const PROTOCOL = "(?<protocol>https?)://";
 
     const IPV4 =
