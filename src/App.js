@@ -260,7 +260,9 @@ function App() {
 
                                 <Route path="ticket">
 
-                                    <Route path=":sub_model">
+                                    <Route path=":sub_model"
+                                        action={InlineFieldAction} shouldRevalidate={() => false}
+                                    >
 
                                         <Route path=":sub_model_pk" element={<Ticket />}
                                             loader = {pagedLoader} 
