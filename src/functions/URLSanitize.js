@@ -35,71 +35,91 @@ export default function URLSanitize(url) {
         `^(?:${PROTOCOL})?(?:${HOST})?(?:${PORT})?(?:${PATH})$`
     );
 
-    function parse(value) {
+    let known = null;
+    let raw = null;
 
-        let query_string = null
+    let cleanURL = null;
 
-        if( String(value).includes('?')) {
 
-            query_string = String(value).split('?')[1]
+    try {
 
-            value = String(value).split('?')[0]
+        function parse(value) {
 
+            let query_string = null
+
+            if( String(value).includes('?')) {
+
+                query_string = String(value).split('?')[1]
+
+                value = String(value).split('?')[0]
+
+            }
+
+            const match = String(value).match(URL_REGEX);
+
+            return {
+                protocol: match?.groups?.protocol ?? null,
+                host: match?.groups?.host ?? null,
+                port: match?.groups?.port ?? null,
+                path: match?.groups?.path ?? null,
+                query_string: query_string
+            };
         }
 
-        const match = String(value).match(URL_REGEX);
 
-        return {
-            protocol: match?.groups?.protocol ?? null,
-            host: match?.groups?.host ?? null,
-            port: match?.groups?.port ?? null,
-            path: match?.groups?.path ?? null,
-            query_string: query_string
-        };
+        known = parse( window.env.API_URL );
+        raw = parse( url );
+
+
+        cleanURL = String(url)
+
+        if( raw.query_string ) {
+            cleanURL = String(cleanURL).split('?')[0]
+        }
+
+
+        if(cleanURL.startsWith(known.protocol)) {
+
+            cleanURL = cleanURL.replace( `${known.protocol}://`, '')
+        }
+
+        if(cleanURL.startsWith(known.host)) {
+            
+            cleanURL = cleanURL.replace( known.host, '')
+        }
+
+        if(cleanURL.startsWith(`:${known.port}`)) {
+            
+            cleanURL = cleanURL.replace( `:${known.port}`, '')
+        }
+
+
+        if( cleanURL !== raw.path ) { // URL path must match the API path
+
+            throw Error( `URL ${url} does not match when it should. known=raw [${known.path}=${cleanURL}]` )
+        }
+
+
+        if(cleanURL.startsWith(known.path)) {
+            
+            cleanURL = cleanURL.replace(known.path, '')
+        }
+
+        if( raw.query_string ) {
+            cleanURL = `${cleanURL}?${raw.query_string}`
+        }
+
+    } catch ( ex ) {
+
+        console.trace('[TRACE] known: ', known);
+
+        console.trace('[TRACE] raw: ', raw);
+
+        console.trace('[TRACE] cleanURL: ', cleanURL);
+
+        throw ex;
     }
 
-
-    const known = parse( window.env.API_URL );
-    const raw = parse( url );
-
-
-    let cleanURL = String(url)
-
-    if( raw.query_string ) {
-        cleanURL = String(cleanURL).split('?')[0]
-    }
-
-
-    if(cleanURL.startsWith(known.protocol)) {
-
-        cleanURL = cleanURL.replace( `${known.protocol}://`, '')
-    }
-
-    if(cleanURL.startsWith(known.host)) {
-        
-        cleanURL = cleanURL.replace( known.host, '')
-    }
-
-    if(cleanURL.startsWith(`:${known.port}`)) {
-        
-        cleanURL = cleanURL.replace( `:${known.port}`, '')
-    }
-
-
-    if( cleanURL !== raw.path ) { // URL path must match the API path
-
-        throw Error( `URL ${url} does not match when it should. known=raw [${known.path}=${cleanURL}]` )
-    }
-
-
-    if(cleanURL.startsWith(known.path)) {
-        
-        cleanURL = cleanURL.replace(known.path, '')
-    }
-
-    if( raw.query_string ) {
-        cleanURL = `${cleanURL}?${raw.query_string}`
-    }
 
 
     return cleanURL;
