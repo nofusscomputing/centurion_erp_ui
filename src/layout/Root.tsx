@@ -1,10 +1,12 @@
 import {
+    useEffect,
     useRef,
     useState,
 } from "react";
 
 import {
     Outlet,
+    useNavigate,
     useParams
 } from "react-router";
 
@@ -31,6 +33,7 @@ import {
     NotificationContext,
     Notifications
 } from "../components/NotificationDrawer";
+import { apiFetch } from "../hooks/apiFetch";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
@@ -81,8 +84,35 @@ const RootLayout = (): React.JSX.Element => {
 
     const [overflowMessage, setOverflowMessage] = useState('');
 
+    const navigate = useNavigate();
+
     const [notifications, setNotifications] = useState([]);
     // const [notifications, setNotifications] = useState<UINotification[]>([]);
+
+    const [rootMetadata, setRootMetadata ] = useState(null);
+
+    useEffect(() => {
+
+        if( rootMetadata === null ) {
+
+            apiFetch(
+                '',
+                (data) => {
+
+                    setRootMetadata(data)
+
+                },
+                'OPTIONS'
+            )
+
+                .then(response => {
+
+                    if( response.status === 401 ) {
+                        navigate('/login')
+                    }
+                })
+        }
+    },[])
 
 
     const onAlertGroupOverflowClick = () => {
@@ -97,6 +127,8 @@ const RootLayout = (): React.JSX.Element => {
     document.title = `${pageHeading}`
 
     return (
+        <>
+        {rootMetadata &&
         <NotificationContext.Provider
             value = {{
                 alerts, setAlerts,
@@ -121,6 +153,7 @@ const RootLayout = (): React.JSX.Element => {
             //@ts-expect-error TS[2322]
             sidebar = {<Navbar
                 isSidebarOpen = {isSidebarOpen}
+                navigation_entries = {rootMetadata.navigation}
             />}
         >
 
@@ -184,6 +217,7 @@ const RootLayout = (): React.JSX.Element => {
 
         </Page>
         </NotificationContext.Provider>
+        }</>
     );
 }
 
