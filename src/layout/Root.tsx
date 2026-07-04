@@ -20,6 +20,7 @@ import {
     Page,
     PageBreadcrumb,
     PageSection,
+    Spinner,
     Title,
 } from '@patternfly/react-core';
 
@@ -128,6 +129,7 @@ const RootLayout = (): React.JSX.Element => {
 
     return (
         <>
+        { ! rootMetadata && <Spinner diameter="80px" aria-label="Page loading spinner" /> }
         {rootMetadata &&
         <NotificationContext.Provider
             value = {{
