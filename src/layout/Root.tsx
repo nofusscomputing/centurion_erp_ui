@@ -215,7 +215,9 @@ const RootLayout = (): React.JSX.Element => {
                 setPageDescription, setPageHeading, setPageHeaderIcons
             }}/>
         
-            <Footer />
+            <Footer
+                api_version_data = {rootMetadata.version}
+            />
 
         </Page>
         </NotificationContext.Provider>
