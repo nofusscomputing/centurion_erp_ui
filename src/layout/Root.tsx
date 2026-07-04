@@ -168,7 +168,15 @@ const RootLayout = (): React.JSX.Element => {
 
                     <BreadcrumbItem>{params.model}</BreadcrumbItem>
 
-                    {params.pk && <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
+                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</BreadcrumbItem> }
+
+                    {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
+
+                    {params?.ticket_sub_model && <BreadcrumbItem>{params.ticket_sub_model}</BreadcrumbItem>}
+
+                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbHeading>{pageHeading}</BreadcrumbHeading>}
+
+                    {params.pk && ! params?.sub_model && ! params?.ticket_sub_model && <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
 
                 </Breadcrumb>
 
