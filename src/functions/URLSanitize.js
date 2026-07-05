@@ -99,7 +99,7 @@ export default function URLSanitize(url) {
 
         if( cleanURL !== raw.path ) { // URL path must match the API path
 
-            throw Error( `URL ${url} does not match when it should. known=raw [${known.path}=${cleanURL}]` )
+            throw Error( `URL ${url} does not match when it should. cleanURL=raw [${cleanURL}=${raw.path}]` )
         }
 
 

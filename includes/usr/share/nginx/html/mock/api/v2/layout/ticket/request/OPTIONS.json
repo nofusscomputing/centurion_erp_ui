@@ -535,17 +535,18 @@
         }
     },
     "layout": {
-        "name": "dataset",
-        "cells": [
-            [
-                "title",
-                "organization",
-                "status_badge"
-            ],
-            [
-                "created",
-                "modified"
+        "dataset": {
+            "columns": [
+                [
+                    "title",
+                    "organization",
+                    "status_badge"
+                ],
+                [
+                    "created",
+                    "modified"
+                ]
             ]
-        ]
+        }
     }
 }
