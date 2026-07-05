@@ -5,6 +5,7 @@ import {
 } from "react";
 
 import {
+    Link,
     Outlet,
     useNavigate,
     useParams
@@ -166,9 +167,9 @@ const RootLayout = (): React.JSX.Element => {
 
                     <BreadcrumbItem>{params.module}</BreadcrumbItem>
 
-                    <BreadcrumbItem>{params.model}</BreadcrumbItem>
+                    <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}`}>{params.model}</Link>}</BreadcrumbItem>
 
-                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</BreadcrumbItem> }
+                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</Link>}</BreadcrumbItem> }
 
                     {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
 
