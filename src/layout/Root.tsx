@@ -20,7 +20,6 @@ import {
     Content,
     Divider,
     Page,
-    PageBreadcrumb,
     PageGroup,
     PageSection,
     Spinner,
@@ -130,6 +129,29 @@ const RootLayout = (): React.JSX.Element => {
 
     document.title = `${pageHeading}`
 
+    const rootPageBreadcrumb = (
+
+        <Breadcrumb>
+
+            <BreadcrumbItem>{params.module}</BreadcrumbItem>
+
+            <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}`}>{params.model}</Link>}</BreadcrumbItem>
+
+            {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</Link>}</BreadcrumbItem> }
+
+            {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
+
+            {params?.ticket_sub_model && <BreadcrumbItem>{params.ticket_sub_model}</BreadcrumbItem>}
+
+            {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbHeading>{pageHeading}</BreadcrumbHeading>}
+
+            {params.pk && ! params?.sub_model && ! params?.ticket_sub_model && <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
+
+        </Breadcrumb>
+
+    );
+
+
     return (
         <>
         { ! rootMetadata && <Spinner diameter="80px" aria-label="Page loading spinner" /> }
@@ -147,8 +169,13 @@ const RootLayout = (): React.JSX.Element => {
         >
         <Page
             isManagedSidebar
+            breadcrumb = {rootPageBreadcrumb}
+            breadcrumbProps={{
+                stickyOnBreakpoint: {
+                    md: 'top'
+                }
+            }}
             isContentFilled
-            //@ts-expect-error TS[2322]
             masthead = {<Header
                 isSidebarOpen = {isSidebarOpen}
                 onSidebarToggle = {onSidebarToggle}
@@ -156,37 +183,14 @@ const RootLayout = (): React.JSX.Element => {
             mainContainerId={"scrollable-element"}
             notificationDrawer = {<Notifications />}
             isNotificationDrawerExpanded = {isNotificationsOpen}
-            //@ts-expect-error TS[2322]
             sidebar = {<Navbar
                 isSidebarOpen = {isSidebarOpen}
                 navigation_entries = {rootMetadata.navigation}
             />}
         >
 
-            <PageBreadcrumb
-                className="pf-m-sticky-top"
-            >
-                <Breadcrumb>
 
-                    <BreadcrumbItem>{params.module}</BreadcrumbItem>
-
-                    <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}`}>{params.model}</Link>}</BreadcrumbItem>
-
-                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</Link>}</BreadcrumbItem> }
-
-                    {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
-
-                    {params?.ticket_sub_model && <BreadcrumbItem>{params.ticket_sub_model}</BreadcrumbItem>}
-
-                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbHeading>{pageHeading}</BreadcrumbHeading>}
-
-                    {params.pk && ! params?.sub_model && ! params?.ticket_sub_model && <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
-
-                </Breadcrumb>
-
-            </PageBreadcrumb>
-
-            <PageSection>
+            { alerts.length > 0 &&
                 <AlertGroup
                     hasAnimations
                     isToast
@@ -196,53 +200,54 @@ const RootLayout = (): React.JSX.Element => {
                 >
                     {alerts.slice(0, maxDisplayed)}
                 </AlertGroup>
-            </PageSection>
+            }
 
             <PageGroup
                 id="page-main"
                 hasOverflowScroll
             >
 
-            <PageSection>
+                <PageSection>
 
-                {pageHeading && <Content>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            flexWrap: "wrap"
-                        }}
-                    >
-                        <Title headingLevel="h1" style={{ width: "50%", minWidth: "350px"}}>
-                            {pageHeading}
-                        </Title>
-                        <div style={{ width: "50%", textAlign: "right", minWidth: "350px"}}>{pageHeaderIcons}</div>
-                    </div>
+                    {pageHeading && <Content>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                flexWrap: "wrap"
+                            }}
+                        >
+                            <Title headingLevel="h1" style={{ width: "50%", minWidth: "350px"}}>
+                                {pageHeading}
+                            </Title>
+                            <div style={{ width: "50%", textAlign: "right", minWidth: "350px"}}>{pageHeaderIcons}</div>
+                        </div>
 
-                    <Divider />
+                        <Divider />
 
-                    <p>{pageDescription}</p>
+                        <p>{pageDescription}</p>
 
-                    
-                </Content>}
+                    </Content>}
 
-            </PageSection>
+                </PageSection>
 
-            <Outlet context={{
-                setPageDescription, setPageHeading, setPageHeaderIcons
-            }}/>
-        
-            <Footer
-                api_version_data = {rootMetadata.version}
-            />
+                <Outlet context={{
+                    setPageDescription, setPageHeading, setPageHeaderIcons,
+                }}
+                />
+                <Footer
+                    api_version_data = {rootMetadata.version}
+                />
 
             </PageGroup>
 
             <BackToTop scrollableSelector="#page-main" />
 
         </Page>
+
         </NotificationContext.Provider>
-        }</>
+        }
+        </>
     );
 }
 
