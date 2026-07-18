@@ -20,6 +20,7 @@ import {
     Content,
     Divider,
     Page,
+    PageBreadcrumb,
     PageGroup,
     PageSection,
     Spinner,
@@ -37,6 +38,7 @@ import {
     Notifications
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
+import { PageHeader } from "@patternfly/react-component-groups";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
@@ -135,9 +137,20 @@ const RootLayout = (): React.JSX.Element => {
 
             <BreadcrumbItem>{params.module}</BreadcrumbItem>
 
-            <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}`}>{params.model}</Link>}</BreadcrumbItem>
+            <BreadcrumbItem
+                to={`/${params.module}/${params.model}`}
+                component = {(props) => <Link {...props} to={props.href} />}
+            >
+                {params.model}
+            </BreadcrumbItem>
 
-            {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</Link>}</BreadcrumbItem> }
+            {(params?.ticket_sub_model || params?.sub_model) &&
+            <BreadcrumbItem
+                to={`/${params.module}/${params.model}/${params.pk}`}
+                component = {(props) => <Link {...props} to={props.href} />}
+            >
+                {params.pk}
+            </BreadcrumbItem> }
 
             {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
 
@@ -145,7 +158,8 @@ const RootLayout = (): React.JSX.Element => {
 
             {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbHeading>{pageHeading}</BreadcrumbHeading>}
 
-            {params.pk && ! params?.sub_model && ! params?.ticket_sub_model && <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
+            {params.pk && ! params?.sub_model && ! params?.ticket_sub_model &&
+            <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
 
         </Breadcrumb>
 
