@@ -364,9 +364,11 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkOther = [
+        // Note: prefixed `\n` to hr as markdown-it-front-matter tries to
+        // render as frontmatter open.
         {
             "name": "Other - Horizontal rule",
-            "markdown": "----",
+            "markdown": "\n----",
             "html": (
                 '<hr class="pf-v6-c-divider">'
             )
