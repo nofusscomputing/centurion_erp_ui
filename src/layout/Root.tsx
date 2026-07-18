@@ -13,6 +13,7 @@ import {
 
 import {
     AlertGroup,
+    BackToTop,
     Breadcrumb,
     BreadcrumbHeading,
     BreadcrumbItem,
@@ -20,6 +21,7 @@ import {
     Divider,
     Page,
     PageBreadcrumb,
+    PageGroup,
     PageSection,
     Spinner,
     Title,
@@ -151,6 +153,7 @@ const RootLayout = (): React.JSX.Element => {
                 isSidebarOpen = {isSidebarOpen}
                 onSidebarToggle = {onSidebarToggle}
             />}
+            mainContainerId={"scrollable-element"}
             notificationDrawer = {<Notifications />}
             isNotificationDrawerExpanded = {isNotificationsOpen}
             //@ts-expect-error TS[2322]
@@ -195,6 +198,11 @@ const RootLayout = (): React.JSX.Element => {
                 </AlertGroup>
             </PageSection>
 
+            <PageGroup
+                id="page-main"
+                hasOverflowScroll
+            >
+
             <PageSection>
 
                 {pageHeading && <Content>
@@ -227,6 +235,10 @@ const RootLayout = (): React.JSX.Element => {
             <Footer
                 api_version_data = {rootMetadata.version}
             />
+
+            </PageGroup>
+
+            <BackToTop scrollableSelector="#page-main" />
 
         </Page>
         </NotificationContext.Provider>
