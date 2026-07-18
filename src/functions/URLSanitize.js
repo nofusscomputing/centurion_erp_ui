@@ -8,8 +8,6 @@
  */
 export default function URLSanitize(url) {
 
-    // Cater for URLs that may be a route.
-    url = String(url).replace(document.location.origin, '')
 
     const PROTOCOL = "(?<protocol>https?)://";
 
@@ -73,8 +71,8 @@ export default function URLSanitize(url) {
         known = parse( window.env.API_URL );
         raw = parse( url );
 
-
-        cleanURL = String(url)
+        // `replace` required to cater for URLs that may be a route.
+        cleanURL = String(String(url).replace(document.location.origin, ''))
 
         if( raw.query_string ) {
             cleanURL = String(cleanURL).split('?')[0]
