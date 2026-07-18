@@ -189,18 +189,15 @@ const RootLayout = (): React.JSX.Element => {
             />}
         >
 
-
-            { alerts.length > 0 &&
-                <AlertGroup
-                    hasAnimations
-                    isToast
-                    isLiveRegion
-                    overflowMessage={overflowMessage}
-                    onOverflowClick={onAlertGroupOverflowClick}
-                >
-                    {alerts.slice(0, maxDisplayed)}
-                </AlertGroup>
-            }
+            <AlertGroup
+                hasAnimations
+                isToast
+                isLiveRegion
+                overflowMessage={overflowMessage}
+                onOverflowClick={onAlertGroupOverflowClick}
+            >
+                {alerts.slice(0, maxDisplayed)}
+            </AlertGroup>
 
             <PageGroup
                 id="page-main"
