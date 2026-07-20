@@ -364,9 +364,11 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkOther = [
+        // Note: prefixed `\n` to hr as markdown-it-front-matter tries to
+        // render as frontmatter open.
         {
             "name": "Other - Horizontal rule",
-            "markdown": "----",
+            "markdown": "\n----",
             "html": (
                 '<hr class="pf-v6-c-divider">'
             )
@@ -1090,6 +1092,172 @@ describe("Plugins", () => {
              */
             expect(String(rendered.innerHTML).replace(">\n", '>').replace("\n<", '<')).toBe(html)
         })
+
+
+
+    describe("front-matter", () => {
+
+        const frontMatterParams = [
+            {
+                "name": "Object, Single - Array",
+                "markdown": "---\ntitle:\n  - one\n---",
+                "expected": {
+                    title: [
+                        'one'
+                    ]
+                }
+            },
+            {
+                "name": "Object, Single - Boolean 0",
+                "markdown": "---\ntitle: false\n---",
+                "expected": {
+                    title: false
+                }
+            },
+            {
+                "name": "Object, Single - Boolean 1",
+                "markdown": "---\ntitle: true\n---",
+                "expected": {
+                    title: true
+                }
+            },
+            {
+                "name": "Object, Single - Number",
+                "markdown": "---\ntitle: 55\n---",
+                "expected": {
+                    title: 55
+                }
+            },
+            {
+                "name": "Object, Single - String",
+                "markdown": "---\ntitle: the value\n---",
+                "expected": {
+                    title: "the value"
+                }
+            },
+            {
+                "name": "Object, Single - Object of Boolean 0",
+                "markdown": "---\ntitle:\n  sub: false\n---",
+                "expected": {
+                    title: {
+                        sub: false
+                    }
+                }
+            },
+            {
+                "name": "Object, Single - Object of Boolean 1",
+                "markdown": "---\ntitle:\n  sub: true\n---",
+                "expected": {
+                    title: {
+                        sub: true
+                    }
+                }
+            },
+            {
+                "name": "Object, Single - Object of Number",
+                "markdown": "---\ntitle:\n  sub: 88\n---",
+                "expected": {
+                    title: {
+                        sub: 88
+                    }
+                }
+            },
+            {
+                "name": "Object, Single - Object of String",
+                "markdown": "---\ntitle:\n  sub: value\n---",
+                "expected": {
+                    title: {
+                        sub: "value"
+                    }
+                }
+            },
+            {
+                "name": "Object, Multiple - String",
+                "markdown": "---\ntitle: the value\ndescription: another value\n---",
+                "expected": {
+                    title: "the value",
+                    description: "another value"
+                }
+            },
+            {
+                "name": "Array - Boolean",
+                "markdown": "---\n- false\n- true\n---",
+                "expected": [
+                    false,
+                    true
+                ]
+            },
+            {
+                "name": "Array - Number",
+                "markdown": "---\n- 17\n- 37\n- 73\n---",
+                "expected": [
+                    17,
+                    37,
+                    73
+                ]
+            },
+            {
+                "name": "Array - Object of Boolean 0",
+                "markdown": "---\n- key: false\n---",
+                "expected": [
+                    { key: false}
+                ]
+            },
+            {
+                "name": "Array - Object of Boolean 1",
+                "markdown": "---\n- key: true\n---",
+                "expected": [
+                    { key: true}
+                ]
+            },
+            {
+                "name": "Array - Object of Number",
+                "markdown": "---\n- key: 37\n---",
+                "expected": [
+                    { key: 37}
+                ]
+            },
+            {
+                "name": "Array - Object of String",
+                "markdown": "---\n- key: value\n---",
+                "expected": [
+                    { key: "value"}
+                ]
+            },
+            {
+                "name": "Array - String",
+                "markdown": "---\n- one\n- two\n---",
+                "expected": [
+                    'one',
+                    'two'
+                ]
+            },
+        ]
+
+        test.each(frontMatterParams)(
+            "$name",
+            ({ markdown, expected, env = {} }) => {
+
+
+            let frontMatter = null
+
+            const mdCallBack = (value) => {
+                frontMatter = value;
+            }
+
+            render(
+                <RenderMarkdown
+                    env={env}
+                    frontmatterCallback={mdCallBack}
+                >
+                    {markdown}
+                </RenderMarkdown>
+            )
+
+            expect(JSON.stringify(frontMatter)).toBe(JSON.stringify(expected))
+
+        });
+    });
 
 });
 

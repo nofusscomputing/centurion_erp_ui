@@ -134,7 +134,7 @@ const Footer = ({
                         width: "33%"
                     }}
                 >
-                    Centurion ERP brought to you by <a href="https://nofusscomputing.com" target="new">No Fuss Computing</a></div>
+                    Centurion UI brought to you by <a href="https://nofusscomputing.com" target="new">No Fuss Computing</a></div>
                 <div
                     className="column right"
                     style={{

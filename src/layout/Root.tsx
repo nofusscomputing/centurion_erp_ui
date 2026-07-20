@@ -13,6 +13,7 @@ import {
 
 import {
     AlertGroup,
+    BackToTop,
     Breadcrumb,
     BreadcrumbHeading,
     BreadcrumbItem,
@@ -20,6 +21,7 @@ import {
     Divider,
     Page,
     PageBreadcrumb,
+    PageGroup,
     PageSection,
     Spinner,
     Title,
@@ -36,6 +38,7 @@ import {
     Notifications
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
+import { PageHeader } from "@patternfly/react-component-groups";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
@@ -128,6 +131,41 @@ const RootLayout = (): React.JSX.Element => {
 
     document.title = `${pageHeading}`
 
+    const rootPageBreadcrumb = (
+
+        <Breadcrumb>
+
+            <BreadcrumbItem>{params.module}</BreadcrumbItem>
+
+            <BreadcrumbItem
+                to={`/${params.module}/${params.model}`}
+                component = {(props) => <Link {...props} to={props.href} />}
+            >
+                {params.model}
+            </BreadcrumbItem>
+
+            {(params?.ticket_sub_model || params?.sub_model) &&
+            <BreadcrumbItem
+                to={`/${params.module}/${params.model}/${params.pk}`}
+                component = {(props) => <Link {...props} to={props.href} />}
+            >
+                {params.pk}
+            </BreadcrumbItem> }
+
+            {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
+
+            {params?.ticket_sub_model && <BreadcrumbItem>{params.ticket_sub_model}</BreadcrumbItem>}
+
+            {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbHeading>{pageHeading}</BreadcrumbHeading>}
+
+            {params.pk && ! params?.sub_model && ! params?.ticket_sub_model &&
+            <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
+
+        </Breadcrumb>
+
+    );
+
+
     return (
         <>
         { ! rootMetadata && <Spinner diameter="80px" aria-label="Page loading spinner" /> }
@@ -145,92 +183,82 @@ const RootLayout = (): React.JSX.Element => {
         >
         <Page
             isManagedSidebar
+            breadcrumb = {rootPageBreadcrumb}
+            breadcrumbProps={{
+                stickyOnBreakpoint: {
+                    md: 'top'
+                }
+            }}
             isContentFilled
-            //@ts-expect-error TS[2322]
             masthead = {<Header
                 isSidebarOpen = {isSidebarOpen}
                 onSidebarToggle = {onSidebarToggle}
             />}
+            mainContainerId={"scrollable-element"}
             notificationDrawer = {<Notifications />}
             isNotificationDrawerExpanded = {isNotificationsOpen}
-            //@ts-expect-error TS[2322]
             sidebar = {<Navbar
                 isSidebarOpen = {isSidebarOpen}
                 navigation_entries = {rootMetadata.navigation}
             />}
         >
 
-            <PageBreadcrumb
-                className="pf-m-sticky-top"
+            <AlertGroup
+                hasAnimations
+                isToast
+                isLiveRegion
+                overflowMessage={overflowMessage}
+                onOverflowClick={onAlertGroupOverflowClick}
             >
-                <Breadcrumb>
+                {alerts.slice(0, maxDisplayed)}
+            </AlertGroup>
 
-                    <BreadcrumbItem>{params.module}</BreadcrumbItem>
+            <PageGroup
+                id="page-main"
+                hasOverflowScroll
+            >
 
-                    <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}`}>{params.model}</Link>}</BreadcrumbItem>
+                <PageSection>
 
-                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbItem>{<Link to={`/${params.module}/${params.model}/${params.pk}`}>{params.pk}</Link>}</BreadcrumbItem> }
+                    {pageHeading && <Content>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                flexWrap: "wrap"
+                            }}
+                        >
+                            <Title headingLevel="h1" style={{ width: "50%", minWidth: "350px"}}>
+                                {pageHeading}
+                            </Title>
+                            <div style={{ width: "50%", textAlign: "right", minWidth: "350px"}}>{pageHeaderIcons}</div>
+                        </div>
 
-                    {params?.sub_model && <BreadcrumbItem>{params.sub_model}</BreadcrumbItem>}
+                        <Divider />
 
-                    {params?.ticket_sub_model && <BreadcrumbItem>{params.ticket_sub_model}</BreadcrumbItem>}
+                        <p>{pageDescription}</p>
 
-                    {(params?.ticket_sub_model || params?.sub_model) && <BreadcrumbHeading>{pageHeading}</BreadcrumbHeading>}
+                    </Content>}
 
-                    {params.pk && ! params?.sub_model && ! params?.ticket_sub_model && <BreadcrumbHeading to="#">{params.pk && pageHeading}</BreadcrumbHeading>}
+                </PageSection>
 
-                </Breadcrumb>
+                <Outlet context={{
+                    setPageDescription, setPageHeading, setPageHeaderIcons,
+                }}
+                />
+                <Footer
+                    api_version_data = {rootMetadata.version}
+                />
 
-            </PageBreadcrumb>
+            </PageGroup>
 
-            <PageSection>
-                <AlertGroup
-                    hasAnimations
-                    isToast
-                    isLiveRegion
-                    overflowMessage={overflowMessage}
-                    onOverflowClick={onAlertGroupOverflowClick}
-                >
-                    {alerts.slice(0, maxDisplayed)}
-                </AlertGroup>
-            </PageSection>
-
-            <PageSection>
-
-                {pageHeading && <Content>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            flexWrap: "wrap"
-                        }}
-                    >
-                        <Title headingLevel="h1" style={{ width: "50%", minWidth: "350px"}}>
-                            {pageHeading}
-                        </Title>
-                        <div style={{ width: "50%", textAlign: "right", minWidth: "350px"}}>{pageHeaderIcons}</div>
-                    </div>
-
-                    <Divider />
-
-                    <p>{pageDescription}</p>
-
-                    
-                </Content>}
-
-            </PageSection>
-
-            <Outlet context={{
-                setPageDescription, setPageHeading, setPageHeaderIcons
-            }}/>
-        
-            <Footer
-                api_version_data = {rootMetadata.version}
-            />
+            <BackToTop scrollableSelector="#page-main" />
 
         </Page>
+
         </NotificationContext.Provider>
-        }</>
+        }
+        </>
     );
 }
 
