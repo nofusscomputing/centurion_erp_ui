@@ -10,6 +10,8 @@ import {
     JumpLinks,
     JumpLinksItem,
     JumpLinksList,
+    Label,
+    LabelGroup,
     PageSection,
     Sidebar,
     SidebarContent,
@@ -20,6 +22,7 @@ import {
 import RenderMarkdown from "../functions/RenderMarkdown";
 import { useIsMobile } from "../hooks/useIsMobile";
 
+import { TagIcon } from "@patternfly/react-icons/dist/esm/icons/tag-icon"
 
 
 function getHeadings( root = null ) {
@@ -220,7 +223,9 @@ const Markdown = (): React.JSX.Element => {
 
     return (
         <>
-            <PageSection>
+            <PageSection
+                padding={{ default: 'noPadding'}}
+            >
                 <Sidebar
                     isPanelRight
                 >
@@ -248,6 +253,21 @@ const Markdown = (): React.JSX.Element => {
 
                     </SidebarPanel>}
                     <SidebarContent>
+                        {markdownDocumentFrontMatter?.tags &&
+                        <PageSection>
+
+                            <LabelGroup
+                                categoryName = "Tags"
+                            >
+                                {markdownDocumentFrontMatter.tags.map(tag => {
+
+                                    return (
+                                        <Label icon={<TagIcon />}>{tag}</Label>
+                                    );
+                                })}
+                            </LabelGroup>
+                        </PageSection>}
+
                         <PageSection>
 
                             <Content>
