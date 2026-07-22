@@ -32,7 +32,6 @@ import {
 import {
     EllipsisVIcon,
     OutlinedCommentIcon,
-    RhMicronsCaretRightIcon,
 } from '@patternfly/react-icons';
 
 import {apiFetch } from "../hooks/apiFetch"
@@ -825,11 +824,10 @@ export const Comment = ({
             { (comment_page_data?._urls?.threads || start_thread ) &&
             <ExpandableSection
                 isExpanded = { isExpanded }
-                // onToggle={() => setIsExpanded( ! isExpanded )}
                 onToggle={onToggle}
                 style={{
-                    borderBottom: "1px groove var(--pf-t--global--border--color--100)",
-                    borderLeft: "1px groove var(--pf-t--global--border--color--100)",
+                    borderBottom: "1px groove var(--pf-t--global--border--color--subtle",
+                    borderLeft: "1px groove var(--pf-t--global--border--color--subtle)",
                     margin: "0",
                     marginBottom: "var(--pf-t--global--spacer--sm)",
                     marginTop: "calc( var(--pf-t--global--spacer--sm) * -1)",
@@ -839,7 +837,6 @@ export const Comment = ({
                 toggleContent = {
                     <Title headingLevel="h3">Replies</Title>
                 }
-                toggleIcon={<RhMicronsCaretRightIcon/>}
             >
             <FlexItem>
                 <Comments
