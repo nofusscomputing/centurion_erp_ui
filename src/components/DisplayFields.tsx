@@ -1,4 +1,6 @@
 import {
+    Dispatch,
+    SetStateAction,
     useContext,
     useEffect,
     useState
@@ -89,14 +91,13 @@ type FieldsProps = {
     /**
      * Callback when the form changes.
      */
-    onChange: () => void
+    onChange: Dispatch<SetStateAction<object>>
 
     /**
      * After each form field, add a divider.
      */
     useDivider?: boolean
 }
-
 
 
 /** 
@@ -170,6 +171,7 @@ export const Fields = ({
                 return (
                     <FlexItem
                         direction={{ default: 'column' }}
+                        key = { `field-${field}` }
                     >
                         <label
                             style={{

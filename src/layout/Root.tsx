@@ -214,6 +214,7 @@ const RootLayout = (): React.JSX.Element => {
             </AlertGroup>
 
             <PageGroup
+                aria-label="Page"
                 id="page-main"
                 hasOverflowScroll
             >
