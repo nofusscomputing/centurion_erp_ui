@@ -247,7 +247,6 @@ export const Comments = ({
                     
                     return (
                         comments.comments[key] &&
-                        <>
                         <ListItem
                             icon = {<OutlinedCommentIcon />}
                             key={'li-ticket-comment-' + comments.comments[key].id}
@@ -266,7 +265,6 @@ export const Comments = ({
                             />}
                             </>
                         </ListItem>
-                        </>
                     )
                 })}
 
