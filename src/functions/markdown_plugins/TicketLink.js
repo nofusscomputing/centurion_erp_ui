@@ -81,6 +81,7 @@ function ticket_link (state, silent) {
             <IconLoader
               key={begining}
               name={'ticket_status_'+String(state.env.tickets[item_link.groups.model_id].status).toLowerCase().replace(' ', '_').replace('(', '').replace(')', '')}
+              size = "lg"
               fill="#777"
             />
           )

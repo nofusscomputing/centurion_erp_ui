@@ -290,7 +290,7 @@ const SvgIcon = ({ src, ...kwargs }) => {
     }, [src]);
 
     return (
-        <Icon size={size}>
+        <Icon size={size} iconSize="xl">
             {svg && <span ref={el => el?.appendChild(svg)} />}
         </Icon>
     );
