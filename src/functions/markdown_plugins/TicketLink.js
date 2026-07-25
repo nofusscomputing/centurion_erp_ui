@@ -115,7 +115,7 @@ function ticket_link (state, silent) {
           item_o.attrPush(["class", "sub-script metadata"])
 
           const item_t = state.push('text', '', 0)
-          item_t.content = String( state.env.tickets[item_link.groups.model_id].ticket_type ) + ' '
+          item_t.content = String( state.env.tickets[item_link.groups.model_id].type ) + ' '
 
         const item_c = state.push('item_close', 'span', -1)
 
