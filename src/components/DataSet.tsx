@@ -383,7 +383,7 @@ export type DataSetCardProps<T extends React.ElementType = React.ElementType> = 
  * @since 0.9.0
  * 
  */
-export const DataSetCard = <
+export const DataSetCards = <
     T extends React.ElementType = React.ElementType
 >({
     component,
