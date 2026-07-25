@@ -22,6 +22,21 @@ interface APIMetadata {
     description: String;
 
     /**
+     * Allowed HTTP methods.
+     * 
+     * The backend should update these as per the users permissions.
+     */
+    allowed_methods: [
+        'DELETE'?,
+        'GET'?,
+        'HEAD'?,
+        'PATCH'?,
+        'POST'?,
+        'PUT'?,
+        'OPTIONS'?,
+     ]
+
+    /**
      * Link to the objects documentation.
      */
     documentation: String;
@@ -158,13 +173,13 @@ interface UILayout {
      * a link to any of the urls within {@link APIDataObject}
      * 
      * @example
-    ``` json
-    {
-        "field": "<name of the field to render as link>",
-        "type": "link",
-        "key": "<name of the url key under _object._urls to use as the link>"
-    }
-    ```
+     * ``` json
+     * {
+     *     "field": "<name of the field to render as link>",
+     *     "type": "link",
+     *     "key": "<name of the url key under _object._urls to use as the link>"
+     * }
+     * ```
      *
      * Normally the key for the url to use would be `_self` as this provides
      * for using any of the objects fields to link to its own data view page.
