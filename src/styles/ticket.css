@@ -76,19 +76,20 @@ div.ticket .related-tickets .icon svg {
   align-self: center;
 }
 
-div.ticket section.related-tickets .ticket-related-blocks svg {
+
+.ticket-dependency-blocks svg {
   background-color: #fcd5b1;
   border-radius: 10px;
   fill: #e79b37;
 }
 
-div.ticket section.related-tickets .ticket-related-blocked_by svg {
+.ticket-dependency-blockedby svg {
   background-color: #f3c6c6;
   border-radius: 10px;
   fill: #ff1c1c;
 }
 
-div.ticket section.related-tickets .ticket-related-related svg {
+.ticket-dependency-related svg {
   background-color: #afdbff;
   border-radius: 10px;
   fill: #0b91ff;
