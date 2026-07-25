@@ -41,7 +41,7 @@ import IconLoader from "./IconLoader"
 
 import UserContext from "../hooks/UserContext"
 import URLSanitize from "../functions/URLSanitize";
-import { ListItem } from "./ListItem";
+import ListItem from "./ListItem";
 
 
 

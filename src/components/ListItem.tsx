@@ -14,7 +14,7 @@ import styles from '@patternfly/react-styles/css/components/List/list';
 /** Props for ListItem
  * 
  * @category Props
- * @since v0.12.0 
+ * @since 0.12.0 
  */
 export interface ListItemProps extends React.HTMLProps<HTMLLIElement> {
   /**
@@ -38,18 +38,24 @@ export interface ListItemProps extends React.HTMLProps<HTMLLIElement> {
  * This `ListItem` provides customization for the list object to have elements
  * displayed as `block` elements.
  * 
+ * ## Origin
+ * 
+ * This custom component is/was required as the PatternFly component of the
+ * same name only worked with string objects.
+ * 
  * @summary `ListItem` with support for block items
  * 
  * @category Component
- * @since v0.12.0 
+ * @since 0.12.0 
  */
-export const ListItem: React.FunctionComponent<ListItemProps> = ({
+// const ListItem: React.FunctionComponent<ListItemProps> = ({
+const ListItem = ({
   className,
   children = null,
   icon = null,
   isBlock = false,
   ...props
-}: ListItemProps) => {
+}: ListItemProps): React.JSX.Element => {
 
     return (
 
@@ -89,4 +95,6 @@ export const ListItem: React.FunctionComponent<ListItemProps> = ({
 
 }
 
-ListItem.displayName = 'ListItem';
+// ListItem.displayName = 'ListItem';
+
+export default ListItem;
