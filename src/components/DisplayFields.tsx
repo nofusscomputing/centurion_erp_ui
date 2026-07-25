@@ -46,7 +46,7 @@ import URLSanitize from "../functions/URLSanitize";
  * @category Type
  * @since 0.9.0
  */
-type FieldsProps = {
+export type FieldsProps = {
 
     /**
      * Form errors.
