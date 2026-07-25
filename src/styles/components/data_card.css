@@ -1,0 +1,4 @@
+.data-card .item:hover {
+
+  background : var(--pf-t--global--background--color--control--default);
+}

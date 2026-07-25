@@ -67,11 +67,6 @@ div.ticket .related-tickets .items {
   justify-content: space-between;
 }
 
-div.ticket .related-tickets .item:hover,
-div.ticket .linked-items .item:hover {
-  filter: brightness(90%);
-  background:#ffffff;
-}
 
 div.ticket .related-tickets div.items div.item div {
   height: 24px;
