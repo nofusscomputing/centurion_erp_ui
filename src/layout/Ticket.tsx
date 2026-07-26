@@ -37,7 +37,7 @@ import urlBuilder from "../hooks/urlBuilder";
 import UserContext from "../hooks/UserContext";
 import URLSanitize from "../functions/URLSanitize";
 import { useNotificationActions } from "../hooks/useNotificationActions";
-import DataCard from "../components/DataCard";
+import DataCard from "../components/CardDataSet";
 
 
 /**
