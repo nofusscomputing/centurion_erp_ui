@@ -21,6 +21,9 @@ import {
     Dropdown,
     DropdownItem,
     DropdownList,
+    EmptyState,
+    EmptyStateBody,
+    EmptyStateVariant,
     Flex,
     FlexItem,
     MenuToggle,
@@ -40,6 +43,7 @@ import {
 import FieldData from "../functions/FieldData";
 import IconLoader from "./IconLoader";
 import URLSanitize from "../functions/URLSanitize";
+import { SearchIcon } from "@patternfly/react-icons";
 
 
 /**
@@ -565,6 +569,18 @@ export const DataSetList = <
 
     });
 
+    const emptyState = (
+        <EmptyState
+            headingLevel = "h4"
+            titleText = "Nothing Found"
+            variant = {EmptyStateVariant.sm}
+            icon = {SearchIcon}
+        >
+            <EmptyStateBody>
+                There are no results.
+            </EmptyStateBody>
+        </EmptyState>
+    );
 
     if( isDraggable ) {
 
@@ -573,7 +589,8 @@ export const DataSetList = <
 
         return (
             <Component {...componentProps}>
-            
+                <>
+                {rowData.meta.pagination.count > 0 &&
                 <DragDropSort
                     items={items}
                     onDrop={(_, newItems) => {
@@ -583,7 +600,10 @@ export const DataSetList = <
                     overlayProps={{ isCompact: isCompact }}
                 >
                     <DataList aria-label="draggable data list example" isCompact={isCompact} />
-                </DragDropSort>
+                </DragDropSort>}
+
+                {rowData.meta.pagination.count === 0 && emptyState}
+                </>
             </Component>
         );
     }
@@ -596,10 +616,12 @@ export const DataSetList = <
                 id = "dataset-list"
                 isCompact={isCompact}
             >
-
+                <>
                 {/* @ts-ignore @TS-2322 - is not assignable to type 'ReactNode' */}
-                {dataListRows}
+                {rowData.meta.pagination.count > 0 && dataListRows}
 
+                {rowData.meta.pagination.count === 0 && emptyState}
+                </>
             </DataList>
         </Component>
     );
