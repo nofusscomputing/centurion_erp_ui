@@ -2,6 +2,12 @@
     "results": [
         {
             "id": 1,
+            "how_related_icon": [
+                {
+                    "name": "ticket_related_related",
+                    "style": "ticket-dependency-related"
+                }
+            ],
             "display_name": {
                 "markdown": "#1234",
                 "render": {
