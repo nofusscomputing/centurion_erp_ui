@@ -116,20 +116,14 @@ const Navbar = ({
 
                             return (
                                 <NavExpandable
-                                    title={(
-                                        <>
-                                            <IconLoader
-                                                name = {'icon' in module ? String(module.icon) : String(module.name)}
-                                                size = "lg"
-                                            />
-                                            <span style={{marginRight: "var(--pf-v6-c-nav__link--ColumnGap)"}}></span>
-                                            {module.display_name}
-                                        </>
-                                    )}
                                     groupId={`navigation-${module.name}-${index}`}
                                     isActive={activeGroup === groupId}
                                     isExpanded={activeGroup === groupId}
+                                    icon={<IconLoader
+                                        name = {'icon' in module ? String(module.icon) : String(module.name)}
+                                    />}
                                     key={`navigation-${module.name}-${index}`}
+                                    title = {module.display_name}
                                 >
                                     {module.pages.map((page, page_index) => {
 

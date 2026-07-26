@@ -1,4 +1,6 @@
 import {
+    Dispatch,
+    SetStateAction,
     useContext,
     useEffect,
     useState
@@ -44,7 +46,7 @@ import URLSanitize from "../functions/URLSanitize";
  * @category Type
  * @since 0.9.0
  */
-type FieldsProps = {
+export type FieldsProps = {
 
     /**
      * Form errors.
@@ -89,14 +91,13 @@ type FieldsProps = {
     /**
      * Callback when the form changes.
      */
-    onChange: () => void
+    onChange: Dispatch<SetStateAction<object>>
 
     /**
      * After each form field, add a divider.
      */
     useDivider?: boolean
 }
-
 
 
 /** 
@@ -138,10 +139,11 @@ export const Fields = ({
 
             return(
                     <FieldData
-                        full_width = {true}
-                        metadata={objectMetadata}
-                        field_name={field}
                         data={objectData}
+                        field_name={field}
+                        full_width = {true}
+                        key = { `field-${field}` }
+                        metadata={objectMetadata}
                     />
             );
 
@@ -150,19 +152,19 @@ export const Fields = ({
             if( isEdit || isCreate ) {
 
                 return (
-                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
                         formState = {formState}
                         isCreate = {isCreate}
                         isEdit = {isEdit}
+                        key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
                         onChange = {onChange}
-                    />
-                    { useDivider && <Divider />}
-                    </>
+                    >
+                        { useDivider && <Divider />}
+                    </FormField>
                 );
                 
             } else {
@@ -170,6 +172,7 @@ export const Fields = ({
                 return (
                     <FlexItem
                         direction={{ default: 'column' }}
+                        key = { `field-${field}` }
                     >
                         <label
                             style={{
@@ -195,8 +198,9 @@ export const Fields = ({
             if( ! isEdit && ! isCreate && ! isFieldEdit?.[field]) {
 
                 return(
-                    <>
-                    <DescriptionListGroup>
+                    <DescriptionListGroup
+                        key = { `field-${field}` }
+                    >
                         <DescriptionListTerm>
                             {objectMetadata.fields[field]?.label}
                             { ! Boolean(objectMetadata.fields[String(field).endsWith('_badge') ? String(field).replace('_badge', '') : field]?.read_only) &&
@@ -218,7 +222,6 @@ export const Fields = ({
                         </DescriptionListDescription>
                         { useDivider && <Divider />}
                     </DescriptionListGroup>
-                    </>
                 );
 
             }

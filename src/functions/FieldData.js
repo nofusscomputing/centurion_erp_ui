@@ -175,7 +175,7 @@ export default function FieldData({
                                     className = {icon.style}
                                     key = {`field-${field_name}-icon-${icon.name}`}
                                 >
-                                    <IconLoader name={icon.name} fill={null} height='20px' width='20px' />
+                                    <IconLoader size="lg" name={icon.name} fill={null} height='20px' width='20px' />
                                 </span>
                             )
                         })}

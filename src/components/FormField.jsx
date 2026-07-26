@@ -56,7 +56,7 @@ import UserContext from "../hooks/UserContext";
  * @param {boolean} param.isInlineEdit Is the field being edited inline.
  * @param {object} param.objectData object as received from API.
  * @param {object} param.objectMetadata object metadata as received from API.
- * @param {function} param.onChange State hook to save stat_event.
+ * @param {import("react").Dispatch<import("react").SetStateAction<<object>>} param.onChange State hook to save stat_event.
  * 
  * @returns Desired Form Field as a ready to place component.
  */
