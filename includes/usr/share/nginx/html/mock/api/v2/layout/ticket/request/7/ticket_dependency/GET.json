@@ -9,6 +9,7 @@
                         "1234": {
                             "status": "Closed",
                             "title": "Random related ticket",
+                            "type": "request",
                             "url": "/itim/ticket/requestticket/1234"
                         }
                     }
