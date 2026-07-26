@@ -14,7 +14,6 @@ import {
 } from "react-router";
 
 import {
-    AlertVariant,
     Button,
     Card,
     CardBody,
@@ -36,7 +35,6 @@ import { Fields } from "../components/DisplayFields";
 import urlBuilder from "../hooks/urlBuilder";
 import UserContext from "../hooks/UserContext";
 import URLSanitize from "../functions/URLSanitize";
-import { useNotificationActions } from "../hooks/useNotificationActions";
 import DataCard from "../components/CardDataSet";
 
 
@@ -122,19 +120,9 @@ const Ticket = (): React.JSX.Element => {
     }, [actionData])
 
 
-    const { addNewNotification } = useNotificationActions();
-
     useEffect(() => {
 
         document.title = `${metadata.name}`
-
-
-        addNewNotification(
-            "dsf",
-            "sdas",
-            AlertVariant.info
-            
-        )
 
 
     }, [ metadata ])
