@@ -35,7 +35,7 @@ import { Fields } from "../components/DisplayFields";
 import urlBuilder from "../hooks/urlBuilder";
 import UserContext from "../hooks/UserContext";
 import URLSanitize from "../functions/URLSanitize";
-import DataCard from "../components/CardDataSet";
+import CardDataSet from "../components/CardDataSet";
 
 
 /**
@@ -325,13 +325,13 @@ const Ticket = (): React.JSX.Element => {
                                 { ! new_ticket &&
                                 <>
 
-                                <DataCard
+                                <CardDataSet
                                     hasRowDelete = {true}
                                     isExpandable = {true}
                                     url = { URLSanitize(ticket_data?._urls?.ticket_dependencies) }
                                 />
 
-                                <DataCard
+                                <CardDataSet
                                     hasRowDelete = {true}
                                     isExpandable = {true}
                                     url = { URLSanitize(ticket_data?._urls?.linked_models) }
