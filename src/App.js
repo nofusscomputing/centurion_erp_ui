@@ -189,7 +189,10 @@ function App() {
 
                                 <Route path=':subModel'>
 
-                                    <Route path=':subModkPk'>
+                                    <Route path=':subModkPk'
+                                        action={APISubmitAction}
+                                        shouldRevalidate={() => false}
+                                    >
 
                                         <Route path=":subSubModel"
                                             action={APISubmitAction}

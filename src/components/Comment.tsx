@@ -125,6 +125,30 @@ export const Comments = ({
 
             } else if( fetcher.data.status_code === 200 ) {
 
+                if( String(fetcher.data.method).toLowerCase() == 'post' ) {
+
+                    setRelaod(true);
+
+                }else if( String(fetcher.data.method).toLowerCase() == 'patch' ) {
+
+                    setComments((prevState) => ({
+                        fetch_url: prevState.fetch_url,
+                        comments : Object.fromEntries(
+                            Object.entries(prevState.comments).map(
+                                ([key, value]) => {
+
+                                    if( fetcher.data.body.id == key ) {
+                                        value = fetcher.data.body
+                                    }
+                                    
+                                    return [key, value]
+                                }
+                            )
+                        )
+                    }));
+                }
+            }
+
             if( fetcher.data.errors?.message ) {
 
                 addNewNotification(
@@ -502,6 +526,9 @@ export const Comment = ({
     )
 
 
+    useEffect(() => {
+        setCommentPageData(objectData)
+    }, [ objectData ]);
 
     useEffect(() => {
 

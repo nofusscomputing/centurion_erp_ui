@@ -771,7 +771,8 @@ export async function APISubmitAction({
     let actionReturn = {
         // errors: {},    // Don't include this key by default. its existance denotes an error has occured.
         ok: false,
-        body: null
+        body: null,
+        method: request.method
     }
 
     const update = await apiFetch(
