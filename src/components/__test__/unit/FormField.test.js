@@ -183,7 +183,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {options}
-                    onChange = {null}
                 />
             );
 
@@ -221,7 +220,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -258,7 +256,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -294,7 +291,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -408,7 +404,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -449,7 +444,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {options}
-                    onChange = {null}
                 />
             );
 
@@ -487,7 +481,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -521,7 +514,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -557,7 +549,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 
@@ -681,7 +672,6 @@ describe("FormField", () => {
                     isCreate = {isCreate}
                     objectData = {data}
                     objectMetadata = {testMetadata}
-                    onChange = {null}
                 />
             );
 

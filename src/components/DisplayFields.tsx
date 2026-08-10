@@ -161,7 +161,6 @@ export const Fields = ({
                         key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
-                        onChange = {onChange}
                     >
                         { useDivider && <Divider />}
                     </FormField>
@@ -235,7 +234,6 @@ export const Fields = ({
 
             if(field in objectMetadata.fields ) {
                 return (
-                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
@@ -247,11 +245,10 @@ export const Fields = ({
                             setIsFieldEdit(!isFieldEdit)
                             onChange({})
                         }}
+                        key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
-                        onChange = {onChange}
                     />
-                    </>
                 );
             } else {
                 return;
@@ -697,44 +694,34 @@ export async function APISubmitAction({
 
     const data = await request.formData();
 
-    const metadata = JSON.parse(data.get('metadata'));
+    const formFields = Object.fromEntries(data.entries());
 
-    if( !metadata ) {
+    const metadata = JSON.parse(formFields.metadata);
+
+    if( ! formFields.metadata ) {
+
+        throw new Error('metadata field must be provided in the submitted form');
+
+    }
+
+
+    if( ! formFields.tz ) {
 
         throw new Error('metadata field must be provided in the submitted form');
 
     }
 
-    const formState = JSON.parse(data.get('formState'));
-
-    if( !formState ) {
-
-        throw new Error('formState field must be provided in the submitted form');
-
-    }
-
-    const timezone = data.get('tz');
-
-    if( !timezone ) {
-
-        throw new Error('metadata field must be provided in the submitted form');
-
-    }
 
     let form_data = {}
 
-    for (const [fieldName, fieldValue] of Object.entries(formState)) {
-
-        if( ['metadata', 'tz'].includes( fieldName ) ) {
-
-            continue;
-        }
-
+    for (const [fieldName, fieldValue] of Object.entries(formFields)) {
 
         if( ! metadata.fields.hasOwnProperty(fieldName) ) {    // field not part of request
 
             continue;
+
         }
+
 
         let value = '';
 
@@ -746,7 +733,7 @@ export async function APISubmitAction({
                 value = FormatTime({
                     time: String(fieldValue),
                     iso: true,
-                    tz: timezone
+                    tz: formFields.tz
                 });
 
                 break;

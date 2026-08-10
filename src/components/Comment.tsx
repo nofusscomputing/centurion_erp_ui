@@ -802,12 +802,11 @@ export const Comment = ({
                         method={isCreate ? "POST" : "PATCH"}
                         navigate={false}
                         onSubmit={() => {
-                                setFormState({})
+                                setIsEditing(false)
                         }}
                     >
                         {CommentCard}
 
-                        <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
                         <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(commentMetadata)} />
                         <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 

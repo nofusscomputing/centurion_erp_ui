@@ -1,6 +1,7 @@
 import {
     useContext,
     useRef,
+    useState,
 } from "react";
 
 import {
@@ -56,7 +57,6 @@ import UserContext from "../hooks/UserContext";
  * @param {boolean} param.isInlineEdit Is the field being edited inline.
  * @param {object} param.objectData object as received from API.
  * @param {object} param.objectMetadata object metadata as received from API.
- * @param {import("react").Dispatch<import("react").SetStateAction<<object>>} param.onChange State hook to save stat_event.
  * 
  * @returns Desired Form Field as a ready to place component.
  */
@@ -70,12 +70,13 @@ const FormField = ({
     isInlineEdit = false,
     objectData,
     objectMetadata,
-    onChange = null,
 }) => {
 
     if( String(fieldName).endsWith('_badge') && isEdit) {
         fieldName = String(fieldName).replace('_badge', '')
     }
+
+    const [ fieldState, setFieldState ] = useState(null);
 
 
     let dataFieldType = objectMetadata.fields[fieldName].type;
@@ -88,6 +89,7 @@ const FormField = ({
 
             break;
     }
+
 
     const readOnly = Boolean(objectMetadata.fields[fieldName].read_only)
 
@@ -123,6 +125,7 @@ const FormField = ({
         return;
     }
 
+
     if( !formState ) {
 
         throw Error("field formState is required to render a form field.")
@@ -134,25 +137,7 @@ const FormField = ({
 
         let field_value = _event.target.value;
 
-        if( field_value === '' ) {
-
-            onChange((prevState) => {
-
-                const next = { ...prevState };
-
-                delete next[_event.target.name];
-
-                return next;
-
-            });
-
-            return;
-
-        } else if( _event.target.type === 'checkbox' ) {
-
-            field_value = _event.target.checked;
-
-        } else if( _event.target.type === 'select-one' ) {
+        if( _event.target.type === 'select-one' ) {
 
             field_value = Number(field_value);
 
@@ -172,8 +157,7 @@ const FormField = ({
             field_value = select_val;
         }
 
-
-        onChange((prevState) => ({ ...prevState, [_event.target.name]: field_value }));
+        setFieldState(field_value)
 
     }
 
@@ -190,8 +174,7 @@ const FormField = ({
                         id="simple-switch"
                         key = {fieldName}
                         name = {fieldName}
-                        isChecked={fieldData}
-                        onChange={handleFieldChange}
+                        defaultChecked={fieldData}
                         ouiaId="BasicSwitch"
                     />
                 );
@@ -206,12 +189,17 @@ const FormField = ({
                         const options = { "component": [] }
 
                         if(
-                            ( typeof(choice.value) === 'number' && Number(fieldData) == choice.value )
-                            ||
-                            ( typeof(choice.value) === 'string' && String(fieldData) == choice.value )
+                            (
+                                ( typeof(choice.value) === 'number' && Number(fieldData) == choice.value )
+                                    ||
+                                ( typeof(choice.value) === 'string' && String(fieldData) == choice.value )
+                            )
+                                &&
+                            fieldState === null
                         ) {
 
                             selectedOption = choice.value;
+                            setFieldState(choice.value)
 
                         }
 
@@ -233,7 +221,7 @@ const FormField = ({
                         name = {fieldName}
                         onChange={handleFieldChange}
                         ouiaId="BasicFormSelect"
-                        value={selectedOption}
+                        value = {fieldState}
                     >
                         <FormSelectOption isDisabled={false} key="empty" value={null} label={''} />
                         {selectOptions}
@@ -280,10 +268,9 @@ const FormField = ({
                         id = {fieldName}
                         key = {fieldName}
                         name = {fieldName}
-                        onChange = {handleFieldChange}
                         readOnly = {readOnly ? null : undefined}
                         type = {inputFieldType}
-                        value = {fieldData}
+                        defaultValue = {fieldData}
                     />
                 );
 
@@ -296,10 +283,9 @@ const FormField = ({
                         id = {fieldName}
                         key = {fieldName}
                         name = {fieldName}
-                        onChange = {handleFieldChange}
                         readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
-                        value = {fieldData}
+                        defaultValue = {fieldData}
                     />
                 );
 
@@ -319,7 +305,6 @@ const FormField = ({
                         id = {fieldName}
                         objectData = {objectData}
                         name = {fieldName}
-                        onChange = {handleFieldChange}
                         readOnly = {readOnly ? null : undefined}
                         resizeOrientation = "vertical"
                         value = {markdownFieldData}
@@ -333,7 +318,6 @@ const FormField = ({
                         name = {fieldName}
                         isCreate = {isCreate}
                         isEdit = {isEdit}
-                        onChange = {handleFieldChange}
                         pageData = {objectData}
                         pageMetadata = {objectMetadata}
                     />

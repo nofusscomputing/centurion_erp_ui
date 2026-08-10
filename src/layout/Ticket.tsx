@@ -309,7 +309,8 @@ const Ticket = (): React.JSX.Element => {
                                 {editing_description && 
                                     <Form
                                         className = "pf-v6-c-form pf-m-vertical"
-                                        id={'create-' + ticketElementId()} method="PATCH" action={String(document.location.href).replace(document.location.origin, '')}
+                                        id={'create-' + ticketElementId()}
+                                        method="PATCH"
                                         onSubmit={(e) => {
                                             
                                             setFormState({})
@@ -317,6 +318,9 @@ const Ticket = (): React.JSX.Element => {
                                         }}
                                     >
                                         {ticketDescriptionCard}
+
+                                        <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(ticket_metadata)} />
+                                        <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
                                     </Form>}
 
                                 {!editing_description &&
@@ -422,8 +426,7 @@ const Ticket = (): React.JSX.Element => {
             >
                 {ticketLayout}
 
-                <input id="formState" type="hidden" name="formState" value={JSON.stringify({...ticketDescriptionState, ...formState})} />
-                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(comment_metadata)} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(ticket_metadata)} />
                 <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
             </Form>
         )
