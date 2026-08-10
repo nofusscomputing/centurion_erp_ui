@@ -64,7 +64,7 @@ import UserContext from "../hooks/UserContext";
 const FormField = ({
     errorState,
     fieldName,
-    FormComponent,
+    FormComponent = Form,
     formState,
     inlineEditCancel,
     isEdit = false,
