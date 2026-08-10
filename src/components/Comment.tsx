@@ -32,6 +32,7 @@ import {
 import {
     EllipsisVIcon,
     OutlinedCommentIcon,
+    OutlinedCommentsIcon,
 } from '@patternfly/react-icons';
 
 import {apiFetch } from "../hooks/apiFetch"
@@ -248,7 +249,7 @@ export const Comments = ({
                     return (
                         comments.comments[key] &&
                         <ListItem
-                            icon = {<OutlinedCommentIcon />}
+                            icon = { comments.comments[key]._urls?.threads ? <OutlinedCommentsIcon /> : <OutlinedCommentIcon />}
                             key={'li-ticket-comment-' + comments.comments[key].id}
                             style={{
                                 marginBottom: 'var(--pf-t--global--spacer--md)',
