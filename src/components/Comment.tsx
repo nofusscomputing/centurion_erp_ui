@@ -10,6 +10,7 @@ import {
 } from "react-router"
 
 import {
+    AlertVariant,
     Button,
     Card,
     CardBody,
@@ -43,6 +44,7 @@ import IconLoader from "./IconLoader"
 import UserContext from "../hooks/UserContext"
 import URLSanitize from "../functions/URLSanitize";
 import ListItem from "./ListItem";
+import { useNotificationActions } from "../hooks/useNotificationActions";
 
 
 
@@ -83,6 +85,8 @@ export const Comments = ({
     comments_url,
 }: CommentsProps): React.JSX.Element => {
 
+    const { addNewNotification } = useNotificationActions();
+
     const fetcher = useFetcher();
 
     const [ metadata, setCommentMetadata ] = useState( null )
@@ -121,7 +125,16 @@ export const Comments = ({
 
             } else if( fetcher.data.status_code === 200 ) {
 
-                setRelaod(true);
+            if( fetcher.data.errors?.message ) {
+
+                addNewNotification(
+                    "Form not submitted",
+                    fetcher.data.errors.message,
+                    AlertVariant.danger,
+                    true
+                    
+                )
+        
             }
         }
 
@@ -259,6 +272,7 @@ export const Comments = ({
                             <>
                             { ! metadata && <Skeleton /> }
                             { metadata && <Comment
+                                errorState = {fetcher.data}
                                 FormComponent = {fetcher.Form}
                                 key={'ticket-comment-' + comments.comments[key].id}
                                 objectData = {comments.comments[key]}
@@ -286,6 +300,7 @@ export const Comments = ({
                         { ! metadata && <Skeleton /> }
                         { metadata && 
                         <Comment
+                            errorState = {fetcher.data}
                             FormComponent = {fetcher.Form}
                             isCreate = {true}
                             objectMetadata={metadata}
@@ -354,7 +369,7 @@ export type CommentProps = {
  * @since 0.1.0
  */
 export const Comment = ({
-
+    errorState = undefined,
     FormComponent = Form,
     isCreate = false,
     objectData,
@@ -693,7 +708,7 @@ export const Comment = ({
                     >
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 (( (isCreate || isEdit) && commentMetadata.fields.source) || ( (!isEdit && !isCreate) && comment_page_data.source)) && 'source',
                                 (( (isCreate || isEdit) && commentMetadata.fields.status) || ( (!isEdit && !isCreate) && comment_page_data.status)) && 'status',
@@ -716,7 +731,7 @@ export const Comment = ({
                         <Divider />
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 'body'
                             ]}
@@ -736,7 +751,7 @@ export const Comment = ({
                     >
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 (( (isCreate || isEdit) && commentMetadata.fields.planned_start_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_start_date)) && 'planned_start_date',
                                 (( (isCreate || isEdit) && commentMetadata.fields.planned_finish_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_finish_date)) && 'planned_finish_date',
