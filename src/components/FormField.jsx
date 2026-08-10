@@ -50,6 +50,7 @@ import UserContext from "../hooks/UserContext";
  * 
  * @param {array<Object>} param.errorState Any found errors.
  * @param {string} param.fieldName name of the field. This is the name of the key within the API object.
+ * @param {React.JSX.Element} param.FormComponent the form component to use
  * @param {object} param.formState State of any edits within the form.
  * @param {function} param.inlineEditCancel Callback to run when inline edit cancel is pressed.
  * @param {boolean} param.isCreate Is new field data being added
@@ -63,6 +64,7 @@ import UserContext from "../hooks/UserContext";
 const FormField = ({
     errorState,
     fieldName,
+    FormComponent,
     formState,
     inlineEditCancel,
     isEdit = false,
@@ -392,7 +394,8 @@ const FormField = ({
         <>
         { isInlineEdit &&
             <>
-            <Form
+            <FormComponent
+                action = {String(document.location.href).replace(document.location.origin, '')}
                 className = "pf-v6-c-form"
                 id={'edit-' + fieldName} method="PATCH"
                 navigate = {false}
@@ -402,10 +405,6 @@ const FormField = ({
                         
                         inlineEditCancel();
 
-                    } else {
-
-                        onChange({})
-
                     }
                 }}
             >
@@ -414,7 +413,7 @@ const FormField = ({
                 <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
                 <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(objectMetadata)} />
                 <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
-            </Form>
+            </FormComponent>
             </>
         }
         { ! isInlineEdit && formGroup }

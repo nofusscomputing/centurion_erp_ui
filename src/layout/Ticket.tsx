@@ -8,6 +8,7 @@ import React, {
 import {
     Form,
     useActionData,
+    useFetcher,
     useLoaderData,
     useOutletContext,
     useParams
@@ -75,6 +76,8 @@ const Ticket = (): React.JSX.Element => {
     const actionData = useActionData();
 
     const [comment_metadata, setCommentMetaData] = useState(null);
+
+    const fetcher = useFetcher();
 
     const [ formState, setFormState ] = useState({});
 
@@ -311,10 +314,12 @@ const Ticket = (): React.JSX.Element => {
                                         className = "pf-v6-c-form pf-m-vertical"
                                         id={'create-' + ticketElementId()}
                                         method="PATCH"
+                                        action={String(document.location.href).replace(document.location.origin, '')}
                                         onSubmit={(e) => {
                                             
                                             setFormState({})
                                             setTicketDescriptionState({})
+                                            setEditingDescription(!editing_description)
                                         }}
                                     >
                                         {ticketDescriptionCard}
@@ -396,6 +401,7 @@ const Ticket = (): React.JSX.Element => {
                                     'real_finish_date',
                                     !new_ticket && 'subscribed_to',
                                 ].filter(Boolean)}
+                                formComponent = {fetcher.Form}
                                 formState={formState}
                                 isCreate={new_ticket}
                                 isEdit={false}

@@ -59,6 +59,13 @@ export type FieldsProps = {
     fields: Array<string>
 
     /**
+     * Form to to use if creating / editing.
+     * 
+     * If required, this will normally come from a fetcher.
+     */
+    formComponent: typeof Form
+
+    /**
      * Current form edit state.
      */
     formState: object
@@ -110,6 +117,7 @@ export type FieldsProps = {
 export const Fields = ({
     errorState,
     fields,
+    formComponent,
     formState,
     isCreate = false,
     isEdit = false,
@@ -155,6 +163,7 @@ export const Fields = ({
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
+                        FormComponent = {formComponent}
                         formState = {formState}
                         isCreate = {isCreate}
                         isEdit = {isEdit}
@@ -242,7 +251,7 @@ export const Fields = ({
                         isEdit = {isFieldEdit?.[field] ? isFieldEdit[field] : isEdit}
                         isInlineEdit = {isFieldEdit?.[field] ? true : false}
                         inlineEditCancel = {() => {
-                            setIsFieldEdit(!isFieldEdit)
+                            setIsFieldEdit({[field]: false})
                             onChange({})
                         }}
                         key = { `field-${field}` }
@@ -766,8 +775,7 @@ export async function APISubmitAction({
     }
 
     const update = await apiFetch(
-        // document.location.pathname,
-        URLSanitize(metadata.urls.self),
+        URLSanitize(request.url),
         null,
         request.method,
         form_data,
