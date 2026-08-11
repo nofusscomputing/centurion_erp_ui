@@ -226,7 +226,11 @@ const loadSvg = async (src) => {
  * @param {Sring} width Width of the SVG icon.
  * @returns SVG with attributes updated from params.
  */
-const SvgIcon = ({ src, ...kwargs }) => {
+const SvgIcon = ({
+    name,
+    src,
+    ...kwargs
+}) => {
 
     const {
         fill = 'currentColor',
@@ -290,8 +294,8 @@ const SvgIcon = ({ src, ...kwargs }) => {
     }, [src]);
 
     return (
-        <Icon size={size}>
-            {svg && <span ref={el => el?.appendChild(svg)} />}
+        <Icon size={size} iconSize="xl">
+            {svg && <span {...( name && {title: name})} ref={el => el?.appendChild(svg)} />}
         </Icon>
     );
 
@@ -323,6 +327,7 @@ const IconLoader = ({
 
         return (
                 <SvgIcon
+                    name = {icon_name}
                     src={IconComponent}
                     {...kwargs}
                 />

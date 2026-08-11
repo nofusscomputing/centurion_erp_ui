@@ -364,9 +364,11 @@ describe("CommonMark Rendering", () => {
     ]
 
     const commonMarkOther = [
+        // Note: prefixed `\n` to hr as markdown-it-front-matter tries to
+        // render as frontmatter open.
         {
             "name": "Other - Horizontal rule",
-            "markdown": "----",
+            "markdown": "\n----",
             "html": (
                 '<hr class="pf-v6-c-divider">'
             )
@@ -1091,6 +1093,172 @@ describe("Plugins", () => {
             expect(String(rendered.innerHTML).replace(">\n", '>').replace("\n<", '<')).toBe(html)
         })
 
+
+
+    describe("front-matter", () => {
+
+        const frontMatterParams = [
+            {
+                "name": "Object, Single - Array",
+                "markdown": "---\ntitle:\n  - one\n---",
+                "expected": {
+                    title: [
+                        'one'
+                    ]
+                }
+            },
+            {
+                "name": "Object, Single - Boolean 0",
+                "markdown": "---\ntitle: false\n---",
+                "expected": {
+                    title: false
+                }
+            },
+            {
+                "name": "Object, Single - Boolean 1",
+                "markdown": "---\ntitle: true\n---",
+                "expected": {
+                    title: true
+                }
+            },
+            {
+                "name": "Object, Single - Number",
+                "markdown": "---\ntitle: 55\n---",
+                "expected": {
+                    title: 55
+                }
+            },
+            {
+                "name": "Object, Single - String",
+                "markdown": "---\ntitle: the value\n---",
+                "expected": {
+                    title: "the value"
+                }
+            },
+            {
+                "name": "Object, Single - Object of Boolean 0",
+                "markdown": "---\ntitle:\n  sub: false\n---",
+                "expected": {
+                    title: {
+                        sub: false
+                    }
+                }
+            },
+            {
+                "name": "Object, Single - Object of Boolean 1",
+                "markdown": "---\ntitle:\n  sub: true\n---",
+                "expected": {
+                    title: {
+                        sub: true
+                    }
+                }
+            },
+            {
+                "name": "Object, Single - Object of Number",
+                "markdown": "---\ntitle:\n  sub: 88\n---",
+                "expected": {
+                    title: {
+                        sub: 88
+                    }
+                }
+            },
+            {
+                "name": "Object, Single - Object of String",
+                "markdown": "---\ntitle:\n  sub: value\n---",
+                "expected": {
+                    title: {
+                        sub: "value"
+                    }
+                }
+            },
+            {
+                "name": "Object, Multiple - String",
+                "markdown": "---\ntitle: the value\ndescription: another value\n---",
+                "expected": {
+                    title: "the value",
+                    description: "another value"
+                }
+            },
+            {
+                "name": "Array - Boolean",
+                "markdown": "---\n- false\n- true\n---",
+                "expected": [
+                    false,
+                    true
+                ]
+            },
+            {
+                "name": "Array - Number",
+                "markdown": "---\n- 17\n- 37\n- 73\n---",
+                "expected": [
+                    17,
+                    37,
+                    73
+                ]
+            },
+            {
+                "name": "Array - Object of Boolean 0",
+                "markdown": "---\n- key: false\n---",
+                "expected": [
+                    { key: false}
+                ]
+            },
+            {
+                "name": "Array - Object of Boolean 1",
+                "markdown": "---\n- key: true\n---",
+                "expected": [
+                    { key: true}
+                ]
+            },
+            {
+                "name": "Array - Object of Number",
+                "markdown": "---\n- key: 37\n---",
+                "expected": [
+                    { key: 37}
+                ]
+            },
+            {
+                "name": "Array - Object of String",
+                "markdown": "---\n- key: value\n---",
+                "expected": [
+                    { key: "value"}
+                ]
+            },
+            {
+                "name": "Array - String",
+                "markdown": "---\n- one\n- two\n---",
+                "expected": [
+                    'one',
+                    'two'
+                ]
+            },
+        ]
+
+        test.each(frontMatterParams)(
+            "$name",
+            ({ markdown, expected, env = {} }) => {
+
+
+            let frontMatter = null
+
+            const mdCallBack = (value) => {
+                frontMatter = value;
+            }
+
+            render(
+                <RenderMarkdown
+                    env={env}
+                    frontmatterCallback={mdCallBack}
+                >
+                    {markdown}
+                </RenderMarkdown>
+            )
+
+            expect(JSON.stringify(frontMatter)).toBe(JSON.stringify(expected))
+
+        });
+    });
+
 });
 
 
@@ -1107,8 +1275,8 @@ describe("Plugins - JSX Objects", () => {
                         '<a href="/device/1">'+
                             '<span class="badge-icon icon">'+
                                 '<span class="pf-v6-c-icon">'+
-                                    '<span class="pf-v6-c-icon__content">'+
-                                        '<span>'+
+                                    '<span class="pf-v6-c-icon__content pf-m-xl">'+
+                                        '<span title="device">'+
                                             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" className="pf-v6-svg" fill="currentColor" height="auto" role="img" width="auto">'+
                                                 '<path d="M48-144v-72h864v72H48Zm120-120q-29.7 0-50.85-21.15Q96-306.3 96-336v-408q0-29.7 21.15-50.85Q138.3-816 168-816h624q29.7 0 50.85 21.15Q864-773.7 864-744v408q0 29.7-21.15 50.85Q821.7-264 792-264H168Zm0-72h624v-408H168v408Zm0 0v-408 408Z">'+
                                                 '</path>'+
@@ -1149,13 +1317,15 @@ describe("Plugins - JSX Objects", () => {
                     'a ticket reference is numerical and prefixed with a hash. ' +
                     '<span class="text-inline">' +
                         '<span class="badge-icon icon ticket-status-icon ticket-status-icon-new">' +
-                            '<span class="pf-v6-c-icon">' +
-                                '<span class="pf-v6-c-icon__content">' +
-                                    '<span>' +
-                                        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" className="pf-v6-svg" fill="currentColor" height="auto" role="img" width="auto">' +
-                                            '<path d=\"M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z">' +
-                                            '</path>' +
-                                        '</svg>' +
+                            '<span class="pf-v6-c-icon pf-m-lg">' +
+                                '<span class="pf-v6-c-icon__content pf-m-xl">' + 
+                                    '<span title="ticket_status_new">' +
+                                        // '<span>' +
+                                            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" className="pf-v6-svg" fill="currentColor" height="auto" role="img" width="auto">' +
+                                                '<path d=\"M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z">' +
+                                                '</path>' +
+                                            '</svg>' +
+                                        // '</span>' +
                                     '</span>' +
                                 '</span>' +
                             '</span>' +
@@ -1178,7 +1348,7 @@ describe("Plugins - JSX Objects", () => {
                 "tickets": {
                     "1": {
                         "status": "new",
-                        "ticket_type": "request",
+                        "type": "request",
                         "title": "a name",
                         "url": "/ticket/1"
                     }

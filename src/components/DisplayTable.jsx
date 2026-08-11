@@ -267,8 +267,13 @@ const DisplayTable = ({
 
                 return (
                         <Button
-                            variant="primary"
-                            component={(props) => <Link {...props} to={URLSanitize(metadata.urls.self) + "/add"} />}
+                            variant = "primary"
+                            component = {
+                                (props) => <Link
+                                    {...props}
+                                    to={URLSanitize(metadata.urls?.new ? metadata.urls.new : metadata.urls.self) + "/add"}
+                                />
+                            }
                         >
                             Add
                         </Button>

@@ -39,6 +39,7 @@ export type HeaderProps = {
  * Contains the Sites header bar that is rendered as part of every page.
  *
  * @category Component
+ * @expandType HeaderProps
  * @since 0.1.0
  */
 const Header = ({

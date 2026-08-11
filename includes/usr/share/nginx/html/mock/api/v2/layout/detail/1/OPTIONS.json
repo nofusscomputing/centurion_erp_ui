@@ -1,7 +1,9 @@
 {
     "name": "Detail",
     "description": "Detail Layout",
-    "urls": {},
+    "urls": {
+        "self": "/mock/api/v2/layout/detail/1"
+    },
     "renders": [
         "application/json",
         "text/html"

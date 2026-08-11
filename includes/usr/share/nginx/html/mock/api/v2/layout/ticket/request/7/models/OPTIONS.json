@@ -97,6 +97,13 @@
         }
     },
     "layout": {
+        "dataset": {
+            "columns": [
+                [
+                    "display_name"
+                ]
+            ]
+        },
         "table": [
             "ticket",
             "status_badge",

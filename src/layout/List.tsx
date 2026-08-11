@@ -201,6 +201,8 @@ const List = (): React.JSX.Element => {
                 componentProps = {{
                     isFilled: true
                 }}
+                fieldNames = {true}
+                isCheckable = {true}
                 rowData = {page_data}
                 metadata = {metadata}
                 selectedRows = {selectedRows}
