@@ -115,9 +115,6 @@ const Ticket = (): React.JSX.Element => {
 
             setTicketData(actionData.body);
 
-                delete actionData.body;
-                delete actionData.errors;
-                delete actionData.ok;
         }
 
     }, [actionData])
