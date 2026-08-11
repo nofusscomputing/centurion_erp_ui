@@ -9,7 +9,7 @@
  * @category Backend
  * @expand
  */
-interface APIMetadata {
+export interface APIMetadata {
 
     /**
      * Name of the view.
@@ -43,11 +43,15 @@ interface APIMetadata {
 
     /**
      * Field definitions describing the {@link APIDataObject}
+     * 
+     * @expandType apiField
      */
-    fields: {[key: string]: MetadataField};
+    fields: apiField[];
 
     /**
      * What layout the API {@link APIDataObject} will use
+     * 
+     * @expandType UILayout
      */
     layout: UILayout;
 
@@ -58,11 +62,23 @@ interface APIMetadata {
 
     /**
      * URL relevant to the current object
+     * 
+     * @expandType MetadataUrls
      */
     urls: MetadataUrls;
 }
 
+/**
+ * @expand
+ */
+export interface apiField {
+    key: string;
 
+    /**
+     * @expandType MetadataField
+     */
+    value: MetadataField
+}
 
 /**
  * 
@@ -70,7 +86,7 @@ interface APIMetadata {
  * 
  * @category Backend / Data Type
  */
-type MetadataFieldType = "Boolean" |
+export type MetadataFieldType = "Boolean" |
     "DateTime" |
     "Icon" |
     "Integer" |
@@ -88,7 +104,7 @@ type MetadataFieldType = "Boolean" |
  * @category Backend / Data Type
  * @expand
  */
-interface MetadataUrls {
+export interface MetadataUrls {
 
     /**
      * The URL to the current object.
@@ -118,12 +134,18 @@ interface MetadataUrls {
  * @category Backend / Data Type
  * @expand
  */
-interface MetadataField {
+export interface MetadataField {
+    /**
+     * Description of the field.
+     */
     help_text: string;
     label: string;
     multi_line: boolean;
     read_only: boolean;
     required: boolean;
+    /**
+     * @expandType MetadataFieldType
+     */
     type: MetadataFieldType;
     write_only: boolean;
 
@@ -143,7 +165,7 @@ interface MetadataField {
  * @expand
  * @since 0.10.0
  */
-interface UILayout {
+export interface UILayout {
 
     /**
      * Card Layout
@@ -208,11 +230,12 @@ interface UILayout {
      */
     table?: [string | object]
 
-    // /**
-    //  * Ticket Layout
-    //  * 
-    //  */
-    // ticket?: object
+    /**
+     * Ticket Layout
+     * 
+     * @expandType MetadataLayoutTicket
+     */
+    ticket?: MetadataLayoutTicket
 }
 
 
@@ -244,7 +267,7 @@ interface UILayout {
  * @category Backend / Data Type
  * @expand
  */
-interface LayoutDetail {
+export interface LayoutDetail {
 
     /**
      * Layout type that is to be used to render the data.
@@ -284,4 +307,38 @@ interface LayoutDetail {
 interface MetadataTableFields {
     default?: "list";
     columns: string[][];
+}
+
+
+
+/**
+ * 
+ * This layout is for displaying data that is considered a work item, a ticket.
+ * 
+ * @category Backend / Data Type
+ * @expand
+ */
+export interface MetadataLayoutTicket {
+
+    /**
+     * The `string` value for this field must be derived from {@link APIDataObject._urls}. Ensure
+     * that the model for this layout has {@link UILayout.dataset} defined as part of its layout.
+     * 
+     * This URL will then be used to perform a query to the backend using the url. The results
+     * returned will then be displayed in {@link DataSetList} format via the {@link CardDataSet}
+     * card.
+     * 
+     * @summary Blocks of sub info..... ToDo: fix name. i.e. Ticket Dependencies, related Models.
+     */
+    blocks?: string
+
+    /**
+     * Fields to display in the sidebar
+     * 
+     * Each value placed here must be an existing key as defined {@link APIMetadata.fields} of the
+     * current {@link APIMetadata} object being used.
+     * 
+     */
+    sidebar: [string]
+
 }
