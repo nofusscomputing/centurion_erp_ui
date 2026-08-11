@@ -1,3 +1,62 @@
+## 0.12.0 (2026-08-11)
+
+### feat
+
+- **component**: If ticket comment updates, re-render
+- **component**: Pass fetcher error state to ticket comment
+- **component**: For a threaded comment, use different icon to represent
+- **component**: EmptyState object added to display when nothing found
+- **component**: Add new Card that displays DataSet
+- **component**: Update DataSet with Optional Draggable rows
+- **component**: Add Title to the Icon HTML element to display on hover
+- **component**: Add Custom ListItem
+- **layout**: Add front matter tags rendering
+- **layout**: New Layout for markdown documents
+- **function**: Add parsing of md front matter and returning via callback
+- **layout**: Add "Back to Top" button on scroll
+- **layout**: As part of breadcrumb add links to model
+- **layout**: Add ticket submodel and submodel to breadcrumb
+- **layout**: Add spinner to root layout until root metadata is loaded
+- **component**: InlineFieldAction updated to use URL specified in form action
+- Add action to project ticket route
+- **component**: When creating comments and status is HTTP/200, reload comments
+- **hooks**: Prevent HTTP/OPTIONS request when performing HTTP/DELETE
+
+### Fixes
+
+- **component**: By default for FormField FormComponent to use react.router.Form
+- **function**: Ticket Type uses `type` field not `ticket_type` when rendering markdown
+- **layout**: AlertGroup must always be displayed
+- **layout**: Pass root metadata version details to footer
+- **layout**: Correct ticket description edit to use correct state object
+- **component**: Dont attempt to process pageData in DualFieldSelector if it doesnt exist
+- correct project task route
+- **layout**: When creating a new ticket don't attempt to display comments
+- **component**: Only attempt to update comments state on HTTP/201
+
+### Refactoring
+
+- Remove usage of InlineFieldAction
+- **component**: Dont't modify actionData object
+- **component**: Pass form element to FormField
+- **component**: Unless formState must be tracked, use standard HTML forms for FormField
+- **layout**: Update Ticket Layout jsx -> tsx including finish PatternFly conversion
+- **component**: Set ListItem to be fn
+- **component**: Update Expandable nav section to use built-in Icon
+- **component**: Update Comment to use correct components
+- **layout**: Update Breadcrumbs to use router link as component
+- **function**: When catering for route paths, parse as part of cleaning
+- **layout**: mv pagebreadcrumb to be part of page
+- **layout**: move root metadata fetch to root layout
+- **component**: Add URLSanitize to fetching of ticket comments
+- **component**: Add usage of "new" url from metadata.urls
+- Update project ticket route
+
+### Tests
+
+- **function**: Unit Test Suite for URLSanitize fn
+- **unit**: Unit Test Suite Added for markdown front matter parsing
+
 ## 0.11.0 (2026-05-31)
 
 ### feat
