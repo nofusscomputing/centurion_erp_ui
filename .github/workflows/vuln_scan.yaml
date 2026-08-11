@@ -1,0 +1,52 @@
+---
+
+name: 'Vulnerability Scan'
+
+
+on:
+  schedule:
+    # Every day at 14:30 UTC / 00:00 +09:30
+    - cron: "30 14 * * *"
+
+
+jobs:
+
+
+  react:
+    name: React
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        branch-names: [ 'master', 'development' ]
+    steps:
+
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1    # v7.0.1
+        with:
+          ref: ${{ matrix.branch-names }}
+
+
+      - name: Run Trivy vulnerability scanner against package-lock.json (${{ matrix.branch-names }} branch)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25    # v0.36.0
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: false
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          scan-ref: package-lock.json
+          exit-code: 0
+
+
+      - name: Upload scan results to GitHub Security tab (${{ matrix.branch-names }} branch)
+        uses: github/codeql-action/upload-sarif@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81    # v4.37.3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+
+      - name: Upload scan results sarif Report (${{ matrix.branch-names }} branch)
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a    # v7.0.1
+        with:
+          name: vulnerability-scan-results-package-lock.json-sarif-${{ matrix.branch-names }}-branch
+          path: trivy-results.sarif
