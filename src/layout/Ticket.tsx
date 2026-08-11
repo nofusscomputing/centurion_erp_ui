@@ -8,6 +8,7 @@ import React, {
 import {
     Form,
     useActionData,
+    useFetcher,
     useLoaderData,
     useOutletContext,
     useParams
@@ -35,7 +36,7 @@ import { Fields } from "../components/DisplayFields";
 import urlBuilder from "../hooks/urlBuilder";
 import UserContext from "../hooks/UserContext";
 import URLSanitize from "../functions/URLSanitize";
-import DataCard from "../components/CardDataSet";
+import CardDataSet from "../components/CardDataSet";
 
 
 /**
@@ -76,6 +77,8 @@ const Ticket = (): React.JSX.Element => {
 
     const [comment_metadata, setCommentMetaData] = useState(null);
 
+    const fetcher = useFetcher();
+
     const [ formState, setFormState ] = useState({});
 
     const {
@@ -112,9 +115,6 @@ const Ticket = (): React.JSX.Element => {
 
             setTicketData(actionData.body);
 
-                delete actionData.body;
-                delete actionData.errors;
-                delete actionData.ok;
         }
 
     }, [actionData])
@@ -309,14 +309,20 @@ const Ticket = (): React.JSX.Element => {
                                 {editing_description && 
                                     <Form
                                         className = "pf-v6-c-form pf-m-vertical"
-                                        id={'create-' + ticketElementId()} method="PATCH" action={String(document.location.href).replace(document.location.origin, '')}
+                                        id={'create-' + ticketElementId()}
+                                        method="PATCH"
+                                        action={String(document.location.href).replace(document.location.origin, '')}
                                         onSubmit={(e) => {
                                             
                                             setFormState({})
                                             setTicketDescriptionState({})
+                                            setEditingDescription(!editing_description)
                                         }}
                                     >
                                         {ticketDescriptionCard}
+
+                                        <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(ticket_metadata)} />
+                                        <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
                                     </Form>}
 
                                 {!editing_description &&
@@ -325,13 +331,13 @@ const Ticket = (): React.JSX.Element => {
                                 { ! new_ticket &&
                                 <>
 
-                                <DataCard
+                                <CardDataSet
                                     hasRowDelete = {true}
                                     isExpandable = {true}
                                     url = { URLSanitize(ticket_data?._urls?.ticket_dependencies) }
                                 />
 
-                                <DataCard
+                                <CardDataSet
                                     hasRowDelete = {true}
                                     isExpandable = {true}
                                     url = { URLSanitize(ticket_data?._urls?.linked_models) }
@@ -392,6 +398,7 @@ const Ticket = (): React.JSX.Element => {
                                     'real_finish_date',
                                     !new_ticket && 'subscribed_to',
                                 ].filter(Boolean)}
+                                formComponent = {fetcher.Form}
                                 formState={formState}
                                 isCreate={new_ticket}
                                 isEdit={false}
@@ -422,8 +429,7 @@ const Ticket = (): React.JSX.Element => {
             >
                 {ticketLayout}
 
-                <input id="formState" type="hidden" name="formState" value={JSON.stringify({...ticketDescriptionState, ...formState})} />
-                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(comment_metadata)} />
+                <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(ticket_metadata)} />
                 <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
             </Form>
         )

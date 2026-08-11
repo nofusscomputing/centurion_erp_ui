@@ -67,7 +67,7 @@ export type DataCardProps = {
  * @category Component
  * @since 0.12.0
  */
-const DataCard = ({
+const CardDataSet = ({
     hasRowDelete = false,
     isDraggable = false,
     isExpandable = false,
@@ -212,4 +212,4 @@ const DataCard = ({
     );
 }
  
-export default DataCard;
+export default CardDataSet;

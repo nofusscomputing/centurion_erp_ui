@@ -10,6 +10,7 @@ import {
 } from "react-router"
 
 import {
+    AlertVariant,
     Button,
     Card,
     CardBody,
@@ -32,6 +33,7 @@ import {
 import {
     EllipsisVIcon,
     OutlinedCommentIcon,
+    OutlinedCommentsIcon,
 } from '@patternfly/react-icons';
 
 import {apiFetch } from "../hooks/apiFetch"
@@ -42,6 +44,7 @@ import IconLoader from "./IconLoader"
 import UserContext from "../hooks/UserContext"
 import URLSanitize from "../functions/URLSanitize";
 import ListItem from "./ListItem";
+import { useNotificationActions } from "../hooks/useNotificationActions";
 
 
 
@@ -82,6 +85,8 @@ export const Comments = ({
     comments_url,
 }: CommentsProps): React.JSX.Element => {
 
+    const { addNewNotification } = useNotificationActions();
+
     const fetcher = useFetcher();
 
     const [ metadata, setCommentMetadata ] = useState( null )
@@ -120,7 +125,40 @@ export const Comments = ({
 
             } else if( fetcher.data.status_code === 200 ) {
 
-                setRelaod(true);
+                if( String(fetcher.data.method).toLowerCase() == 'post' ) {
+
+                    setRelaod(true);
+
+                }else if( String(fetcher.data.method).toLowerCase() == 'patch' ) {
+
+                    setComments((prevState) => ({
+                        fetch_url: prevState.fetch_url,
+                        comments : Object.fromEntries(
+                            Object.entries(prevState.comments).map(
+                                ([key, value]) => {
+
+                                    if( fetcher.data.body.id == key ) {
+                                        value = fetcher.data.body
+                                    }
+                                    
+                                    return [key, value]
+                                }
+                            )
+                        )
+                    }));
+                }
+            }
+
+            if( fetcher.data.errors?.message ) {
+
+                addNewNotification(
+                    "Form not submitted",
+                    fetcher.data.errors.message,
+                    AlertVariant.danger,
+                    true
+                    
+                )
+        
             }
         }
 
@@ -248,7 +286,7 @@ export const Comments = ({
                     return (
                         comments.comments[key] &&
                         <ListItem
-                            icon = {<OutlinedCommentIcon />}
+                            icon = { comments.comments[key]._urls?.threads ? <OutlinedCommentsIcon /> : <OutlinedCommentIcon />}
                             key={'li-ticket-comment-' + comments.comments[key].id}
                             style={{
                                 marginBottom: 'var(--pf-t--global--spacer--md)',
@@ -258,6 +296,7 @@ export const Comments = ({
                             <>
                             { ! metadata && <Skeleton /> }
                             { metadata && <Comment
+                                errorState = {fetcher.data}
                                 FormComponent = {fetcher.Form}
                                 key={'ticket-comment-' + comments.comments[key].id}
                                 objectData = {comments.comments[key]}
@@ -285,6 +324,7 @@ export const Comments = ({
                         { ! metadata && <Skeleton /> }
                         { metadata && 
                         <Comment
+                            errorState = {fetcher.data}
                             FormComponent = {fetcher.Form}
                             isCreate = {true}
                             objectMetadata={metadata}
@@ -353,7 +393,7 @@ export type CommentProps = {
  * @since 0.1.0
  */
 export const Comment = ({
-
+    errorState = undefined,
     FormComponent = Form,
     isCreate = false,
     objectData,
@@ -486,6 +526,9 @@ export const Comment = ({
     )
 
 
+    useEffect(() => {
+        setCommentPageData(objectData)
+    }, [ objectData ]);
 
     useEffect(() => {
 
@@ -692,7 +735,7 @@ export const Comment = ({
                     >
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 (( (isCreate || isEdit) && commentMetadata.fields.source) || ( (!isEdit && !isCreate) && comment_page_data.source)) && 'source',
                                 (( (isCreate || isEdit) && commentMetadata.fields.status) || ( (!isEdit && !isCreate) && comment_page_data.status)) && 'status',
@@ -715,7 +758,7 @@ export const Comment = ({
                         <Divider />
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 'body'
                             ]}
@@ -735,7 +778,7 @@ export const Comment = ({
                     >
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 (( (isCreate || isEdit) && commentMetadata.fields.planned_start_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_start_date)) && 'planned_start_date',
                                 (( (isCreate || isEdit) && commentMetadata.fields.planned_finish_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_finish_date)) && 'planned_finish_date',
@@ -801,12 +844,11 @@ export const Comment = ({
                         method={isCreate ? "POST" : "PATCH"}
                         navigate={false}
                         onSubmit={() => {
-                                setFormState({})
+                                setIsEditing(false)
                         }}
                     >
                         {CommentCard}
 
-                        <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
                         <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(commentMetadata)} />
                         <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 

@@ -47,6 +47,7 @@ const MarkdownEditor = ({
     value = null,
 }) => {
 
+    const [markdown, setMarkdown] = useState(value);
 
     const [activeTabKey, setActiveTabKey] = useState(0);
 
@@ -55,7 +56,6 @@ const MarkdownEditor = ({
         setActiveTabKey(tabIndex);
 
     };
-
 
 
     return (
@@ -78,7 +78,7 @@ const MarkdownEditor = ({
                         id = {id}
                         key = {name}
                         name = {name}
-                        onChange = {onChange}
+                        onChange={(event) => setMarkdown(event.target.value)}
 
                         onClick={(e) =>{
 
@@ -115,7 +115,8 @@ const MarkdownEditor = ({
 
                         readOnly = {readOnly}
                         resizeOrientation = {resizeOrientation}
-                        value = {value}
+                        value = {markdown}
+
                     />
                 </TabContentBody>
             </Tab>
@@ -125,12 +126,12 @@ const MarkdownEditor = ({
                 title = {<TabTitleText>Preview</TabTitleText>}
             >
                 <TabContentBody hasPadding>
-                    {value &&
+                    {markdown &&
                     <RenderMarkdown
                         full_width={true}
                         env={objectData?.[name]?.render ?? {}}
                     >
-                        {value}
+                        {markdown}
                     </RenderMarkdown>
                     }
                 </TabContentBody>

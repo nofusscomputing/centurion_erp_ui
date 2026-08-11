@@ -59,6 +59,13 @@ export type FieldsProps = {
     fields: Array<string>
 
     /**
+     * Form to to use if creating / editing.
+     * 
+     * If required, this will normally come from a fetcher.
+     */
+    formComponent: typeof Form
+
+    /**
      * Current form edit state.
      */
     formState: object
@@ -110,6 +117,7 @@ export type FieldsProps = {
 export const Fields = ({
     errorState,
     fields,
+    formComponent,
     formState,
     isCreate = false,
     isEdit = false,
@@ -155,13 +163,13 @@ export const Fields = ({
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
+                        FormComponent = {formComponent}
                         formState = {formState}
                         isCreate = {isCreate}
                         isEdit = {isEdit}
                         key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
-                        onChange = {onChange}
                     >
                         { useDivider && <Divider />}
                     </FormField>
@@ -235,7 +243,6 @@ export const Fields = ({
 
             if(field in objectMetadata.fields ) {
                 return (
-                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
@@ -244,14 +251,13 @@ export const Fields = ({
                         isEdit = {isFieldEdit?.[field] ? isFieldEdit[field] : isEdit}
                         isInlineEdit = {isFieldEdit?.[field] ? true : false}
                         inlineEditCancel = {() => {
-                            setIsFieldEdit(!isFieldEdit)
+                            setIsFieldEdit({[field]: false})
                             onChange({})
                         }}
+                        key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
-                        onChange = {onChange}
                     />
-                    </>
                 );
             } else {
                 return;
@@ -697,44 +703,34 @@ export async function APISubmitAction({
 
     const data = await request.formData();
 
-    const metadata = JSON.parse(data.get('metadata'));
+    const formFields = Object.fromEntries(data.entries());
 
-    if( !metadata ) {
+    const metadata = JSON.parse(formFields.metadata);
+
+    if( ! formFields.metadata ) {
+
+        throw new Error('metadata field must be provided in the submitted form');
+
+    }
+
+
+    if( ! formFields.tz ) {
 
         throw new Error('metadata field must be provided in the submitted form');
 
     }
 
-    const formState = JSON.parse(data.get('formState'));
-
-    if( !formState ) {
-
-        throw new Error('formState field must be provided in the submitted form');
-
-    }
-
-    const timezone = data.get('tz');
-
-    if( !timezone ) {
-
-        throw new Error('metadata field must be provided in the submitted form');
-
-    }
 
     let form_data = {}
 
-    for (const [fieldName, fieldValue] of Object.entries(formState)) {
-
-        if( ['metadata', 'tz'].includes( fieldName ) ) {
-
-            continue;
-        }
-
+    for (const [fieldName, fieldValue] of Object.entries(formFields)) {
 
         if( ! metadata.fields.hasOwnProperty(fieldName) ) {    // field not part of request
 
             continue;
+
         }
+
 
         let value = '';
 
@@ -746,7 +742,7 @@ export async function APISubmitAction({
                 value = FormatTime({
                     time: String(fieldValue),
                     iso: true,
-                    tz: timezone
+                    tz: formFields.tz
                 });
 
                 break;
@@ -775,12 +771,12 @@ export async function APISubmitAction({
     let actionReturn = {
         // errors: {},    // Don't include this key by default. its existance denotes an error has occured.
         ok: false,
-        body: null
+        body: null,
+        method: request.method
     }
 
     const update = await apiFetch(
-        // document.location.pathname,
-        URLSanitize(metadata.urls.self),
+        URLSanitize(request.url),
         null,
         request.method,
         form_data,
