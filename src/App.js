@@ -18,7 +18,6 @@ import Ticket from "./layout/Ticket";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
 import { apiFetch } from "./hooks/apiFetch";
-import { InlineFieldAction } from "./components/InlineFields";
 import { UserProvider } from './hooks/UserContext';
 import { APISubmitAction } from './components/DisplayFields';
 
@@ -189,7 +188,10 @@ function App() {
 
                                 <Route path=':subModel'>
 
-                                    <Route path=':subModkPk'>
+                                    <Route path=':subModkPk'
+                                        action={APISubmitAction}
+                                        shouldRevalidate={() => false}
+                                    >
 
                                         <Route path=":subSubModel"
                                             action={APISubmitAction}
@@ -258,12 +260,18 @@ function App() {
                                     loader = {pagedLoader} />
 
 
-                                <Route path="project_task">
+                                <Route path="ticket">
 
-                                    <Route path=":sub_model_pk" element={<Ticket />}
-                                        loader = {pagedLoader} 
-                                        action={InlineFieldAction} shouldRevalidate={() => false}
-                                    />
+                                    <Route path=":ticket_sub_model"
+                                        action={APISubmitAction} shouldRevalidate={() => false}
+                                    >
+
+                                        <Route path=":ticket_sub_model_pk" element={<Ticket />}
+                                            loader = {pagedLoader} 
+                                            action={APISubmitAction} shouldRevalidate={() => false}
+                                        />
+
+                                    </Route>
 
                                 </Route>
 

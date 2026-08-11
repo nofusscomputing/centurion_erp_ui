@@ -1,4 +1,6 @@
 import {
+    Dispatch,
+    SetStateAction,
     useContext,
     useEffect,
     useState
@@ -44,7 +46,7 @@ import URLSanitize from "../functions/URLSanitize";
  * @category Type
  * @since 0.9.0
  */
-type FieldsProps = {
+export type FieldsProps = {
 
     /**
      * Form errors.
@@ -55,6 +57,13 @@ type FieldsProps = {
      * Form fields to fetch.
      */
     fields: Array<string>
+
+    /**
+     * Form to to use if creating / editing.
+     * 
+     * If required, this will normally come from a fetcher.
+     */
+    formComponent: typeof Form
 
     /**
      * Current form edit state.
@@ -89,14 +98,13 @@ type FieldsProps = {
     /**
      * Callback when the form changes.
      */
-    onChange: () => void
+    onChange: Dispatch<SetStateAction<object>>
 
     /**
      * After each form field, add a divider.
      */
     useDivider?: boolean
 }
-
 
 
 /** 
@@ -109,6 +117,7 @@ type FieldsProps = {
 export const Fields = ({
     errorState,
     fields,
+    formComponent,
     formState,
     isCreate = false,
     isEdit = false,
@@ -138,10 +147,11 @@ export const Fields = ({
 
             return(
                     <FieldData
-                        full_width = {true}
-                        metadata={objectMetadata}
-                        field_name={field}
                         data={objectData}
+                        field_name={field}
+                        full_width = {true}
+                        key = { `field-${field}` }
+                        metadata={objectMetadata}
                     />
             );
 
@@ -150,19 +160,19 @@ export const Fields = ({
             if( isEdit || isCreate ) {
 
                 return (
-                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
+                        FormComponent = {formComponent}
                         formState = {formState}
                         isCreate = {isCreate}
                         isEdit = {isEdit}
+                        key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
-                        onChange = {onChange}
-                    />
-                    { useDivider && <Divider />}
-                    </>
+                    >
+                        { useDivider && <Divider />}
+                    </FormField>
                 );
                 
             } else {
@@ -170,6 +180,7 @@ export const Fields = ({
                 return (
                     <FlexItem
                         direction={{ default: 'column' }}
+                        key = { `field-${field}` }
                     >
                         <label
                             style={{
@@ -195,8 +206,9 @@ export const Fields = ({
             if( ! isEdit && ! isCreate && ! isFieldEdit?.[field]) {
 
                 return(
-                    <>
-                    <DescriptionListGroup>
+                    <DescriptionListGroup
+                        key = { `field-${field}` }
+                    >
                         <DescriptionListTerm>
                             {objectMetadata.fields[field]?.label}
                             { ! Boolean(objectMetadata.fields[String(field).endsWith('_badge') ? String(field).replace('_badge', '') : field]?.read_only) &&
@@ -218,7 +230,6 @@ export const Fields = ({
                         </DescriptionListDescription>
                         { useDivider && <Divider />}
                     </DescriptionListGroup>
-                    </>
                 );
 
             }
@@ -232,7 +243,6 @@ export const Fields = ({
 
             if(field in objectMetadata.fields ) {
                 return (
-                    <>
                     <FormField
                         errorState={errorState}
                         fieldName = {field}
@@ -241,14 +251,13 @@ export const Fields = ({
                         isEdit = {isFieldEdit?.[field] ? isFieldEdit[field] : isEdit}
                         isInlineEdit = {isFieldEdit?.[field] ? true : false}
                         inlineEditCancel = {() => {
-                            setIsFieldEdit(!isFieldEdit)
+                            setIsFieldEdit({[field]: false})
                             onChange({})
                         }}
+                        key = { `field-${field}` }
                         objectData = {objectData}
                         objectMetadata = {objectMetadata}
-                        onChange = {onChange}
                     />
-                    </>
                 );
             } else {
                 return;
@@ -560,12 +569,24 @@ const DisplayFields = ({
 
         cardData = (
             <Form
+                action = {
+                    (String(location.pathname).endsWith('/add') || isCreate)
+                    ?
+                        pageMetadata.urls.new
+                        ?
+                            URLSanitize(pageMetadata.urls.new)
+                        :
+                            URLSanitize(pageMetadata.urls.self)
+                    :
+                        URLSanitize(pageMetadata.urls.self)
+                }
+                className = "pf-v6-c-form"
                 id="random"
                 method={(String(location.pathname).endsWith('/add') || isCreate) ? "POST" : "PATCH"}
-                className = "pf-v6-c-form"
                 onSubmit={(_event) => {
                     setIsLoading(true)
                 }}
+                navigate = {false}
             >
                 {actionData?.errors &&
                 <AlertGroup>
@@ -682,44 +703,34 @@ export async function APISubmitAction({
 
     const data = await request.formData();
 
-    const metadata = JSON.parse(data.get('metadata'));
+    const formFields = Object.fromEntries(data.entries());
 
-    if( !metadata ) {
+    const metadata = JSON.parse(formFields.metadata);
+
+    if( ! formFields.metadata ) {
+
+        throw new Error('metadata field must be provided in the submitted form');
+
+    }
+
+
+    if( ! formFields.tz ) {
 
         throw new Error('metadata field must be provided in the submitted form');
 
     }
 
-    const formState = JSON.parse(data.get('formState'));
-
-    if( !formState ) {
-
-        throw new Error('formState field must be provided in the submitted form');
-
-    }
-
-    const timezone = data.get('tz');
-
-    if( !timezone ) {
-
-        throw new Error('metadata field must be provided in the submitted form');
-
-    }
 
     let form_data = {}
 
-    for (const [fieldName, fieldValue] of Object.entries(formState)) {
-
-        if( ['metadata', 'tz'].includes( fieldName ) ) {
-
-            continue;
-        }
-
+    for (const [fieldName, fieldValue] of Object.entries(formFields)) {
 
         if( ! metadata.fields.hasOwnProperty(fieldName) ) {    // field not part of request
 
             continue;
+
         }
+
 
         let value = '';
 
@@ -731,7 +742,7 @@ export async function APISubmitAction({
                 value = FormatTime({
                     time: String(fieldValue),
                     iso: true,
-                    tz: timezone
+                    tz: formFields.tz
                 });
 
                 break;
@@ -760,12 +771,12 @@ export async function APISubmitAction({
     let actionReturn = {
         // errors: {},    // Don't include this key by default. its existance denotes an error has occured.
         ok: false,
-        body: null
+        body: null,
+        method: request.method
     }
 
     const update = await apiFetch(
-        // document.location.pathname,
-        URLSanitize(metadata.urls.self),
+        URLSanitize(request.url),
         null,
         request.method,
         form_data,
@@ -786,6 +797,8 @@ export async function APISubmitAction({
 
             }
 
+
+            actionReturn.status_code = response.status
 
             return response;
 

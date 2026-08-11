@@ -7,7 +7,6 @@ import {
 import {
     Link,
     useLocation,
-    useNavigate
 } from "react-router";
 
 import {
@@ -16,7 +15,6 @@ import {
     PageSidebarBody
 } from "@patternfly/react-core";
 
-import { apiFetch } from "../../hooks/apiFetch";
 import IconLoader from '../IconLoader';
 
 
@@ -33,6 +31,8 @@ export type NavbarProps = {
      * Is the sidebar open?
      */
     isSidebarOpen: boolean
+
+    navigation_entries: Array<object>
 }
 
 
@@ -47,45 +47,17 @@ export type NavbarProps = {
  * @since 0.1.0 
  */
 const Navbar = ({
-   isSidebarOpen
+   isSidebarOpen,
+   navigation_entries,
 }: NavbarProps) => {
-
-    const [ navigation, SetNavigationEntries ] = useState([])
-
-    const location = useLocation();
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-
-        if( navigation.length === 0 ) {
-
-            let response = apiFetch(
-                '',
-                (data) => {
-
-                    SetNavigationEntries(data.navigation)
-
-                    // api_version_callback(data.version)
-
-                },
-                'OPTIONS'
-            )
-
-                .then(response => {
-
-                    if( response.status === 401 ) {
-                        navigate('/login')
-                    }
-                })
-        }
-    },[])
-
-
 
     const [activeGroup, setActiveGroup] = useState(null);
 
     const [activeItem, setActiveItem] = useState(null);
+
+    const location = useLocation();
+
+    const [ navigation, SetNavigationEntries ] = useState(navigation_entries)
 
 
     useEffect(() => {
@@ -144,20 +116,14 @@ const Navbar = ({
 
                             return (
                                 <NavExpandable
-                                    title={(
-                                        <>
-                                            <IconLoader
-                                                name = {'icon' in module ? String(module.icon) : String(module.name)}
-                                                size = "lg"
-                                            />
-                                            <span style={{marginRight: "var(--pf-v6-c-nav__link--ColumnGap)"}}></span>
-                                            {module.display_name}
-                                        </>
-                                    )}
                                     groupId={`navigation-${module.name}-${index}`}
                                     isActive={activeGroup === groupId}
                                     isExpanded={activeGroup === groupId}
+                                    icon={<IconLoader
+                                        name = {'icon' in module ? String(module.icon) : String(module.name)}
+                                    />}
                                     key={`navigation-${module.name}-${index}`}
+                                    title = {module.display_name}
                                 >
                                     {module.pages.map((page, page_index) => {
 

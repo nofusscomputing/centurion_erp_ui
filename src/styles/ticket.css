@@ -67,11 +67,6 @@ div.ticket .related-tickets .items {
   justify-content: space-between;
 }
 
-div.ticket .related-tickets .item:hover,
-div.ticket .linked-items .item:hover {
-  filter: brightness(90%);
-  background:#ffffff;
-}
 
 div.ticket .related-tickets div.items div.item div {
   height: 24px;
@@ -81,22 +76,102 @@ div.ticket .related-tickets .icon svg {
   align-self: center;
 }
 
-div.ticket section.related-tickets .ticket-related-blocks svg {
+
+.ticket-dependency-blocks svg {
   background-color: #fcd5b1;
   border-radius: 10px;
   fill: #e79b37;
 }
 
-div.ticket section.related-tickets .ticket-related-blocked_by svg {
+.ticket-dependency-blockedby svg {
   background-color: #f3c6c6;
   border-radius: 10px;
   fill: #ff1c1c;
 }
 
-div.ticket section.related-tickets .ticket-related-related svg {
+.ticket-dependency-related svg {
   background-color: #afdbff;
   border-radius: 10px;
   fill: #0b91ff;
+}
+
+
+
+span.badge-icon.ticket-status-icon svg,
+span.badge.badge-icon.ticket-status-icon svg {
+  border-radius: 10px;
+}
+
+span.badge-icon.ticket-status-icon-accepted svg,
+span.badge.badge-icon.ticket-status-icon-accepted svg {
+  background-color: #e1ffb2;
+  fill: #2e9200;
+}
+
+span.badge-icon.ticket-status-icon-approvals svg,
+span.badge.badge-icon.ticket-status-icon-approvals svg {
+  background-color: #ffceb2;
+  fill: #d86100;
+}
+
+span.badge-icon.ticket-status-icon-assigned svg,
+span.badge.badge-icon.ticket-status-icon-assigned svg {
+  background-color: #e1ffb2;
+  fill: #2e9200;
+}
+
+span.badge-icon.ticket-status-icon-assigned_planning svg,
+span.badge.badge-icon.ticket-status-icon-assigned_planning svg {
+  background-color: #e1ffb2;
+  fill: #2e9200;
+}
+
+span.badge-icon.ticket-status-icon-closed svg,
+span.badge.badge-icon.ticket-status-icon-closed svg {
+  background-color: #c9b2ff;
+  fill: #640092;
+}
+
+span.badge-icon.ticket-status-icon-draft svg,
+span.badge.badge-icon.ticket-status-icon-draft svg {
+  background-color: #cacaca;
+  fill: #4d4d4d;
+}
+
+span.badge-icon.ticket-status-icon-evaluation svg,
+span.badge.badge-icon.ticket-status-icon-evaluation svg {
+  background-color: #b2d6ff;
+  fill: #007592;
+}
+
+span.badge-icon.ticket-status-icon-invalid svg,
+span.badge.badge-icon.ticket-status-icon-invalid svg {
+  background-color: #ffb2b6;
+  fill: #920000;
+}
+
+span.badge-icon.ticket-status-icon-new svg,
+span.badge.badge-icon.ticket-status-icon-new svg {
+  background-color: #b2dcff;
+  fill: #004492
+}
+
+span.badge-icon.ticket-status-icon-pending svg,
+span.badge.badge-icon.ticket-status-icon-pending svg {
+  background-color: #ffceb2;
+  fill: #d86100;
+}
+
+span.badge-icon.ticket-status-icon-solved svg,
+span.badge.badge-icon.ticket-status-icon-solved svg {
+  background-color: #c9b2ff;
+  fill: #640092;
+}
+
+span.badge-icon.ticket-status-icon-testing svg,
+span.badge.badge-icon.ticket-status-icon-testing svg {
+  background-color: #b2d3ff;
+  fill: #8c00ff;
 }
 
 

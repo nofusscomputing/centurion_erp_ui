@@ -20,6 +20,8 @@ import {
     full as emoji
 } from 'markdown-it-emoji'
 
+import YAML from "yaml"
+
 import '../styles/markdown.css'
 
 import model_link_plugin from './markdown_plugins/ModelLink';
@@ -29,6 +31,10 @@ import html_whitelist_plugin from './markdown_plugins/HTMLWhitelist';
 
 
 const anchor = require('markdown-it-anchor').default
+
+let mdFrontMatter = null
+
+
 
 const md = markdownIt({
     linkify: true,
@@ -50,6 +56,12 @@ const md = markdownIt({
     html: false,
     breaks: false,
 })
+
+    .use(require('markdown-it-front-matter'), function(fm) {
+
+        mdFrontMatter = YAML.parse(fm);
+
+    })
 
     .use( require( 'markdown-it-admon' ) )
 
@@ -298,7 +310,7 @@ function tokensToJSX(tokens, depth = 0) {
             return;
 
 
-        }  else if ( ["emoji", "text"].includes(token.type) ) {
+        }  else if ( ["emoji", "front_matter", "text"].includes(token.type) ) {
 
             /**
              * DOMPurify not really required, as this is only emoji `:code:` or
@@ -309,7 +321,7 @@ function tokensToJSX(tokens, depth = 0) {
             stack[stack.length - 1].children.push(DOMPurify.sanitize(token.content));
 
 
-        } else if ( token.type === "code_inline" && token.content ) {
+        } else if ( token.type === "code_inline" && token.content !== null ) {
 
             const props = { ...attrsToProps(token.attrs) };
 
@@ -476,23 +488,55 @@ function tokensToJSX(tokens, depth = 0) {
 }
 
 
-export default function RenderMarkdown({ children, className = null, env, full_width=false }) {
-  const [tokens, setTokens] = useState([]);
+export default function RenderMarkdown({
+    children,
+    className = null,
+    env,
+    full_width=false,
+    frontmatterCallback = null
+}) {
 
-  if( env === undefined ) {
-    
-    throw Error("'env' parameter must be specified. if not required use empty object `{}`");
+    const [tokens, setTokens] = useState([]);
 
-  }
+    if( env === undefined ) {
+        
+        throw Error("'env' parameter must be specified. if not required use empty object `{}`");
 
-  useEffect(() => {
-        if (typeof children !== "string") {
-        setTokens([]);
-        return;
+    }
+
+
+    useEffect(() => {
+
+        if( frontmatterCallback 
+            && mdFrontMatter !== null
+        ) {
+            frontmatterCallback(mdFrontMatter)
         }
+
+    }, [
+        mdFrontMatter
+    ]);
+
+
+    useEffect(() => {
+
+        if (typeof children !== "string") {
+
+            setTokens([]);
+
+            return;
+        }
+
+
         const parsed = md.parse(children, env);
+
         setTokens(parsed);
-    }, [children, env]);
+
+    }, [
+        children,
+        env
+    ]);
+
 
     let class_name = 'markdown pf-v6-c-content'
 
@@ -501,14 +545,16 @@ export default function RenderMarkdown({ children, className = null, env, full_w
         class_name = class_name.concat(' ' + className)
     }
 
+
     if( full_width ) {
         class_name = class_name.concat(' full-width')
     }
 
+
     return (
+        tokens &&
         <div className={class_name}>
             {tokensToJSX(tokens)}
         </div>
     );
-
 }

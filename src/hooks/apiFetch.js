@@ -104,6 +104,7 @@ export async function apiFetch(
         // && metadata
         metadata
         && http_method.toUpperCase() !== 'OPTIONS'
+        && http_method.toUpperCase() !== 'DELETE'
     ) {
 
         console.debug(`apiFetch called: ${http_method} ${url_path} -Making Options Request-`);

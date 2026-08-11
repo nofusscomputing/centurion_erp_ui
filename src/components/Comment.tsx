@@ -1,7 +1,6 @@
 import React, {
     useContext,
     useEffect,
-    useId,
     useState
 } from "react"
 
@@ -11,6 +10,7 @@ import {
 } from "react-router"
 
 import {
+    AlertVariant,
     Button,
     Card,
     CardBody,
@@ -21,15 +21,19 @@ import {
     Dropdown,
     DropdownItem,
     DropdownList,
+    ExpandableSection,
     Flex,
     FlexItem,
+    List,
     MenuToggle,
+    Skeleton,
     Title
 } from "@patternfly/react-core"
 
 import {
-    AngleDownIcon,
-    EllipsisVIcon
+    EllipsisVIcon,
+    OutlinedCommentIcon,
+    OutlinedCommentsIcon,
 } from '@patternfly/react-icons';
 
 import {apiFetch } from "../hooks/apiFetch"
@@ -39,6 +43,8 @@ import IconLoader from "./IconLoader"
 
 import UserContext from "../hooks/UserContext"
 import URLSanitize from "../functions/URLSanitize";
+import ListItem from "./ListItem";
+import { useNotificationActions } from "../hooks/useNotificationActions";
 
 
 
@@ -79,6 +85,8 @@ export const Comments = ({
     comments_url,
 }: CommentsProps): React.JSX.Element => {
 
+    const { addNewNotification } = useNotificationActions();
+
     const fetcher = useFetcher();
 
     const [ metadata, setCommentMetadata ] = useState( null )
@@ -89,10 +97,6 @@ export const Comments = ({
     });
 
     const [ reload, setRelaod ] = useState(false);
-
-    const ticktCommentsId = useId();
-    const ticktCommentsListId = useId();
-
 
 
     /**
@@ -109,14 +113,53 @@ export const Comments = ({
 
             console.debug('fetcher return', fetcher.data);
 
-            setComments((prevState) => ({
-                fetch_url: prevState.fetch_url,
-                comments: {
-                    ...prevState.comments,
-                    [fetcher.data.body.id]: fetcher.data.body
-                }
-            }));
+            if( fetcher.data.status_code === 201 ) {
 
+                setComments((prevState) => ({
+                    fetch_url: prevState.fetch_url,
+                    comments: {
+                        ...prevState.comments,
+                        [fetcher.data.body.id]: fetcher.data.body
+                    }
+                }));
+
+            } else if( fetcher.data.status_code === 200 ) {
+
+                if( String(fetcher.data.method).toLowerCase() == 'post' ) {
+
+                    setRelaod(true);
+
+                }else if( String(fetcher.data.method).toLowerCase() == 'patch' ) {
+
+                    setComments((prevState) => ({
+                        fetch_url: prevState.fetch_url,
+                        comments : Object.fromEntries(
+                            Object.entries(prevState.comments).map(
+                                ([key, value]) => {
+
+                                    if( fetcher.data.body.id == key ) {
+                                        value = fetcher.data.body
+                                    }
+                                    
+                                    return [key, value]
+                                }
+                            )
+                        )
+                    }));
+                }
+            }
+
+            if( fetcher.data.errors?.message ) {
+
+                addNewNotification(
+                    "Form not submitted",
+                    fetcher.data.errors.message,
+                    AlertVariant.danger,
+                    true
+                    
+                )
+        
+            }
         }
 
     }, [
@@ -209,23 +252,15 @@ export const Comments = ({
 
 
     return (
-        (comments && metadata) &&
+        comments &&
+        <>
         <Flex
             direction={{ default: 'column' }}
         >
-        <div
-            id={ticktCommentsId}
-            key={"div-ticket-comments"}
-            style={{
-                marginTop: 'var(--pf-t--global--spacer--lg)',
-                marginLeft: 'var(--pf-t--global--spacer--lg)',
-            }}
-        >
-            <ul
-                id={ticktCommentsListId}
-                style={{
-                    listStyle: "disc"
-                }}
+            <List
+                isPlain
+                iconSize="large"
+                // isBordered
             >
                 {comments.comments &&
                 Object.keys(comments.comments).map(key => {
@@ -250,39 +285,57 @@ export const Comments = ({
                     
                     return (
                         comments.comments[key] &&
-                        <li
-                            className="comments"
-                            key={'ticket-comment-' + comments.comments[key].id}
+                        <ListItem
+                            icon = { comments.comments[key]._urls?.threads ? <OutlinedCommentsIcon /> : <OutlinedCommentIcon />}
+                            key={'li-ticket-comment-' + comments.comments[key].id}
                             style={{
-                                paddingBottom: 'var(--pf-t--global--spacer--lg)',
-                                paddingLeft: 'var(--pf-t--global--spacer--lg)'
+                                marginBottom: 'var(--pf-t--global--spacer--md)',
                             }}
+                            isBlock={true}
                         >
-                            <Comment
+                            <>
+                            { ! metadata && <Skeleton /> }
+                            { metadata && <Comment
+                                errorState = {fetcher.data}
                                 FormComponent = {fetcher.Form}
+                                key={'ticket-comment-' + comments.comments[key].id}
                                 objectData = {comments.comments[key]}
                                 objectMetadata = {need_metadata() ? null : metadata}
-                            />
-                        </li>
+                            />}
+                            </>
+                        </ListItem>
                     )
                 })}
-                {metadata &&
-                    <li
-                        key={'ticket-comment-reply-form'}
+
+                    <ListItem
+                        icon = {
+                            <IconLoader
+                                name={'reply'}
+                                size = "lg"
+                            />
+                        }
+                        isBlock={true}
+                        id={'ticket-comment-reply-form'}
                         style={{
-                            paddingLeft: 'var(--pf-t--global--spacer--lg)'
+                            marginTop: 'var(--pf-t--global--spacer--sm)',
                         }}
                     >
+                        <>
+                        { ! metadata && <Skeleton /> }
+                        { metadata && 
                         <Comment
+                            errorState = {fetcher.data}
                             FormComponent = {fetcher.Form}
                             isCreate = {true}
                             objectMetadata={metadata}
-                        />
-                    </li>
-                }
-            </ul>
-        </div>
+                        />}
+                        </>
+                    </ListItem>
+
+
+            </List>
         </Flex>
+        </>
     );
 }
 
@@ -340,7 +393,7 @@ export type CommentProps = {
  * @since 0.1.0
  */
 export const Comment = ({
-
+    errorState = undefined,
     FormComponent = Form,
     isCreate = false,
     objectData,
@@ -355,8 +408,15 @@ export const Comment = ({
 
     const [ formState, setFormState ] = useState({});
 
+    const [ isEdit, setIsEditing ] = useState(false)
+
+    const [ isExpanded, setIsExpanded ] = useState(! objectData?.closed);
+
+    const [ isOpen, setIsOpen ] = useState(false);
+
     const [ objectURL, setObjectURL ] = useState(comment_page_data?._urls?._self ? URLSanitize(comment_page_data._urls._self) : null);
 
+    const [ start_thread, setStartThread ] = useState( false )
 
     const [ subModels, setSubModels ] = useState(() => [
         ...( objectMetadata?.urls?.sub_models ?
@@ -376,13 +436,9 @@ export const Comment = ({
 
     const user = useContext(UserContext);
 
-    const [ start_thread, setStartThread ] = useState( false )
-
     let comment_header = ' wrote'
 
     let comment_class = 'comment comment-type-default'
-
-    const [ isEdit, setIsEditing ] = useState(false)
 
     const comment_updated = false
 
@@ -470,6 +526,9 @@ export const Comment = ({
     )
 
 
+    useEffect(() => {
+        setCommentPageData(objectData)
+    }, [ objectData ]);
 
     useEffect(() => {
 
@@ -477,14 +536,17 @@ export const Comment = ({
 
             async function do_fetch() {
 
-                let url = objectURL
+                let url = URLSanitize( objectURL )
 
-                let url_tail = `/${comment_page_data['id']}`
+                if( comment_page_data ) {
+                    let url_tail = `/${comment_page_data['id']}`
 
-                if( url.endsWith( url_tail ) ) {    // Remove the object id from end of URL
+                    if( url.endsWith( url_tail ) ) {    // Remove the object id from end of URL
 
-                    url = url.substr(0, url.length - url_tail.length)
+                        url = url.substr(0, url.length - url_tail.length)
+                    }
                 }
+
 
                 await apiFetch(
                     url,
@@ -513,11 +575,13 @@ export const Comment = ({
     ])
 
 
-    const [isOpen, setIsOpen] = useState(false);
-
 
     const onSelect = () => {
         setIsOpen(!isOpen);
+    };
+
+    const onToggle = (_event: React.MouseEvent, isExpanded: boolean) => {
+        setIsExpanded(isExpanded);
     };
 
 
@@ -569,21 +633,6 @@ export const Comment = ({
             }
         </div>
     )
-
-    const is_discussion = true
-
-    let discussion_class = ''
-
-    let style = {}
-
-    if( is_discussion ) {
-
-        discussion_class = ' discussion'
-        style = {
-            backgroundColor: "var(--background-colour-inactive)",
-            paddingBottom: "20px"
-        }
-    }
 
 
     const dropdownItems = (
@@ -664,9 +713,10 @@ export const Comment = ({
 
     const CommentCard = (
         <>
-        {commentMetadata && ((!isCreate && comment_page_data) || isCreate) &&
+        { commentMetadata && ((!isCreate && comment_page_data) || isCreate) &&
         <Card
             isCompact
+            // isLarge
         >
             
             <CardHeader
@@ -683,8 +733,9 @@ export const Comment = ({
                     <Flex
                         direction={{ default: 'row' }}
                     >
+
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 (( (isCreate || isEdit) && commentMetadata.fields.source) || ( (!isEdit && !isCreate) && comment_page_data.source)) && 'source',
                                 (( (isCreate || isEdit) && commentMetadata.fields.status) || ( (!isEdit && !isCreate) && comment_page_data.status)) && 'status',
@@ -707,7 +758,7 @@ export const Comment = ({
                         <Divider />
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 'body'
                             ]}
@@ -727,7 +778,7 @@ export const Comment = ({
                     >
 
                         <Fields
-                            // errorState={actionData}
+                            errorState={errorState}
                             fields={[
                                 (( (isCreate || isEdit) && commentMetadata.fields.planned_start_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_start_date)) && 'planned_start_date',
                                 (( (isCreate || isEdit) && commentMetadata.fields.planned_finish_date) || ( (!isEdit && !isCreate) && comment_page_data.planned_finish_date)) && 'planned_finish_date',
@@ -779,36 +830,6 @@ export const Comment = ({
     );
 
 
-    const CommentThreads = (
-        <>
-        { (comment_page_data?._urls?.threads || start_thread ) &&
-        <div
-            style={{
-                borderBottom: "1px solid var(--pf-t--global--border--color--100)",
-                borderLeft: "1px solid var(--pf-t--global--border--color--100)",
-                margin: "0",
-                marginBottom: "var(--pf-t--global--spacer--lg)",
-                marginTop: "calc( var(--pf-t--global--spacer--sm) * -1)",
-                paddingBottom: "var(--pf-t--global--spacer--lg)",
-                paddingLeft: "var(--pf-t--global--spacer--md)"
-            }}
-        >
-            <Title
-                headingLevel="h3"
-            >
-                Replies
-                <AngleDownIcon />
-            </Title>
-
-            <Comments
-                comments_url = {start_thread ? `${URLSanitize(comment_page_data._urls._self)}/threads` : URLSanitize(comment_page_data._urls.threads)}
-            />
-        </div>
-        }
-        </>
-    );
-
-
     return (
         (commentMetadata && ((!isCreate && comment_page_data) || isCreate) && commentType) &&
         <>
@@ -823,12 +844,11 @@ export const Comment = ({
                         method={isCreate ? "POST" : "PATCH"}
                         navigate={false}
                         onSubmit={() => {
-                                setFormState({})
+                                setIsEditing(false)
                         }}
                     >
                         {CommentCard}
 
-                        <input id="formState" type="hidden" name="formState" value={JSON.stringify(formState)} />
                         <input id="metadata" type="hidden" name="metadata" value={JSON.stringify(commentMetadata)} />
                         <input id="tz" type="hidden" name="tz" value={user.settings.timezone} />
 
@@ -840,12 +860,37 @@ export const Comment = ({
 
                 }
             </FlexItem>
-            
+
+            { (comment_page_data?._urls?.threads || start_thread ) &&
+            <ExpandableSection
+                isExpanded = { isExpanded }
+                onToggle={onToggle}
+                style={{
+                    borderBottom: "1px groove var(--pf-t--global--border--color--subtle",
+                    borderLeft: "1px groove var(--pf-t--global--border--color--subtle)",
+                    margin: "0",
+                    marginBottom: "var(--pf-t--global--spacer--sm)",
+                    marginTop: "calc( var(--pf-t--global--spacer--sm) * -1)",
+                    paddingBottom: "var(--pf-t--global--spacer--md)",
+                    paddingLeft: "var(--pf-t--global--spacer--md)"
+                }}
+                toggleContent = {
+                    <Title headingLevel="h3">Replies</Title>
+                }
+            >
             <FlexItem>
-                {CommentThreads}
+                <Comments
+                    comments_url = {
+                        start_thread ?
+                            `${URLSanitize(comment_page_data._urls._self)}/threads`
+                        :
+                            URLSanitize(comment_page_data._urls.threads)}
+                />
             </FlexItem>
+            </ExpandableSection>
+            }
+
         </Flex>
         </>
     );
 }
-

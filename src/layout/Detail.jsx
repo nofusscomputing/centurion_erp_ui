@@ -173,6 +173,7 @@ const Detail = () => {
                     onSelect={handleTabClick}
                     aria-label="page-tabs"
                     role="region"
+                    usePageInsets
                 >
 
                     {tabDetails && tabDetails.map(( tab, index ) => {
