@@ -10,7 +10,7 @@ import URLSanitize from "../functions/URLSanitize";
 export const InlineFieldAction = async ({ request, params }) => {
 
     if(
-        ! String(url).replace(
+        ! String(request.url).replace(
             document.location.origin, ''
         ).endsWith(document.location.pathname)
     ) {    // as request does not contain the path, check doc path
@@ -19,6 +19,7 @@ export const InlineFieldAction = async ({ request, params }) => {
     }
 
     const data = await request.formData()
+    // const formState = await request.formState()
 
     const metadata = JSON.parse(data.get('metadata'))
 
@@ -26,34 +27,34 @@ export const InlineFieldAction = async ({ request, params }) => {
 
     let form_data = {}
 
-    for (const itItem of data.entries()) {
+    for (const [ fieldName, fieldValue ] of data.entries()) {
 
-        if( ['metadata', 'tz'].includes( itItem[0] ) ) {
+        if( ['metadata', 'tz'].includes( fieldName ) ) {
 
             continue;
         }
 
-        console.debug(`InlineFieldAction=:${itItem}`);
+        console.debug(`InlineFieldAction=:${fieldName}`);
 
-        if( ! metadata.fields.hasOwnProperty(itItem[0]) ) {    // field not part of request
+        if( ! metadata.fields.hasOwnProperty(fieldName) ) {    // field not part of request
 
             continue;
         }
 
         let value = ''
 
-        switch( String(metadata.fields[itItem[0]].type).toLowerCase() ) {
+        switch( String(metadata.fields[fieldName].type).toLowerCase() ) {
 
             case 'boolean':
 
-                value = Boolean(itItem[1]);
+                value = Boolean(fieldValue);
 
                 break;
 
             case 'datetime':
 
                 value = FormatTime({
-                    time: String(itItem[1]),
+                    time: String(fieldValue),
                     iso: true,
                     tz: timezone
                 });
@@ -63,29 +64,29 @@ export const InlineFieldAction = async ({ request, params }) => {
             case 'choice':
             case 'integer':
 
-                value = Number(itItem[1]);
+                value = Number(fieldValue);
 
                 break;
 
             case 'relationship':
 
-                if( String(metadata.fields[itItem[0]].relationship_type) == "ManyToOne") {
+                if( String(metadata.fields[fieldName].relationship_type) == "ManyToOne") {
 
-                    value = Number(itItem[1]);
+                    value = Number(fieldValue);
 
                 } else {
 
-                    if( form_data.hasOwnProperty( itItem[0] ) ) {
+                    if( form_data.hasOwnProperty( fieldName ) ) {
 
-                        value = [ ...form_data[itItem[0]], Number(itItem[1]) ]
+                        value = [ ...form_data[fieldName], Number(fieldValue) ]
 
                     } else {
 
-                        value = [ Number(itItem[1]) ]
+                        value = [ Number(fieldValue) ]
 
-                        if( typeof(itItem[1]) === 'array' ) {
+                        if( typeof(fieldValue) === 'array' ) {
 
-                            value = Number(itItem[1])
+                            value = Number(fieldValue)
 
                         }
                     }
@@ -95,13 +96,13 @@ export const InlineFieldAction = async ({ request, params }) => {
 
             case 'string':
 
-                value = String(itItem[1])
+                value = String(fieldValue)
 
                 break;
 
             default:
 
-                value = itItem[1];
+                value = fieldValue;
 
                 break;
 
@@ -111,7 +112,7 @@ export const InlineFieldAction = async ({ request, params }) => {
 
             form_data = {
                 ...form_data,
-                [itItem[0]]: value
+                [fieldName]: value
             }
 
         }
@@ -122,6 +123,12 @@ export const InlineFieldAction = async ({ request, params }) => {
 
     console.debug(`InlineFieldAction (json): ${JSON.stringify(form_data)}`)
 
+    let actionReturn = {
+        // errors: {},    // Don't include this key by default. its existance denotes an error has occured.
+        ok: false,
+        body: null
+    }
+
     const update = await apiFetch(
         URLSanitize(request.url),
         null,
@@ -130,9 +137,28 @@ export const InlineFieldAction = async ({ request, params }) => {
         false,
         false
     )
-        .then(data => {
+        // .then(data => {
 
-            return data
+        //     return data
+
+        // });
+        .then(async (response) => {
+
+            actionReturn.ok = response.ok;
+
+            if( response.ok ) {
+
+                actionReturn.body = await response.clone().json();
+
+            } else {
+
+                actionReturn.errors = await response.clone().json();
+
+            }
+
+            actionReturn.status_code = response.status
+
+            return response;
 
         });
 
@@ -143,7 +169,10 @@ export const InlineFieldAction = async ({ request, params }) => {
         return redirect(URLSanitize(api_return._urls._self))
     }
 
-    return null;
+
+
+
+    return actionReturn;
 
 }
 

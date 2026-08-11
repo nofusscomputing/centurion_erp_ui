@@ -18,7 +18,6 @@ import Ticket from "./layout/Ticket";
 import History from "./layout/history";
 import Settings from "./layout/Settings";
 import { apiFetch } from "./hooks/apiFetch";
-import { InlineFieldAction } from "./components/InlineFields";
 import { UserProvider } from './hooks/UserContext';
 import { APISubmitAction } from './components/DisplayFields';
 
@@ -264,12 +263,12 @@ function App() {
                                 <Route path="ticket">
 
                                     <Route path=":ticket_sub_model"
-                                        action={InlineFieldAction} shouldRevalidate={() => false}
+                                        action={APISubmitAction} shouldRevalidate={() => false}
                                     >
 
                                         <Route path=":ticket_sub_model_pk" element={<Ticket />}
                                             loader = {pagedLoader} 
-                                            action={InlineFieldAction} shouldRevalidate={() => false}
+                                            action={APISubmitAction} shouldRevalidate={() => false}
                                         />
 
                                     </Route>
