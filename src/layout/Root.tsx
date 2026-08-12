@@ -7,7 +7,6 @@ import {
 import {
     Link,
     Outlet,
-    useNavigate,
     useParams
 } from "react-router";
 
@@ -20,10 +19,8 @@ import {
     Content,
     Divider,
     Page,
-    PageBreadcrumb,
     PageGroup,
     PageSection,
-    Spinner,
     Title,
 } from '@patternfly/react-core';
 
@@ -38,7 +35,7 @@ import {
     Notifications
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
-import { PageHeader } from "@patternfly/react-component-groups";
+import { LoadingSpinner } from "../App";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
@@ -89,8 +86,6 @@ const RootLayout = (): React.JSX.Element => {
 
     const [overflowMessage, setOverflowMessage] = useState('');
 
-    const navigate = useNavigate();
-
     const [notifications, setNotifications] = useState([]);
     // const [notifications, setNotifications] = useState<UINotification[]>([]);
 
@@ -108,14 +103,7 @@ const RootLayout = (): React.JSX.Element => {
 
                 },
                 'OPTIONS'
-            )
-
-                .then(response => {
-
-                    if( response.status === 401 ) {
-                        navigate('/login')
-                    }
-                })
+            );
         }
     },[])
 
@@ -168,7 +156,7 @@ const RootLayout = (): React.JSX.Element => {
 
     return (
         <>
-        { ! rootMetadata && <Spinner diameter="80px" aria-label="Page loading spinner" /> }
+        { ! rootMetadata && <LoadingSpinner titleText = "Setting up UI" /> }
         {rootMetadata &&
         <NotificationContext.Provider
             value = {{

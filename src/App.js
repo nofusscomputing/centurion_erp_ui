@@ -7,7 +7,8 @@ import {
 
 import {
     Content,
-    PageSection
+    EmptyState,
+    Spinner
 } from '@patternfly/react-core';
 
 import Detail from "./layout/Detail";
@@ -48,11 +49,9 @@ const Logout = () => {
     )
 }
 
-function DefaultFallback() {
+export function LoadingSpinner({ titleText = "Loading UI" }) {
     return (
-        <PageSection isFilled>
-            <Content>Loading</Content>
-        </PageSection>
+        <EmptyState titleText = {titleText} headingLevel="h4" icon={Spinner} />
     );
   }
 
@@ -62,13 +61,25 @@ function App() {
     const router = createBrowserRouter(
 
         createRoutesFromElements(
-            <Route element={<RootLayout />}
-                    errorElement={<ErrorPage />}
-                >
+            <Route
+                errorElement={<ErrorPage />}
+                HydrateFallback={LoadingSpinner}
+            >
+
+
+                {/* ********************************************************
+                    Redirects
+                ******************************************************** */}
+
+                <Route path='/login' element={<Login />} />
+
+
+                <Route path='/logout' element = {<Logout />} />
+
 
                 <Route path="/"
+                    element={<RootLayout />}
                     errorElement={<ErrorPage />}
-                    HydrateFallback={DefaultFallback}
                 >
 
                     {/* ********************************************************
@@ -76,14 +87,7 @@ function App() {
                     ******************************************************** */}
 
 
-                    {/* ********************************************************
-                        Redirects
-                    ******************************************************** */}
 
-                    <Route path='/login' element={<Login />} />
-
-
-                    <Route path='/logout' element = {<Logout />} />
 
 
                     {/* ********************************************************
