@@ -4,4 +4,6 @@
 
         - HTTP Base Fetcher added.
 
+        - JSON HTTP Fetcher added.
+
         - Django Fetcher added.
