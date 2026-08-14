@@ -36,6 +36,11 @@ export interface HTTPNamedParams {
     method?: "GET" | "OPTIONS" | "POST" | "PATCH",
 
     /**
+     * Request signal.
+     */
+    signal?: AbortSignal
+
+    /**
      * URL for the request to be made against.
      */
     url: string,
@@ -76,6 +81,7 @@ export async function httpRequest({
     credentials = false,
     headers = {},
     method = "GET",
+    signal = null,
     url,
 }: HTTPNamedParams): Promise<Response> {
 
@@ -88,7 +94,8 @@ export async function httpRequest({
             // "X-Request-ID": crypto.randomUUID()
         },
         method: method,
-        // mode: 
+        // mode:
+        ...( signal ? { signal: signal } : {} )
     };
 
 

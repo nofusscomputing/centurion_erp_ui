@@ -22,13 +22,16 @@ describe("httpRequest", () => {
 
     describe("No Method Supplied - Defaults to GET", () => {
 
+        const abortSignal = new AbortController()
+
         const testParams: Array<{
             body?: HTTPNamedParams["body"]
             credentials?: HTTPNamedParams["credentials"]
             headers?: HeadersInit
             expected: RequestInit
             method?: HTTPNamedParams["method"]
-            name: string
+            name: string,
+            signal?: HTTPNamedParams["signal"]
         }> = [
             {
                 name: "Default",
@@ -72,6 +75,15 @@ describe("httpRequest", () => {
                     headers: {},
                     method: "GET"
                 }
+            },
+            {
+                name: "Signal passed",
+                signal: abortSignal.signal,
+                expected: {
+                    signal: abortSignal.signal,
+                    headers: {},
+                    method: "GET"
+                }
             }
         ]
 
@@ -85,7 +97,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -101,7 +113,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -117,7 +130,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -133,7 +146,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -151,7 +165,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -167,7 +181,8 @@ describe("httpRequest", () => {
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
                             ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {})
+                            ...( method ? { method: method } : {}),
+                            ...( signal ? { signal: signal } : {})
                         }),
                     ).resolves.not.toBeInstanceOf(HttpError);
                 });
@@ -184,7 +199,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -200,7 +215,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -216,7 +232,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -232,7 +248,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -250,7 +267,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -266,7 +283,8 @@ describe("httpRequest", () => {
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
                             ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {})
+                            ...( method ? { method: method } : {}),
+                            ...( signal ? { signal: signal } : {})
                         }),
                     ).resolves.not.toBeInstanceOf(HttpError);
                 });
@@ -283,7 +301,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -299,7 +317,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -315,7 +334,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -331,7 +350,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -349,7 +369,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -365,7 +385,8 @@ describe("httpRequest", () => {
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
                             ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {})
+                            ...( method ? { method: method } : {}),
+                            ...( signal ? { signal: signal } : {})
                         }),
                     ).resolves.not.toBeInstanceOf(HttpError);
                 });
@@ -382,7 +403,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -399,7 +420,8 @@ describe("httpRequest", () => {
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
                             ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {})
+                            ...( method ? { method: method } : {}),
+                            ...( signal ? { signal: signal } : {})
                         }),
                     ).rejects.toBeInstanceOf(HTTPNotAuthenticated);
                 });
@@ -411,7 +433,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -429,7 +451,8 @@ describe("httpRequest", () => {
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
                             ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {})
+                            ...( method ? { method: method } : {}),
+                            ...( signal ? { signal: signal } : {})
                         });
 
                         fail("Expected HTTPNotAuthenticated");
@@ -454,7 +477,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -470,7 +493,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -486,7 +510,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -502,7 +526,8 @@ describe("httpRequest", () => {
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
                         ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {})
+                        ...( method ? { method: method } : {}),
+                        ...( signal ? { signal: signal } : {})
                     });
 
                     expect(fetch).toHaveBeenCalledWith(
@@ -520,7 +545,7 @@ describe("httpRequest", () => {
 
                 test.each(testParams)(
                     "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, expected}) => {
+                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
 
                     const response = new Response(null, {
                         status: status,
@@ -536,7 +561,8 @@ describe("httpRequest", () => {
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
                             ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {})
+                            ...( method ? { method: method } : {}),
+                            ...( signal ? { signal: signal } : {})
                         }),
                     ).resolves.not.toBeInstanceOf(HttpError);
                 });
