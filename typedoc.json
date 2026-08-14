@@ -25,6 +25,15 @@
     ],
     "excludeExternals": true,
     "excludePrivate": false,
+    "externalSymbolLinkMappings": {
+        "typescript": {
+            "AbortSignal": "https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal",
+            "BodyInit": "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit#body",
+            "HeadersInit": "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit#headers",
+            "Promise": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+            "Response": "https://developer.mozilla.org/en-US/docs/Web/API/Response"
+        }
+    },
     "hideGenerator": true,
     "navigation": {
         "includeCategories": true,

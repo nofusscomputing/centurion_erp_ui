@@ -1,5 +1,18 @@
-import { isRouteErrorResponse, useRouteError} from "react-router";
-import { ResponseException } from "../classes/Exceptions";
+import {
+    useEffect
+} from "react";
+
+import {
+    isRouteErrorResponse,
+    redirect,
+    useNavigate,
+    useRouteError
+} from "react-router";
+
+import {
+    HTTPNotAuthenticated,
+    ResponseException
+} from "../classes/Exceptions";
 
 
 
@@ -7,6 +20,19 @@ const ErrorPage = () => {
 
     const error = useRouteError();
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+    if( error instanceof HTTPNotAuthenticated ) {
+
+        navigate('/login')
+
+    }
+
+    }, [error, navigate])
+    
+    
     if( isRouteErrorResponse() ){ 
 
         return (
