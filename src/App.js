@@ -49,12 +49,6 @@ const Logout = () => {
     )
 }
 
-export function LoadingSpinner({ titleText = "Loading UI" }) {
-    return (
-        <EmptyState titleText = {titleText} headingLevel="h4" icon={Spinner} />
-    );
-  }
-
 
 function App() {
 
