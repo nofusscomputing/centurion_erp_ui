@@ -2,4 +2,8 @@
 
     - Begin refactor of fetching api data. This move is towards creating data/backend specific fetchers.
 
-        - HTTP Base Fetcher added
+        - HTTP Base Fetcher added.
+
+        - JSON HTTP Fetcher added.
+
+        - Django Fetcher added.
