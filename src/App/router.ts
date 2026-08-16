@@ -50,16 +50,6 @@ const appRoutes = {
             index: true
         },
         {
-            id: "login",
-            path: "login",
-            Component: components['login']
-        },
-        {
-            id: "logout",
-            path: "logout",
-            Component: components['logout']
-        },
-        {
             path: "settings",
             Component: components['settings'],
             loader: pageLoaders['django']
@@ -290,12 +280,36 @@ const dynamicRouter = () => {
                 ErrorBoundary: ErrorPage,
                 HydrateFallback: LoadingSpinner,
                 children: [
+                    /**
+                     * Note: For a site that requires auth, login redirect cant
+                     * be part of the dynamic routes. This is because the error
+                     * boundary that uses a redirect will not have access to
+                     * the dynamic routes until after they are loaded.
+                     */
+                    {
+                        id: "login",
+                        path: "/login",
+                        Component: components['redirect'],
+                        handle: {
+                            url_redirect: `${window.env.API_URL}/auth/login`
+                        }
+                    },
+                    {
+                        id: "logout",
+                        path: "/logout",
+                        Component: components['redirect'],
+                        handle: {
+                            url_post: `${window.env.API_URL}/auth/logout`,
+                            url_redirect: `${window.env.API_URL}/auth/login`
+                        }
+                    },
                     {
                         id: "UI",
                         Component: components['rootlayout'],
+                        ErrorBoundary: ErrorPage,
                         HydrateFallback: () => LoadingSpinner({titleText: "Loading App"}),
                         children: []
-                    }
+                    },
                 ]
             }
         ];
