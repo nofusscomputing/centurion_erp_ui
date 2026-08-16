@@ -16,8 +16,7 @@ import Settings from "../layout/Settings"
 import Ticket from "../layout/Ticket"
 
 import Base from "../layouts/Base"
-import Login from "../layouts/Login"
-import Logout from "../layouts/Logout"
+import Redirect from "../layouts/Redirect"
 
 import { APISubmitAction } from "../components/DisplayFields"
 import LoadingSpinner from "../components/LoadingSpinner"
@@ -29,8 +28,7 @@ const components = {
     baseview: Base,
     detail: Detail,
     history: History,
-    login: Login,
-    logout: Logout,
+    redirect: Redirect,
     list: List,
     rootlayout: RootLayout,
     settings: Settings,
