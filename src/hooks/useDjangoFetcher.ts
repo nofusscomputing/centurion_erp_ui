@@ -64,6 +64,19 @@ export interface djangoFetcherNamedParams {
  * This Fetcher sets up everything required to fetch datasets from a backend
  * that is Django.
  * 
+ * @example
+ * 
+ * ``` js
+ * const { apiMetadata, apiData } = await useDjangoFetcher({
+ *     url: '/',
+ *         onlyMetadata: true
+ *     });
+ *
+ *      const data = await apiMetadata.clone().json();
+ * 
+ * ```
+ * 
+ * 
  * @summary Django based backend fetcher for datasets.
  * 
  * @category Hook
