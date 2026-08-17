@@ -138,6 +138,27 @@ describe("httpJsonRequest", () => {
     });
 
 
+
+    describe("No body method PATCH raises Error Exception", () => {
+
+        test.each(testParams)(
+            "$name",
+            async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
+
+            await expect(
+                jsonHttpRequest({
+                    url: url,
+                    ...( credentials ? { credentials: credentials } : {}),
+                    body: null,
+                    ...( headers ? { headers: headers } : {}),
+                    method: "PATCH",
+                    ...( signal ? { signal: signal } : {})
+                }),
+            ).rejects.toBeInstanceOf(Error);
+        });
+    });
+
+
     
     describe("No Method Supplied - Defaults to GET", () => {
 
