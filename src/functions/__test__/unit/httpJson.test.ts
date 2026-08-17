@@ -24,99 +24,143 @@ describe("httpJsonRequest", () => {
     });
 
 
-    describe("No Method Supplied - Defaults to GET", () => {
+    const abortSignal = new AbortController()
 
-        const abortSignal = new AbortController()
-
-        const testParams: Array<{
-            body?: HTTPNamedParams["body"]
-            credentials?: HTTPNamedParams["credentials"]
-            headers?: HeadersInit
-            expected: HTTPNamedParams
-            method?: HTTPNamedParams["method"]
-            name: string,
-            signal?: HTTPNamedParams["signal"]
-        }> = [
-            {
-                name: "Default",
-                expected: {
-                    body: null,
-                    credentials: false,
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    method: "GET",
-                    signal: null,
-                    url: url
-                }
-            },
-            {
-                name: "Headers passed",
+    const testParams: Array<{
+        body?: HTTPNamedParams["body"]
+        credentials?: HTTPNamedParams["credentials"]
+        headers?: HeadersInit
+        expected: HTTPNamedParams
+        method?: HTTPNamedParams["method"]
+        name: string,
+        signal?: HTTPNamedParams["signal"]
+    }> = [
+        {
+            name: "Default",
+            expected: {
+                body: null,
+                credentials: false,
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer test-token",
+                    "Accept": "application/json"
                 },
-                expected: {
-                    body: null,
-                    credentials: false,
-                    headers: {
-                        "Accept": "application/json",
-                        Authorization: "Bearer test-token",
-                        "Content-Type": "application/json"
-                    },
-                    method: "GET",
-                    signal: null,
-                    url: url
-                }
+                method: "GET",
+                signal: null,
+                url: url
+            }
+        },
+        {
+            name: "Headers passed",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer test-token",
             },
-            {
-                name: "Body passed",
+            expected: {
+                body: null,
+                credentials: false,
+                headers: {
+                    "Accept": "application/json",
+                    Authorization: "Bearer test-token",
+                    "Content-Type": "application/json"
+                },
+                method: "GET",
+                signal: null,
+                url: url
+            }
+        },
+        {
+            name: "Body passed",
+            body: JSON.stringify({
+                foo: "bar",
+            }),
+            expected: {
                 body: JSON.stringify({
                     foo: "bar",
                 }),
-                expected: {
-                    body: JSON.stringify({
-                        foo: "bar",
-                    }),
-                    credentials: false,
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    method: "GET",
-                    signal: null,
-                    url: url
-                }
-            },
-            {
-                name: "Credentials passed",
-                credentials: true,
-                expected: {
-                    body: null,
-                    credentials: true,
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    method: "GET",
-                    signal: null,
-                    url: url
-                }
-            },
-            {
-                name: "Signal passed",
-                signal: abortSignal.signal,
-                expected: {
-                    body: null,
-                    credentials: false,
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    method: "GET",
-                    signal: abortSignal.signal,
-                    url: url
-                }
+                credentials: false,
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                method: "GET",
+                signal: null,
+                url: url
             }
-        ]
+        },
+        {
+            name: "Credentials passed",
+            credentials: true,
+            expected: {
+                body: null,
+                credentials: true,
+                headers: {
+                    "Accept": "application/json"
+                },
+                method: "GET",
+                signal: null,
+                url: url
+            }
+        },
+        {
+            name: "Signal passed",
+            signal: abortSignal.signal,
+            expected: {
+                body: null,
+                credentials: false,
+                headers: {
+                    "Accept": "application/json"
+                },
+                method: "GET",
+                signal: abortSignal.signal,
+                url: url
+            }
+        },
+    ]
+
+
+
+    describe("No body method POST raises Error Exception", () => {
+
+        test.each(testParams)(
+            "$name",
+            async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
+
+            await expect(
+                jsonHttpRequest({
+                    url: url,
+                    ...( credentials ? { credentials: credentials } : {}),
+                    body: null,
+                    ...( headers ? { headers: headers } : {}),
+                    method: "POST",
+                    ...( signal ? { signal: signal } : {})
+                }),
+            ).rejects.toBeInstanceOf(Error);
+        });
+    });
+
+
+
+    describe("No body method PATCH raises Error Exception", () => {
+
+        test.each(testParams)(
+            "$name",
+            async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
+
+            await expect(
+                jsonHttpRequest({
+                    url: url,
+                    ...( credentials ? { credentials: credentials } : {}),
+                    body: null,
+                    ...( headers ? { headers: headers } : {}),
+                    method: "PATCH",
+                    ...( signal ? { signal: signal } : {})
+                }),
+            ).rejects.toBeInstanceOf(Error);
+        });
+    });
+
+
+    
+    describe("No Method Supplied - Defaults to GET", () => {
 
 
 

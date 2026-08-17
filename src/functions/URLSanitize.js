@@ -94,8 +94,13 @@ export default function URLSanitize(url) {
             cleanURL = cleanURL.replace( `:${known.port}`, '')
         }
 
+        if( cleanURL === '/' && raw.path === null ) {
+            
+            cleanURL = '';
+        }
 
-        if( cleanURL !== raw.path ) { // URL path must match the API path
+
+        if( cleanURL !== raw.path && ! (cleanURL === '' && raw.path === null)) { // URL path must match the API path
 
             throw Error( `URL ${url} does not match when it should. cleanURL=raw [${cleanURL}=${raw.path}]` )
         }

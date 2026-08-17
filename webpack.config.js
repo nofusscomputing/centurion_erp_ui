@@ -12,7 +12,7 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            bundle: path.resolve(__dirname, 'src', 'index.js'),
+            bundle: path.resolve(__dirname, 'src', 'main.tsx'),
         },
 
         output: {

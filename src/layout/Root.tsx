@@ -24,7 +24,6 @@ import {
     Title,
 } from '@patternfly/react-core';
 
-//@ts-expect-error TS[2822]
 import '../../node_modules/@patternfly/patternfly/patternfly.css'
 
 import Header from "../components/page/Header";
@@ -35,7 +34,7 @@ import {
     Notifications
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
-import { LoadingSpinner } from "../App";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
