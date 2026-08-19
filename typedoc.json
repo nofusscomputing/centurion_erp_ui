@@ -37,6 +37,9 @@
             "EmptyStateStatus": "https://www.patternfly.org/components/empty-state#emptystate",
             "EmptyStateStatus.danger": "https://www.patternfly.org/components/empty-state#emptystate",
             "EmptyStateStatus.warning": "https://www.patternfly.org/components/empty-state#emptystate"
+        },
+        "react-router": {
+            "ErrorBoundary": "https://reactrouter.com/7.18.2/how-to/error-boundary"
         }
     },
     "hideGenerator": true,

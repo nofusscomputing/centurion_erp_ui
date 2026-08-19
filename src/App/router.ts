@@ -7,7 +7,7 @@ import djangoLoader from "./pageLoaders/django"
 import djangoMetadataLoader from "./pageLoaders/djangoMetadata"
 
 import Detail from "../layout/Detail"
-import ErrorPage from "../layout/Error"
+import RouteErrorBoundary from "../layouts/ErrorBoundary"
 import History from "../layout/history"
 import List from "../layout/List"
 import Markdown from "../layout/Markdown"
@@ -43,7 +43,7 @@ const pageLoaders = {
 const appRoutes = {
     id: "root",
     path: "/",
-    ErrorBoundary: ErrorPage,
+    ErrorBoundary: RouteErrorBoundary,
     HydrateFallback: () => StateSplash({titleText: "Loading Data", icon: StateIcon.loading }),
     children: [
         {
@@ -277,7 +277,7 @@ const dynamicRouter = () => {
             {
                 id: "base",
                 Component: components['baseview'],
-                ErrorBoundary: ErrorPage,
+                ErrorBoundary: RouteErrorBoundary,
                 HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                 children: [
                     /**
@@ -305,8 +305,7 @@ const dynamicRouter = () => {
                     },
                     {
                         id: "UI",
-                        Component: components['rootlayout'],
-                        ErrorBoundary: ErrorPage,
+                        ErrorBoundary: RouteErrorBoundary,
                         HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                         children: []
                     },
