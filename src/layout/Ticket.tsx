@@ -10,7 +10,6 @@ import {
     useActionData,
     useFetcher,
     useLoaderData,
-    useOutletContext,
     useParams
 } from "react-router";
 
@@ -37,6 +36,9 @@ import urlBuilder from "../hooks/urlBuilder";
 import UserContext from "../hooks/UserContext";
 import URLSanitize from "../functions/URLSanitize";
 import CardDataSet from "../components/CardDataSet";
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 /**
@@ -83,7 +85,7 @@ const Ticket = (): React.JSX.Element => {
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
-    } = useOutletContext();
+    } = usePageContext();
 
     setPageDescription(null);
     setPageHeaderIcons(null);

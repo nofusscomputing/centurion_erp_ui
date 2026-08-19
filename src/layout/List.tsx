@@ -6,7 +6,6 @@ import {
 import {
     Link,
     useLoaderData,
-    useOutletContext,
 } from "react-router"
 
 import {
@@ -20,7 +19,12 @@ import {
     DataSetList
 } from "../components/DataSet";
 import IconLoader from "../components/IconLoader";
+
 import URLSanitize from "../functions/URLSanitize";
+
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 
@@ -41,7 +45,7 @@ const List = (): React.JSX.Element => {
     const {
         // @ts-ignore TS2339
         setPageDescription, setPageHeading, setPageHeaderIcons
-    } = useOutletContext()
+    } = usePageContext();
 
     const { metadata: loaderMetadata, page_data: loaderPageData } = useLoaderData<{metadata: APIMetadata, page_data: APIDataset}>();
 

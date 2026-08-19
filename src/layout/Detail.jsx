@@ -36,7 +36,12 @@ import IconLoader from "../components/IconLoader";
 import ModelNote from "../components/page/detail/ModelNote";
 import DetailSection from "../components/page/detail/DetailSection";
 import MarkdownEditor from "../components/MarkdownEditor";
+
 import URLSanitize from "../functions/URLSanitize";
+
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 
@@ -44,7 +49,7 @@ const Detail = () => {
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
-    } = useOutletContext()
+    } = usePageContext();
 
     const location = useLocation();
 

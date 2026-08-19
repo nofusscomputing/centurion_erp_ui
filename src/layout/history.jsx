@@ -8,7 +8,12 @@ import {
 } from "@patternfly/react-core";
 
 import DisplayTable from "../components/DisplayTable"
+
 import URLSanitize from "../functions/URLSanitize";
+
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 
@@ -16,7 +21,7 @@ const History = () => {
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
-    } = useOutletContext()
+    } = usePageContext();
 
     const {metadata, page_data} = useLoaderData();
 

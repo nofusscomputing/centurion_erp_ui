@@ -23,6 +23,9 @@ import RenderMarkdown from "../functions/RenderMarkdown";
 import { useIsMobile } from "../hooks/useIsMobile";
 
 import { TagIcon } from "@patternfly/react-icons/dist/esm/icons/tag-icon"
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 function getHeadings( root = null ) {
@@ -132,7 +135,7 @@ const Markdown = (): React.JSX.Element => {
     const {
         // @ts-ignore TS2339
         setPageDescription, setPageHeading, setPageHeaderIcons,
-    } = useOutletContext()
+    } = usePageContext()
 
     const isMobile = useIsMobile();
 
