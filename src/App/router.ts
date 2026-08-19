@@ -5,6 +5,7 @@ import {
 
 import djangoLoader from "./pageLoaders/django"
 import djangoMetadataLoader from "./pageLoaders/djangoMetadata"
+import djangoRootMetadataLoader from "./pageLoaders/djangoRootMetadata"
 import
     StateSplash,
     {
@@ -43,6 +44,7 @@ const components = {
 const pageLoaders = {
     django: djangoLoader,
     django_metadata: djangoMetadataLoader,
+    django_root_metadata: djangoRootMetadataLoader
 };
 
 const appRoutes = {
@@ -300,6 +302,7 @@ const dynamicRouter = () => {
                     {
                         id: "UI",
                         Component: UI,
+                        loader: pageLoaders['django_root_metadata'],
                         shouldRevalidate: () => false,
                         ErrorBoundary: RouteErrorBoundary,
                         HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
