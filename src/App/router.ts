@@ -5,6 +5,11 @@ import {
 
 import djangoLoader from "./pageLoaders/django"
 import djangoMetadataLoader from "./pageLoaders/djangoMetadata"
+import
+    StateSplash,
+    {
+        StateIcon
+} from "../components/StateSplash"
 
 import Detail from "../layout/Detail"
 import RouteErrorBoundary from "../layouts/ErrorBoundary"
@@ -18,6 +23,7 @@ import Ticket from "../layout/Ticket"
 import Base from "../layouts/Base"
 import Redirect from "../layouts/Redirect"
 
+import UI from "../layouts/ui"
 import { APISubmitAction } from "../components/DisplayFields"
 import StateSplash, { StateIcon } from "../components/StateSplash"
 
@@ -30,7 +36,6 @@ const components = {
     history: History,
     redirect: Redirect,
     list: List,
-    rootlayout: RootLayout,
     settings: Settings,
     ticket: Ticket
 };
@@ -43,6 +48,7 @@ const pageLoaders = {
 const appRoutes = {
     id: "root",
     path: "/",
+    shouldRevalidate: () => false,
     ErrorBoundary: RouteErrorBoundary,
     HydrateFallback: () => StateSplash({titleText: "Loading Data", icon: StateIcon.loading }),
     children: [
@@ -195,18 +201,6 @@ const appRoutes = {
                                     Component: components['detail'],
                                     loader: pageLoaders['django'],
                                     action: APISubmitAction,
-                                    shouldRevalidate: ({ currentParams, nextParams }) => {
-    
-                                        const reValidate = (
-                                            currentParams.module !== nextParams.module ||
-                                            currentParams.model !== nextParams.model ||
-                                            currentParams.id !== nextParams.id
-                                        )
-    
-                                        return reValidate
-    
-                                    },
-
                                 },
                                 {
                                     path: "history",
@@ -305,6 +299,8 @@ const dynamicRouter = () => {
                     },
                     {
                         id: "UI",
+                        Component: UI,
+                        shouldRevalidate: () => false,
                         ErrorBoundary: RouteErrorBoundary,
                         HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                         children: []
