@@ -15,12 +15,12 @@ import {
 } from "@patternfly/react-core";
 
 import {
+    CubesIcon,
     RhUiErrorFillIcon,
     RhUiWarningFillIcon,
     SearchIcon
 } from "@patternfly/react-icons";
 
-import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
 
 // import CubesIconsvg from "@patternfly/react-icons/dist/static/cubes.svg"
 
