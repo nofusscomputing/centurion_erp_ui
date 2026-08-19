@@ -6,29 +6,32 @@ import {
 import djangoLoader from "./pageLoaders/django"
 import djangoMetadataLoader from "./pageLoaders/djangoMetadata"
 import djangoRootMetadataLoader from "./pageLoaders/djangoRootMetadata"
+
+import {
+    APISubmitAction
+} from "../components/DisplayFields"
 import
     StateSplash,
     {
         StateIcon
 } from "../components/StateSplash"
 
+import useDjangoFetcher from "../hooks/useDjangoFetcher"
+
 import Detail from "../layout/Detail"
 import RouteErrorBoundary from "../layouts/ErrorBoundary"
 import History from "../layout/history"
 import List from "../layout/List"
 import Markdown from "../layout/Markdown"
-import RootLayout from "../layout/Root"
 import Settings from "../layout/Settings"
 import Ticket from "../layout/Ticket"
 
 import Base from "../layouts/Base"
+import PageContent from "../layouts/PageContent"
 import Redirect from "../layouts/Redirect"
 
 import UI from "../layouts/ui"
-import { APISubmitAction } from "../components/DisplayFields"
-import StateSplash, { StateIcon } from "../components/StateSplash"
 
-import useDjangoFetcher from "../hooks/useDjangoFetcher"
 
 
 const components = {
@@ -36,6 +39,7 @@ const components = {
     detail: Detail,
     history: History,
     redirect: Redirect,
+    markdown: Markdown,
     list: List,
     settings: Settings,
     ticket: Ticket
@@ -306,7 +310,15 @@ const dynamicRouter = () => {
                         shouldRevalidate: () => false,
                         ErrorBoundary: RouteErrorBoundary,
                         HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
-                        children: []
+                        children: [
+                            {
+                                id: "page",
+                                Component: PageContent,
+                                ErrorBoundary: RouteErrorBoundary,
+                                shouldRevalidate: () => false,
+                                HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
+                            }
+                        ]
                     },
                 ]
             }
@@ -329,7 +341,7 @@ const dynamicRouter = () => {
 
                     const data = await apiMetadata.clone().json();
 
-                    patch("UI", [appRoutes]);
+                    patch("page", [appRoutes]);
 
                 }
             },

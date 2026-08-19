@@ -20,11 +20,7 @@ import React from "react";
 const Base = (): React.JSX.Element => {
 
     return (
-        <UserProvider>
-
-            <Outlet />
-
-        </UserProvider>
+        <Outlet />
     );
 
 };
