@@ -1,6 +1,5 @@
 import {
     useEffect,
-    useRef,
     useState,
 } from "react";
 
@@ -27,7 +26,11 @@ import {
 import '../../node_modules/@patternfly/patternfly/patternfly.css'
 
 import Header from "../components/page/Header";
-import Navbar from "../components/page/Navbar";
+import
+    Navbar,
+    {
+        NavbarContextProvider
+} from "../components/page/Navbar";
 import Footer from "../components/page/Footer";
 import {
     NotificationContextProvider,
@@ -42,7 +45,7 @@ import StateSplash, { StateIcon } from "../components/StateSplash";
  * 
  * The outlet expects that the first child route will be wrapped in
  * a {@link @patternfly/react-core#PageSection} component. Notification
- * provider {@link NotificationContext} is provided as part of this layout
+ * provider {@link notificationContext} is provided as part of this layout
  * and is usable in all child routes.
  * 
  * @summary Common Page Layout
@@ -145,6 +148,7 @@ const RootLayout = (): React.JSX.Element => {
         <>
         { ! rootMetadata && <StateSplash titleText = "Setting up UI" icon = {StateIcon.loading} /> }
         {rootMetadata &&
+        <NavbarContextProvider>
         <NotificationContextProvider>
         <Page
             isManagedSidebar
@@ -163,8 +167,7 @@ const RootLayout = (): React.JSX.Element => {
             notificationDrawer = {<Notifications />}
             isNotificationDrawerExpanded = {isNotificationsOpen}
             sidebar = {<Navbar
-                isSidebarOpen = {isSidebarOpen}
-                navigation_entries = {rootMetadata.navigation}
+                apiMetadata = {rootMetadata}
             />}
         >
 
@@ -223,6 +226,7 @@ const RootLayout = (): React.JSX.Element => {
         </Page>
 
         </NotificationContextProvider>
+        </NavbarContextProvider>
         }
         </>
     );
