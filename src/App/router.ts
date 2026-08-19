@@ -19,7 +19,7 @@ import Base from "../layouts/Base"
 import Redirect from "../layouts/Redirect"
 
 import { APISubmitAction } from "../components/DisplayFields"
-import LoadingSpinner from "../components/LoadingSpinner"
+import LoadingSpinner from "../components/StateSplash"
 
 import useDjangoFetcher from "../hooks/useDjangoFetcher"
 

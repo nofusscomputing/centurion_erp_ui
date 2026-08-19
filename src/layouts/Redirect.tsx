@@ -1,5 +1,5 @@
 import { useMatches } from "react-router";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/StateSplash";
 import { apiFetch } from "../hooks/apiFetch";
 import useDjangoFetcher from "../hooks/useDjangoFetcher";
 

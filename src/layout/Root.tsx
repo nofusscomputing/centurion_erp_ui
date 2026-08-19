@@ -34,7 +34,7 @@ import {
     Notifications
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/StateSplash";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
