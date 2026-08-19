@@ -19,7 +19,7 @@ import Base from "../layouts/Base"
 import Redirect from "../layouts/Redirect"
 
 import { APISubmitAction } from "../components/DisplayFields"
-import LoadingSpinner from "../components/StateSplash"
+import StateSplash, { StateIcon } from "../components/StateSplash"
 
 import useDjangoFetcher from "../hooks/useDjangoFetcher"
 
@@ -44,7 +44,7 @@ const appRoutes = {
     id: "root",
     path: "/",
     ErrorBoundary: ErrorPage,
-    HydrateFallback: () => LoadingSpinner({titleText: "Loading Data"}),
+    HydrateFallback: () => StateSplash({titleText: "Loading Data", icon: StateIcon.loading }),
     children: [
         {
             index: true
@@ -278,7 +278,7 @@ const dynamicRouter = () => {
                 id: "base",
                 Component: components['baseview'],
                 ErrorBoundary: ErrorPage,
-                HydrateFallback: LoadingSpinner,
+                HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                 children: [
                     /**
                      * Note: For a site that requires auth, login redirect cant
@@ -307,7 +307,7 @@ const dynamicRouter = () => {
                         id: "UI",
                         Component: components['rootlayout'],
                         ErrorBoundary: ErrorPage,
-                        HydrateFallback: () => LoadingSpinner({titleText: "Loading App"}),
+                        HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                         children: []
                     },
                 ]

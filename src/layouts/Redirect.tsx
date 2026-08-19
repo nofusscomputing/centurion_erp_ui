@@ -1,5 +1,5 @@
 import { useMatches } from "react-router";
-import LoadingSpinner from "../components/StateSplash";
+import StateSplash, { StateIcon } from "../components/StateSplash";
 import { apiFetch } from "../hooks/apiFetch";
 import useDjangoFetcher from "../hooks/useDjangoFetcher";
 
@@ -10,7 +10,7 @@ import useDjangoFetcher from "../hooks/useDjangoFetcher";
  * the url that was redirected to.
  * 
  * When defining the route for this layout, **ensure** that the route is
- * defined with an `id`. The id is used within the {@link LoadingSpinner} text
+ * defined with an `id`. The id is used within the {@link StateSplash} text
  * in format `Redirect ${id}`.
  * 
  * @example
@@ -72,7 +72,7 @@ const Redirect = (): React.JSX.Element => {
     window.location.replace( routeData.handle.url_redirect );
 
     return (
-        <LoadingSpinner titleText = {`Redirect ${routesData.id}`} />
+        <StateSplash titleText = {`Redirect ${routesData.id}`} icon = {StateIcon.loading} />
     );
 
 };

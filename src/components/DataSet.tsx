@@ -43,7 +43,7 @@ import {
 import FieldData from "../functions/FieldData";
 import IconLoader from "./IconLoader";
 import URLSanitize from "../functions/URLSanitize";
-import { SearchIcon } from "@patternfly/react-icons";
+import StateSplash, { StateIcon } from "./StateSplash";
 
 
 /**
@@ -570,16 +570,11 @@ export const DataSetList = <
     });
 
     const emptyState = (
-        <EmptyState
-            headingLevel = "h4"
-            titleText = "Nothing Found"
-            variant = {EmptyStateVariant.sm}
-            icon = {SearchIcon}
-        >
-            <EmptyStateBody>
-                There are no results.
-            </EmptyStateBody>
-        </EmptyState>
+        <StateSplash
+            titleText="Nothing Found"
+            body = "There are no results."
+            icon = {StateIcon.search}
+        />
     );
 
     if( isDraggable ) {

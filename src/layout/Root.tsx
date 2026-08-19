@@ -34,7 +34,7 @@ import {
     Notifications
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
-import LoadingSpinner from "../components/StateSplash";
+import StateSplash, { StateIcon } from "../components/StateSplash";
 
 /**
  * This Layout is the root Layout that corresponds with the root route.
@@ -155,7 +155,7 @@ const RootLayout = (): React.JSX.Element => {
 
     return (
         <>
-        { ! rootMetadata && <LoadingSpinner titleText = "Setting up UI" /> }
+        { ! rootMetadata && <StateSplash titleText = "Setting up UI" icon = {StateIcon.loading} /> }
         {rootMetadata &&
         <NotificationContext.Provider
             value = {{
