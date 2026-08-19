@@ -4,7 +4,8 @@ import {
     useState } from "react";
 
 import {
-    Link
+    Link,
+    useRevalidator
 } from "react-router";
 
 import {
@@ -27,12 +28,17 @@ import {
 } from "@patternfly/react-core";
 
 
-import { CogIcon } from '@patternfly/react-icons';
-import { EllipsisVIcon } from '@patternfly/react-icons';
-import { HelpIcon } from '@patternfly/react-icons';
+import {
+    CogIcon,
+    EllipsisVIcon,
+    HelpIcon,
+    QuestionCircleIcon,
+    RhUiRefreshIcon
+} from '@patternfly/react-icons';
+
 // @ts-expect-error TS[2307]
 import imgAvatar from '@patternfly/react-core/src/components/assets/avatarImg.svg';
-import { QuestionCircleIcon } from '@patternfly/react-icons';
+
 
 
 import UserContext from "../../hooks/UserContext";
@@ -79,6 +85,8 @@ const HeaderToolbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const { mode: themeMode, setMode: setThemeMode, modes: colorModes } = useTheme(THEME_TYPES.COLOR);
+
+    const revalidator = useRevalidator();
 
     const onKebabDropdownSelect = () => {
         setIsKebabDropdownOpen(false);
@@ -209,6 +217,19 @@ const HeaderToolbar = () => {
                             lg: 'visible'
                         }}
                     >
+                        <ToolbarItem>
+                            <Button
+                                aria-label="Settings"
+                                // component={Link}
+                                // // @ts-expect-error TS[2322]
+                                //     to={"URLSanitize(user.settings._urls._self)"}
+                                // isCircle
+                                icon={<RhUiRefreshIcon />}
+                                onClick={ () => revalidator.revalidate() }
+                                title = "Reload Content"
+                                variant="plain"
+                            />
+                        </ToolbarItem>
                         <NotificationBadge
                             count = {totalUnreadNotifications}
                             variant={totalUnreadNotifications === 0 ? NotificationBadgeVariant.read : notificationUnreadVariant}
