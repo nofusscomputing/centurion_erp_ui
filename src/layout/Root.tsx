@@ -30,8 +30,9 @@ import Header from "../components/page/Header";
 import Navbar from "../components/page/Navbar";
 import Footer from "../components/page/Footer";
 import {
-    NotificationContext,
-    Notifications
+    NotificationContextProvider,
+    Notifications,
+    useNotificationContext
 } from "../components/NotificationDrawer";
 import { apiFetch } from "../hooks/apiFetch";
 import StateSplash, { StateIcon } from "../components/StateSplash";
@@ -65,30 +66,17 @@ const RootLayout = (): React.JSX.Element => {
 
     const params = useParams();
 
-    // notifications
-
-    const alertTimeout = 8000;
-
-    const drawerRef = useRef(null);
-
-    const maxDisplayedAlerts = 2;
-
-    const maxAlerts = 100;
-
-    const minAlerts = 0;
-
-    const [ alerts, setAlerts ] = useState([])
-
-    const [ isNotificationsOpen, setNotificationsOpen ] = useState(false);
-
-    const [maxDisplayed, setMaxDisplayed] = useState(maxDisplayedAlerts);
-
-    const [overflowMessage, setOverflowMessage] = useState('');
-
-    const [notifications, setNotifications] = useState([]);
-    // const [notifications, setNotifications] = useState<UINotification[]>([]);
 
     const [rootMetadata, setRootMetadata ] = useState(null);
+
+    const {
+        alerts,
+        isNotificationsOpen,
+        maxDisplayed,
+        setAlerts,
+        setNotificationsOpen
+    } = useNotificationContext();
+
 
     useEffect(() => {
 
@@ -157,17 +145,7 @@ const RootLayout = (): React.JSX.Element => {
         <>
         { ! rootMetadata && <StateSplash titleText = "Setting up UI" icon = {StateIcon.loading} /> }
         {rootMetadata &&
-        <NotificationContext.Provider
-            value = {{
-                alerts, setAlerts,
-                alertTimeout,
-                drawerRef,
-                isNotificationsOpen, setNotificationsOpen,
-                maxDisplayed,
-                notifications, setNotifications,
-                setOverflowMessage
-            }}
-        >
+        <NotificationContextProvider>
         <Page
             isManagedSidebar
             breadcrumb = {rootPageBreadcrumb}
@@ -244,7 +222,7 @@ const RootLayout = (): React.JSX.Element => {
 
         </Page>
 
-        </NotificationContext.Provider>
+        </NotificationContextProvider>
         }
         </>
     );

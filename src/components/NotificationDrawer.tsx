@@ -2,6 +2,7 @@ import {
     createContext,
     useContext,
     useEffect,
+    useRef,
     useState
 } from "react";
 
@@ -43,7 +44,52 @@ import {
  * @expand
  * @since 0.9.0
  */
-export const NotificationContext = createContext<NotificationContextValue>(null);
+export const notificationContext = createContext<NotificationContextValue>(null);
+
+
+
+/**
+ * 
+ * @category Context
+ * @since 0.13.0
+ */
+export const NotificationContextProvider = ({
+    children
+}): React.JSX.Element => {
+
+    const [ alerts, setAlerts ] = useState([])
+
+    const alertTimeout = 8000;
+
+    const drawerRef = useRef(null);
+
+    const [ isNotificationsOpen, setNotificationsOpen ] = useState(false);
+
+    const maxDisplayedAlerts = 2;
+
+    const [maxDisplayed, setMaxDisplayed] = useState(maxDisplayedAlerts);
+
+    const [overflowMessage, setOverflowMessage] = useState('');
+
+    const [notifications, setNotifications] = useState([]);
+
+    return (
+        <notificationContext.Provider value = {{
+            alerts: alerts,
+            setAlerts: setAlerts,
+            alertTimeout: alertTimeout,
+            drawerRef: drawerRef,
+            isNotificationsOpen: isNotificationsOpen,
+            maxDisplayed: maxDisplayed,
+            notifications: notifications,
+            setNotificationsOpen: setNotificationsOpen,
+            setNotifications: setNotifications,
+            setOverflowMessage: setOverflowMessage,
+        }}>
+            {children}
+        </notificationContext.Provider>
+    );
+};
 
 
 
@@ -52,7 +98,7 @@ export const NotificationContext = createContext<NotificationContextValue>(null)
  * alerting.
  * 
  * Usage of this component requires that you have declared a context provider
- * using {@link NotificationContext}.
+ * using {@link notificationContext}.
  * 
  * @summary Alerting and Notifications drawer
  * 
@@ -69,7 +115,7 @@ export const Notifications = (): React.JSX.Element => {
         maxDisplayed,
         notifications, setNotifications,
         setOverflowMessage
-    } = useContext(NotificationContext);
+    } = useContext(notificationContext);
 
     const { markNotificationRead } = useNotificationActions();
 
@@ -292,3 +338,14 @@ export interface NotificationContextValue {
     setNotifications: Function;
     setOverflowMessage: Function
 }
+
+
+/**
+ * 
+ * @category Hook
+ * @since 0.13.0
+ */
+export const useNotificationContext = (): NotificationContextValue => {
+
+    return useContext(notificationContext);
+};

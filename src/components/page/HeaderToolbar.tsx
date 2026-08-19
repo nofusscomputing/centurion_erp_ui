@@ -38,8 +38,12 @@ import { QuestionCircleIcon } from '@patternfly/react-icons';
 import UserContext from "../../hooks/UserContext";
 import { useTheme, THEME_TYPES } from '../../hooks/useTheme';
 import URLSanitize from "../../functions/URLSanitize";
-import { NotificationContext } from "../NotificationDrawer";
-import { useNotificationActions } from "../../hooks/useNotificationActions";
+import {
+    useNotificationContext
+} from "../NotificationDrawer";
+import {
+    useNotificationActions
+} from "../../hooks/useNotificationActions";
 
 
 
@@ -61,7 +65,7 @@ const HeaderToolbar = () => {
         maxDisplayed,
         notifications, setNotifications,
         setOverflowMessage
-    } = useContext(NotificationContext);
+    } = useNotificationContext();
 
 
     const { buildOverflowMessage, removeAllAlerts } = useNotificationActions();
