@@ -83,18 +83,20 @@ import {
     createRoutesStub,
 } from 'react-router'
 
-import Detail from "../../Detail"
-import RootLayout from "../../Root"
+import Detail from "../../../layout/Detail"
+import UI from "../../ui"
 import { UserProvider } from "../../../hooks/UserContext"
-import List from "../../List";
-import Ticket from "../../Ticket";
+import List from "../../../layout/List";
+import Ticket from "../../../layout/Ticket";
+import { NotificationContextProvider } from "../../../components/NotificationDrawer";
+import PageContent from "../../PageContent";
 
 
 const fs = require('fs')
 const path = require('path')
 
 
-describe("Root Layout", () => {
+describe("PageContent Layout", () => {
 
     const baseDir = path.join(__dirname, '../../../../includes/usr/share/nginx/html/mock/api/v2')
 
@@ -114,6 +116,22 @@ describe("Root Layout", () => {
         consoleErrorSpy.mockRestore();
     });
 
+
+    const rootMetadataLoader = () => {
+
+        const optionsFilePath = path.join(baseDir, 'OPTIONS.json')
+
+        const rawOptions = fs.readFileSync(optionsFilePath, 'utf8')
+
+        const jsonOptions = JSON.parse(rawOptions)
+
+
+        return {
+            page_data: null,
+            metadata: jsonOptions
+        }
+
+    }
 
 
     describe("List Layout", () => {
@@ -164,12 +182,18 @@ describe("Root Layout", () => {
 
                 const Stub = createRoutesStub([
                     {
-                        Component: RootLayout,
+                        Component: UI,
+                        loader: rootMetadataLoader,
                         children: [
                             {
-                                path: options.urls.self,
-                                Component: List,
-                                loader: loader
+                                Component: PageContent,
+                                children: [
+                                    {
+                                        path: options.urls.self,
+                                        Component: List,
+                                        loader: loader
+                                    }
+                                ]
                             }
                         ],
                     }
@@ -177,9 +201,9 @@ describe("Root Layout", () => {
 
 
                 render(
-                    <UserProvider>
+                    <NotificationContextProvider>
                         <Stub initialEntries={[options.urls.self]} />
-                    </UserProvider>
+                    </NotificationContextProvider>
                 );
 
                 const headings = await screen.findAllByRole("heading", { level: 1 })
@@ -205,12 +229,18 @@ describe("Root Layout", () => {
 
                 const Stub = createRoutesStub([
                     {
-                        Component: RootLayout,
+                        Component: UI,
+                        loader: rootMetadataLoader,
                         children: [
                             {
-                                path: options.urls.self,
-                                Component: List,
-                                loader: loader
+                                Component: PageContent,
+                                children: [
+                                    {
+                                        path: options.urls.self,
+                                        Component: List,
+                                        loader: loader
+                                    }
+                                ]
                             }
                         ],
                     }
@@ -218,9 +248,9 @@ describe("Root Layout", () => {
 
 
                 render(
-                    <UserProvider>
+                    <NotificationContextProvider>
                         <Stub initialEntries={[options.urls.self]} />
-                    </UserProvider>
+                    </NotificationContextProvider>
                 );
 
                 const headings = await screen.findAllByRole("heading", { level: 1 })
@@ -282,12 +312,18 @@ describe("Root Layout", () => {
 
                 const Stub = createRoutesStub([
                     {
-                        Component: RootLayout,
+                        Component: UI,
+                        loader: rootMetadataLoader,
                         children: [
                             {
-                                path: data._urls._self.split('api/v2')[1],
-                                Component: Detail,
-                                loader: loader
+                                Component: PageContent,
+                                children: [
+                                    {
+                                        path: data._urls._self.split('api/v2')[1],
+                                        Component: Detail,
+                                        loader: loader
+                                    }
+                                ]
                             }
                         ],
                     }
@@ -295,9 +331,9 @@ describe("Root Layout", () => {
 
 
                 render(
-                    <UserProvider>
+                    <NotificationContextProvider>
                         <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
-                    </UserProvider>
+                    </NotificationContextProvider>
                 );
 
                 const headings = await screen.findAllByRole("heading", { level: 1 })
@@ -323,12 +359,18 @@ describe("Root Layout", () => {
 
                 const Stub = createRoutesStub([
                     {
-                        Component: RootLayout,
+                        Component: UI,
+                        loader: rootMetadataLoader,
                         children: [
                             {
-                                path: data._urls._self.split('api/v2')[1],
-                                Component: Detail,
-                                loader: loader
+                                Component: PageContent,
+                                children: [
+                                    {
+                                        path: data._urls._self.split('api/v2')[1],
+                                        Component: Detail,
+                                        loader: loader
+                                    }
+                                ]
                             }
                         ],
                     }
@@ -336,9 +378,9 @@ describe("Root Layout", () => {
 
 
                 render(
-                    <UserProvider>
+                    <NotificationContextProvider>
                         <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
-                    </UserProvider>
+                    </NotificationContextProvider>
                 );
 
                 const headings = await screen.findAllByRole("heading", { level: 1 })
@@ -402,12 +444,18 @@ describe("Root Layout", () => {
 
                 const Stub = createRoutesStub([
                     {
-                        Component: RootLayout,
+                        Component: UI,
+                        loader: rootMetadataLoader,
                         children: [
                             {
-                                path: data._urls._self.split('api/v2')[1],
-                                Component: Ticket,
-                                loader: loader
+                                Component: PageContent,
+                                children: [
+                                    {
+                                        path: data._urls._self.split('api/v2')[1],
+                                        Component: Ticket,
+                                        loader: loader
+                                    }
+                                ]
                             }
                         ],
                     }
@@ -415,10 +463,11 @@ describe("Root Layout", () => {
 
 
                 render(
-                    <UserProvider>
+                    <NotificationContextProvider>
                         <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
-                    </UserProvider>
+                    </NotificationContextProvider>
                 );
+
 
                 const headings = await screen.findAllByRole("heading", { level: 1 })
 
@@ -443,12 +492,18 @@ describe("Root Layout", () => {
 
                 const Stub = createRoutesStub([
                     {
-                        Component: RootLayout,
+                        Component: UI,
+                        loader: rootMetadataLoader,
                         children: [
                             {
-                                path: data._urls._self.split('api/v2')[1],
-                                Component: Ticket,
-                                loader: loader
+                                Component: PageContent,
+                                children: [
+                                    {
+                                        path: data._urls._self.split('api/v2')[1],
+                                        Component: Ticket,
+                                        loader: loader
+                                    }
+                                ]
                             }
                         ],
                     }
@@ -456,9 +511,9 @@ describe("Root Layout", () => {
 
 
                 render(
-                    <UserProvider>
+                    <NotificationContextProvider>
                         <Stub initialEntries={[data._urls._self.split('api/v2')[1]]} />
-                    </UserProvider>
+                    </NotificationContextProvider>
                 );
 
                 const headings = await screen.findAllByRole("heading", { level: 1 })
