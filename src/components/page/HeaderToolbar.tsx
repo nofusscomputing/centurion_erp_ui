@@ -120,28 +120,35 @@ const HeaderToolbar = () => {
     };
 
 
-    const totalUnreadNotifications = notifications.reduce(
-        (total, n) => total + (!n.isNotificationRead ? 1 : 0),
-        0
-    );
+    let totalUnreadNotifications = null;
+    let notificationUnreadVariant = null;
+
+    if( isNotificationsOpen !== undefined ) {
+
+        totalUnreadNotifications = notifications.reduce(
+            (total, n) => total + (!n.isNotificationRead ? 1 : 0),
+            0
+        );
 
 
-    const notificationUnreadVariant = notifications.reduce(
-        (total, n) => total + ((n.variant === AlertVariant.danger && !n.isNotificationRead ) ? 1 : 0),
-        0
-    ) > 0 ? NotificationBadgeVariant.attention : NotificationBadgeVariant.unread;
+        notificationUnreadVariant = notifications.reduce(
+            (total, n) => total + ((n.variant === AlertVariant.danger && !n.isNotificationRead ) ? 1 : 0),
+            0
+        ) > 0 ? NotificationBadgeVariant.attention : NotificationBadgeVariant.unread;
 
 
 
-    useEffect(() => {
+        useEffect(() => {
 
-        setOverflowMessage(buildOverflowMessage());
+            setOverflowMessage(buildOverflowMessage());
 
-    }, [
-        maxDisplayed,
-        notifications,
-        alerts
-    ]);
+        }, [
+            maxDisplayed,
+            notifications,
+            alerts
+        ]);
+
+    }
 
 
     useEffect(() => { // AutoMagic set based off of user preferences
@@ -230,13 +237,13 @@ const HeaderToolbar = () => {
                                 variant="plain"
                             />
                         </ToolbarItem>
-                        <NotificationBadge
+                        { isNotificationsOpen !== undefined && <NotificationBadge
                             count = {totalUnreadNotifications}
                             variant={totalUnreadNotifications === 0 ? NotificationBadgeVariant.read : notificationUnreadVariant}
                             onClick={onNotificationBadgeClick}
                             aria-label="Notifications"
                             isExpanded={isNotificationsOpen}
-                        />
+                        />}
                         <ToolbarItem>
                             {user.settings._urls &&
                             <Button

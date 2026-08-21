@@ -31,6 +31,7 @@ import PageContent from "../layouts/PageContent"
 import Redirect from "../layouts/Redirect"
 
 import UI from "../layouts/ui"
+import NotificationLayout from "../layouts/Notifications"
 
 
 
@@ -304,22 +305,28 @@ const dynamicRouter = () => {
                         }
                     },
                     {
-                        id: "UI",
-                        Component: UI,
-                        loader: pageLoaders['django_root_metadata'],
-                        shouldRevalidate: () => false,
-                        ErrorBoundary: RouteErrorBoundary,
-                        HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
+                        id: "notifications",
+                        Component: NotificationLayout,
                         children: [
                             {
-                                id: "page",
-                                Component: PageContent,
-                                ErrorBoundary: RouteErrorBoundary,
+                                id: "UI",
+                                Component: UI,
+                                loader: pageLoaders['django_root_metadata'],
                                 shouldRevalidate: () => false,
-                                HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
+                                ErrorBoundary: RouteErrorBoundary,
+                                HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
+                                children: [
+                                    {
+                                        id: "page",
+                                        Component: PageContent,
+                                        ErrorBoundary: RouteErrorBoundary,
+                                        shouldRevalidate: () => false,
+                                        HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
+                                    }
+                                ]
                             }
                         ]
-                    },
+                    }
                 ]
             }
         ];

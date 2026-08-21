@@ -4,6 +4,7 @@ import {
 } from "react-router";
 
 import {
+    AlertGroup,
     Page,
 } from "@patternfly/react-core";
 
@@ -15,7 +16,8 @@ import '../../node_modules/@patternfly/patternfly/patternfly.css'
 
 import Header from "../components/page/Header";
 import {
-    NotificationContextProvider
+    Notifications,
+    useNotificationContext
 } from "../components/NotificationDrawer";
 import
     Navbar,
@@ -40,19 +42,45 @@ const UI = (): React.JSX.Element => {
 
     const { metadata: rootMetadata } = useLoaderData();
 
+    const {
+        alerts,
+        isNotificationsOpen,
+        maxDisplayed,
+        overflowMessage,
+        setAlerts,
+        setNotificationsOpen,
+    } = useNotificationContext();
+
+    const onAlertGroupOverflowClick = () => {
+
+        setAlerts([]);
+
+        setNotificationsOpen(true);
+
+    }
+
 
     return (
         <UserProvider>
 
-            <NotificationContextProvider>
-
                 <NavbarContextProvider>
+
+                    {alerts !== undefined && <AlertGroup
+                        hasAnimations
+                        isToast
+                        isLiveRegion
+                        overflowMessage={overflowMessage}
+                        onOverflowClick={onAlertGroupOverflowClick}
+                    >
+                        {alerts.slice(0, maxDisplayed)}
+                    </AlertGroup>}
 
                     <Page
                         isContentFilled
                         isManagedSidebar
-                        mainContainerId={"scrollable-element"}
+                        isNotificationDrawerExpanded = {isNotificationsOpen}
                         masthead = {<Header />}
+                        notificationDrawer = { setNotificationsOpen !== undefined ? <Notifications /> : null }
                         sidebar = {<Navbar
                             apiMetadata = {rootMetadata}
                         />}
@@ -63,8 +91,6 @@ const UI = (): React.JSX.Element => {
                     </Page>
 
                 </NavbarContextProvider>
-
-            </NotificationContextProvider>
 
         </UserProvider>
     );

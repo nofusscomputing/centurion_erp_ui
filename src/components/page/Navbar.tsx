@@ -186,7 +186,11 @@ const Navbar = ({
                 <Nav onSelect={onSelect} onToggle={onToggle} aria-label="Expandable global">
                     <NavList>
                         { ! navigationEntries && 
-                             [...Array(7)].map((index) => <Skeleton key = {index} />)
+                             [...Array(7)].map((_, index) => {
+                                return (
+                                    <Skeleton key = {index} />
+                                )
+                            })
                         }
                         { navigationEntries && navigationEntries.map((module, index) => {
 

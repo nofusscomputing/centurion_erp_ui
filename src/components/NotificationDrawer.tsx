@@ -38,13 +38,29 @@ import {
 
 
 /**
+ * This context is for notifications. As notifications are not mandatory, this
+ * object by default will return null. This enables the notifications feature
+ * to be turn "off."
+ * 
  * @summary Notification Context
  * 
  * @category Context
  * @expand
  * @since 0.9.0
  */
-export const notificationContext = createContext<NotificationContextValue>(null);
+export const notificationContext = createContext<NotificationContextValue>({
+    alerts: undefined,
+    setAlerts: () => undefined,
+    alertTimeout: undefined,
+    drawerRef: undefined,
+    isNotificationsOpen: undefined,
+    maxDisplayed: undefined,
+    notifications: undefined,
+    overflowMessage: undefined,
+    setNotificationsOpen: () => undefined,
+    setNotifications: () => undefined,
+    setOverflowMessage: () => undefined,
+});
 
 
 
@@ -82,6 +98,7 @@ export const NotificationContextProvider = ({
             isNotificationsOpen: isNotificationsOpen,
             maxDisplayed: maxDisplayed,
             notifications: notifications,
+            overflowMessage: overflowMessage,
             setNotificationsOpen: setNotificationsOpen,
             setNotifications: setNotifications,
             setOverflowMessage: setOverflowMessage,
@@ -113,9 +130,10 @@ export const Notifications = (): React.JSX.Element => {
         drawerRef,
         isNotificationsOpen, setNotificationsOpen,
         maxDisplayed,
+        overflowMessage,
         notifications, setNotifications,
         setOverflowMessage
-    } = useContext(notificationContext);
+    } = useNotificationContext();
 
     const { markNotificationRead } = useNotificationActions();
 
@@ -134,6 +152,15 @@ export const Notifications = (): React.JSX.Element => {
         isNotificationRead: true
         })));
     };
+
+
+    const onAlertGroupOverflowClick = () => {
+
+        setAlerts([]);
+
+        setNotificationsOpen(true);
+
+    }
 
 
     const onDropdownSelect = () => {
@@ -198,100 +225,95 @@ export const Notifications = (): React.JSX.Element => {
 
 
     return (
-        <>
-            <AlertGroup
-                isToast
-            />
-            <NotificationDrawer
-                id="notifications-drawer"
-                open = {isNotificationsOpen}
-                ref={drawerRef}
+        <NotificationDrawer
+            id="notifications-drawer"
+            open = {isNotificationsOpen}
+            ref={drawerRef}
+        >
+            <NotificationDrawerHeader
+                count={getUnreadNotificationsNumber()}
+                onClose={_event => setNotificationsOpen(false)}
             >
-                <NotificationDrawerHeader
-                    count={getUnreadNotificationsNumber()}
-                    onClose={_event => setNotificationsOpen(false)}
+                <Dropdown
+                    id="notification-drawer-0"
+                    isOpen={openDropdownKey === 'dropdown-toggle-id-0'}
+                    onSelect={onDropdownSelect}
+                    popperProps={{
+                        position: 'right'
+                    }}
+                    onOpenChange={isOpen => !isOpen && setOpenDropdownKey(null)}
+                    toggle={toggleRef =>
+                        <MenuToggle
+                            ref={toggleRef}
+                            isExpanded={openDropdownKey === 'dropdown-toggle-id-0'}
+                            variant="plain"
+                            onClick={() => onDropdownToggle('dropdown-toggle-id-0')}
+                            aria-label="Notification drawer actions"
+                            icon={<EllipsisVIcon />}
+                        />
+                    }
                 >
-                    <Dropdown
-                        id="notification-drawer-0"
-                        isOpen={openDropdownKey === 'dropdown-toggle-id-0'}
-                        onSelect={onDropdownSelect}
-                        popperProps={{
-                            position: 'right'
-                        }}
-                        onOpenChange={isOpen => !isOpen && setOpenDropdownKey(null)}
-                        toggle={toggleRef =>
-                            <MenuToggle
-                                ref={toggleRef}
-                                isExpanded={openDropdownKey === 'dropdown-toggle-id-0'}
-                                variant="plain"
-                                onClick={() => onDropdownToggle('dropdown-toggle-id-0')}
-                                aria-label="Notification drawer actions"
-                                icon={<EllipsisVIcon />}
-                            />
-                        }
-                    >
-                        <DropdownList>{notificationDrawerActions}</DropdownList>
-                    </Dropdown>
-                </NotificationDrawerHeader>
+                    <DropdownList>{notificationDrawerActions}</DropdownList>
+                </Dropdown>
+            </NotificationDrawerHeader>
 
-                <NotificationDrawerBody>
-                    {notifications.length !== 0 && 
-                    <NotificationDrawerList>
-                        {notifications.map(({key, variant, title, srTitle, description, timestamp}, index) =>
-                            <NotificationDrawerListItem
-                                key={key}
+            <NotificationDrawerBody>
+                {notifications.length !== 0 && 
+                <NotificationDrawerList>
+                    {notifications.map(({key, variant, title, srTitle, description, timestamp}, index) =>
+                        <NotificationDrawerListItem
+                            key={key}
+                            variant={variant}
+                            isRead={
+                                isNotificationRead(key)
+                            }
+                        >
+                            <NotificationDrawerListItemHeader
                                 variant={variant}
-                                isRead={
-                                    isNotificationRead(key)
-                                }
+                                title={title}
+                                srTitle={srTitle}
                             >
-                                <NotificationDrawerListItemHeader
-                                    variant={variant}
-                                    title={title}
-                                    srTitle={srTitle}
+                                <Dropdown
+                                    id={key.toString()}
+                                    isOpen={openDropdownKey === key}
+                                    onSelect={onDropdownSelect}
+                                    popperProps={{
+                                        position: 'right'
+                                    }}
+                                    onOpenChange={isOpen => !isOpen && setOpenDropdownKey(null)}
+                                    toggle={toggleRef =>
+                                        <MenuToggle
+                                            ref={toggleRef}
+                                            isExpanded={openDropdownKey === key}
+                                            variant="plain"
+                                            onClick={() =>
+                                                onDropdownToggle(key)
+                                            }
+                                            aria-label={`Notification ${index + 1} actions`}
+                                            icon={<EllipsisVIcon />}
+                                        />
+                                    }
                                 >
-                                    <Dropdown
-                                        id={key.toString()}
-                                        isOpen={openDropdownKey === key}
-                                        onSelect={onDropdownSelect}
-                                        popperProps={{
-                                            position: 'right'
-                                        }}
-                                        onOpenChange={isOpen => !isOpen && setOpenDropdownKey(null)}
-                                        toggle={toggleRef =>
-                                            <MenuToggle
-                                                ref={toggleRef}
-                                                isExpanded={openDropdownKey === key}
-                                                variant="plain"
-                                                onClick={() =>
-                                                    onDropdownToggle(key)
-                                                }
-                                                aria-label={`Notification ${index + 1} actions`}
-                                                icon={<EllipsisVIcon />}
-                                            />
-                                        }
-                                    >
-                                        <DropdownList>{notificationDrawerDropdownItems(key)}</DropdownList>
-                                    </Dropdown>
-                                </NotificationDrawerListItemHeader>
-                                <NotificationDrawerListItemBody timestamp={timestamp}
-                                >
-                                    {description}
-                                </NotificationDrawerListItemBody>
-                            </NotificationDrawerListItem>)}
-                    </NotificationDrawerList>}
-                    {notifications.length === 0 &&
-                    <EmptyState
-                        headingLevel="h2"
-                        titleText="No notifications found"
-                        icon={SearchIcon}
-                        variant={EmptyStateVariant.full}
-                    >
-                        <EmptyStateBody>There are currently no notifications.</EmptyStateBody>
-                    </EmptyState>}
-                </NotificationDrawerBody>
-            </NotificationDrawer>
-        </>
+                                    <DropdownList>{notificationDrawerDropdownItems(key)}</DropdownList>
+                                </Dropdown>
+                            </NotificationDrawerListItemHeader>
+                            <NotificationDrawerListItemBody timestamp={timestamp}
+                            >
+                                {description}
+                            </NotificationDrawerListItemBody>
+                        </NotificationDrawerListItem>)}
+                </NotificationDrawerList>}
+                {notifications.length === 0 &&
+                <EmptyState
+                    headingLevel="h2"
+                    titleText="No notifications found"
+                    icon={SearchIcon}
+                    variant={EmptyStateVariant.full}
+                >
+                    <EmptyStateBody>There are currently no notifications.</EmptyStateBody>
+                </EmptyState>}
+            </NotificationDrawerBody>
+        </NotificationDrawer>
     );
 };
 
@@ -334,6 +356,7 @@ export interface NotificationContextValue {
     isNotificationsOpen: boolean;
     maxDisplayed: number;
     notifications: Notification[];
+    overflowMessage: string;
     setNotificationsOpen: Function;
     setNotifications: Function;
     setOverflowMessage: Function
