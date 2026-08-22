@@ -133,7 +133,7 @@ const JumpLinksWrapper = ({toc}) => {
 const Markdown = (): React.JSX.Element => {
 
     const {
-        // @ts-ignore TS2339
+        setAdditionalPageFooter,
         setPageDescription, setPageHeading, setPageHeaderIcons,
     } = usePageContext()
 
@@ -220,6 +220,19 @@ const Markdown = (): React.JSX.Element => {
         </PageSection>
     );
 
+    useEffect(() => {
+
+        if( markdownDocumentFrontMatter ) {
+
+            setAdditionalPageFooter(mdPageFooter)
+
+        }
+
+    }, [
+        // mdPageFooter
+        markdownDocumentFrontMatter
+    ]);
+
 
     const [offsetHeight, setOffsetHeight] = useState(100);
 
@@ -230,7 +243,9 @@ const Markdown = (): React.JSX.Element => {
                 padding={{ default: 'noPadding'}}
             >
                 <Sidebar
+                    hasGutter
                     isPanelRight
+                    id="scrollable-element"
                 >
                     { pageHeadings &&
                     
@@ -257,7 +272,9 @@ const Markdown = (): React.JSX.Element => {
                     </SidebarPanel>}
                     <SidebarContent>
                         {markdownDocumentFrontMatter?.tags &&
-                        <PageSection>
+                        <PageSection
+                            padding={{ default: 'noPadding'}}
+                        >
 
                             <LabelGroup
                                 categoryName = "Tags"
@@ -271,7 +288,9 @@ const Markdown = (): React.JSX.Element => {
                             </LabelGroup>
                         </PageSection>}
 
-                        <PageSection>
+                        <PageSection
+                            padding={{ default: 'noPadding'}}
+                        >
 
                             <Content>
 
@@ -289,7 +308,6 @@ const Markdown = (): React.JSX.Element => {
                     </SidebarContent>
                 </Sidebar>
             </PageSection>
-            { markdownDocumentFrontMatter && mdPageFooter }
         </>
     );
 

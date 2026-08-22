@@ -1,6 +1,7 @@
 import React, {
     createContext,
     useContext,
+    useEffect,
     useState
 } from "react";
 
@@ -39,6 +40,11 @@ import {
 export type PageContext = {
 
     /**
+     * Additional PageSection to be used as to append to page footer.
+     */
+    setAdditionalPageFooter: React.Dispatch<React.SetStateAction<React.JSX.Element>>
+
+    /**
      * Text to use a page description that is displayed under the page title.
      */
     setPageDescription: React.Dispatch<React.SetStateAction<string>>
@@ -73,6 +79,8 @@ const pageContext = createContext<PageContext>(null);
  */
 const PageContent = (): React.JSX.Element => {
 
+    const [ additionalPageFooter, setAdditionalPageFooter ] = useState(null);
+
     const params = useParams();
 
     const navigation = useNavigation();
@@ -84,6 +92,14 @@ const PageContent = (): React.JSX.Element => {
     const [ pageHeaderIcons, setPageHeaderIcons ] = useState(null);
 
     document.title = `${pageHeading}`
+
+
+    useEffect(() => {
+
+            setAdditionalPageFooter(null)
+
+    }, [ document.location.pathname ]);
+    
 
     const rootPageBreadcrumb = (
 
@@ -120,6 +136,7 @@ const PageContent = (): React.JSX.Element => {
 
     return (
         <pageContext.Provider value = {{
+            setAdditionalPageFooter: setAdditionalPageFooter,
             setPageDescription: setPageDescription,
             setPageHeaderIcons: setPageHeaderIcons,
             setPageHeading: setPageHeading
@@ -187,6 +204,8 @@ const PageContent = (): React.JSX.Element => {
                     <Outlet />
 
                 </PageSection>
+
+                { additionalPageFooter && additionalPageFooter }
 
                 <PageSection
                     aria-labelledby = "Page Foorer"
