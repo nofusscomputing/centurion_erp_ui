@@ -1,5 +1,6 @@
-
 import {
+    createContext,
+    useContext,
     useEffect,
     useState
 } from 'react';
@@ -10,12 +11,75 @@ import {
 } from "react-router";
 
 import {
-    Nav, NavExpandable, NavItem, NavList,
+    Nav,
+    NavExpandable,
+    NavItem,
+    NavList,
     PageSidebar,
-    PageSidebarBody
+    PageSidebarBody,
+    Skeleton
 } from "@patternfly/react-core";
 
 import IconLoader from '../IconLoader';
+import {
+    APIMetadata
+} from '../../../types/APIMetadata';
+
+
+
+/**
+ * 
+ * @summary Navbar Context
+ * 
+ * @category Type
+ * @since 0.13.0
+ */
+export type NavbarContext = {
+
+    /**
+     * Current value of sidebar Open.
+     */
+    isSidebarOpen: boolean
+    
+    /**
+     * Toggle the sidebar Open / Close.
+     */
+    onSidebarToggle: () => void
+}
+
+
+
+const navbarContext = createContext<NavbarContext>(null);
+
+
+
+/**
+ * 
+ * @summary Context provider for {@link Navbar}
+ * 
+ * @category Context
+ * @since 0.13.0
+ */
+export const NavbarContextProvider = ({
+    children
+}): React.JSX.Element => {
+
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+    const onSidebarToggle = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+
+    return (
+        <navbarContext.Provider value={{
+            isSidebarOpen: isSidebarOpen,
+            onSidebarToggle: onSidebarToggle
+        }}>
+            {children}
+        </navbarContext.Provider>
+    );
+
+}
 
 
 
@@ -28,11 +92,9 @@ import IconLoader from '../IconLoader';
 export type NavbarProps = {
 
     /**
-     * Is the sidebar open?
+     * Backend root Metadata.
      */
-    isSidebarOpen: boolean
-
-    navigation_entries: Array<object>
+    apiMetadata: APIMetadata
 }
 
 
@@ -47,25 +109,38 @@ export type NavbarProps = {
  * @since 0.1.0 
  */
 const Navbar = ({
-   isSidebarOpen,
-   navigation_entries,
+   apiMetadata,
 }: NavbarProps) => {
 
-    const [activeGroup, setActiveGroup] = useState(null);
+    const [ activeGroup, setActiveGroup ] = useState(null);
 
-    const [activeItem, setActiveItem] = useState(null);
+    const [ activeItem, setActiveItem ] = useState(null);
+
+    const {isSidebarOpen, onSidebarToggle } = useNavbarContext();
 
     const location = useLocation();
 
-    const [ navigation, SetNavigationEntries ] = useState(navigation_entries)
+    const [ navigationEntries, setNavigationEntries ] = useState(null)
 
 
     useEffect(() => {
 
-        if( navigation ) {
+        if(apiMetadata) {
+
+            setNavigationEntries(apiMetadata.navigation)
+
+        }
+
+    }, [ apiMetadata ]);
+
+
+
+    useEffect(() => {
+
+        if( navigationEntries ) {
 
             let index = 0;
-            for(let menu of navigation) {
+            for(let menu of navigationEntries) {
 
                 let page_index = 0;
 
@@ -91,7 +166,7 @@ const Navbar = ({
 
     }, [
         location.pathname,
-        navigation,
+        navigationEntries,
     ])
 
 
@@ -110,7 +185,14 @@ const Navbar = ({
             <PageSidebarBody>
                 <Nav onSelect={onSelect} onToggle={onToggle} aria-label="Expandable global">
                     <NavList>
-                        {navigation && navigation.map((module, index) => {
+                        { ! navigationEntries && 
+                             [...Array(7)].map((_, index) => {
+                                return (
+                                    <Skeleton key = {index} />
+                                )
+                            })
+                        }
+                        { navigationEntries && navigationEntries.map((module, index) => {
 
                             const groupId = `navigation-${module.name}-${index}`
 
@@ -159,3 +241,18 @@ const Navbar = ({
 }
  
 export default Navbar;
+
+
+
+/**
+ * 
+ * @summary Hook to use header context provider.
+ * 
+ * @category Hook
+ * @since 0.13.0
+ */
+export function useNavbarContext(): NavbarContext {
+
+    return useContext(navbarContext);
+
+}

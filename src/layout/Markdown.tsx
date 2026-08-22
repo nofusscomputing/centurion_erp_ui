@@ -23,6 +23,9 @@ import RenderMarkdown from "../functions/RenderMarkdown";
 import { useIsMobile } from "../hooks/useIsMobile";
 
 import { TagIcon } from "@patternfly/react-icons/dist/esm/icons/tag-icon"
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 function getHeadings( root = null ) {
@@ -130,9 +133,9 @@ const JumpLinksWrapper = ({toc}) => {
 const Markdown = (): React.JSX.Element => {
 
     const {
-        // @ts-ignore TS2339
+        setAdditionalPageFooter,
         setPageDescription, setPageHeading, setPageHeaderIcons,
-    } = useOutletContext()
+    } = usePageContext()
 
     const isMobile = useIsMobile();
 
@@ -217,6 +220,19 @@ const Markdown = (): React.JSX.Element => {
         </PageSection>
     );
 
+    useEffect(() => {
+
+        if( markdownDocumentFrontMatter ) {
+
+            setAdditionalPageFooter(mdPageFooter)
+
+        }
+
+    }, [
+        // mdPageFooter
+        markdownDocumentFrontMatter
+    ]);
+
 
     const [offsetHeight, setOffsetHeight] = useState(100);
 
@@ -227,7 +243,9 @@ const Markdown = (): React.JSX.Element => {
                 padding={{ default: 'noPadding'}}
             >
                 <Sidebar
+                    hasGutter
                     isPanelRight
+                    id="scrollable-element"
                 >
                     { pageHeadings &&
                     
@@ -254,7 +272,9 @@ const Markdown = (): React.JSX.Element => {
                     </SidebarPanel>}
                     <SidebarContent>
                         {markdownDocumentFrontMatter?.tags &&
-                        <PageSection>
+                        <PageSection
+                            padding={{ default: 'noPadding'}}
+                        >
 
                             <LabelGroup
                                 categoryName = "Tags"
@@ -268,7 +288,9 @@ const Markdown = (): React.JSX.Element => {
                             </LabelGroup>
                         </PageSection>}
 
-                        <PageSection>
+                        <PageSection
+                            padding={{ default: 'noPadding'}}
+                        >
 
                             <Content>
 
@@ -286,7 +308,6 @@ const Markdown = (): React.JSX.Element => {
                     </SidebarContent>
                 </Sidebar>
             </PageSection>
-            { markdownDocumentFrontMatter && mdPageFooter }
         </>
     );
 

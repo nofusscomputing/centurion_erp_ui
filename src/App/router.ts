@@ -5,23 +5,34 @@ import {
 
 import djangoLoader from "./pageLoaders/django"
 import djangoMetadataLoader from "./pageLoaders/djangoMetadata"
+import djangoRootMetadataLoader from "./pageLoaders/djangoRootMetadata"
+
+import {
+    APISubmitAction
+} from "../components/DisplayFields"
+import
+    StateSplash,
+    {
+        StateIcon
+} from "../components/StateSplash"
+
+import useDjangoFetcher from "../hooks/useDjangoFetcher"
 
 import Detail from "../layout/Detail"
-import ErrorPage from "../layout/Error"
+import RouteErrorBoundary from "../layouts/ErrorBoundary"
 import History from "../layout/history"
 import List from "../layout/List"
 import Markdown from "../layout/Markdown"
-import RootLayout from "../layout/Root"
 import Settings from "../layout/Settings"
 import Ticket from "../layout/Ticket"
 
 import Base from "../layouts/Base"
+import PageContent from "../layouts/PageContent"
 import Redirect from "../layouts/Redirect"
 
-import { APISubmitAction } from "../components/DisplayFields"
-import LoadingSpinner from "../components/LoadingSpinner"
+import UI from "../layouts/ui"
+import NotificationLayout from "../layouts/Notifications"
 
-import useDjangoFetcher from "../hooks/useDjangoFetcher"
 
 
 const components = {
@@ -29,8 +40,8 @@ const components = {
     detail: Detail,
     history: History,
     redirect: Redirect,
+    markdown: Markdown,
     list: List,
-    rootlayout: RootLayout,
     settings: Settings,
     ticket: Ticket
 };
@@ -38,13 +49,15 @@ const components = {
 const pageLoaders = {
     django: djangoLoader,
     django_metadata: djangoMetadataLoader,
+    django_root_metadata: djangoRootMetadataLoader
 };
 
 const appRoutes = {
     id: "root",
     path: "/",
-    ErrorBoundary: ErrorPage,
-    HydrateFallback: () => LoadingSpinner({titleText: "Loading Data"}),
+    shouldRevalidate: () => false,
+    ErrorBoundary: RouteErrorBoundary,
+    HydrateFallback: () => StateSplash({titleText: "Loading Data", icon: StateIcon.loading }),
     children: [
         {
             index: true
@@ -195,18 +208,6 @@ const appRoutes = {
                                     Component: components['detail'],
                                     loader: pageLoaders['django'],
                                     action: APISubmitAction,
-                                    shouldRevalidate: ({ currentParams, nextParams }) => {
-    
-                                        const reValidate = (
-                                            currentParams.module !== nextParams.module ||
-                                            currentParams.model !== nextParams.model ||
-                                            currentParams.id !== nextParams.id
-                                        )
-    
-                                        return reValidate
-    
-                                    },
-
                                 },
                                 {
                                     path: "history",
@@ -277,8 +278,8 @@ const dynamicRouter = () => {
             {
                 id: "base",
                 Component: components['baseview'],
-                ErrorBoundary: ErrorPage,
-                HydrateFallback: LoadingSpinner,
+                ErrorBoundary: RouteErrorBoundary,
+                HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                 children: [
                     /**
                      * Note: For a site that requires auth, login redirect cant
@@ -304,12 +305,28 @@ const dynamicRouter = () => {
                         }
                     },
                     {
-                        id: "UI",
-                        Component: components['rootlayout'],
-                        ErrorBoundary: ErrorPage,
-                        HydrateFallback: () => LoadingSpinner({titleText: "Loading App"}),
-                        children: []
-                    },
+                        id: "notifications",
+                        Component: NotificationLayout,
+                        children: [
+                            {
+                                id: "UI",
+                                Component: UI,
+                                loader: pageLoaders['django_root_metadata'],
+                                shouldRevalidate: () => false,
+                                ErrorBoundary: RouteErrorBoundary,
+                                HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
+                                children: [
+                                    {
+                                        id: "page",
+                                        Component: PageContent,
+                                        ErrorBoundary: RouteErrorBoundary,
+                                        shouldRevalidate: () => false,
+                                        HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 ]
             }
         ];
@@ -331,7 +348,7 @@ const dynamicRouter = () => {
 
                     const data = await apiMetadata.clone().json();
 
-                    patch("UI", [appRoutes]);
+                    patch("page", [appRoutes]);
 
                 }
             },

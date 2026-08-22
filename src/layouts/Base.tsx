@@ -2,10 +2,6 @@ import {
     Outlet
 } from "react-router";
 
-import {
-    UserProvider
-} from "../hooks/UserContext"
-import React from "react";
 
 
 
@@ -20,11 +16,7 @@ import React from "react";
 const Base = (): React.JSX.Element => {
 
     return (
-        <UserProvider>
-
-            <Outlet />
-
-        </UserProvider>
+        <Outlet />
     );
 
 };
