@@ -25,6 +25,23 @@
     ],
     "excludeExternals": true,
     "excludePrivate": false,
+    "externalSymbolLinkMappings": {
+        "typescript": {
+            "AbortSignal": "https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal",
+            "BodyInit": "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit#body",
+            "HeadersInit": "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit#headers",
+            "Promise": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+            "Response": "https://developer.mozilla.org/en-US/docs/Web/API/Response"
+        },
+        "@patternfly/react-core": {
+            "EmptyStateStatus": "https://www.patternfly.org/components/empty-state#emptystate",
+            "EmptyStateStatus.danger": "https://www.patternfly.org/components/empty-state#emptystate",
+            "EmptyStateStatus.warning": "https://www.patternfly.org/components/empty-state#emptystate"
+        },
+        "react-router": {
+            "ErrorBoundary": "https://reactrouter.com/7.18.2/how-to/error-boundary"
+        }
+    },
     "hideGenerator": true,
     "navigation": {
         "includeCategories": true,

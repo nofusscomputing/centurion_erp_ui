@@ -1,14 +1,12 @@
 import {
-    useContext
-} from "react";
-
-import {
     Alert,
     AlertActionCloseButton,
     AlertVariant
 } from "@patternfly/react-core";
 
-import { NotificationContext } from "../components/NotificationDrawer";
+import {
+    useNotificationContext
+} from "../components/NotificationDrawer";
 
 
 
@@ -28,7 +26,7 @@ const getTimeCreated = () => {
  * Alert and Notification Actions
  * 
  * Usage of this hook requires that you have declared a context provider
- * using {@link NotificationContext}.
+ * using {@link notificationContext}.
  * 
  * @summary Actions to interact with notifications.
  * 
@@ -43,7 +41,7 @@ export const useNotificationActions = (): NotificationActions => {
         isNotificationsOpen,
         setNotifications,
         maxDisplayed
-    } = useContext(NotificationContext);
+    } = useNotificationContext();
 
 
     
