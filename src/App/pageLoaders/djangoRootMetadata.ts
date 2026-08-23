@@ -1,7 +1,6 @@
 import {
     APIMetadata
 } from "../../../types/APIMetadata";
-import URLSanitize from "../../functions/URLSanitize";
 
 import useDjangoFetcher from "../../hooks/useDjangoFetcher";
 
@@ -19,7 +18,8 @@ import useDjangoFetcher from "../../hooks/useDjangoFetcher";
  * @since 0.13.0
  */
 const djangoRootMetadataLoader = async ({
-    request
+    request,
+    context
 }): Promise<{metadata: APIMetadata, page_data: null}> => {
 
     console.debug('Django Root MetaData Loader', {url: '/'})
@@ -27,6 +27,7 @@ const djangoRootMetadataLoader = async ({
     const {apiMetadata, apiData } = await useDjangoFetcher({
         onlyMetadata: true,
         url: '/',
+        context: context,
         signal: request.signal,
     })
 

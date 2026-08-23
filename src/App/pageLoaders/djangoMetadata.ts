@@ -18,7 +18,8 @@ import useDjangoFetcher from "../../hooks/useDjangoFetcher";
  * @since 0.13.0
  */
 const djangoMetadataLoader = async ({
-    request
+    request,
+    context
 }): Promise<{metadata: APIMetadata, page_data: null}> => {
 
     console.debug('Django MetaData Loader', request)
@@ -26,6 +27,7 @@ const djangoMetadataLoader = async ({
     const {apiMetadata, apiData } = await useDjangoFetcher({
         onlyMetadata: true,
         url: String(request.url).replace('/add', ''),
+        context: context,
         signal: request.signal,
     })
 

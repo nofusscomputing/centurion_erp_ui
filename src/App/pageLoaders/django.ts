@@ -17,14 +17,15 @@ import useDjangoFetcher from "../../hooks/useDjangoFetcher";
  * @since 0.13.0
  */
 const djangoLoader = async ({
-    request
+    request,
+    context,
 }): Promise<{metadata: APIMetadata, page_data: APIDataObject}> => {
 
-    console.debug('Django Loader', request)
 
     const {apiMetadata, apiData} = await useDjangoFetcher({
         getMetadata: true,
         url: request.url,
+        context: context,
         signal: request.signal,
     })
 

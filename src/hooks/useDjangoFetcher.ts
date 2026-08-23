@@ -1,4 +1,8 @@
 import {
+    RouterContextProvider
+} from "react-router";
+
+import {
     getCookie
 } from "./getCookie";
 
@@ -6,8 +10,14 @@ import {
         HTTPNamedParams,
 } from "../functions/http";
 
+import {
+    backendURLRouteContext
+} from "../App/router";
+
 import jsonHttpRequest from "../functions/httpJson";
 import URLSanitize from "../functions/URLSanitize";
+
+
 
 /**
  * 
@@ -53,6 +63,15 @@ export interface djangoFetcherNamedParams {
     onlyMetadata?: boolean
 
     /**
+     * Route Context Provider.
+     * 
+     * The route context provider so that the loader can determine
+     * the backend url. Failure to supply the route context provider will
+     * prevent backend requests from being made, as the URL will be unknown.
+     */
+    context?: RouterContextProvider
+
+    /**
      * {@inheritDoc HTTPNamedParams.signal}
      */
     signal?: HTTPNamedParams["signal"]
@@ -89,9 +108,11 @@ export default async function useDjangoFetcher({
     method = 'GET',
     getMetadata = false,
     onlyMetadata = false,
+    context = null,
     signal = null
 }: djangoFetcherNamedParams ): Promise<{ apiData: Response, apiMetadata: Response }> {
 
+    const backendURL: string = context?.get(backendURLRouteContext)
 
     const options: HTTPNamedParams = {
         credentials: true,
