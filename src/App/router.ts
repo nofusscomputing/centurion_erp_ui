@@ -1,6 +1,8 @@
 import {
     createBrowserRouter,
-    RouteObject
+    createContext,
+    RouteObject,
+    RouterContext
 } from "react-router"
 
 import djangoLoader from "./pageLoaders/django"
@@ -32,6 +34,33 @@ import Redirect from "../layouts/Redirect"
 
 import UI from "../layouts/ui"
 import NotificationLayout from "../layouts/Notifications"
+
+
+
+/**
+ * This route context is for holding the backend url that is to be used by
+ * loaders.
+ * 
+ * @summary Route context containing the backend URL.
+ * 
+ * @category Context
+ * @since 0.13.0
+ */
+export const backendURLRouteContext: RouterContext<string> = createContext<string>(undefined);
+
+/**
+ * This middleware sets context {@link backendURLRouteContext} for use by loaders.
+ * 
+ * @summary middleware that sets the backend url.
+ * 
+ * @category Middleware
+ * @since 0.13.0
+ */
+export function backendURLMiddleware({url, context}) {
+
+    context.set(backendURLRouteContext, url)
+
+}
 
 
 
