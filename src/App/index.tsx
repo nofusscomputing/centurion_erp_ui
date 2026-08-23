@@ -6,9 +6,6 @@ import {
     RouterProvider
 } from "react-router/dom";
 
-import {
-    BackendProvider
-} from "./providers/backend";
 import dynamicRouter from "./router";
 
 
@@ -28,9 +25,7 @@ function App() {
     const router = useMemo( () => dynamicRouter(), [] );
 
     return (
-        <BackendProvider url={window.env.API_URL}>
-            <RouterProvider router={router} />
-        </BackendProvider>
+        <RouterProvider router={router} />
     );
 }
 
