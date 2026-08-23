@@ -120,7 +120,7 @@ export default async function useDjangoFetcher({
             ...( getCookie( 'csrftoken' ) ? { 'X-CSRFToken': getCookie( 'csrftoken' ) } : {} )
         },
         signal: signal,
-        url: String(`${window.env.API_URL}${URLSanitize(url)}`)
+        url: String(`${(backendURL ? backendURL : window.env.API_URL)}${URLSanitize(url)}`)
     }
 
     let requestsReturn: { apiData: Response, apiMetadata: Response } = {
