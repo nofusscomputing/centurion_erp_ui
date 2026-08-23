@@ -24,7 +24,6 @@ import Detail from "../layout/Detail"
 import RouteErrorBoundary from "../layouts/ErrorBoundary"
 import History from "../layout/history"
 import List from "../layout/List"
-import Markdown from "../layout/Markdown"
 import Settings from "../layout/Settings"
 import Ticket from "../layout/Ticket"
 
@@ -64,12 +63,143 @@ export function backendURLMiddleware({url, context}) {
 
 
 
+function routesFromObject({ routes }) {
+
+    const routesObject = routes;
+
+    let builtRoutes = [];
+
+    for(let route of routesObject) {
+
+        let builtRoute = {
+            // id: undefined,
+            // path: undefined,
+            // Component: undefined,
+            // HydrateFallback: undefined,
+            middleware: []
+            // loader: undefined,
+            // action: undefined,
+            // shouldRevalidate: undefined,
+            // children: [],
+        }
+
+        for( let [key, value] of Object.entries( route )) {
+
+            switch( key ) {
+
+                case "id":
+
+                    builtRoute["id"] = String(value);
+
+                    break;
+
+                case "index":
+
+                    builtRoute["index"] = Boolean(value);
+
+                    break;
+
+                case "path":
+
+                    builtRoute["path"] = String(value);
+
+                    break;
+
+                case "component":
+
+                    builtRoute["Component"] = components[String(value)];
+
+                    break;
+
+                case "handle":
+
+                    builtRoute["handle"] = value;
+
+                    if( Object.hasOwn(Object(value), 'backend_url') ) {
+
+                        builtRoute['middleware'].push(
+                            ({context}) => backendURLMiddleware({
+                                url: value.backend_url, context: context
+                            })
+                        )
+                    }
+
+                    break;
+
+                case "hydrate":
+
+                    if( value === 'loader' ) {
+
+                        builtRoute["HydrateFallback"] = () => StateSplash({
+                            titleText: "Loading Data",
+                            icon: StateIcon.loading
+                        });
+
+                    }
+
+                    break;
+
+                case "loader":
+
+                    builtRoute["loader"] = pageLoaders[String(value)];
+
+                    break;
+
+                // case "middleware":
+
+                //     builtRoute["middleware"] = value;
+
+                //     break;
+
+                case "action":
+
+                    // builtRoute["action"] = actions[String(value)];
+                    builtRoute["action"] = value;
+
+                    break;
+
+                case "revalidate":
+
+                    if( value === true ) {
+
+                        builtRoute["shouldRevalidate"] = () => true;
+
+                    } else if( value === false ) {
+
+                        builtRoute["shouldRevalidate"] = () => false;
+
+                    }
+
+                    break;
+
+                case "children":
+
+                    builtRoute["children"] = routesFromObject({ routes: value })
+
+                    break;
+
+                // default:
+
+                //     builtRoute[key] = value;
+
+            }
+
+        };
+
+        builtRoutes.push( builtRoute )
+
+    };
+
+    return builtRoutes;
+}
+
+
+
 const components = {
     baseview: Base,
     detail: Detail,
     history: History,
     redirect: Redirect,
-    markdown: Markdown,
     list: List,
     settings: Settings,
     ticket: Ticket
@@ -81,20 +211,18 @@ const pageLoaders = {
     django_root_metadata: djangoRootMetadataLoader
 };
 
-const appRoutes = {
+const appRoutes = [{
     id: "root",
     path: "/",
-    shouldRevalidate: () => false,
-    ErrorBoundary: RouteErrorBoundary,
-    HydrateFallback: () => StateSplash({titleText: "Loading Data", icon: StateIcon.loading }),
+    revalidate: false,
     children: [
         {
             index: true
         },
         {
             path: "settings",
-            Component: components['settings'],
-            loader: pageLoaders['django']
+            component: 'settings',
+            loader: 'django'
         },
         {
             path: ":module",
@@ -107,23 +235,23 @@ const appRoutes = {
                             children: [
                                 {
                                     index: true,
-                                    Component: components['list'],
-                                    loader: pageLoaders['django'],
+                                    component: "list",
+                                    loader: "django",
                                 },
                                 {
                                     path: "add",
-                                    Component: components['detail'],
+                                    component: "detail",
                                     action: APISubmitAction,
-                                    loader: pageLoaders['django_metadata'],
-                                    shouldRevalidate: () => false
+                                    loader: "django_metadata",
+                                    shouldRevalidate: false
                                     
                                 },
                                 {
                                     path: ":pk",
-                                    Component: components['detail'],
+                                    component: "detail",
                                     action: APISubmitAction,
-                                    loader: pageLoaders['django'],
-                                    shouldRevalidate: () => false
+                                    loader: "django",
+                                    shouldRevalidate: false
                                     
                                 }
                             ]
@@ -135,26 +263,27 @@ const appRoutes = {
                     children: [
                         {
                             index: true,
-                            Component: components['list'],
-                            loader: pageLoaders['django']
+                            component: "list",
+                            loader: "django"
                         },
                         {
                             path: "add",
-                            Component: components['detail'],
-                            loader: pageLoaders['django_metadata'],
+                            component: "detail",
+                            loader: "django_metadata",
                             action: APISubmitAction,
-                            shouldRevalidate: () => false
+                            shouldRevalidate: false
                         },
                         {
                             path: ":pk",
-                            Component: components['detail'],
-                            loader: pageLoaders['django'],
+                            component: "detail",
+                            loader: "django",
                             action: APISubmitAction,
-                            shouldRevalidate: () => false
+                            shouldRevalidate: false
                         }
                     ]
                 },
                 {
+                    id: "tickets",
                     path: "ticket",
                     children: [
                         {
@@ -162,20 +291,20 @@ const appRoutes = {
                             children: [
                                 {
                                     index: true,
-                                    Component: components['list'],
-                                    loader: pageLoaders['django'],
+                                    component: "list",
+                                    loader: "django",
                                 },
                                 {
                                     path: "add",
-                                    Component: components['ticket'],
+                                    component: "ticket",
                                     action: APISubmitAction,
-                                    loader: pageLoaders['django_metadata']
+                                    loader: "django_metadata"
                                 },
                                 {
                                     path: ":pk",
-                                    Component: components['ticket'],
+                                    component: "ticket",
                                     action: APISubmitAction,
-                                    loader: pageLoaders['django'],
+                                    loader: "django",
                                     shouldRevalidate: ({ currentParams, nextParams }) => {
 
                                         const reValidate = (
@@ -185,7 +314,7 @@ const appRoutes = {
                                         )
     
                                         return reValidate
-    
+
                                     }
                                 },
                             ]
@@ -199,12 +328,12 @@ const appRoutes = {
                                         {
                                             path: "subModkPk",
                                             action: APISubmitAction,
-                                            shouldRevalidate: () => false,
+                                            shouldRevalidate: false,
                                             children: [
                                                 {
                                                     path: ":subSubModel",
                                                     action: APISubmitAction,
-                                                    shouldRevalidate: () => false,
+                                                    shouldRevalidate: false,
                                                 }
                                             ]
                                         }
@@ -219,29 +348,29 @@ const appRoutes = {
                     children: [
                         {
                             index: true,
-                            Component: components['list'],
-                            loader: pageLoaders['django']
+                            component: "list",
+                            loader: "django"
                         },
                         {
                             path: "add",
-                            Component: components['detail'],
-                            loader: pageLoaders['django_metadata'],
+                            component: "detail",
+                            loader: "django_metadata",
                             action: APISubmitAction,
-                            shouldRevalidate: () => false
+                            revalidate: false
                         },
                         {
                             path: ":pk",
                             children: [
                                 {
                                     index: true,
-                                    Component: components['detail'],
-                                    loader: pageLoaders['django'],
+                                    component: "detail",
+                                    loader: "django",
                                     action: APISubmitAction,
                                 },
                                 {
                                     path: "history",
-                                    Component: components['history'],
-                                    loader: pageLoaders['django']
+                                    component: "history",
+                                    loader: "django"
                                 },
                                 {
                                     path: "ticket",
@@ -249,14 +378,14 @@ const appRoutes = {
                                         {
                                             path: ":ticket_sub_model",
                                             action: APISubmitAction,
-                                            shouldRevalidate: () => false,
+                                            revalidate: false,
                                             children: [
                                                 {
                                                     path: ":ticket_sub_model_pk",
-                                                    Component: components['ticket'],
-                                                    loader: pageLoaders['django'],
+                                                    component: "ticket",
+                                                    loader: "django",
                                                     action: APISubmitAction,
-                                                    shouldRevalidate: () => false
+                                                    revalidate: false
                                                 }
                                             ]
                                         }
@@ -267,17 +396,17 @@ const appRoutes = {
                                     children: [
                                         {
                                             index: true,
-                                            Component: components['list'],
-                                            loader: pageLoaders['django'],
+                                            component: "list",
+                                            loader: "django",
                                             action: APISubmitAction,
-                                            shouldRevalidate: () => false
+                                            revalidate: false
                                         },
                                         {
                                             path: ":sub_model_pk",
-                                            Component: components['detail'],
-                                            loader: pageLoaders['django'],
+                                            component: "detail",
+                                            loader: "django",
                                             action: APISubmitAction,
-                                            shouldRevalidate: () => false
+                                            revalidate: false
                                         }
                                     ]
                                 }
@@ -291,7 +420,9 @@ const appRoutes = {
         },
 
     ]
-}
+}]
+
+
 
 /**
  * This function builds the UI routes from an object.
@@ -334,28 +465,37 @@ const dynamicRouter = () => {
                         }
                     },
                     {
-                        id: "notifications",
-                        Component: NotificationLayout,
+                        id: "root-backend",
+                        handle: {
+                            backend_url: window.env.API_URL
+                        },
+                        middleware: [ ({context}) => backendURLMiddleware({url: window.env.API_URL, context: context}) ],
                         children: [
                             {
-                                id: "UI",
-                                Component: UI,
-                                loader: pageLoaders['django_root_metadata'],
-                                shouldRevalidate: () => false,
-                                ErrorBoundary: RouteErrorBoundary,
-                                HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
+                                id: "notifications",
+                                Component: NotificationLayout,
                                 children: [
                                     {
-                                        id: "page",
-                                        Component: PageContent,
-                                        ErrorBoundary: RouteErrorBoundary,
+                                        id: "UI",
+                                        Component: UI,
+                                        loader: pageLoaders['django_root_metadata'],
                                         shouldRevalidate: () => false,
-                                        HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
+                                        ErrorBoundary: RouteErrorBoundary,
+                                        HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
+                                        children: [
+                                            {
+                                                id: "page",
+                                                Component: PageContent,
+                                                ErrorBoundary: RouteErrorBoundary,
+                                                shouldRevalidate: () => false,
+                                                HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
+                                            }
+                                        ]
                                     }
                                 ]
                             }
                         ]
-                    }
+                    },
                 ]
             }
         ];
@@ -377,7 +517,7 @@ const dynamicRouter = () => {
 
                     const data = await apiMetadata.clone().json();
 
-                    patch("page", [appRoutes]);
+                    patch("page", routesFromObject({routes: appRoutes }));
 
                 }
             },
