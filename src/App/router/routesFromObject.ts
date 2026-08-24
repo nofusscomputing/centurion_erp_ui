@@ -5,7 +5,7 @@ import
 } from "../../components/StateSplash"
 
 import {
-    components,
+    pageComponents,
     pageLoaders
 } from "."
 
@@ -58,7 +58,7 @@ export function routesFromObject({
 
                 case "component":
 
-                    builtRoute["Component"] = components[String(value)];
+                    builtRoute["Component"] = pageComponents[String(value)];
 
                     break;
 

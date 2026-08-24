@@ -17,8 +17,10 @@ import Base from "../../layouts/Base"
 import Redirect from "../../layouts/Redirect"
 
 
-
-export const components = {
+/**
+ * @since 0.13.0
+ */
+export const pageComponents = {
     baseview: Base,
     detail: Detail,
     history: History,
@@ -30,6 +32,9 @@ export const components = {
 
 
 
+/**
+ * @since 0.13.0
+ */
 export const pageLoaders = {
     django: djangoLoader,
     django_metadata: djangoMetadataLoader,
@@ -38,6 +43,9 @@ export const pageLoaders = {
 
 
 
+/**
+ * @since 0.13.0
+ */
 export const appRoutes = [{
     id: "root",
     path: "/",

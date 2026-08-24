@@ -5,7 +5,7 @@ import {
 
 import {
     appRoutes,
-    components,
+    pageComponents,
     pageLoaders
 } from "."
 
@@ -41,7 +41,7 @@ const dynamicRouter = () => {
     const routes: RouteObject[] = [
             {
                 id: "base",
-                Component: components['baseview'],
+                Component: pageComponents['baseview'],
                 ErrorBoundary: RouteErrorBoundary,
                 HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
                 children: [
@@ -54,7 +54,7 @@ const dynamicRouter = () => {
                     {
                         id: "login",
                         path: "/login",
-                        Component: components['redirect'],
+                        Component: pageComponents['redirect'],
                         handle: {
                             url_redirect: `${window.env.API_URL}/auth/login`
                         }
@@ -62,7 +62,7 @@ const dynamicRouter = () => {
                     {
                         id: "logout",
                         path: "/logout",
-                        Component: components['redirect'],
+                        Component: pageComponents['redirect'],
                         handle: {
                             url_post: `${window.env.API_URL}/auth/logout`,
                             url_redirect: `${window.env.API_URL}/auth/login`
