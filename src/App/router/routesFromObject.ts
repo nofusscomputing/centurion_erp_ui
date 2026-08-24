@@ -1,20 +1,46 @@
+import {
+    RouteObject
+} from "react-router";
+
+import {
+    pageActions,
+    pageComponents,
+    pageLoaders
+} from "."
+
+import {
+    RouteDescription
+} from "../../types/backend/apiMetadata/RouteDescriptions";
+
 import
     StateSplash,
     {
         StateIcon
 } from "../../components/StateSplash"
 
-import {
-    pageComponents,
-    pageLoaders
-} from "."
 
 
-
+/**
+ * Dynamically build the routes The UI will use.
+ * 
+ * @category Function
+ * @since 0.13.0
+ */
 export function routesFromObject({
     routes,
     baseURL = window.env.API_URL
-}) {
+}: {
+    /**
+     * UI Route object from {@link apiRootMetadata.routes} to use to create
+     * routes for the UI.
+     */
+    routes: RouteDescription[],
+
+    /**
+     * Base URL for the backend.
+     */
+    baseURL?: string
+}): RouteObject[] {
 
     const routesObject = routes;
 
@@ -38,21 +64,26 @@ export function routesFromObject({
 
             switch( key ) {
 
-                case "id":
+                case "action":
 
-                    builtRoute["id"] = String(value);
-
-                    break;
-
-                case "index":
-
-                    builtRoute["index"] = Boolean(value);
+                    builtRoute['action'] = pageActions[String(value)]
 
                     break;
 
-                case "path":
+                case "children":
 
-                    builtRoute["path"] = String(value);
+                    let backendURL = baseURL;
+
+                    if( Object.hasOwn( Object(route), 'handle' )) {
+
+                        if( Object.hasOwn( Object(route.handle), 'backend_url') ) {
+
+                            backendURL = route.handle.backend_url;
+
+                        }
+                    }
+
+                    builtRoute["children"] = routesFromObject({ routes: value, baseURL: backendURL })
 
                     break;
 
@@ -81,6 +112,18 @@ export function routesFromObject({
 
                     break;
 
+                case "id":
+
+                    builtRoute["id"] = String(value);
+
+                    break;
+
+                case "index":
+
+                    builtRoute["index"] = Boolean(value);
+
+                    break;
+
                 case "loader":
 
                     builtRoute['loader'] = (params) => pageLoaders[String(value)]({
@@ -90,10 +133,9 @@ export function routesFromObject({
 
                     break;
 
-                case "action":
+                case "path":
 
-                    // builtRoute["action"] = actions[String(value)];
-                    builtRoute["action"] = value;
+                    builtRoute["path"] = String(value);
 
                     break;
 
@@ -111,23 +153,6 @@ export function routesFromObject({
 
                     break;
 
-                case "children":
-
-                    let backendURL = baseURL;
-
-                    if( Object.hasOwn( Object(route), 'handle' )) {
-
-                        if( Object.hasOwn( Object(route.handle), 'backend_url') ) {
-
-                            backendURL = route.handle.backend_url;
-
-                        }
-                    }
-
-                    builtRoute["children"] = routesFromObject({ routes: value, baseURL: backendURL })
-
-                    break;
-
                 // default:
 
                 //     builtRoute[key] = value;
@@ -142,5 +167,3 @@ export function routesFromObject({
 
     return builtRoutes;
 }
-
-

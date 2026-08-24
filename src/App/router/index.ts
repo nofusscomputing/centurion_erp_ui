@@ -14,7 +14,18 @@ import Settings from "../../layout/Settings"
 import Ticket from "../../layout/Ticket"
 
 import Base from "../../layouts/Base"
+import Markdown from "../../layout/Markdown"
 import Redirect from "../../layouts/Redirect"
+
+
+
+/**
+ * @since 0.13.0
+ */
+export const pageActions = {
+    api: APISubmitAction
+}
+
 
 
 /**
@@ -26,6 +37,7 @@ export const pageComponents = {
     history: History,
     redirect: Redirect,
     list: List,
+    markdown: Markdown,
     settings: Settings,
     ticket: Ticket
 };
