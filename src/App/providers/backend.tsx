@@ -32,7 +32,7 @@ export type BackendContext = {
 
 
 
-const backendContext = createContext<BackendContext>(null);
+const backendContext = createContext<BackendContext>({url: null});
 
 
 

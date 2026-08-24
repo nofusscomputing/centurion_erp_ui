@@ -1,8 +1,6 @@
 import {
     createBrowserRouter,
-    createContext,
     RouteObject,
-    RouterContext
 } from "react-router"
 
 import djangoLoader from "./pageLoaders/django"
@@ -36,34 +34,10 @@ import NotificationLayout from "../layouts/Notifications"
 
 
 
-/**
- * This route context is for holding the backend url that is to be used by
- * loaders.
- * 
- * @summary Route context containing the backend URL.
- * 
- * @category Context
- * @since 0.13.0
- */
-export const backendURLRouteContext: RouterContext<string> = createContext<string>(undefined);
-
-/**
- * This middleware sets context {@link backendURLRouteContext} for use by loaders.
- * 
- * @summary middleware that sets the backend url.
- * 
- * @category Middleware
- * @since 0.13.0
- */
-export function backendURLMiddleware({url, context}) {
-
-    context.set(backendURLRouteContext, url)
-
-}
-
-
-
-function routesFromObject({ routes }) {
+function routesFromObject({
+    routes,
+    baseURL = window.env.API_URL
+}) {
 
     const routesObject = routes;
 
@@ -115,15 +89,6 @@ function routesFromObject({ routes }) {
 
                     builtRoute["handle"] = value;
 
-                    if( Object.hasOwn(Object(value), 'backend_url') ) {
-
-                        builtRoute['middleware'].push(
-                            ({context}) => backendURLMiddleware({
-                                url: value.backend_url, context: context
-                            })
-                        )
-                    }
-
                     break;
 
                 case "hydrate":
@@ -141,15 +106,12 @@ function routesFromObject({ routes }) {
 
                 case "loader":
 
-                    builtRoute["loader"] = pageLoaders[String(value)];
+                    builtRoute['loader'] = (params) => pageLoaders[String(value)]({
+                        ...params,
+                        baseURL: baseURL,
+                    })
 
                     break;
-
-                // case "middleware":
-
-                //     builtRoute["middleware"] = value;
-
-                //     break;
 
                 case "action":
 
@@ -174,7 +136,18 @@ function routesFromObject({ routes }) {
 
                 case "children":
 
-                    builtRoute["children"] = routesFromObject({ routes: value })
+                    let backendURL = baseURL;
+
+                    if( Object.hasOwn( Object(route), 'handle' )) {
+
+                        if( Object.hasOwn( Object(route.handle), 'backend_url') ) {
+
+                            backendURL = route.handle.backend_url;
+
+                        }
+                    }
+
+                    builtRoute["children"] = routesFromObject({ routes: value, baseURL: backendURL })
 
                     break;
 
@@ -469,7 +442,6 @@ const dynamicRouter = () => {
                         handle: {
                             backend_url: window.env.API_URL
                         },
-                        middleware: [ ({context}) => backendURLMiddleware({url: window.env.API_URL, context: context}) ],
                         children: [
                             {
                                 id: "notifications",
@@ -478,7 +450,10 @@ const dynamicRouter = () => {
                                     {
                                         id: "UI",
                                         Component: UI,
-                                        loader: pageLoaders['django_root_metadata'],
+                                        loader: (params) => pageLoaders['django_root_metadata']({
+                                            ...params,
+                                            baseURL: window.env.API_URL,
+                                        }),
                                         shouldRevalidate: () => false,
                                         ErrorBoundary: RouteErrorBoundary,
                                         HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),

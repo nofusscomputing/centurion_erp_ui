@@ -1,6 +1,6 @@
 import {
-    RouterContextProvider
-} from "react-router";
+    fetcherCommonNamedParams
+} from ".";
 
 import {
     getCookie
@@ -9,11 +9,6 @@ import {
 import {
         HTTPNamedParams,
 } from "../functions/http";
-
-import {
-    backendURLRouteContext
-} from "../App/router";
-
 import jsonHttpRequest from "../functions/httpJson";
 import URLSanitize from "../functions/URLSanitize";
 
@@ -27,12 +22,7 @@ import URLSanitize from "../functions/URLSanitize";
  * @expand
  * @since 0.13.0
  */
-export interface djangoFetcherNamedParams {
-
-    /**
-     * {@inheritDoc HTTPNamedParams.url}
-     */
-    url: HTTPNamedParams["url"]
+export interface djangoFetcherNamedParams extends fetcherCommonNamedParams {
 
     /**
      * {@inheritDoc HTTPNamedParams.method}
@@ -62,19 +52,6 @@ export interface djangoFetcherNamedParams {
      */
     onlyMetadata?: boolean
 
-    /**
-     * Route Context Provider.
-     * 
-     * The route context provider so that the loader can determine
-     * the backend url. Failure to supply the route context provider will
-     * prevent backend requests from being made, as the URL will be unknown.
-     */
-    context?: RouterContextProvider
-
-    /**
-     * {@inheritDoc HTTPNamedParams.signal}
-     */
-    signal?: HTTPNamedParams["signal"]
 }
 
 
@@ -95,7 +72,6 @@ export interface djangoFetcherNamedParams {
  * 
  * ```
  * 
- * 
  * @summary Django based backend fetcher for datasets.
  * 
  * @category Hook
@@ -104,15 +80,13 @@ export interface djangoFetcherNamedParams {
  */
 export default async function useDjangoFetcher({
     url,
+    baseURL = undefined,
     body = null,
     method = 'GET',
     getMetadata = false,
     onlyMetadata = false,
-    context = null,
     signal = null
 }: djangoFetcherNamedParams ): Promise<{ apiData: Response, apiMetadata: Response }> {
-
-    const backendURL: string = context?.get(backendURLRouteContext)
 
     const options: HTTPNamedParams = {
         credentials: true,
@@ -120,7 +94,9 @@ export default async function useDjangoFetcher({
             ...( getCookie( 'csrftoken' ) ? { 'X-CSRFToken': getCookie( 'csrftoken' ) } : {} )
         },
         signal: signal,
-        url: String(`${(backendURL ? backendURL : window.env.API_URL)}${URLSanitize(url)}`)
+        url: String(`${(
+            baseURL ? baseURL : window.env.API_URL
+        )}${URLSanitize(url)}`)
     }
 
     let requestsReturn: { apiData: Response, apiMetadata: Response } = {
