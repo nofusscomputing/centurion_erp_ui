@@ -23,7 +23,11 @@ export interface HTTPNamedParams {
      * 
      * When set to `true` credentials will be set to `same-orign`
      */
-    credentials?: boolean
+    credentials?: 'omit' | 'include' | 'same-origin'
+
+    referrerPolicy?: RequestInit["referrerPolicy"]
+
+    mode?: 'no-cors' | 'cors' | 'same-origin'
 
     /**
      * Headers to add to the request.
@@ -78,7 +82,9 @@ export interface HTTPNamedParams {
  */
 export async function httpRequest({
     body = null,
-    credentials = false,
+    credentials = 'omit',
+    referrerPolicy = 'strict-origin-when-cross-origin',
+    mode = 'no-cors',
     headers = {},
     method = "GET",
     signal = null,
@@ -87,14 +93,14 @@ export async function httpRequest({
 
 
     let options: RequestInit = {
-        // ...( credentials ? { credentials: 'same-origin' } : {} ),
-        ...( credentials ? { credentials: 'include' } : {} ),
+        credentials: credentials,
+        referrerPolicy: referrerPolicy,
         headers: {
             ...headers,
             // "X-Request-ID": crypto.randomUUID()
         },
         method: method,
-        // mode:
+        mode: mode,
         ...( signal ? { signal: signal } : {} )
     };
 

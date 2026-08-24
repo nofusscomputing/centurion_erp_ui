@@ -36,8 +36,11 @@ describe("httpRequest", () => {
             {
                 name: "Default",
                 expected: {
+                    credentials: "omit",
                     headers: {},
-                    method: "GET"
+                    method: "GET",
+                    mode: "no-cors",
+                    referrerPolicy: "strict-origin-when-cross-origin",
                 }
             },
             {
@@ -47,11 +50,14 @@ describe("httpRequest", () => {
                     Authorization: "Bearer test-token",
                 },
                 expected: {
+                    credentials: "omit",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: "Bearer test-token",
                     },
-                    method: "GET"
+                    method: "GET",
+                    mode: "no-cors",
+                    referrerPolicy: "strict-origin-when-cross-origin",
                 }
             },
             {
@@ -63,26 +69,34 @@ describe("httpRequest", () => {
                     body: JSON.stringify({
                         foo: "bar",
                     }),
+                    credentials: "omit",
                     headers: {},
-                    method: "GET"
+                    method: "GET",
+                    mode: "no-cors",
+                    referrerPolicy: "strict-origin-when-cross-origin",
                 }
             },
             {
                 name: "Credentials passed",
-                credentials: true,
+                credentials: "include",
                 expected: {
                     credentials: "include",
                     headers: {},
-                    method: "GET"
+                    method: "GET",
+                    mode: "no-cors",
+                    referrerPolicy: "strict-origin-when-cross-origin",
                 }
             },
             {
                 name: "Signal passed",
                 signal: abortSignal.signal,
                 expected: {
+                    credentials: "omit",
                     signal: abortSignal.signal,
                     headers: {},
-                    method: "GET"
+                    method: "GET",
+                    mode: "no-cors",
+                    referrerPolicy: "strict-origin-when-cross-origin",
                 }
             }
         ]
