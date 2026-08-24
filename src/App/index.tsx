@@ -6,7 +6,7 @@ import {
     RouterProvider
 } from "react-router/dom";
 
-import dynamicRouter from "./router";
+import dynamicRouter from "./router/dynamicRouter";
 
 
 

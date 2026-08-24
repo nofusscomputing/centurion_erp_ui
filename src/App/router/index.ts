@@ -1,174 +1,24 @@
-import {
-    createBrowserRouter,
-    RouteObject,
-} from "react-router"
 
-import djangoLoader from "./pageLoaders/django"
-import djangoMetadataLoader from "./pageLoaders/djangoMetadata"
-import djangoRootMetadataLoader from "./pageLoaders/djangoRootMetadata"
+import djangoLoader from "../pageLoaders/django"
+import djangoMetadataLoader from "../pageLoaders/djangoMetadata"
+import djangoRootMetadataLoader from "../pageLoaders/djangoRootMetadata"
 
 import {
     APISubmitAction
-} from "../components/DisplayFields"
-import
-    StateSplash,
-    {
-        StateIcon
-} from "../components/StateSplash"
+} from "../../components/DisplayFields"
 
-import useDjangoFetcher from "../hooks/useDjangoFetcher"
+import Detail from "../../layout/Detail"
+import History from "../../layout/history"
+import List from "../../layout/List"
+import Settings from "../../layout/Settings"
+import Ticket from "../../layout/Ticket"
 
-import Detail from "../layout/Detail"
-import RouteErrorBoundary from "../layouts/ErrorBoundary"
-import History from "../layout/history"
-import List from "../layout/List"
-import Settings from "../layout/Settings"
-import Ticket from "../layout/Ticket"
+import Base from "../../layouts/Base"
+import Redirect from "../../layouts/Redirect"
 
-import Base from "../layouts/Base"
-import PageContent from "../layouts/PageContent"
-import Redirect from "../layouts/Redirect"
 
-import UI from "../layouts/ui"
-import NotificationLayout from "../layouts/Notifications"
 
-
-
-function routesFromObject({
-    routes,
-    baseURL = window.env.API_URL
-}) {
-
-    const routesObject = routes;
-
-    let builtRoutes = [];
-
-    for(let route of routesObject) {
-
-        let builtRoute = {
-            // id: undefined,
-            // path: undefined,
-            // Component: undefined,
-            // HydrateFallback: undefined,
-            middleware: []
-            // loader: undefined,
-            // action: undefined,
-            // shouldRevalidate: undefined,
-            // children: [],
-        }
-
-        for( let [key, value] of Object.entries( route )) {
-
-            switch( key ) {
-
-                case "id":
-
-                    builtRoute["id"] = String(value);
-
-                    break;
-
-                case "index":
-
-                    builtRoute["index"] = Boolean(value);
-
-                    break;
-
-                case "path":
-
-                    builtRoute["path"] = String(value);
-
-                    break;
-
-                case "component":
-
-                    builtRoute["Component"] = components[String(value)];
-
-                    break;
-
-                case "handle":
-
-                    builtRoute["handle"] = value;
-
-                    break;
-
-                case "hydrate":
-
-                    if( value === 'loader' ) {
-
-                        builtRoute["HydrateFallback"] = () => StateSplash({
-                            titleText: "Loading Data",
-                            icon: StateIcon.loading
-                        });
-
-                    }
-
-                    break;
-
-                case "loader":
-
-                    builtRoute['loader'] = (params) => pageLoaders[String(value)]({
-                        ...params,
-                        baseURL: baseURL,
-                    })
-
-                    break;
-
-                case "action":
-
-                    // builtRoute["action"] = actions[String(value)];
-                    builtRoute["action"] = value;
-
-                    break;
-
-                case "revalidate":
-
-                    if( value === true ) {
-
-                        builtRoute["shouldRevalidate"] = () => true;
-
-                    } else if( value === false ) {
-
-                        builtRoute["shouldRevalidate"] = () => false;
-
-                    }
-
-                    break;
-
-                case "children":
-
-                    let backendURL = baseURL;
-
-                    if( Object.hasOwn( Object(route), 'handle' )) {
-
-                        if( Object.hasOwn( Object(route.handle), 'backend_url') ) {
-
-                            backendURL = route.handle.backend_url;
-
-                        }
-                    }
-
-                    builtRoute["children"] = routesFromObject({ routes: value, baseURL: backendURL })
-
-                    break;
-
-                // default:
-
-                //     builtRoute[key] = value;
-
-            }
-
-        };
-
-        builtRoutes.push( builtRoute )
-
-    };
-
-    return builtRoutes;
-}
-
-
-
-const components = {
+export const components = {
     baseview: Base,
     detail: Detail,
     history: History,
@@ -178,13 +28,17 @@ const components = {
     ticket: Ticket
 };
 
-const pageLoaders = {
+
+
+export const pageLoaders = {
     django: djangoLoader,
     django_metadata: djangoMetadataLoader,
     django_root_metadata: djangoRootMetadataLoader
 };
 
-const appRoutes = [{
+
+
+export const appRoutes = [{
     id: "root",
     path: "/",
     revalidate: false,
@@ -394,110 +248,3 @@ const appRoutes = [{
 
     ]
 }]
-
-
-
-/**
- * This function builds the UI routes from an object.
- * 
- * @summary Dynamic Router
- * 
- * @category Function
- * @since 0.13.0
- */
-const dynamicRouter = () => {
-
-    const routes: RouteObject[] = [
-            {
-                id: "base",
-                Component: components['baseview'],
-                ErrorBoundary: RouteErrorBoundary,
-                HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
-                children: [
-                    /**
-                     * Note: For a site that requires auth, login redirect cant
-                     * be part of the dynamic routes. This is because the error
-                     * boundary that uses a redirect will not have access to
-                     * the dynamic routes until after they are loaded.
-                     */
-                    {
-                        id: "login",
-                        path: "/login",
-                        Component: components['redirect'],
-                        handle: {
-                            url_redirect: `${window.env.API_URL}/auth/login`
-                        }
-                    },
-                    {
-                        id: "logout",
-                        path: "/logout",
-                        Component: components['redirect'],
-                        handle: {
-                            url_post: `${window.env.API_URL}/auth/logout`,
-                            url_redirect: `${window.env.API_URL}/auth/login`
-                        }
-                    },
-                    {
-                        id: "root-backend",
-                        handle: {
-                            backend_url: window.env.API_URL
-                        },
-                        children: [
-                            {
-                                id: "notifications",
-                                Component: NotificationLayout,
-                                children: [
-                                    {
-                                        id: "UI",
-                                        Component: UI,
-                                        loader: (params) => pageLoaders['django_root_metadata']({
-                                            ...params,
-                                            baseURL: window.env.API_URL,
-                                        }),
-                                        shouldRevalidate: () => false,
-                                        ErrorBoundary: RouteErrorBoundary,
-                                        HydrateFallback: () => StateSplash({titleText: "Loading UI", icon: StateIcon.loading }),
-                                        children: [
-                                            {
-                                                id: "page",
-                                                Component: PageContent,
-                                                ErrorBoundary: RouteErrorBoundary,
-                                                shouldRevalidate: () => false,
-                                                HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                ]
-            }
-        ];
-
-
-    return createBrowserRouter(
-        routes,
-        {
-            basename: "",
-            async patchRoutesOnNavigation({ patch, path, signal, matches }) {
-
-                if( matches.length === 0 ) {
-                
-                    const { apiMetadata, apiData } = await useDjangoFetcher({
-                        url: '/',
-                        onlyMetadata: true,
-                        signal: signal
-                    });
-
-                    const data = await apiMetadata.clone().json();
-
-                    patch("page", routesFromObject({routes: appRoutes }));
-
-                }
-            },
-        }
-    )
-}
-
-export default dynamicRouter;
