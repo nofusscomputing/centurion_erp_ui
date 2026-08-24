@@ -22,7 +22,7 @@ import dynamicRouter from "./router";
  */
 function App() {
 
-    const router = useMemo( () => dynamicRouter(), [] );
+    const router = dynamicRouter();
 
     return (
         <RouterProvider router={router} />
