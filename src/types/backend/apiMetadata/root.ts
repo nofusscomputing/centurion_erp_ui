@@ -39,7 +39,7 @@ export interface BackendVersion {
  * This object is **only** to be fetched once on the UI loading and is
  * responsible for providing the necessary descriptions so the UI can be setup.
  * 
- * @category Type
+ * @category Backend
  * @since 0.1.0
  */
 export interface apiRootMetadata extends apiCommonMetadata {
