@@ -97,7 +97,7 @@ export function BackendProvider({
 
         if( routes.length > 0 && url === null ) {
 
-            for( let i = (routes.length - 1); i > 0;  i-- ) {
+            for( let i = (routes.length - 1); i >= 0;  i-- ) {
 
                 if( ! Object(routes[i]).hasOwnProperty('handle') ) continue;
 
