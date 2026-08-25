@@ -18,6 +18,10 @@ import Base from "../../layouts/Base"
 import Markdown from "../../layout/Markdown"
 import Redirect from "../../layouts/Redirect"
 
+import {
+    RouteDescription,
+} from "../../types/backend/apiMetadata/RouteDescriptions"
+
 
 
 /**
@@ -60,7 +64,7 @@ export const pageLoaders = {
 /**
  * @since 0.13.0
  */
-export const appRoutes = [{
+export const appRoutes: Array<RouteDescription> = [{
     id: "root",
     path: "/",
     revalidate: false,

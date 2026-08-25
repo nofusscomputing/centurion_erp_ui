@@ -40,7 +40,8 @@
         },
         "react-router": {
             "ErrorBoundary": "https://reactrouter.com/7.18.2/how-to/error-boundary",
-            "RouterContextProvider": "https://reactrouter.com/7.18.2/api/utils/RouterContextProvider"
+            "RouterContextProvider": "https://reactrouter.com/7.18.2/api/utils/RouterContextProvider",
+            "RouteObject": "https://reactrouter.com/7.18.2/start/data/route-object",
         }
     },
     "hideGenerator": true,
