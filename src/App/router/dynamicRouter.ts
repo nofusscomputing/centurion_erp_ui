@@ -92,8 +92,6 @@ const dynamicRouter = () => {
                                             {
                                                 id: "page",
                                                 Component: PageContent,
-                                                ErrorBoundary: RouteErrorBoundary,
-                                                shouldRevalidate: () => false,
                                                 HydrateFallback: () => StateSplash({titleText: "Loading Page Content", icon: StateIcon.loading }),
                                             }
                                         ]

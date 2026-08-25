@@ -50,7 +50,7 @@ export const pageComponents = {
 export const pageLoaders = {
     django: djangoLoader,
     django_metadata: djangoMetadataLoader,
-    django_root_metadata: djangoRootMetadataLoader
+    django_root_metadata: djangoRootMetadataLoader,
 };
 
 
@@ -62,13 +62,11 @@ export const appRoutes = [{
     id: "root",
     path: "/",
     revalidate: false,
+    hydrate: "loader",
     children: [
         {
-            index: true
-        },
-        {
             path: "settings",
-            component: 'settings',
+            component: "settings",
             loader: 'django'
         },
         {
@@ -88,17 +86,17 @@ export const appRoutes = [{
                                 {
                                     path: "add",
                                     component: "detail",
-                                    action: APISubmitAction,
+                                    action: "api",
                                     loader: "django_metadata",
-                                    shouldRevalidate: false
+                                    revalidate: false
                                     
                                 },
                                 {
                                     path: ":pk",
                                     component: "detail",
-                                    action: APISubmitAction,
+                                    action: "api",
                                     loader: "django",
-                                    shouldRevalidate: false
+                                    revalidate: false
                                     
                                 }
                             ]
@@ -117,15 +115,15 @@ export const appRoutes = [{
                             path: "add",
                             component: "detail",
                             loader: "django_metadata",
-                            action: APISubmitAction,
-                            shouldRevalidate: false
+                            action: "api",
+                            revalidate: false
                         },
                         {
                             path: ":pk",
                             component: "detail",
                             loader: "django",
-                            action: APISubmitAction,
-                            shouldRevalidate: false
+                            action: "api",
+                            revalidate: false
                         }
                     ]
                 },
@@ -144,25 +142,25 @@ export const appRoutes = [{
                                 {
                                     path: "add",
                                     component: "ticket",
-                                    action: APISubmitAction,
+                                    action: "api",
                                     loader: "django_metadata"
                                 },
                                 {
                                     path: ":pk",
                                     component: "ticket",
-                                    action: APISubmitAction,
+                                    action: "api",
                                     loader: "django",
-                                    shouldRevalidate: ({ currentParams, nextParams }) => {
+                                    // shouldRevalidate: ({ currentParams, nextParams }) => {
 
-                                        const reValidate = (
-                                            currentParams.module !== nextParams.module ||
-                                            currentParams.model !== nextParams.model ||
-                                            currentParams.id !== nextParams.id
-                                        )
-    
-                                        return reValidate
+                                    //     const reValidate = (
+                                    //         currentParams.module !== nextParams.module ||
+                                    //         currentParams.model !== nextParams.model ||
+                                    //         currentParams.id !== nextParams.id
+                                    //     )
 
-                                    }
+                                    //     return reValidate
+
+                                    // }
                                 },
                             ]
                         },
@@ -173,14 +171,14 @@ export const appRoutes = [{
                                     path: ":subModel",
                                     children: [
                                         {
-                                            path: "subModkPk",
-                                            action: APISubmitAction,
-                                            shouldRevalidate: false,
+                                            path: ":subModelPk",
+                                            action: "api",
+                                            revalidate: false,
                                             children: [
                                                 {
                                                     path: ":subSubModel",
-                                                    action: APISubmitAction,
-                                                    shouldRevalidate: false,
+                                                    action: "api",
+                                                    revalidate: false,
                                                 }
                                             ]
                                         }
@@ -202,7 +200,7 @@ export const appRoutes = [{
                             path: "add",
                             component: "detail",
                             loader: "django_metadata",
-                            action: APISubmitAction,
+                            action: "api",
                             revalidate: false
                         },
                         {
@@ -212,7 +210,7 @@ export const appRoutes = [{
                                     index: true,
                                     component: "detail",
                                     loader: "django",
-                                    action: APISubmitAction,
+                                    action: "api",
                                 },
                                 {
                                     path: "history",
@@ -224,14 +222,14 @@ export const appRoutes = [{
                                     children: [
                                         {
                                             path: ":ticket_sub_model",
-                                            action: APISubmitAction,
+                                            action: "api",
                                             revalidate: false,
                                             children: [
                                                 {
                                                     path: ":ticket_sub_model_pk",
                                                     component: "ticket",
                                                     loader: "django",
-                                                    action: APISubmitAction,
+                                                    action: "api",
                                                     revalidate: false
                                                 }
                                             ]
@@ -245,14 +243,14 @@ export const appRoutes = [{
                                             index: true,
                                             component: "list",
                                             loader: "django",
-                                            action: APISubmitAction,
+                                            action: "api",
                                             revalidate: false
                                         },
                                         {
                                             path: ":sub_model_pk",
                                             component: "detail",
                                             loader: "django",
-                                            action: APISubmitAction,
+                                            action: "api",
                                             revalidate: false
                                         }
                                     ]
