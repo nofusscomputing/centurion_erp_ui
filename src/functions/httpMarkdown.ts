@@ -17,11 +17,8 @@ import {
  * ``` js
  * 
  * const myRequest = jsonHttpRequest({
- *      url: "https://my-domain-name.tld/some-path",
- *      method: "POST",
- *      body: {
- *          "a_key": "a value"
- *      }
+ *      url: "https://my-domain-name.tld/some-path.md",
+ *      method: "GET",
  * })
  * 
  * ```
@@ -34,34 +31,23 @@ import {
  * @expandType HTTPNamedParams
  * @since 0.13.0
  */
-export default async function jsonHttpRequest({
-    body = null,
+export default async function markdownHttpRequest({
     credentials = 'omit',
-    referrerPolicy = 'strict-origin-when-cross-origin',
-    mode = 'no-cors',
+    referrerPolicy = 'no-referrer',
+    mode = 'cors',
     headers = {},
     method = "GET",
     signal = null,
     url,
 }: HTTPNamedParams): Promise<Response> {
 
-    if( ["PATCH", "POST"].includes(method) && body === null ) {
-
-        throw new Error(
-            `A HTTP request using method "${method}" requires a body.`
-        )
-
-    }
-
     return await httpRequest({
-        body: body,
         credentials: credentials,
         referrerPolicy: referrerPolicy,
         mode: mode,
         headers: {
-            ...headers, 
-            "Accept": "application/json",
-            ...(body ? {"Content-Type": "application/json"} : {})
+            ...headers,
+            "Accept": "text/plain"
         },
         method: method,
         signal: signal,

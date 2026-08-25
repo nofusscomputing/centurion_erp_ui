@@ -75,7 +75,7 @@ export interface HTTPNamedParams {
  * 
  * @summary HTTP fetcher.
  * 
- * @category fetcher
+ * @category Fetcher
  * @expandType HTTPNamedParams
  * @since 0.13.0
  * @throws {@link HTTPNotAuthenticated} HTTP/401 was returned.
