@@ -13,6 +13,7 @@ import List from "../../layout/List"
 import Settings from "../../layout/Settings"
 import Ticket from "../../layout/Ticket"
 
+import BackendLayout from "../../layouts/Backend"
 import Base from "../../layouts/Base"
 import Markdown from "../../layout/Markdown"
 import Redirect from "../../layouts/Redirect"
@@ -32,6 +33,7 @@ export const pageActions = {
  * @since 0.13.0
  */
 export const pageComponents = {
+    backend: BackendLayout,
     baseview: Base,
     detail: Detail,
     history: History,

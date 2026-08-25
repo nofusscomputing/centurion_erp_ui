@@ -21,7 +21,14 @@ import
 
 
 /**
- * Dynamically build the routes The UI will use.
+ * Dynamically build routes from a description. This description is done in
+ * such a way that the UI does not require any changes when the description is
+ * updated.
+ * 
+ * **Note:** Specifying handle `backend_url` will force the component to be set
+ * to be set to {@link BackendLayout}
+ * 
+ * @summary Dynamically build the routes The UI will use.
  * 
  * @category Function
  * @since 0.13.0
@@ -60,6 +67,18 @@ export function routesFromObject({
             // children: [],
         }
 
+        let hasBackendURL: boolean = false
+
+        if( Object.hasOwn( Object(route), 'handle' )) {
+
+            if( Object.hasOwn( Object(route.handle), 'backend_url') ) {
+
+                hasBackendURL = true;
+
+            }
+        }
+
+
         for( let [key, value] of Object.entries( route )) {
 
             switch( key ) {
@@ -74,13 +93,10 @@ export function routesFromObject({
 
                     let backendURL = baseURL;
 
-                    if( Object.hasOwn( Object(route), 'handle' )) {
+                    if( hasBackendURL ) {
 
-                        if( Object.hasOwn( Object(route.handle), 'backend_url') ) {
+                        backendURL = route.handle.backend_url;
 
-                            backendURL = route.handle.backend_url;
-
-                        }
                     }
 
                     builtRoute["children"] = routesFromObject({ routes: value, baseURL: backendURL })
@@ -89,11 +105,24 @@ export function routesFromObject({
 
                 case "component":
 
+                    if( hasBackendURL ) {
+
+                        throw Error('A component and a backendURL can not both be defined.');
+
+                    }
+
                     builtRoute["Component"] = pageComponents[String(value)];
 
                     break;
 
                 case "handle":
+
+                    
+                    if( hasBackendURL ) {
+
+                        builtRoute["Component"] = pageComponents['backend'];
+
+                    }
 
                     builtRoute["handle"] = value;
 

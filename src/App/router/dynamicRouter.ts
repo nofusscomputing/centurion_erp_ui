@@ -70,6 +70,7 @@ const dynamicRouter = () => {
                     },
                     {
                         id: "root-backend",
+                        Component: pageComponents['backend'],
                         handle: {
                             backend_url: window.env.API_URL
                         },
