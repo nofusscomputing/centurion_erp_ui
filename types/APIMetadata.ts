@@ -7,6 +7,7 @@
  * @summary Object Metadata.
  * 
  * @category Backend
+ * @deprecated use {@link apiMetadata}
  * @expand
  */
 export interface APIMetadata {
