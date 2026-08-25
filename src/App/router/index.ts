@@ -2,6 +2,7 @@
 import djangoLoader from "../pageLoaders/django"
 import djangoMetadataLoader from "../pageLoaders/djangoMetadata"
 import djangoRootMetadataLoader from "../pageLoaders/djangoRootMetadata"
+import githubLoader from "../pageLoaders/github"
 
 import {
     APISubmitAction
@@ -57,6 +58,7 @@ export const pageLoaders = {
     django: djangoLoader,
     django_metadata: djangoMetadataLoader,
     django_root_metadata: djangoRootMetadataLoader,
+    github: githubLoader
 };
 
 

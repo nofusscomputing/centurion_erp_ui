@@ -155,10 +155,32 @@ export function routesFromObject({
 
                 case "loader":
 
-                    builtRoute['loader'] = (params) => pageLoaders[String(value)]({
-                        ...params,
-                        baseURL: baseURL,
-                    })
+                    if( String(value) === 'github---------------------dont-use-yet' ) {
+
+
+                        if( ! hasBackendURL ) {
+
+                            throw Error('Github loader can not be used without \
+                                specifying dir_root handle')
+
+                        }
+
+
+                        builtRoute['loader'] = (params) => pageLoaders['github']({
+                            ...params,
+                            baseURL: baseURL,
+                            dirRoot: route.handle.dir_root,
+                        })
+
+                    } else { 
+
+                        builtRoute['loader'] = (params) => pageLoaders[String(value)]({
+                            ...params,
+                            baseURL: baseURL,
+                        })
+
+                    }
+
 
                     break;
 

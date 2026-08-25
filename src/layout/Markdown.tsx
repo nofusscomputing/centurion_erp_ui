@@ -3,7 +3,9 @@ import {
     useState
 } from "react";
 
-import { useOutletContext } from "react-router";
+import {
+    useLoaderData,
+} from "react-router";
 
 import {
     Content,
@@ -140,6 +142,8 @@ const Markdown = (): React.JSX.Element => {
     const isMobile = useIsMobile();
 
     const [isVertical, setIsVertical] = useState(false);
+
+    const markdown = useLoaderData();
 
     const [ markdownDocument, setMarkdownDocument ] = useState(markdown);
 
@@ -300,7 +304,15 @@ const Markdown = (): React.JSX.Element => {
                                     frontmatterCallback={frontmatterCallback}
                                     tocCallback = {tocCallback}
                                 >
-                                    {markdownDocument}
+                                    {String(
+                                        markdownDocument
+                                    ).replaceAll(
+                                        '(./', `(${document.location.pathname}/`
+                                    ).replaceAll(
+                                        'index.md)', ')'
+                                    ).replaceAll(
+                                        '.md)', ')'
+                                    )}
                                 </RenderMarkdown>
 
                             </Content>
