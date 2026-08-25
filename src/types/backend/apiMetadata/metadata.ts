@@ -2,6 +2,10 @@ import {
     apiCommonMetadata
 } from ".";
 
+import { fieldType } from "./fields";
+
+import { UILayout } from "./layout";
+
 /**
  * API metadata is provided by the backend and must be accessible via the URL
  * used to access the endpoint in question. This object is obtained via a
@@ -32,5 +36,17 @@ export interface apiMetadata extends apiCommonMetadata {
      * @since 0.5.0
      */
     documentation: String;
+
+    /**
+     * Description of the backend fields
+     * 
+     * @expandType fieldType
+     */
+    fields: Array<fieldType>
+
+    /**
+     * @expandType UILayout
+     */
+    layout: UILayout
 
 }

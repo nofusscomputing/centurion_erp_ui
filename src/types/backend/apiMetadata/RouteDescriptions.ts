@@ -6,7 +6,7 @@ import {
 /**
  * Available keys for use to select route action.
  * 
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export type RouteActionDescription =
@@ -21,7 +21,7 @@ export type RouteActionDescription =
 /**
  * Available keys for use within a routes handle.
  * 
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export interface RouteHandleDescription {
@@ -51,7 +51,7 @@ export interface RouteHandleDescription {
 
 /**
  * 
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export type RouteHydrateComponentDescription =
@@ -68,7 +68,7 @@ export type RouteHydrateComponentDescription =
  * 
  * @see {@link pageLoaders}
  * 
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export type RoutePageLoaderDescription =
@@ -99,7 +99,7 @@ export type RoutePageLoaderDescription =
  * Available layout components for use with a dynamic route.
  * 
  * @see {@link pageComponents}
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export type RouteComponentDescription =
@@ -211,7 +211,7 @@ export interface RouteCommonDescription {
  * This Description describes index routes that are used by
  * {@link routesFromObject} to build the {@link RouteObject}s for the UI.
  * 
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export interface IndexRouteDescription extends RouteCommonDescription {
@@ -230,7 +230,7 @@ export interface IndexRouteDescription extends RouteCommonDescription {
  * {@link routesFromObject} to build the {@link RouteObject}s for the UI.
  * 
  * @see {@link routesFromObject}
- * @category Type
+ * @category Description
  * @since 0.13.0
  */
 export interface NonIndexRouteDescription extends RouteCommonDescription {

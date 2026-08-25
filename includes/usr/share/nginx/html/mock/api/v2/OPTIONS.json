@@ -97,5 +97,63 @@
         }
       ]
     }
-  ]
+  ],
+  "routes": {
+        "id": "root",
+        "path": "/",
+        "children": [
+            {
+                "id": "settings",
+                "path": "settings",
+                "component": "settings",
+                "loader": "django,"
+            },
+            {
+                "path": ":module",
+                "children": [
+                    {
+                        "path": "ticket",
+                        "children": [
+                            {
+                                "path": ":type",
+                                "children": [
+                                    {
+                                        "index": true,
+                                        "component": "list",
+                                        "loader": "django"
+                                    },
+                                    {
+                                        "path": ":pk",
+                                        "component": "ticket",
+                                        "loader": "django"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "path": ":model",
+                        "children": [
+                            {
+                                "index": true,
+                                "component": "list",
+                                "loader": "django"
+                            },
+                            {
+                                "path": ":pk",
+                                "children": [
+                                    {
+                                        "index": true,
+                                        "component": "detail",
+                                        "loader": "django"
+
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
 }
