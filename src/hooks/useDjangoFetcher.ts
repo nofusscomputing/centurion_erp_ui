@@ -89,7 +89,8 @@ export default async function useDjangoFetcher({
 }: djangoFetcherNamedParams ): Promise<{ apiData: Response, apiMetadata: Response }> {
 
     const options: HTTPNamedParams = {
-        credentials: true,
+        credentials: 'include',
+        mode: 'cors',
         headers: {
             ...( getCookie( 'csrftoken' ) ? { 'X-CSRFToken': getCookie( 'csrftoken' ) } : {} )
         },

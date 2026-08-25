@@ -1,9 +1,7 @@
-import
-    {
-        httpRequest,
-        HTTPNamedParams
-    }
-from "./http";
+import {
+    httpRequest,
+    HTTPNamedParams
+} from "./http";
 
 
 /**
@@ -38,7 +36,9 @@ from "./http";
  */
 export default async function jsonHttpRequest({
     body = null,
-    credentials = false,
+    credentials = 'omit',
+    referrerPolicy = 'strict-origin-when-cross-origin',
+    mode = 'no-cors',
     headers = {},
     method = "GET",
     signal = null,
@@ -56,6 +56,8 @@ export default async function jsonHttpRequest({
     return await httpRequest({
         body: body,
         credentials: credentials,
+        referrerPolicy: referrerPolicy,
+        mode: mode,
         headers: {
             ...headers, 
             "Accept": "application/json",

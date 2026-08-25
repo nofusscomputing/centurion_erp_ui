@@ -58,9 +58,10 @@ describe("useDjangoFetcher", () => {
                 name: "Default",
                 expected: {
                     body: null,
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "GET",
+                    mode: "cors",
                     signal: null,
                     url: `${api_url}${URLSanitize(url)}`
                 }
@@ -69,9 +70,10 @@ describe("useDjangoFetcher", () => {
                 name: "get metaData",
                 getMetadata: true,
                 expected: {
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "OPTIONS",
+                    mode: "cors",
                     signal: null,
                     url: `${api_url}${URLSanitize(url)}`
                 }
@@ -80,9 +82,10 @@ describe("useDjangoFetcher", () => {
                 name: "only metaData",
                 onlyMetadata: true,
                 expected: {
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "OPTIONS",
+                    mode: "cors",
                     signal: null,
                     url: `${api_url}${URLSanitize(url)}`
                 }
@@ -91,9 +94,10 @@ describe("useDjangoFetcher", () => {
                 name: "OPTIONS request returns metaData only",
                 method: "OPTIONS",
                 expected: {
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "OPTIONS",
+                    mode: "cors",
                     signal: null,
                     url: `${api_url}${URLSanitize(url)}`
                 }
@@ -126,9 +130,10 @@ describe("useDjangoFetcher", () => {
                     body: JSON.stringify({
                         foo: "bar",
                     }),
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "GET",
+                    mode: "cors",
                     signal: null,
                     url: `${api_url}${URLSanitize(url)}`
                 }
@@ -137,9 +142,10 @@ describe("useDjangoFetcher", () => {
                 name: "Credentials passed",
                 expected: {
                     body: null,
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "GET",
+                    mode: "cors",
                     signal: null,
                     url: `${api_url}${URLSanitize(url)}`
                 }
@@ -149,9 +155,10 @@ describe("useDjangoFetcher", () => {
                 signal: abortSignal.signal,
                 expected: {
                     body: null,
-                    credentials: true,
+                    credentials: "include",
                     headers: {},
                     method: "GET",
+                    mode: "cors",
                     signal: abortSignal.signal,
                     url: `${api_url}${URLSanitize(url)}`
                 }
