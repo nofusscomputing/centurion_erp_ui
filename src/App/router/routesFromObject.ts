@@ -105,7 +105,7 @@ export function routesFromObject({
 
                 case "component":
 
-                    if( hasBackendURL ) {
+                    if( hasBackendURL && String(value) !== 'backend' ) {
 
                         throw Error('A component and a backendURL can not both be defined.');
 
