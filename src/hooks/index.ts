@@ -20,7 +20,7 @@ export interface fetcherCommonNamedParams {
     url: HTTPNamedParams["url"]
 
     /**
-     * 
+     * {@inheritDoc HTTPNamedParams.url}
      */
     baseURL?: HTTPNamedParams["url"]
 
