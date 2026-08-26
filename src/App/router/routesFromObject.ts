@@ -78,12 +78,30 @@ export function routesFromObject({
             }
         }
 
+        let hasRedirectURL: boolean = false
+
+        if( Object.hasOwn( Object(route), 'handle' )) {
+
+            if( Object.hasOwn( Object(route.handle), 'url_redirect') ) {
+
+                hasRedirectURL = true;
+
+            }
+        }
+
 
         for( let [key, value] of Object.entries( route )) {
 
             switch( key ) {
 
                 case "action":
+
+                    if( ! Object.hasOwn(pageActions, String(value)) ) {
+
+                        throw Error(`Invalid page action provided. '${String(value)}' does not exist`)
+
+                    }
+
 
                     builtRoute['action'] = pageActions[String(value)]
 
@@ -111,6 +129,27 @@ export function routesFromObject({
 
                     }
 
+
+                    if( ! hasBackendURL && String(value) === 'backend' ) {
+
+                        throw Error('handle backendURL must be supplied when component=backend.');
+
+                    }
+
+
+                    if( ! hasRedirectURL && String(value) === 'redirect' ) {
+
+                        throw Error('handle redirect_url must be supplied when component=backend.');
+
+                    }
+
+
+                    if( ! Object.hasOwn(pageComponents, String(value)) ) {
+
+                        throw Error(`Invalid page component provided. '${String(value)}' does not exist`)
+                    }
+
+
                     builtRoute["Component"] = pageComponents[String(value)];
 
                     break;
@@ -137,9 +176,11 @@ export function routesFromObject({
                             icon: StateIcon.loading
                         });
 
+                        break;
                     }
 
-                    break;
+                    throw Error(`hydrate only accepts value 'loader'. Value '${String(value)}' does not exist`)
+
 
                 case "id":
 
@@ -155,21 +196,27 @@ export function routesFromObject({
 
                 case "loader":
 
-                    if( String(value) === 'github---------------------dont-use-yet' ) {
+                    if( ! Object.hasOwn(pageLoaders, String(value)) ) {
+
+                        throw Error(`Invalid page loader provided. '${String(value)}' does not exist`)
+                    }
 
 
-                        if( ! hasBackendURL ) {
+                    if( String(value) === 'github' ) {
 
-                            throw Error('Github loader can not be used without \
-                                specifying dir_root handle')
 
-                        }
+                        // if( ! hasBackendURL ) {
+
+                        //     throw Error('Github loader can not be used without \
+                        //         specifying dir_root handle')
+
+                        // }
 
 
                         builtRoute['loader'] = (params) => pageLoaders['github']({
                             ...params,
                             baseURL: baseURL,
-                            dirRoot: route.handle.dir_root,
+                            // dirRoot: route.handle.dir_root,
                         })
 
                     } else { 
