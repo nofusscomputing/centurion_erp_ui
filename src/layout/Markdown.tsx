@@ -24,7 +24,7 @@ import {
 import RenderMarkdown from "../functions/RenderMarkdown";
 import { useIsMobile } from "../hooks/useIsMobile";
 
-import { TagIcon } from "@patternfly/react-icons/dist/esm/icons/tag-icon"
+import { TagIcon } from "@patternfly/react-icons"
 import {
     usePageContext
 } from "../layouts/PageContent";
