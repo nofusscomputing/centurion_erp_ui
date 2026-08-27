@@ -39,13 +39,10 @@ describe("httpJsonRequest", () => {
             name: "Default",
             expected: {
                 body: null,
-                credentials: "omit",
                 headers: {
                     "Accept": "application/json"
                 },
                 method: "GET",
-                mode: "no-cors",
-                referrerPolicy: "strict-origin-when-cross-origin",
                 signal: null,
                 url: url
             }
@@ -58,15 +55,12 @@ describe("httpJsonRequest", () => {
             },
             expected: {
                 body: null,
-                credentials: "omit",
                 headers: {
                     "Accept": "application/json",
                     Authorization: "Bearer test-token",
                     "Content-Type": "application/json"
                 },
                 method: "GET",
-                mode: "no-cors",
-                referrerPolicy: "strict-origin-when-cross-origin",
                 signal: null,
                 url: url
             }
@@ -80,14 +74,11 @@ describe("httpJsonRequest", () => {
                 body: JSON.stringify({
                     foo: "bar",
                 }),
-                credentials: "omit",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 method: "GET",
-                mode: "no-cors",
-                referrerPolicy: "strict-origin-when-cross-origin",
                 signal: null,
                 url: url
             }
@@ -102,8 +93,6 @@ describe("httpJsonRequest", () => {
                     "Accept": "application/json"
                 },
                 method: "GET",
-                mode: "no-cors",
-                referrerPolicy: "strict-origin-when-cross-origin",
                 signal: null,
                 url: url
             }
@@ -113,13 +102,10 @@ describe("httpJsonRequest", () => {
             signal: abortSignal.signal,
             expected: {
                 body: null,
-                credentials: "omit",
                 headers: {
                     "Accept": "application/json"
                 },
                 method: "GET",
-                mode: "no-cors",
-                referrerPolicy: "strict-origin-when-cross-origin",
                 signal: abortSignal.signal,
                 url: url
             }

@@ -36,11 +36,11 @@ import {
  */
 export default async function jsonHttpRequest({
     body = null,
-    credentials = 'omit',
-    referrerPolicy = 'strict-origin-when-cross-origin',
-    mode = 'no-cors',
+    credentials = undefined,
+    referrerPolicy = undefined,
+    mode = undefined,
     headers = {},
-    method = "GET",
+    method = 'GET',
     signal = null,
     url,
 }: HTTPNamedParams): Promise<Response> {
@@ -55,9 +55,9 @@ export default async function jsonHttpRequest({
 
     return await httpRequest({
         body: body,
-        credentials: credentials,
-        referrerPolicy: referrerPolicy,
-        mode: mode,
+        ...( credentials ? {credentials: credentials} : {} ),
+        ...( referrerPolicy ? {referrerPolicy: referrerPolicy} : {} ),
+        ...( mode ? {mode: mode} : {} ),
         headers: {
             ...headers, 
             "Accept": "application/json",

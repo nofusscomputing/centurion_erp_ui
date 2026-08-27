@@ -82,25 +82,25 @@ export interface HTTPNamedParams {
  */
 export async function httpRequest({
     body = null,
-    credentials = 'omit',
-    referrerPolicy = 'strict-origin-when-cross-origin',
-    mode = 'no-cors',
+    credentials = undefined,
+    referrerPolicy = undefined,
+    mode = undefined,
     headers = {},
-    method = "GET",
+    method = undefined,
     signal = null,
     url,
 }: HTTPNamedParams): Promise<Response> {
 
 
     let options: RequestInit = {
-        credentials: credentials,
-        referrerPolicy: referrerPolicy,
+        credentials: credentials ? credentials : 'omit',
+        referrerPolicy: referrerPolicy ? referrerPolicy : 'strict-origin-when-cross-origin',
         headers: {
             ...headers,
             // "X-Request-ID": crypto.randomUUID()
         },
-        method: method,
-        mode: mode,
+        method: method ? method : 'GET',
+        mode: mode ? mode : 'no-cors',
         ...( signal ? { signal: signal } : {} )
     };
 

@@ -32,9 +32,9 @@ import {
  * @since 0.13.0
  */
 export default async function markdownHttpRequest({
-    credentials = 'omit',
-    referrerPolicy = 'no-referrer',
-    mode = 'cors',
+    credentials = undefined,
+    referrerPolicy = undefined,
+    mode = undefined,
     headers = {},
     method = "GET",
     signal = null,
@@ -42,9 +42,9 @@ export default async function markdownHttpRequest({
 }: HTTPNamedParams): Promise<Response> {
 
     return await httpRequest({
-        credentials: credentials,
-        referrerPolicy: referrerPolicy,
-        mode: mode,
+        credentials: credentials ? credentials : 'omit',
+        referrerPolicy: referrerPolicy ? referrerPolicy : 'no-referrer',
+        mode: mode ? mode : 'cors',
         headers: {
             ...headers,
             "Accept": "text/plain"
