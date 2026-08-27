@@ -1,7 +1,14 @@
 import React, {
     createContext,
-    useContext
+    useContext,
+    useEffect,
+    useState
 } from "react";
+
+import {
+    useMatches
+} from "react-router";
+
 
 
 /**
@@ -25,7 +32,7 @@ export type BackendContext = {
 
 
 
-const backendContext = createContext<BackendContext>(null);
+const backendContext = createContext<BackendContext>({url: null});
 
 
 
@@ -36,12 +43,6 @@ const backendContext = createContext<BackendContext>(null);
  * @since 0.13.0
  */
 export interface BackendProviderProps {
-
-    /**
-     * The string value to use. This url will be prefixed to paths that must
-     * already be relative paths.
-     */
-    url: string
 
     /**
      * The nodes to wrap in this provider.
@@ -85,9 +86,30 @@ export interface BackendProviderProps {
  * @since 0.13.0
  */
 export function BackendProvider({
-    url,
     children
 }: BackendProviderProps) {
+
+    const routes = useMatches();
+
+    const [ url, setURL ] = useState(null);
+
+    useEffect(() => {
+
+        if( routes.length > 0 && url === null ) {
+
+            for( let i = (routes.length - 1); i >= 0;  i-- ) {
+
+                if( ! Object(routes[i]).hasOwnProperty('handle') ) continue;
+
+                if( ! Object(routes[i].handle).hasOwnProperty('backend_url') ) continue;
+
+                setURL(routes[i].handle.backend_url);
+
+                break;
+            }
+        }
+    }, []);
+
 
     return (
         <backendContext.Provider value = {{url: url}}>

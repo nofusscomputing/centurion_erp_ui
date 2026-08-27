@@ -6,14 +6,13 @@ import {
 import * as http from "../../http";
 
 import {
-    httpRequest,
     HTTPNamedParams
 } from "../../http";
 
-import jsonHttpRequest from "../../httpJson";
+import markdownHttpRequest from "../../httpMarkdown";
 
 
-describe("httpJsonRequest", () => {
+describe("httpMarkdownRequest", () => {
 
     const url = "https://my-domain.tld/some-path"
 
@@ -38,11 +37,13 @@ describe("httpJsonRequest", () => {
         {
             name: "Default",
             expected: {
-                body: null,
+                credentials: "omit",
                 headers: {
-                    "Accept": "application/json"
+                    "Accept": "text/plain",
                 },
                 method: "GET",
+                mode: "cors",
+                referrerPolicy: "no-referrer",
                 signal: null,
                 url: url
             }
@@ -50,35 +51,17 @@ describe("httpJsonRequest", () => {
         {
             name: "Headers passed",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: "Bearer test-token",
             },
             expected: {
-                body: null,
+                credentials: "omit",
                 headers: {
-                    "Accept": "application/json",
+                    "Accept": "text/plain",
                     Authorization: "Bearer test-token",
-                    "Content-Type": "application/json"
                 },
                 method: "GET",
-                signal: null,
-                url: url
-            }
-        },
-        {
-            name: "Body passed",
-            body: JSON.stringify({
-                foo: "bar",
-            }),
-            expected: {
-                body: JSON.stringify({
-                    foo: "bar",
-                }),
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                method: "GET",
+                mode: "cors",
+                referrerPolicy: "no-referrer",
                 signal: null,
                 url: url
             }
@@ -87,12 +70,13 @@ describe("httpJsonRequest", () => {
             name: "Credentials passed",
             credentials: "include",
             expected: {
-                body: null,
                 credentials: "include",
                 headers: {
-                    "Accept": "application/json"
+                    "Accept": "text/plain",
                 },
                 method: "GET",
+                mode: "cors",
+                referrerPolicy: "no-referrer",
                 signal: null,
                 url: url
             }
@@ -101,11 +85,13 @@ describe("httpJsonRequest", () => {
             name: "Signal passed",
             signal: abortSignal.signal,
             expected: {
-                body: null,
+                credentials: "omit",
                 headers: {
-                    "Accept": "application/json"
+                    "Accept": "text/plain",
                 },
                 method: "GET",
+                mode: "cors",
+                referrerPolicy: "no-referrer",
                 signal: abortSignal.signal,
                 url: url
             }
@@ -114,48 +100,6 @@ describe("httpJsonRequest", () => {
 
 
 
-    describe("No body method POST raises Error Exception", () => {
-
-        test.each(testParams)(
-            "$name",
-            async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
-
-            await expect(
-                jsonHttpRequest({
-                    url: url,
-                    ...( credentials ? { credentials: credentials } : {}),
-                    body: null,
-                    ...( headers ? { headers: headers } : {}),
-                    method: "POST",
-                    ...( signal ? { signal: signal } : {})
-                }),
-            ).rejects.toBeInstanceOf(Error);
-        });
-    });
-
-
-
-    describe("No body method PATCH raises Error Exception", () => {
-
-        test.each(testParams)(
-            "$name",
-            async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
-
-            await expect(
-                jsonHttpRequest({
-                    url: url,
-                    ...( credentials ? { credentials: credentials } : {}),
-                    body: null,
-                    ...( headers ? { headers: headers } : {}),
-                    method: "PATCH",
-                    ...( signal ? { signal: signal } : {})
-                }),
-            ).rejects.toBeInstanceOf(Error);
-        });
-    });
-
-
-    
     describe("No Method Supplied - Defaults to GET", () => {
 
 
@@ -179,7 +123,7 @@ describe("httpJsonRequest", () => {
                         .mockResolvedValue(response);
 
 
-                    const result = await jsonHttpRequest({
+                    const result = await markdownHttpRequest({
                         url: url,
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
@@ -211,7 +155,7 @@ describe("httpJsonRequest", () => {
                         .mockResolvedValue(response);
 
 
-                    const result = await jsonHttpRequest({
+                    const result = await markdownHttpRequest({
                         url: url,
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
@@ -246,109 +190,7 @@ describe("httpJsonRequest", () => {
 
 
                     await expect(
-                       jsonHttpRequest({
-                            url: url,
-                            ...( credentials ? { credentials: credentials } : {}),
-                            ...( body ? { body: body } : {}),
-                            ...( headers ? { headers: headers } : {}),
-                            ...( method ? { method: method } : {}),
-                            ...( signal ? { signal: signal } : {})
-                        }),
-                    ).resolves.not.toBeInstanceOf(HttpError);
-                });
-            });
-        });
-
-
-
-        describe("HTTP/201", () => {
-
-            const status = 201;
-
-            describe("Fetch correctly called", () => {
-
-                test.each(testParams)(
-                    "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
-
-                    const response = new Response(null, {
-                        status: status,
-                    });
-
-                    const fetch = jest
-                        .spyOn(http, "httpRequest")
-                        .mockResolvedValue(response);
-
-
-                    const result = await jsonHttpRequest({
-                        url: url,
-                        ...( credentials ? { credentials: credentials } : {}),
-                        ...( body ? { body: body } : {}),
-                        ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {}),
-                        ...( signal ? { signal: signal } : {})
-                    });
-
-                    expect(fetch).toHaveBeenCalledWith(
-                        expected,
-                    );
-                });
-            });
-
-
-
-            describe("Response is returned", () => {
-
-                test.each(testParams)(
-                    "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
-
-                    const response = new Response(null, {
-                        status: status,
-                    });
-
-                    const fetch = jest
-                        .spyOn(http, "httpRequest")
-                        .mockResolvedValue(response);
-
-
-                    const result = await jsonHttpRequest({
-                        url: url,
-                        ...( credentials ? { credentials: credentials } : {}),
-                        ...( body ? { body: body } : {}),
-                        ...( headers ? { headers: headers } : {}),
-                        ...( method ? { method: method } : {}),
-                        ...( signal ? { signal: signal } : {})
-                    });
-
-                    expect(fetch).toHaveBeenCalledWith(
-                        expected,
-                    ); // Pre-Req: Test must fail if not the correct call.
-
-                    expect(result).toBe(response);
-                });
-            });
-
-
-
-            describe("No HTTPError Exception", () => {
-
-                test.each(testParams)(
-                    "$name",
-                    async ({body = null, credentials = null, method = null, headers = null, signal = null, expected}) => {
-
-                    const response = new Response(null, {
-                        status: status,
-                    });
-
-                    const fetch = jest
-                        .spyOn(http, "httpRequest")
-                        .mockResolvedValue(response);
-
-
-                    const result = await jsonHttpRequest
-                    await expect(
-                       jsonHttpRequest({
+                       markdownHttpRequest({
                             url: url,
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
@@ -382,7 +224,7 @@ describe("httpJsonRequest", () => {
                         .mockResolvedValue(response);
 
 
-                    const result = await jsonHttpRequest({
+                    const result = await markdownHttpRequest({
                         url: url,
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
@@ -414,7 +256,7 @@ describe("httpJsonRequest", () => {
                         .mockResolvedValue(response);
 
 
-                    const result = await jsonHttpRequest({
+                    const result = await markdownHttpRequest({
                         url: url,
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
@@ -449,7 +291,7 @@ describe("httpJsonRequest", () => {
 
 
                     await expect(
-                       jsonHttpRequest({
+                       markdownHttpRequest({
                             url: url,
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
@@ -485,7 +327,7 @@ describe("httpJsonRequest", () => {
 
 
                     await expect(
-                       jsonHttpRequest({
+                       markdownHttpRequest({
                             url: url,
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),
@@ -517,7 +359,7 @@ describe("httpJsonRequest", () => {
 
                     try {
 
-                        await jsonHttpRequest({
+                        await markdownHttpRequest({
                                 url: url,
                                 ...( credentials ? { credentials: credentials } : {}),
                                 ...( body ? { body: body } : {}),
@@ -559,7 +401,7 @@ describe("httpJsonRequest", () => {
                         .mockResolvedValue(response);
 
 
-                    const result = await jsonHttpRequest({
+                    const result = await markdownHttpRequest({
                         url: url,
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
@@ -591,7 +433,7 @@ describe("httpJsonRequest", () => {
                         .mockResolvedValue(response);
 
 
-                    const result = await jsonHttpRequest({
+                    const result = await markdownHttpRequest({
                         url: url,
                         ...( credentials ? { credentials: credentials } : {}),
                         ...( body ? { body: body } : {}),
@@ -626,7 +468,7 @@ describe("httpJsonRequest", () => {
 
 
                     await expect(
-                       jsonHttpRequest({
+                       markdownHttpRequest({
                             url: url,
                             ...( credentials ? { credentials: credentials } : {}),
                             ...( body ? { body: body } : {}),

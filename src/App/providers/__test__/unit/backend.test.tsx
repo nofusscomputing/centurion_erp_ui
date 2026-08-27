@@ -24,10 +24,13 @@ describe("Backend Provider", () => {
             {
                 Component: () => {
                     return (
-                        <BackendProvider url = "https://some-value">
+                        <BackendProvider >
                             <Outlet />
                         </BackendProvider>
                     );
+                },
+                handle: {
+                    backend_url: "https://some-value"
                 },
                 children: [
                     {

@@ -23,7 +23,11 @@ export interface HTTPNamedParams {
      * 
      * When set to `true` credentials will be set to `same-orign`
      */
-    credentials?: boolean
+    credentials?: 'omit' | 'include' | 'same-origin'
+
+    referrerPolicy?: RequestInit["referrerPolicy"]
+
+    mode?: 'no-cors' | 'cors' | 'same-origin'
 
     /**
      * Headers to add to the request.
@@ -71,30 +75,32 @@ export interface HTTPNamedParams {
  * 
  * @summary HTTP fetcher.
  * 
- * @category fetcher
+ * @category Fetcher
  * @expandType HTTPNamedParams
  * @since 0.13.0
  * @throws {@link HTTPNotAuthenticated} HTTP/401 was returned.
  */
 export async function httpRequest({
     body = null,
-    credentials = false,
+    credentials = undefined,
+    referrerPolicy = undefined,
+    mode = undefined,
     headers = {},
-    method = "GET",
+    method = undefined,
     signal = null,
     url,
 }: HTTPNamedParams): Promise<Response> {
 
 
     let options: RequestInit = {
-        // ...( credentials ? { credentials: 'same-origin' } : {} ),
-        ...( credentials ? { credentials: 'include' } : {} ),
+        credentials: credentials ? credentials : 'omit',
+        referrerPolicy: referrerPolicy ? referrerPolicy : 'strict-origin-when-cross-origin',
         headers: {
             ...headers,
             // "X-Request-ID": crypto.randomUUID()
         },
-        method: method,
-        // mode:
+        method: method ? method : 'GET',
+        mode: mode ? mode : 'no-cors',
         ...( signal ? { signal: signal } : {} )
     };
 

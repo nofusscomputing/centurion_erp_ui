@@ -1,4 +1,8 @@
 import {
+    loaderNamedParams
+} from ".";
+
+import {
     APIMetadata
 } from "../../../types/APIMetadata";
 
@@ -15,17 +19,20 @@ import useDjangoFetcher from "../../hooks/useDjangoFetcher";
  * @summary Django loader that only fetches Metadata.
  * 
  * @category Loader
+ * @expandType loaderNamedParams
  * @since 0.13.0
  */
 const djangoMetadataLoader = async ({
-    request
-}): Promise<{metadata: APIMetadata, page_data: null}> => {
+    baseURL,
+    request,
+}: loaderNamedParams): Promise<{metadata: APIMetadata, page_data: null}> => {
 
     console.debug('Django MetaData Loader', request)
 
     const {apiMetadata, apiData } = await useDjangoFetcher({
         onlyMetadata: true,
         url: String(request.url).replace('/add', ''),
+        baseURL: baseURL,
         signal: request.signal,
     })
 

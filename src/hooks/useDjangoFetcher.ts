@@ -1,13 +1,18 @@
 import {
+    fetcherCommonNamedParams
+} from ".";
+
+import {
     getCookie
 } from "./getCookie";
 
 import {
         HTTPNamedParams,
 } from "../functions/http";
-
 import jsonHttpRequest from "../functions/httpJson";
 import URLSanitize from "../functions/URLSanitize";
+
+
 
 /**
  * 
@@ -17,12 +22,7 @@ import URLSanitize from "../functions/URLSanitize";
  * @expand
  * @since 0.13.0
  */
-export interface djangoFetcherNamedParams {
-
-    /**
-     * {@inheritDoc HTTPNamedParams.url}
-     */
-    url: HTTPNamedParams["url"]
+export interface djangoFetcherNamedParams extends fetcherCommonNamedParams {
 
     /**
      * {@inheritDoc HTTPNamedParams.method}
@@ -52,10 +52,6 @@ export interface djangoFetcherNamedParams {
      */
     onlyMetadata?: boolean
 
-    /**
-     * {@inheritDoc HTTPNamedParams.signal}
-     */
-    signal?: HTTPNamedParams["signal"]
 }
 
 
@@ -76,7 +72,6 @@ export interface djangoFetcherNamedParams {
  * 
  * ```
  * 
- * 
  * @summary Django based backend fetcher for datasets.
  * 
  * @category Hook
@@ -85,6 +80,7 @@ export interface djangoFetcherNamedParams {
  */
 export default async function useDjangoFetcher({
     url,
+    baseURL = undefined,
     body = null,
     method = 'GET',
     getMetadata = false,
@@ -92,14 +88,16 @@ export default async function useDjangoFetcher({
     signal = null
 }: djangoFetcherNamedParams ): Promise<{ apiData: Response, apiMetadata: Response }> {
 
-
     const options: HTTPNamedParams = {
-        credentials: true,
+        credentials: 'include',
+        mode: 'cors',
         headers: {
             ...( getCookie( 'csrftoken' ) ? { 'X-CSRFToken': getCookie( 'csrftoken' ) } : {} )
         },
         signal: signal,
-        url: String(`${window.env.API_URL}${URLSanitize(url)}`)
+        url: String(`${(
+            baseURL ? baseURL : window.env.API_URL
+        )}${URLSanitize(url)}`)
     }
 
     let requestsReturn: { apiData: Response, apiMetadata: Response } = {
