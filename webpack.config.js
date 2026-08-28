@@ -17,8 +17,8 @@ module.exports = (env, argv) => {
         output: {
             cssFilename: `assets/styles/${isDevelopment ? '[name].css' : '[name].[contenthash].css'}`,
             path: path.resolve(__dirname, 'build'),
-            filename: isDevelopment ? '[name].js' : 'assets/js/[name].[contenthash].js',
-            chunkFilename: "[name].[contenthash].chunk.js",
+            filename: `assets/js/${isDevelopment ? '[name].js' : '[name].[contenthash].js'}`,
+            chunkFilename: `assets/js/${isDevelopment ? '[name].chunk.js' : '[name].[contenthash].chunk.js'}`,
             publicPath: '/',
             clean: true,
         },
