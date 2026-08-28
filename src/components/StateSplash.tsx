@@ -213,24 +213,28 @@ const StateSplash = ({
 
             {(body || stackTrace) && <EmptyStateBody>
                 {body}
-                <br />
-                { stackTrace && <ExpandableSection
-                    toggleText={isExpanded ? 'Hide details' : 'Show details'}
-                    onToggle={onToggle}
-                    isExpanded={isExpanded}
-                >
-
-                    <CodeBlock
-                        style={{
-                            textAlign: "left"
-                        }}
+                
+                { stackTrace && 
+                <>
+                    { body && <br />}
+                    <ExpandableSection
+                        toggleText={isExpanded ? 'Hide details' : 'Show details'}
+                        onToggle={onToggle}
+                        isExpanded={isExpanded}
                     >
-                        <CodeBlockCode>
-                            {stackTrace}
-                        </CodeBlockCode>
-                    </CodeBlock>
 
-                </ExpandableSection>}
+                        <CodeBlock
+                            style={{
+                                textAlign: "left"
+                            }}
+                        >
+                            <CodeBlockCode>
+                                {stackTrace}
+                            </CodeBlockCode>
+                        </CodeBlock>
+
+                    </ExpandableSection>
+                </>}
 
             </EmptyStateBody>}
 
