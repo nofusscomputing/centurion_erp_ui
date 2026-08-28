@@ -90,6 +90,11 @@ module.exports = (env, argv) => {
         },
 
         optimization: {
+            minimize: {
+                css: {
+                    comments: false
+                }
+            },
             splitChunks: {
                 chunks: "all",
                 cacheGroups: {
