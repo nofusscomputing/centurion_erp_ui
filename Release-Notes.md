@@ -11,3 +11,5 @@
         - Markdown HTTP fetcher added.
 
         - Github fetcher added.
+
+    - package name update to reflect that it's a separate project, `centurion-erp-ui` -> `centurion-ui`
