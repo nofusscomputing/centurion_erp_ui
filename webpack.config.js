@@ -65,6 +65,14 @@ module.exports = (env, argv) => {
                         filename: 'assets/images/[name].[contenthash][ext]'
                     }
                 },
+
+                {    // PatternFly
+                    test: /\/dist\/static\/[a-zA-Z]+\.svg$/i,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/icons/[name].[contenthash][ext]'
+                    }
+                },
                 {
                     test: /\.(ttf|woff2)$/i,
                     type: 'asset/resource',
