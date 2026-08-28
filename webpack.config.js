@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 module.exports = (env, argv) => {
@@ -16,6 +15,7 @@ module.exports = (env, argv) => {
         },
 
         output: {
+            cssFilename: `assets/styles/${isDevelopment ? '[name].css' : '[name].[contenthash].css'}`,
             path: path.resolve(__dirname, 'build'),
             filename: isDevelopment ? '[name].js' : 'assets/js/[name].[contenthash].js',
             chunkFilename: "[name].[contenthash].chunk.js",
@@ -34,7 +34,17 @@ module.exports = (env, argv) => {
             port: 3000,
         },
 
+        experiments: {
+            css: true
+        },
+
         module: {
+            parser: {
+                css: {
+                    exportType: "link",
+                    fontPreload: true
+                },
+            },
             rules: [
                 {
                     test: /\.([jt]sx?)$/,
@@ -47,13 +57,6 @@ module.exports = (env, argv) => {
                             ].filter(Boolean)
                         }
                     }
-                },
-                {
-                    test: /\.css$/,
-                    use: [
-                        isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-                        'css-loader'
-                    ]
                 },
                 {
                     test: /\.(png|jpe?g|gif|svg)$/i,
@@ -124,9 +127,6 @@ module.exports = (env, argv) => {
             }),
             new Dotenv(),
             isDevelopment && new ReactRefreshWebpackPlugin(),
-            !isDevelopment && new MiniCssExtractPlugin({
-                filename: 'assets/styles/[name].[contenthash].css'
-            }),
             new CopyWebpackPlugin({
                 patterns: [
                     {
