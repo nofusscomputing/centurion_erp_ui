@@ -113,22 +113,36 @@ module.exports = (env, argv) => {
                         enforce: true,
 
                         name(module) {
-                        // extract @patternfly/<package-name>
-                        const match = module.context?.match(
-                            /[\\/]node_modules[\\/]@patternfly[\\/](.*?)([\\/]|$)/
-                        );
 
-                        if (!match) return "patternfly-misc";
+                            // extract @patternfly/<package-name>
+                            const match = module.context?.match(
+                                /[\\/]node_modules[\\/]@patternfly[\\/](.*?)([\\/]|$)/
+                            );
 
-                        const packageName = match[1]; // e.g. react-core, react-icons
-                        return `patternfly-${packageName.replace(/[\\/]/g, "-")}`;
+                            if (!match) return "patternfly-misc";
+
+                            const packageName = match[1]; // e.g. react-core, react-icons
+
+                            return `patternfly-${packageName.replace(/[\\/]/g, "-")}`;
                         },
                     },
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        name: "vendors",
                         chunks: "all",
                         priority: 10,
+                        name(module) {
+
+                            // extract node_modules/<module-name>
+                            const match = module.context?.match(
+                                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                            );
+
+                            if (!match) return "vendor-misc";
+
+                            const packageName = match[1]; // e.g. react-core, react-icons
+
+                            return `vendor-${packageName.replace(/[\\/]/g, "-")}`;
+                        },
                     },
                 },
             }
