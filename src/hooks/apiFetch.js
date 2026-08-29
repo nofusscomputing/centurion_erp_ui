@@ -92,7 +92,8 @@ export async function apiFetch(
 
     const api_data_response = await useDjangoFetcher({
         url: window.env.API_URL + url_path,
-        method: http_method.toUpperCase()
+        method: http_method.toUpperCase(),
+        body: request_data['body']
     })
 
         .then(data => {

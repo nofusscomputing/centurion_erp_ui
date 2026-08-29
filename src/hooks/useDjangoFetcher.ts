@@ -7,6 +7,10 @@ import {
 } from "./getCookie";
 
 import {
+    useBackendProvider
+} from "../App/providers/backend";
+
+import {
         HTTPNamedParams,
 } from "../functions/http";
 import jsonHttpRequest from "../functions/httpJson";
@@ -87,6 +91,21 @@ export default async function useDjangoFetcher({
     onlyMetadata = false,
     signal = null
 }: djangoFetcherNamedParams ): Promise<{ apiData: Response, apiMetadata: Response }> {
+
+    let backend = null
+
+    try {
+
+        backend = useBackendProvider();
+
+        baseURL = backend.url;
+
+    } catch (err) {
+
+        // Silently ignore error.
+
+    }
+
 
     const options: HTTPNamedParams = {
         credentials: 'include',

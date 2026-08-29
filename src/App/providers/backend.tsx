@@ -53,15 +53,18 @@ export interface BackendProviderProps {
 
 
 /**
- * This provider stores the {@link BackendContext | data} about the current backend. This provider is
- * intended to be used so that every object under the route layout will use
- * the details within this provider. For example:
+ * This provider stores the {@link BackendContext | data} about the current
+ * backend. This provider is intended to be used so that every object under the
+ * route layout will use the details within this provider. For example:
  * 
  * - Around a RouterProvider
  * 
  * - Around a route layout.
  * 
- * To use this provider {@link useBackendProvider} is available.
+ * To use this provider directly {@link useBackendProvider} is available.
+ * However you should not require to call this provider directly. This is
+ * because when declaring your routes, as soon as a `backend_url` has been
+ * supplied, this provider is automatically added via {@link BackendLayout}.
  * 
  * @example
  * 

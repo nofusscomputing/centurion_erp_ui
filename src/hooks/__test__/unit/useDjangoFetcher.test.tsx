@@ -13,6 +13,9 @@ import jsonHttpRequest from "../../../functions/httpJson";
 
 import useDjangoFetcher, { djangoFetcherNamedParams } from "../../useDjangoFetcher";
 import URLSanitize from "../../../functions/URLSanitize";
+import { createRoutesStub } from "react-router";
+import { render } from "@testing-library/react";
+import BackendLayout from "../../../layouts/Backend";
 
 
 describe("useDjangoFetcher", () => {
@@ -36,6 +39,64 @@ describe("useDjangoFetcher", () => {
         jest.restoreAllMocks();
 
     });
+
+
+
+    test("direct call uses backend provider.", () =>{
+
+
+        const response = new Response(null, {
+            status: 200,
+        });
+
+        const fetch = jest
+            .spyOn(httpJson, "default")
+            .mockResolvedValue(response);
+
+        const InnerComponent = () => {
+
+            const fetcher = useDjangoFetcher({
+                url: '/',
+                baseURL: 'ignore-me'
+            });
+
+            return (<></>);
+        };
+
+
+        const Stub = createRoutesStub([
+            {
+                Component: BackendLayout,
+                handle: {
+                    backend_url: "a url would normally go here"
+                },
+                children: [
+                    {
+                        path: "/",
+                        Component: InnerComponent
+                    }
+                ]
+            }
+        ]);
+
+
+        const rendered = render(
+            <Stub initialEntries={["/"]} />
+        );
+
+        expect(fetch).toHaveBeenCalledWith({
+            body: null,
+            credentials: "include",
+            headers: {},
+            method: "GET",
+            mode: "cors",
+            signal: null,
+            url: "a url would normally go here",
+        })
+
+        
+    });
+
 
 
     describe("No Method Supplied - Defaults to GET", () => {
