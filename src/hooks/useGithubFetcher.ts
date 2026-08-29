@@ -3,6 +3,10 @@ import {
 } from "react-router";
 
 import {
+    useBackendProvider
+} from "../App/providers/backend";
+
+import {
         HTTPNamedParams,
 } from "../functions/http";
 
@@ -67,6 +71,20 @@ export default async function useGithubFetcher({
     params,
     signal = null
 }: githubFetcherNamedParams ): Promise<Response> {
+
+    let backend = null
+
+    try {
+
+        backend = useBackendProvider();
+
+        baseURL = backend.url;
+
+    } catch (err) {
+
+        // Silently ignore error.
+
+    }
 
     let mdDocumentName = params?.mdFile ? (
         String(url).endsWith(params.mdFile) ? '.md' : `${params.mdFile}.md`

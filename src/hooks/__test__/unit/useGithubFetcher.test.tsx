@@ -12,7 +12,9 @@ import {
 import useDjangoFetcher, { djangoFetcherNamedParams } from "../../useDjangoFetcher";
 import URLSanitize from "../../../functions/URLSanitize";
 import useGithubFetcher from "../../useGithubFetcher";
-import { Params } from "react-router";
+import { createRoutesStub, Params } from "react-router";
+import BackendLayout from "../../../layouts/Backend";
+import { render } from "@testing-library/react";
 
 
 describe("useGithubFetcher", () => {
@@ -42,6 +44,60 @@ describe("useGithubFetcher", () => {
         jest.restoreAllMocks();
 
     });
+
+
+
+        test("direct call uses backend provider.", () =>{
+    
+    
+            const response = new Response(null, {
+                status: 200,
+            });
+    
+            const fetch = jest
+                .spyOn(httpMarkdown, "default")
+                .mockResolvedValue(response);
+
+            const InnerComponent = () => {
+    
+                const fetcher = useGithubFetcher({
+                    url: '/',
+                    baseURL: 'ignore-me'
+                });
+    
+                return (<></>);
+            };
+    
+    
+            const Stub = createRoutesStub([
+                {
+                    Component: BackendLayout,
+                    handle: {
+                        backend_url: "a url would normally go here"
+                    },
+                    children: [
+                        {
+                            path: "/",
+                            Component: InnerComponent
+                        }
+                    ]
+                }
+            ]);
+    
+    
+            render(
+                <Stub initialEntries={["/"]} />
+            );
+    
+            expect(fetch).toHaveBeenCalledWith({
+                method: "GET",
+                signal: null,
+                url: "a url would normally go here" + 'index.md',
+            })
+    
+            
+        });
+    
 
 
     describe("No Method Supplied - Defaults to GET", () => {
