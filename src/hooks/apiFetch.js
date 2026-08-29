@@ -1,5 +1,9 @@
 import { getCookie } from "./getCookie";
 
+import useDjangoFetcher from "./useDjangoFetcher";
+
+
+
 /**
  * Make an API call to fetch data
  * 
@@ -10,6 +14,9 @@ import { getCookie } from "./getCookie";
  * @param {Boolean} patch Temp: stop gap until refactor to propper POST -> REsponse as data instead of additional HTTP/GET
  * @returns {Object} for patch/post/put request, the response object is returned
  * @returns {Object} for get request an object is returned {api_metadata, api_page_data, response}
+ * 
+ * @deprecated since 0.13.0 use {@link useDjangoFetcher} instead.
+ * 
  */
 export async function apiFetch(
     url_path,
@@ -83,25 +90,26 @@ export async function apiFetch(
 
     let api_data = null
 
-    const api_data_response = await fetch(window.env.API_URL + url_path, request_data)
+    const api_data_response = await useDjangoFetcher({
+        url: window.env.API_URL + url_path,
+        method: http_method.toUpperCase(),
+        body: request_data['body']
+    })
 
         .then(data => {
 
-            return data
+            if( http_method.toUpperCase() === 'OPTIONS' ) {
 
-        })
-        .catch(err => {
+                return data.apiMetadata;
 
-            console.log(`apiFetch: an error occured within the details page ${err}`)
+            }
 
-
-            throw Error(err)
+            return data.apiData
 
         });
 
+
     if(
-        // http_method === 'GET'
-        // && metadata
         metadata
         && http_method.toUpperCase() !== 'OPTIONS'
         && http_method.toUpperCase() !== 'DELETE'
@@ -109,23 +117,14 @@ export async function apiFetch(
 
         console.debug(`apiFetch called: ${http_method} ${url_path} -Making Options Request-`);
 
-        const api_metadata_response = await fetch(window.env.API_URL + url_path,
-                {
-                    ...request_data,
-                    method: 'OPTIONS'
-                }
-            )
+        // const api_metadata_response = await fetch(window.env.API_URL + url_path,
+        const api_metadata_response = await useDjangoFetcher({
+            url: window.env.API_URL + url_path,
+            onlyMetadata: true
+            })
             .then(data => {
 
-                return data
-
-            })
-            .catch(err => {
-
-                console.log(`apiFetch: an error occured within the details page ${err}`)
-
-
-                throw Error(err)
+                return data.apiMetadata
 
             });
 

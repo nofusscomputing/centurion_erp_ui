@@ -1,0 +1,24 @@
+import {
+    Outlet
+} from "react-router";
+
+
+
+
+/**
+ * Base Layout for doing ui related setup tasks.
+ * 
+ * @summary Base Layout
+ * 
+ * @category Layout
+ * @since 0.13.0
+ */
+const Base = (): React.JSX.Element => {
+
+    return (
+        <Outlet />
+    );
+
+};
+
+export default Base;

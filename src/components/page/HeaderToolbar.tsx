@@ -4,7 +4,8 @@ import {
     useState } from "react";
 
 import {
-    Link
+    Link,
+    useRevalidator
 } from "react-router";
 
 import {
@@ -27,19 +28,28 @@ import {
 } from "@patternfly/react-core";
 
 
-import { CogIcon } from '@patternfly/react-icons';
-import { EllipsisVIcon } from '@patternfly/react-icons';
-import { HelpIcon } from '@patternfly/react-icons';
+import {
+    CogIcon,
+    EllipsisVIcon,
+    HelpIcon,
+    QuestionCircleIcon,
+    RhUiRefreshIcon
+} from '@patternfly/react-icons';
+
 // @ts-expect-error TS[2307]
 import imgAvatar from '@patternfly/react-core/src/components/assets/avatarImg.svg';
-import { QuestionCircleIcon } from '@patternfly/react-icons';
+
 
 
 import UserContext from "../../hooks/UserContext";
 import { useTheme, THEME_TYPES } from '../../hooks/useTheme';
 import URLSanitize from "../../functions/URLSanitize";
-import { NotificationContext } from "../NotificationDrawer";
-import { useNotificationActions } from "../../hooks/useNotificationActions";
+import {
+    useNotificationContext
+} from "../NotificationDrawer";
+import {
+    useNotificationActions
+} from "../../hooks/useNotificationActions";
 
 
 
@@ -61,7 +71,7 @@ const HeaderToolbar = () => {
         maxDisplayed,
         notifications, setNotifications,
         setOverflowMessage
-    } = useContext(NotificationContext);
+    } = useNotificationContext();
 
 
     const { buildOverflowMessage, removeAllAlerts } = useNotificationActions();
@@ -75,6 +85,8 @@ const HeaderToolbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const { mode: themeMode, setMode: setThemeMode, modes: colorModes } = useTheme(THEME_TYPES.COLOR);
+
+    const revalidator = useRevalidator();
 
     const onKebabDropdownSelect = () => {
         setIsKebabDropdownOpen(false);
@@ -108,28 +120,35 @@ const HeaderToolbar = () => {
     };
 
 
-    const totalUnreadNotifications = notifications.reduce(
-        (total, n) => total + (!n.isNotificationRead ? 1 : 0),
-        0
-    );
+    let totalUnreadNotifications = null;
+    let notificationUnreadVariant = null;
+
+    if( isNotificationsOpen !== undefined ) {
+
+        totalUnreadNotifications = notifications.reduce(
+            (total, n) => total + (!n.isNotificationRead ? 1 : 0),
+            0
+        );
 
 
-    const notificationUnreadVariant = notifications.reduce(
-        (total, n) => total + ((n.variant === AlertVariant.danger && !n.isNotificationRead ) ? 1 : 0),
-        0
-    ) > 0 ? NotificationBadgeVariant.attention : NotificationBadgeVariant.unread;
+        notificationUnreadVariant = notifications.reduce(
+            (total, n) => total + ((n.variant === AlertVariant.danger && !n.isNotificationRead ) ? 1 : 0),
+            0
+        ) > 0 ? NotificationBadgeVariant.attention : NotificationBadgeVariant.unread;
 
 
 
-    useEffect(() => {
+        useEffect(() => {
 
-        setOverflowMessage(buildOverflowMessage());
+            setOverflowMessage(buildOverflowMessage());
 
-    }, [
-        maxDisplayed,
-        notifications,
-        alerts
-    ]);
+        }, [
+            maxDisplayed,
+            notifications,
+            alerts
+        ]);
+
+    }
 
 
     useEffect(() => { // AutoMagic set based off of user preferences
@@ -205,13 +224,26 @@ const HeaderToolbar = () => {
                             lg: 'visible'
                         }}
                     >
-                        <NotificationBadge
+                        <ToolbarItem>
+                            <Button
+                                aria-label="Settings"
+                                // component={Link}
+                                // // @ts-expect-error TS[2322]
+                                //     to={"URLSanitize(user.settings._urls._self)"}
+                                // isCircle
+                                icon={<RhUiRefreshIcon />}
+                                onClick={ () => revalidator.revalidate() }
+                                title = "Reload Content"
+                                variant="plain"
+                            />
+                        </ToolbarItem>
+                        { isNotificationsOpen !== undefined && <NotificationBadge
                             count = {totalUnreadNotifications}
                             variant={totalUnreadNotifications === 0 ? NotificationBadgeVariant.read : notificationUnreadVariant}
                             onClick={onNotificationBadgeClick}
                             aria-label="Notifications"
                             isExpanded={isNotificationsOpen}
-                        />
+                        />}
                         <ToolbarItem>
                             {user.settings._urls &&
                             <Button

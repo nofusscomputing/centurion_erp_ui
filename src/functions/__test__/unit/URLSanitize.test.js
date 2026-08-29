@@ -9,6 +9,48 @@ describe('Returns Correct Value', () => {
         jest.restoreAllMocks();
     });
 
+    const URLPatternOther = [
+        {
+            "name": "No Path - Different API Host - Strips API prefix",
+            "api_url": "http://domain.tld/api/v2",
+            "value": "http://domain.tld/api/v2",
+            "expected": ""
+        },
+        {
+            "name": "No Path - Different API Host, with QueryString - Strips API prefix",
+            "api_url": "http://domain.tld/api/v2",
+            "value": "http://domain.tld/api/v2?key=value",
+            "expected": "?key=value"
+        },
+    ]
+
+    const URLPatternsTrailingSlantNoPath = [
+        {
+            "name": "TrailingSlant Different API Host - Strips API prefix",
+            "api_url": "http://domain.tld/api/v2",
+            "value": "http://domain.tld/api/v2/module/view/",
+            "expected": "/module/view/"
+        },
+        {
+            "name": "TrailingSlant Different API Host, Relative - Strips API prefix",
+            "api_url": "http://domain.tld/api/v2",
+            "value": "/api/v2/module/view/",
+            "expected": "/module/view/"
+        },
+        {
+            "name": "TrailingSlant Different API Host, with QueryString - Strips API prefix",
+            "api_url": "http://domain.tld/api/v2",
+            "value": "http://domain.tld/api/v2/module/view/?key=value",
+            "expected": "/module/view/?key=value"
+        },
+        {
+            "name": "TrailingSlant Different API Host, Relative with QueryString - Strips API prefix",
+            "api_url": "http://domain.tld/api/v2",
+            "value": "/api/v2/module/view/?key=value",
+            "expected": "/module/view/?key=value"
+        },
+    ]
+
     const URLPatternsDifferentAPIHost = [
         {
             "name": "Different API Host - Strips API prefix",
@@ -118,6 +160,8 @@ describe('Returns Correct Value', () => {
     ]
 
     const URLPatterns = [
+        ...URLPatternOther,
+        ...URLPatternsTrailingSlantNoPath,
         ...URLPatternsDifferentAPIHost,
         ...URLPatternsDifferentAPIHostOnPort,
         ...URLPatternsSameAPIHost,

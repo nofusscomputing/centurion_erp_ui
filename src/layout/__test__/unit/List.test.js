@@ -84,9 +84,11 @@ import {
 } from 'react-router'
 
 import Detail from "../../Detail"
-import RootLayout from "../../Root"
+import UI from "../../../layouts/ui"
 import { UserProvider } from "../../../hooks/UserContext"
 import List from "../../List";
+import PageContent from "../../../layouts/PageContent";
+import { NotificationContextProvider } from "../../../components/NotificationDrawer";
 
 
 const fs = require('fs')
@@ -143,6 +145,23 @@ describe("List Layout", () => {
     })
 
 
+    const rootMetadataLoader = () => {
+
+        const optionsFilePath = path.join(baseDir, 'OPTIONS.json')
+
+        const rawOptions = fs.readFileSync(optionsFilePath, 'utf8')
+
+        const jsonOptions = JSON.parse(rawOptions)
+
+
+        return {
+            page_data: null,
+            metadata: jsonOptions
+        }
+
+    }
+
+
 
     const { data: objectDataTable, options: objectMetadataTable } = backendAPIData[0];
 
@@ -161,22 +180,29 @@ describe("List Layout", () => {
 
         const Stub = createRoutesStub([
             {
-                Component: RootLayout,
+                Component: UI,
+                loader: rootMetadataLoader,
                 children: [
                     {
-                        path: objectMetadataTable.urls.self,
-                        Component: List,
-                        loader: loader
+                        Component: PageContent,
+                        children: [
+                            {
+                                path: objectMetadataTable.urls.self,
+                                Component: List,
+                                loader: loader
+                            }
+                        ]
                     }
+                    
                 ],
             }
         ]);
 
 
         const rendered = render(
-            <UserProvider>
+            <NotificationContextProvider>
                 <Stub initialEntries={[objectMetadataTable.urls.self]} />
-            </UserProvider>
+            </NotificationContextProvider>
         );
 
 
@@ -203,22 +229,29 @@ describe("List Layout", () => {
 
         const Stub = createRoutesStub([
             {
-                Component: RootLayout,
+                Component: UI,
+                loader: rootMetadataLoader,
                 children: [
                     {
-                        path: objectMetadataTable.urls.self,
-                        Component: List,
-                        loader: loader
+                        Component: PageContent,
+                        children: [
+                            {
+                                path: objectMetadataTable.urls.self,
+                                Component: List,
+                                loader: loader
+                            }
+                        ]
                     }
+                    
                 ],
             }
         ]);
 
 
         const rendered = render(
-            <UserProvider>
+            <NotificationContextProvider>
                 <Stub initialEntries={[objectMetadataTable.urls.self]} />
-            </UserProvider>
+            </NotificationContextProvider>
         );
 
 
@@ -245,22 +278,29 @@ describe("List Layout", () => {
 
         const Stub = createRoutesStub([
             {
-                Component: RootLayout,
+                Component: UI,
+                loader: rootMetadataLoader,
                 children: [
                     {
-                        path: objectMetadataTable.urls.self,
-                        Component: List,
-                        loader: loader
+                        Component: PageContent,
+                        children: [
+                            {
+                                path: objectMetadataTable.urls.self,
+                                Component: List,
+                                loader: loader
+                            }
+                        ]
                     }
+                    
                 ],
             }
         ]);
 
 
         const rendered = render(
-            <UserProvider>
+            <NotificationContextProvider>
                 <Stub initialEntries={[objectMetadataTable.urls.self]} />
-            </UserProvider>
+            </NotificationContextProvider>
         );
 
 
