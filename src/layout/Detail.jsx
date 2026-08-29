@@ -206,6 +206,7 @@ const Detail = () => {
 
             <PageSection
                 isFilled={true}
+                padding = {{ default: 'no-padding'}}
             >
 
                 {tabDetails && tabDetails.map((tab, index) => {
