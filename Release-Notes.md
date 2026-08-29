@@ -12,4 +12,4 @@
 
         - Github fetcher added.
 
-    - package name update to reflect that it's a separate project, `centurion-erp-ui` -> `centurion-ui`
+    - package name update to reflect that it's a separate project, `centurion-erp-ui` -> `centurion-ui`. This change also has occured on the repositories name as well as the docker containers name.

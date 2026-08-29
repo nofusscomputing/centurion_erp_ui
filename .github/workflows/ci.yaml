@@ -11,7 +11,7 @@ on:
       - '*'
 
 env:
-  GIT_SYNC_URL: "https://${{ secrets.GITLAB_USERNAME_ROBOT }}:${{ secrets.GITLAB_TOKEN_ROBOT }}@gitlab.com/nofusscomputing/projects/centurion_erp_ui.git"
+  GIT_SYNC_URL: "https://${{ secrets.GITLAB_USERNAME_ROBOT }}:${{ secrets.GITLAB_TOKEN_ROBOT }}@gitlab.com/nofusscomputing/projects/centurion_ui.git"
 
 jobs:
 
@@ -21,9 +21,9 @@ jobs:
     name: 'Docker'
     uses: nofusscomputing/action_docker/.github/workflows/docker.yaml@development
     with:
-      DOCKER_BUILD_IMAGE_NAME: "nofusscomputing/centurion-erp-ui"
+      DOCKER_BUILD_IMAGE_NAME: "nofusscomputing/centurion-ui"
       DOCKER_PUBLISH_REGISTRY: "docker.io"
-      DOCKER_PUBLISH_IMAGE_NAME: "nofusscomputing/centurion-erp-ui"
+      DOCKER_PUBLISH_IMAGE_NAME: "nofusscomputing/centurion-ui"
     secrets:
       DOCKER_PUBLISH_USERNAME: ${{ secrets.NFC_DOCKERHUB_USERNAME }}
       DOCKER_PUBLISH_PASSWORD: ${{ secrets.NFC_DOCKERHUB_TOKEN }}
