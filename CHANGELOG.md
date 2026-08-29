@@ -1,3 +1,94 @@
+## 0.13.0 (2026-08-29)
+
+### feat
+
+- **fetcher**: Ensure that when useGithubFetcher is called that any supplied backendURL is ignored and obtained from the backend provider
+- **fetcher**: Ensure that when useDjangoFetcher is called that any supplied backendURL is ignored and obtained from the backend provider
+- **loader**: Add Github markdown route loader
+- **fetcher**: Add Github HTTP
+- **fetcher**: Add Markdown HTTP
+- **layout**: Add BackendLayout
+- **fetcher**: Add support to jsonHttp fetcher to configure credentials, referrer Policy and mode
+- **fetcher**: Add support to http fetcher to configure credentials, referrer Policy and mode
+- **loader**: Provide `baseURL` directly to loaders
+- **provider**: Make BackendProvider dynamic in that it will obtain the url from a route handle var.
+- **fetcher**: Use backendURL from route context when available.
+- **loader**: Add context prop to ALL loaders
+- **function**: Add routesFromObject for building routes from object
+- Add route middleware backendURLMiddleware
+- **layout**: Add ability to specify additional page footer to be appended
+- **layout**: Notification Layout
+- Add PageContent to Router
+- **loader**: Add Django Root Metadata loader
+- **layout**: Add Layout for app / site / UI common
+- **component**: Add content refresh / reload to site header
+- **layout**: Add common page content layout
+- **provider**: Add Backend provider
+- **layout**: Add Logout
+- **layout**: Add Login
+- **layout**: Add Base
+- **loader**: Add Django metadata ONLY Loader
+- **loader**: Add Django Loader
+- **function**: Add Django backend fetcher
+- **function**: Add JSON HTTP base fetcher
+- **function**: Add signal parameter to httpFetcher
+- **function**: Add HTTP base fetcher
+- Add Base HTTP Exceptions
+- **fetcher**: Add HTTP fetcher skeleton
+
+### Fixes
+
+- **function**: Ensure that the body is passed to the fetcher within apiFetch
+- **function**: Add to routesFromObject capture of invalid values
+- **function**: when building routes from description, if user specifies both backend_url and component ="backend" don't raise error
+- **provider**: Iterating through matching routes must included first one.
+- **component**: Dont load esm icon, import from module for StateSplash
+- **layout**: Redirect routes must not be part of route patching.
+- **function**: URLSanitixe needs to handle root '/'
+
+### Refactoring
+
+- **function**: mv defaults from props to object being called
+- **function**: Finalise routesFromObject
+- split router into own objects for clarity
+- no requirement to useMemo on dynamic router as it only loads once anyway
+- **layout**: Update and clean Rout Error Boundary
+- Update Navbar with proper'er context
+- Update Notifications with proper'er context
+- **component**: Conviert LoadingSpinner to cover all StateSplash
+- **layout**: Squash Login and Logout Layout to Redirect layout
+- Update dynamicRouter to patch routes on navigation
+- update app entrypoint to be typescript
+- move app loading to sub-dir
+- move current route to interim dynamic routes fn.
+- move LoadingSpinner to own Component
+- **hook**: Replace global.fetch with useDjangoFetch
+- Update routes so that the httpFetcher thrown exception is caught for redirect
+
+### Tests
+
+- **component**: Test suite for StateSplash
+- Unit Test suite for dynamicRouter
+- Initial Unit Test suite for route ErrorBoundary
+- Initial Unit Test suite for routesFromObject
+- Unit Test suite for Entrypoint
+- Unit Test suite for app
+- **hook**: Unit Test suite for github fetcher
+- **layout**: Unit test suite for BackendProviderLayout
+- **fetcher**: Unit Test suite for httpMarkdown fetcher
+- **loader**: Unit Test suite for github loader
+- **provider**: Unit test suite for backendProvider
+- **loader**: Unit test suite for djangoRootMetadata Page Loader
+- **component**: Update NotificationDrawer test suite to work with UI and PageContent parent router
+- **layout**: Update List layout test suite to work with UI and PageContent parent router
+- **layout**: PageContent Unit test suite
+- **function**: Unit Test case to confirm empty body on HTTP/POST raises error for httpJsonRequest
+- **function**: Unit Test case to confirm empty body on HTTP/PATCH raises error for httpJsonRequest
+- **loader**: Unit Test Suite for djangoMetadataLoader
+- **loader**: Unit Test Suite for djangoLoader
+- **layout**: Unit Test Suite for Redirect
+- **function**: Add test cases for no path and trailing slant for URLSanitizer
+
 ## 0.12.0 (2026-08-11)
 
 ### feat
