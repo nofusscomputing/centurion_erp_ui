@@ -213,6 +213,7 @@ export const appRoutes: Array<RouteDescription> = [{
                         },
                         {
                             path: ":pk",
+                            action: "api",
                             children: [
                                 {
                                     index: true,

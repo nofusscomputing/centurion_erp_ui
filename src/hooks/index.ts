@@ -20,7 +20,12 @@ export interface fetcherCommonNamedParams {
     url: HTTPNamedParams["url"]
 
     /**
-     * {@inheritDoc HTTPNamedParams.url}
+     * Backend base URL.
+     * 
+     * This value is always to be supplied when a loader is calling.
+     * Additionally you **should not** supply this param a value as it is a
+     * requirement that **all** fetchers ignore it and obtain the `backend.url`
+     * via the {@link BackendProvider} from the nearest {@link BackendLayout}.
      */
     baseURL?: HTTPNamedParams["url"]
 
