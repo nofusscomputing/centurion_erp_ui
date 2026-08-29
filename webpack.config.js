@@ -2,8 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 
 module.exports = (env, argv) => {
@@ -12,18 +11,19 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            bundle: path.resolve(__dirname, 'src', 'index.js'),
+            bundle: path.resolve(__dirname, 'src', 'main.tsx'),
         },
 
         output: {
+            cssFilename: 'assets/styles/[name].[contenthash].css',
             path: path.resolve(__dirname, 'build'),
-            filename: isDevelopment ? '[name].js' : 'assets/js/[name].[contenthash].js',
-            chunkFilename: "[name].[contenthash].chunk.js",
+            filename: 'assets/js/[name].[contenthash].js',
+            chunkFilename: 'assets/js/[name].[contenthash].chunk.js',
             publicPath: '/',
             clean: true,
         },
 
-        devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
+        devtool: isDevelopment ? 'source-map' : false,
 
         devServer: {
             static: path.resolve(__dirname, 'public'),
@@ -34,7 +34,17 @@ module.exports = (env, argv) => {
             port: 3000,
         },
 
+        experiments: {
+            css: true
+        },
+
         module: {
+            parser: {
+                css: {
+                    exportType: "link",
+                    fontPreload: true
+                },
+            },
             rules: [
                 {
                     test: /\.([jt]sx?)$/,
@@ -49,17 +59,18 @@ module.exports = (env, argv) => {
                     }
                 },
                 {
-                    test: /\.css$/,
-                    use: [
-                        isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-                        'css-loader'
-                    ]
-                },
-                {
                     test: /\.(png|jpe?g|gif|svg)$/i,
                     type: 'asset/resource',
                     generator: {
                         filename: 'assets/images/[name].[contenthash][ext]'
+                    }
+                },
+
+                {    // PatternFly
+                    test: /\/dist\/static\/[a-zA-Z]+\.svg$/i,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/icons/[name].[contenthash][ext]'
                     }
                 },
                 {
@@ -87,6 +98,11 @@ module.exports = (env, argv) => {
         },
 
         optimization: {
+            minimize: {
+                css: {
+                    comments: false
+                }
+            },
             splitChunks: {
                 chunks: "all",
                 cacheGroups: {
@@ -97,22 +113,36 @@ module.exports = (env, argv) => {
                         enforce: true,
 
                         name(module) {
-                        // extract @patternfly/<package-name>
-                        const match = module.context?.match(
-                            /[\\/]node_modules[\\/]@patternfly[\\/](.*?)([\\/]|$)/
-                        );
 
-                        if (!match) return "patternfly-misc";
+                            // extract @patternfly/<package-name>
+                            const match = module.context?.match(
+                                /[\\/]node_modules[\\/]@patternfly[\\/](.*?)([\\/]|$)/
+                            );
 
-                        const packageName = match[1]; // e.g. react-core, react-icons
-                        return `patternfly-${packageName.replace(/[\\/]/g, "-")}`;
+                            if (!match) return "patternfly-misc";
+
+                            const packageName = match[1]; // e.g. react-core, react-icons
+
+                            return `patternfly-${packageName.replace(/[\\/]/g, "-")}`;
                         },
                     },
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        name: "vendors",
                         chunks: "all",
                         priority: 10,
+                        name(module) {
+
+                            // extract node_modules/<module-name>
+                            const match = module.context?.match(
+                                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                            );
+
+                            if (!match) return "vendor-misc";
+
+                            const packageName = match[1]; // e.g. react-core, react-icons
+
+                            return `vendor-${packageName.replace(/[\\/]/g, "-")}`;
+                        },
                     },
                 },
             }
@@ -122,11 +152,7 @@ module.exports = (env, argv) => {
             new HtmlWebpackPlugin({
                 template: path.resolve(__dirname, 'public', 'index.html')
             }),
-            new Dotenv(),
             isDevelopment && new ReactRefreshWebpackPlugin(),
-            !isDevelopment && new MiniCssExtractPlugin({
-                filename: 'assets/styles/[name].[contenthash].css'
-            }),
             new CopyWebpackPlugin({
                 patterns: [
                     {

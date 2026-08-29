@@ -33,7 +33,8 @@ const config = {
   coveragePathIgnorePatterns: [
   //   "/node_modules/"
     "\\.tmp\\.",
-    "src/images/icons"
+    "src/images/icons",
+    "src/types",
   ],
 
   // Indicates which provider should be used to instrument code for coverage

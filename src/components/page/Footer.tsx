@@ -1,8 +1,19 @@
 
-import React, { useEffect, useState } from "react";
+import
+    React,
+    {
+        useEffect,
+        useState,
+} from "react";
 
-import { PageSection } from "@patternfly/react-core";
+import {
+    PageSection
+} from "@patternfly/react-core";
 
+
+import {
+    BackendVersion
+} from "../../types/backend/apiMetadata/root";
 
 import IconLoader from "../IconLoader";
 
@@ -19,7 +30,7 @@ export type FooterProps = {
     /**
      * Version data for the API that's in use
      */
-    api_version_data
+    api_version_data: BackendVersion
 }
 
 

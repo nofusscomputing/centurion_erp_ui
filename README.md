@@ -4,15 +4,15 @@
 
 <br>
 
-![Project Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnofusscomputing%2Fcenturion_erp_ui%2Frefs%2Fheads%2Fdevelopment%2F.centurion%2Fproject_status.json)
+![Project Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnofusscomputing%2Fcenturion_ui%2Frefs%2Fheads%2Fdevelopment%2F.centurion%2Fproject_status.json)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/centurion-erp-ui?style=plastic&logo=docker&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/centurion-erp-ui) 
+[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/centurion-ui?style=plastic&logo=docker&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/centurion-ui) 
 
 ----
 
 <br>
 
-![GitHub forks](https://img.shields.io/github/forks/NofussComputing/centurion_erp_ui?logo=github&style=plastic&color=000000&labell=Forks) ![GitHub stars](https://img.shields.io/github/stars/NofussComputing/centurion_erp_ui?color=000000&logo=github&style=plastic) ![Github Watchers](https://img.shields.io/github/watchers/NofussComputing/centurion_erp_ui?color=000000&label=Watchers&logo=github&style=plastic)
+![GitHub forks](https://img.shields.io/github/forks/NofussComputing/centurion_ui?logo=github&style=plastic&color=000000&labell=Forks) ![GitHub stars](https://img.shields.io/github/stars/NofussComputing/centurion_ui?color=000000&logo=github&style=plastic) ![Github Watchers](https://img.shields.io/github/watchers/NofussComputing/centurion_ui?color=000000&label=Watchers&logo=github&style=plastic)
 
 
 
@@ -20,12 +20,12 @@
 
 <br>
 
- ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/nofusscomputing/centurion_erp_ui?style=plastic&logo=github&label=Open%20Issues&color=000) ![GitHub issue bugs](https://img.shields.io/github/issues-search?query=repo%3Anofusscomputing%2Fcenturion_erp_ui%20type%3A%22Bug%22%20is%3Aopen%20&style=plastic&logo=github&label=Bug%20fixes%20required&color=000)
+ ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/nofusscomputing/centurion_ui?style=plastic&logo=github&label=Open%20Issues&color=000) ![GitHub issue bugs](https://img.shields.io/github/issues-search?query=repo%3Anofusscomputing%2Fcenturion_ui%20type%3A%22Bug%22%20is%3Aopen%20&style=plastic&logo=github&label=Bug%20fixes%20required&color=000)
 
 ----
 
 
-This project is hosted on [Github](https://github.com/NofussComputing/centurion_erp_ui) and has a read-only copy hosted on [gitlab](https://gitlab.com/nofusscomputing/projects/centurion_erp_ui).
+This project is hosted on [Github](https://github.com/NofussComputing/centurion_ui) and has a read-only copy hosted on [gitlab](https://gitlab.com/nofusscomputing/projects/centurion_ui).
 
 ----
 
@@ -49,9 +49,9 @@ This project is hosted on [Github](https://github.com/NofussComputing/centurion_
 
 links:
 
-- [Issues](https://github.com/nofusscomputing/centurion_erp_ui/issues)
+- [Issues](https://github.com/nofusscomputing/centurion_ui/issues)
 
-- [Merge Requests (Pull Requests)](https://github.com/nofusscomputing/centurion_erp_ui/pulls)
+- [Merge Requests (Pull Requests)](https://github.com/nofusscomputing/centurion_ui/pulls)
 
 
 Centurion UI turns backend data into interactive views, pages, and dashboards — no frontend changes required. Build and extend applications faster, create dynamic components, and let the UI adapt automatically as your backend evolves. One UI, any backend, for every user and workflow
@@ -72,7 +72,7 @@ Developed alongside Centurion ERP, the UI is designed to stay backend-agnostic a
 
 ## Contributing
 
-All contributions for this project must conducted from [GitHub](https://github.com/nofusscomputing/centurion_erp_ui).
+All contributions for this project must conducted from [GitHub](https://github.com/nofusscomputing/centurion_ui).
 
 For further details on contributing please refer to the [contribution guide](CONTRIBUTING.md).
 

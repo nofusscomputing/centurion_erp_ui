@@ -14,6 +14,10 @@
             "syntaxKind": "block"
         },
         {
+            "tagName": "@expandType",
+            "syntaxKind": "block"
+        },
+        {
             "tagName": "@module",
             "syntaxKind": "block"
         },

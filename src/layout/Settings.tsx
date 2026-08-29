@@ -6,12 +6,22 @@ import {
 import {
     Link,
     useLoaderData,
-    useOutletContext,
 } from "react-router"
+
+import {
+    Card,
+    CardBody,
+    CardTitle,
+    Gallery,
+    PageSection
+} from "@patternfly/react-core";
 
 import IconLoader from "../components/IconLoader";
 import URLSanitize from "../functions/URLSanitize";
-import { Card, CardBody, CardTitle, Gallery, PageSection } from "@patternfly/react-core";
+
+import {
+    usePageContext
+} from "../layouts/PageContent";
 
 
 /**
@@ -27,7 +37,7 @@ const Settings = (): React.JSX.Element => {
 
     const {
         setPageDescription, setPageHeading, setPageHeaderIcons
-    } = useOutletContext()
+    } = usePageContext()
 
 
     useEffect(() => {

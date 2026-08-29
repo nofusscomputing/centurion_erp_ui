@@ -1,4 +1,8 @@
 import {
+    Link,
+} from "react-router";
+
+import {
     Masthead,
     MastheadContent,
     MastheadMain,
@@ -7,8 +11,15 @@ import {
     Title,
 } from "@patternfly/react-core";
 
-import { Link } from "react-router";
 import HeaderToolbar from "./HeaderToolbar";
+import {
+    useNavbarContext
+} from "./Navbar";
+
+import '../../../node_modules/@patternfly/patternfly/components/Masthead/masthead.css'
+
+
+
 
 
 /**
@@ -18,18 +29,7 @@ import HeaderToolbar from "./HeaderToolbar";
  * @expand
  * @since 0.1.0
  */
-export type HeaderProps = {
-
-    /**
-     * Is the sidebar open or closed.
-     */
-    isSidebarOpen: boolean,
-
-    /**
-     * Callback to run when the sidebar toggle is press.
-     */
-    onSidebarToggle: () => void
-}
+export type HeaderProps = {}
 
 
 
@@ -43,9 +43,9 @@ export type HeaderProps = {
  * @since 0.1.0
  */
 const Header = ({
-    isSidebarOpen,
-    onSidebarToggle
 }: HeaderProps): React.JSX.Element => {
+
+    const { isSidebarOpen, onSidebarToggle } = useNavbarContext();
 
 
     return (
