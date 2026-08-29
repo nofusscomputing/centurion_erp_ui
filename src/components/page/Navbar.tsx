@@ -203,6 +203,7 @@ const Navbar = ({
                                     isExpanded={activeGroup === groupId}
                                     icon={<IconLoader
                                         name = {'icon' in module ? String(module.icon) : String(module.name)}
+                                        size = "lg"
                                     />}
                                     key={`navigation-${module.name}-${index}`}
                                     title = {module.display_name}

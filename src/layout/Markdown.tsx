@@ -200,7 +200,7 @@ const Markdown = (): React.JSX.Element => {
             variant="secondary"
         >
             { markdownDocumentFrontMatter &&
-            <Content>
+            <Content isEditorial={true}>
                 <Title headingLevel="h2">About</Title>
                 <p>This page forms part of our Project -ToDo add project name-</p>
 
@@ -296,7 +296,7 @@ const Markdown = (): React.JSX.Element => {
                             padding={{ default: 'noPadding'}}
                         >
 
-                            <Content>
+                            <Content isEditorial={true}>
 
                                 <RenderMarkdown
                                     full_width={true}
