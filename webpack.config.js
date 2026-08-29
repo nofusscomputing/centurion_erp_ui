@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
             clean: true,
         },
 
-        devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
+        devtool: isDevelopment ? 'source-map' : false,
 
         devServer: {
             static: path.resolve(__dirname, 'public'),
