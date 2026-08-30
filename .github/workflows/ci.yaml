@@ -442,7 +442,7 @@ jobs:
 
 
   gitlab-mirror:
-    if: ${{ github.repository == 'nofusscomputing/centurion_erp_ui' }}
+    if: ${{ github.repository == 'nofusscomputing/centurion_ui' }}
     runs-on: ubuntu-latest
     steps:
 
