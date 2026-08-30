@@ -71,11 +71,11 @@ const Detail = () => {
 
     useEffect(() => {
 
-        if( 'name' in page_data ) {
+        if( ! String(location.pathname).endsWith('/add') && 'name' in page_data ) {
 
             setPageHeading(page_data['name']);
 
-        }else if( 'title' in page_data ) {
+        }else if( ! String(location.pathname).endsWith('/add') && 'title' in page_data ) {
 
             setPageHeading(page_data['title']);
 
@@ -86,34 +86,37 @@ const Detail = () => {
         setPageDescription(metadata['description'])
 
 
-        setPageHeaderIcons(
-            <>
-                { ('documentation' in metadata) &&
-                    <Link to={metadata['documentation']} target="_new">
-                        <IconLoader
-                            name='help'
-                            size="xl"
-                        />
-                    </Link>
-                }
-                {(!'results' in page_data || '_urls' in page_data) && page_data['_urls']['history'] &&
-                    <Link to={URLSanitize(page_data['_urls']['history'])}>
-                        <IconLoader
-                            name='history'
-                            size="xl"
-                        />
-                    </Link>
-                }
-                {metadata['allowed_methods'].includes('DELETE') &&
-                    <Link to={URLSanitize(page_data['_urls']['_self']) + '/delete'}>
-                        <IconLoader
-                            name='delete'
-                            size="xl"
-                        />
-                    </Link>
-                }
-            </>
-        )
+        if( ! String(location.pathname).endsWith('/add') ) {
+
+            setPageHeaderIcons(
+                <>
+                    { ('documentation' in metadata) &&
+                        <Link to={metadata['documentation']} target="_new">
+                            <IconLoader
+                                name='help'
+                                size="xl"
+                            />
+                        </Link>
+                    }
+                    {(!'results' in page_data || '_urls' in page_data) && page_data['_urls']['history'] &&
+                        <Link to={URLSanitize(page_data['_urls']['history'])}>
+                            <IconLoader
+                                name='history'
+                                size="xl"
+                            />
+                        </Link>
+                    }
+                    {metadata['allowed_methods'].includes('DELETE') &&
+                        <Link to={URLSanitize(page_data['_urls']['_self']) + '/delete'}>
+                            <IconLoader
+                                name='delete'
+                                size="xl"
+                            />
+                        </Link>
+                    }
+                </>
+            )
+        }
 
     },[
         page_data,
@@ -123,7 +126,7 @@ const Detail = () => {
 
     useEffect(() => {
 
-        if( 'results' in page_data ) {
+        if( String(location.pathname).endsWith('/add') || 'results' in page_data ) {
             return
         }
 
@@ -168,7 +171,7 @@ const Detail = () => {
 
     return (
         <>
-            { page_data && metadata && <>
+            { metadata && <>
             <PageSection
                 className="pf-m-sticky-top"
                 type="tabs"
