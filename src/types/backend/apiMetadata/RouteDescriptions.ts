@@ -115,7 +115,7 @@ export type RouteComponentDescription =
     // "baseview"
     // |
     /**
-     * Use {@link Detail}.
+     * Use {@link DetailLayout}.
      */
     "detail"
     |

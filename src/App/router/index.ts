@@ -8,7 +8,6 @@ import {
     APISubmitAction
 } from "../../components/DisplayFields"
 
-import Detail from "../../layout/Detail"
 import History from "../../layout/history"
 import List from "../../layout/List"
 import Settings from "../../layout/Settings"
@@ -16,6 +15,7 @@ import Ticket from "../../layout/Ticket"
 
 import BackendLayout from "../../layouts/Backend"
 import Base from "../../layouts/Base"
+import DetailLayout from "../../layouts/Detail"
 import Markdown from "../../layout/Markdown"
 import Redirect from "../../layouts/Redirect"
 
@@ -40,7 +40,7 @@ export const pageActions = {
 export const pageComponents = {
     backend: BackendLayout,
     baseview: Base,
-    detail: Detail,
+    detail: DetailLayout,
     history: History,
     redirect: Redirect,
     list: List,
