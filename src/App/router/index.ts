@@ -82,6 +82,7 @@ export const appRoutes: Array<RouteDescription> = [{
                 },
                 {
                     path: ":model",
+                    action: "api",
                     children: [
                         {
                             index: true,
@@ -92,7 +93,6 @@ export const appRoutes: Array<RouteDescription> = [{
                             path: "add",
                             component: "detail",
                             loader: "django_metadata",
-                            action: "api",
                             revalidate: false
                         },
                     ]
@@ -107,6 +107,7 @@ export const appRoutes: Array<RouteDescription> = [{
                     children: [
                         {
                             path: ":model",
+                            action: "api",
                             children: [
                                 {
                                     index: true,
@@ -116,7 +117,6 @@ export const appRoutes: Array<RouteDescription> = [{
                                 {
                                     path: "add",
                                     component: "detail",
-                                    action: "api",
                                     loader: "django_metadata",
                                     revalidate: false
                                     
@@ -135,6 +135,7 @@ export const appRoutes: Array<RouteDescription> = [{
                 },
                 {
                     path: "git_repository",
+                    action: "api",
                     children: [
                         {
                             index: true,
@@ -145,7 +146,6 @@ export const appRoutes: Array<RouteDescription> = [{
                             path: "add",
                             component: "detail",
                             loader: "django_metadata",
-                            action: "api",
                             revalidate: false
                         },
                         {
@@ -163,6 +163,7 @@ export const appRoutes: Array<RouteDescription> = [{
                     children: [
                         {
                             path: ":model",
+                            action: "api",
                             children: [
                                 {
                                     index: true,
@@ -172,7 +173,6 @@ export const appRoutes: Array<RouteDescription> = [{
                                 {
                                     path: "add",
                                     component: "ticket",
-                                    action: "api",
                                     loader: "django_metadata"
                                 },
                                 {
@@ -220,6 +220,7 @@ export const appRoutes: Array<RouteDescription> = [{
                 },
                 {
                     path: ":model",
+                    action: "api",
                     children: [
                         {
                             index: true,
@@ -230,7 +231,6 @@ export const appRoutes: Array<RouteDescription> = [{
                             path: "add",
                             component: "detail",
                             loader: "django_metadata",
-                            action: "api",
                             revalidate: false
                         },
                         {
