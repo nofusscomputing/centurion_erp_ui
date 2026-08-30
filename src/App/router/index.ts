@@ -74,8 +74,30 @@ export const appRoutes: Array<RouteDescription> = [{
     children: [
         {
             path: "settings",
-            component: "settings",
-            loader: 'django'
+            children: [
+                {
+                    index: true,
+                    component: "settings",
+                    loader: 'django',
+                },
+                {
+                    path: ":model",
+                    children: [
+                        {
+                            index: true,
+                            component: "list",
+                            loader: "django"
+                        },
+                        {
+                            path: "add",
+                            component: "detail",
+                            loader: "django_metadata",
+                            action: "api",
+                            revalidate: false
+                        },
+                    ]
+                }
+            ]
         },
         {
             path: ":module",

@@ -92,6 +92,8 @@ export default async function useDjangoFetcher({
     signal = null
 }: djangoFetcherNamedParams ): Promise<{ apiData: Response, apiMetadata: Response }> {
 
+    if( String(url).endsWith('/add') ) url = String(url).replace('/add', '');
+
     let backend = null
 
     try {
