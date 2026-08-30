@@ -1,3 +1,10 @@
+## 0.13.1 (2026-08-30)
+
+### Fixes
+
+- **layout**: Ensure that when adding new model, that gates exist
+- Correct settings routes
+
 ## 0.13.0 (2026-08-29)
 
 ### feat
