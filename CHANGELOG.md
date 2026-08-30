@@ -1,3 +1,9 @@
+## 0.13.2 (2026-08-30)
+
+### Fixes
+
+- When adding an object its add action must be added to parent route
+
 ## 0.13.1 (2026-08-30)
 
 ### Fixes
