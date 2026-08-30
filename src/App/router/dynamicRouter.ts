@@ -4,7 +4,6 @@ import {
 } from "react-router"
 
 import {
-    appRoutes,
     pageComponents,
     pageLoaders
 } from "."
@@ -34,6 +33,8 @@ import UI from "../../layouts/ui"
  * @summary Dynamic Router
  * 
  * @category Function
+ * @see {@link RouteDescription} for route descriptions.
+ * @see {@link RouteComponentDescription} `backend` for backend_url auto setting of component.
  * @since 0.13.0
  */
 const dynamicRouter = () => {
@@ -106,23 +107,65 @@ const dynamicRouter = () => {
         ];
 
 
+    /**
+     * When using `patchRoutesOnNavigation` ensure that basename os set tp `""`
+     * so that the patching of routes always runs if the route is not found.
+     */
     return createBrowserRouter(
         routes,
         {
             basename: "",
             async patchRoutesOnNavigation({ patch, path, signal, matches }) {
 
-                if( matches.length === 0 ) {
+                let baseURL = null;
+                let id = null;
+                let route = null;
+                let url = null;
+
+                if( matches.length === 0 ) {    // root routes
+
+                    id = 'page'
+                    url = '/'
                 
+                } else if( matches.length > 0 ) {    // Sub-routes
+
+                    route = matches[(matches.length - 1 )].route;
+
+                    if( Object.hasOwn(route, 'handle') ) {
+
+                        if( Object.hasOwn(route.handle, 'backend_url')) {
+
+                            baseURL = route.handle.backend_url;
+
+                            id = route.id
+
+                            /**
+                             * URL commented out so as to disable this feature 
+                             * until it is ready for use. When uncommented the
+                             * routes will be downloaded from the backend_url.
+                             */
+                            // url = route.handle.backend_url
+
+                        }
+                    }
+                }
+
+
+                if( id !== null && url !== null ) {
+
                     const { apiMetadata, apiData } = await useDjangoFetcher({
-                        url: '/',
+                        url: url,
+                        baseURL: window.env.API_URL,
                         onlyMetadata: true,
                         signal: signal
                     });
 
                     const data = await apiMetadata.clone().json();
 
-                    patch("page", routesFromObject({routes: appRoutes }));
+                    patch(id, routesFromObject({
+                        routes: data.routes,
+                        ...(baseURL ? {baseURL: baseURL } : {})
+                    }));
 
                 }
             },
