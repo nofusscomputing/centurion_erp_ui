@@ -12,7 +12,7 @@ export interface layoutDetail {
     /**
      * Detail Layout
      * 
-     * Used by any instance of {@link Detail}.
+     * Used by any instance of {@link DetailLayout}.
      */
     detail: {
 

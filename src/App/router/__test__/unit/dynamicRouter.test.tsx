@@ -9,41 +9,6 @@ import PageContent from "../../../../layouts/PageContent";
 
 
 
-// jest.mock("../../index", () => {
-//     const actual = jest.requireActual("../../index");
-
-//     let renderedRoutes = null;
-
-//     const myRoutes = [
-//         {
-//             index: true,
-//             Component: () => {
-
-//             //     const matches = useMatches();
-
-//             //     useEffect(() => {
-
-//             //         renderedRoutes = matches;
-
-//             //     }, [ matches ]);
-
-//             }
-
-//         }
-//     ]
-
-//     return {
-//         __esModule: true,
-//         ...actual,
-//         appRoutes: myRoutes,
-//         __mock: {
-//             appRoutes: myRoutes,
-//             renderedRoutes: renderedRoutes
-//         },
-//     };
-// });
-
-
 const router = dynamicRouter();
 
 const routes = router.routes;
@@ -51,30 +16,6 @@ const routes = router.routes;
 
 describe("Error Boundary", () => {
 
-
-    // let MockApp = null
-
-    // let renderedRoutes = null;
-
-    // afterEach(() => {
-
-    //     jest.restoreAllMocks();
-
-    //     MockApp = null
-
-    // });
-
-    // beforeEach(() => {
-
-    //     const { __mock } = jest.requireMock("../../index");
-
-    //     MockApp = __mock.appRoutes;
-
-    //     renderedRoutes = __mock.renderedRoutes;
-        
-
-
-    // })
 
     const testParams = [
         {
@@ -332,6 +273,4 @@ describe("Error Boundary", () => {
 
         });
     });
-
-    test.skip("Render checks", () => {});
 });

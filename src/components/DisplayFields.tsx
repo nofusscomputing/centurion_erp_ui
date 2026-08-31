@@ -38,6 +38,7 @@ import { FormatTime } from "../functions/FormatTime";
 import { useIsMobile } from "../hooks/useIsMobile";
 import UserContext from "../hooks/UserContext";
 import URLSanitize from "../functions/URLSanitize";
+import { apiObject } from "../types/backend/apiObject/object";
 
 
 /**
@@ -88,7 +89,7 @@ export type FieldsProps = {
     /**
      * Object Data.
      */
-    objectData: APIDataObject
+    objectData: apiObject
 
     /**
      * Object Metadata
