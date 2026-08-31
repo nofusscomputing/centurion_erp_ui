@@ -27,30 +27,29 @@ nav:
 
   - Centurion User Interface:
 
-    - projects/centurion_user_interface/index.md
+    - API:
 
-    - projects/centurion_user_interface/development.md
+      - projects/centurion_user_interface/api/index.md
 
+    - User Interface:
 
-    - projects/centurion_user_interface/setup.md
+      - Components:
 
-    - Interface:
+        - projects/centurion_user_interface/user/components/comment.md
+
+      - Fields:
+
+        - projects/centurion_user_interface/user/fields/markdown.md
 
       - projects/centurion_user_interface/user/index.md
 
       - projects/centurion_user_interface/user/notifications.md
 
-    - API:
+    - projects/centurion_user_interface/index.md
 
-      - projects/centurion_user_interface/api/index.md
+    - projects/centurion_user_interface/development.md
 
-    - Components:
-
-      - projects/centurion_user_interface/components/comment.md
-
-    - Fields:
-
-      - projects/centurion_user_interface/fields/markdown.md
+    - projects/centurion_user_interface/setup.md
 
 - Operations: 
 

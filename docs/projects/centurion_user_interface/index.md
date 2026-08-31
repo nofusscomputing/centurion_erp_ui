@@ -44,11 +44,6 @@ Centurion UI documentation has been broken down into the following areas:
 
 - [Setup Centurion UI](./setup.md)
 
-    - Field Types
-
-        Metadata structure for providing the different field types that the UI can handle.
-
-        - [Makrdown](./fields/markdown.md)
 
 - [User Interface](./user/index.md)
 
