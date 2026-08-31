@@ -12,7 +12,7 @@ about: https://github.com/nofusscomputing/centurion_erp_ui/
 
 ![Project Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnofusscomputing%2Fcenturion_erp_ui%2Frefs%2Fheads%2Fdevelopment%2F.centurion%2Fproject_status.json)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/centurion-erp-ui?style=plastic&logo=docker&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/centurion-erp-ui)
+[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/centurion-ui?style=plastic&logo=docker&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/centurion-ui)
 
 ----
 
@@ -38,39 +38,21 @@ about: https://github.com/nofusscomputing/centurion_erp_ui/
 **Centurion UI** is a metadata-driven frontend that renders and interacts with structured data provided by backends such as [Centurion ERP](../centurion_erp/index.md). Unlike traditional UIs, it **does not handle security or business logic** — those remain fully on the backend. The UI’s role is to interpret and display data as views, pages, and components, letting users focus on using applications rather than building interfaces.
 
 
-## Components of Centurion UI
+## Documentation
 
-For Centurion UI to function dynamically, metadata that Centurion UI requires must be in an expected format. To aid in this we have broken down each area of that metadata so that its easier to parse. Those areas are:
-
-- [User Interface](./user/index.md)
+Centurion UI documentation has been broken down into the following areas:
 
 - [Setup Centurion UI](./setup.md)
 
-    How to setup Centurion UI for your backend.
+    - Field Types
 
-- [Backend Metadata](./metadata.md)
+        Metadata structure for providing the different field types that the UI can handle.
 
-    What and how your backend should provide for Centurion UI to function.
+        - [Makrdown](./fields/markdown.md)
 
-- [Navigation](./navigation.md)
+- [User Interface](./user/index.md)
 
-    Metadata structure for providing UI navigation.
-
-- User Details
-
-    Metadata structure for providing user details.
-
-- [View Layout](./layout/index.md)
-
-    Metadata structure for providing the layout that will be rendered.
-
-- Field Types
-
-    Metadata structure for providing the different field types that the UI can handle.
-
-    - [Makrdown](./fields/markdown.md)
-
-- [URLs](./url.md)
+- [Development](./development.md)
 
 
 ## How It Works

@@ -109,7 +109,7 @@ export type RouteComponentDescription =
      * automatically if {@link RouteHandleDescription.backend_url} is supplied
      * a value. This is done to ensure that context is correctly set.
      * 
-     * @summary Use {@link BackendLayout}
+     * Use {@link BackendLayout}
      */
     "backend"
     |
