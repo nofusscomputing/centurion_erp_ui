@@ -33,7 +33,7 @@ export interface BackendVersion {
 
 /**
  * API root metadata is provided by the backend and must be accessible via it's
- * base URL. This object is obtained via a `HTTP/OPTIONS` request and must be
+ * base URL ({@link UIEnvironment.API_URL}). This object is obtained via a `HTTP/OPTIONS` request and must be
  * returned as a `JSON` object that matches this interface.
  * 
  * This object is **only** to be fetched once on the UI loading and is

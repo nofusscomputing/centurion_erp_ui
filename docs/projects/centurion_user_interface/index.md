@@ -44,6 +44,7 @@ Centurion UI documentation has been broken down into the following areas:
 
 - [Setup Centurion UI](./setup.md)
 
+- [Describe your data](./describing.md)
 
 - [User Interface](./user/index.md)
 
