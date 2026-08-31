@@ -3,7 +3,7 @@ title: Centurion UI
 description: Documentation home for Centurion User Interface by No Fuss Computing
 date: 2024-09-27
 template: project.html
-about: https://github.com/nofusscomputing/centurion_erp_ui/
+about: https://github.com/nofusscomputing/centurion_ui/
 ---
 
 <span style="text-align: center;">

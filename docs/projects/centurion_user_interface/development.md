@@ -3,10 +3,10 @@ title: Development
 description: Development documentation for Centurion User Interface by No Fuss Computing.
 date: 2026-04-14
 template: project.html
-about: https://github.com/nofusscomputing/centurion_erp_ui/
+about: https://github.com/nofusscomputing/centurion_ui/
 ---
 
-This page covers development for the Centurion UI. We welcome contributions and hope that this page, along with our [Contribution Guide](https://github.com/nofusscomputing/centurion_erp_ui/blob/development/CONTRIBUTING.md) has fostered you being able to move forward.
+This page covers development for the Centurion UI. We welcome contributions and hope that this page, along with our [Contribution Guide](https://github.com/nofusscomputing/centurion_ui/blob/development/CONTRIBUTING.md) has fostered you being able to move forward.
 
 We do have Code API documentation. and it can be found in the [API documentation](./api/index.md) section.
 
